@@ -1,0 +1,991 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass docbook
+\use_default_options true
+\maintain_unincluded_children false
+\begin_local_layout
+Format 31
+
+InsetLayout Flex:PI_Strict
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_Strict
+End
+
+InsetLayout Flex:PI
+    LyXType Custom
+    HTMLTag div
+    LabelString PI
+End
+
+InsetLayout Flex:PI_SymRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SymRefs
+End
+
+InsetLayout Flex:PI_SortRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SortRefs
+End
+
+InsetLayout Flex:PI_TOC
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOC
+End
+
+InsetLayout Flex:PI_TOCIndent
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCIndent
+End
+
+InsetLayout Flex:PI_TOCDepth
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCDepth
+End
+
+InsetLayout Flex:PI_TOCNarrow
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCNarrow
+End
+
+InsetLayout Flex:PI_TOCCompact
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCCompact
+End
+
+InsetLayout Flex:PI_TOCAppendix
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCAppendix
+End
+
+InsetLayout Flex:DocName
+    LyXType Custom
+    HTMLTag div
+    LabelString DocName
+End
+
+InsetLayout Flex:IntendedStatus
+    LyXType Custom
+    HTMLTag div
+    LabelString IntendedStatus
+End
+
+InsetLayout Flex:Updates
+    LyXType Custom
+    HTMLTag div
+    LabelString Updates
+End
+
+InsetLayout Flex:Obsoletes
+    LyXType Custom
+    HTMLTag div
+    LabelString Obsoletes
+End
+
+InsetLayout Flex:SeriesNo
+    LyXType Custom
+    HTMLTag div
+    LabelString SeriesNo
+End
+
+InsetLayout Flex:RFCNumber
+    LyXType Custom
+    HTMLTag div
+    LabelString RFCNumber
+End
+
+InsetLayout Flex:IPR
+    LyXType Custom
+    HTMLTag div
+    LabelString IPR
+End
+
+InsetLayout Flex:IETFArea
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFArea
+End
+
+InsetLayout Flex:IETFWorkingGroup
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFWorkingGroup
+End
+
+InsetLayout Flex:XML2RFCKeyword
+    LyXType Custom
+    HTMLTag div
+    LabelString XML2RFCKeyword
+End
+
+InsetLayout Flex:TitleAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString TitleAbbrev
+End
+
+InsetLayout Flex:AuthorRole
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthRole
+End
+
+InsetLayout Flex:AuthorInitials
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthInitials
+End
+
+InsetLayout Flex:AuthorSurname
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthSurname
+End
+
+InsetLayout Flex:AuthorOrg
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrg
+End
+
+InsetLayout Flex:AuthorOrgAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrgAbbrev
+End
+
+InsetLayout Flex:AuthorEmailAddr
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthEmailAddr
+End
+
+InsetLayout Flex:AuthorAddrStreet
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrStreet
+End
+
+InsetLayout Flex:AuthorAddrCity
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCity
+End
+
+InsetLayout Flex:AuthorAddrRegion
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrRegion
+End
+
+InsetLayout Flex:AuthorAddrCode
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCode
+End
+
+InsetLayout Flex:AuthorAddrCountry
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCountry
+End
+
+InsetLayout Flex:EntityXRef
+    LyXType Custom
+    HTMLTag div
+    LabelString EntityXRef
+End
+
+InsetLayout Flex:BibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString BibXML
+End
+
+InsetLayout Flex:EmbeddedBibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString EmbeddedBibXML
+End
+\end_local_layout
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman cmr
+\font_sans cmss
+\font_typewriter cmtt
+\font_default_family ttdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Replay Cache Avoidance for the Kerberos V5 Generic Security Services Mechanism
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex DocName
+status open
+
+\begin_layout Plain Layout
+draft-williams-kitten-krb5-rcache-avoidance-00
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IPR
+status open
+
+\begin_layout Plain Layout
+trust200902
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IntendedStatus
+status open
+
+\begin_layout Plain Layout
+std
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex TitleAbbrev
+status open
+
+\begin_layout Plain Layout
+GSS Channel Bound Flag
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IETFArea
+status open
+
+\begin_layout Plain Layout
+Security Area
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex XML2RFCKeyword
+status open
+
+\begin_layout Plain Layout
+Internet-Draft
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Updates
+status open
+
+\begin_layout Plain Layout
+RFC4121
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex PI TOC
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI SymRefs
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI TOCIndent
+status open
+
+\begin_layout Plain Layout
+no
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+comments="yes"
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+inline="yes"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Nicolas Williams
+\begin_inset Flex AuthorOrg
+status open
+
+\begin_layout Plain Layout
+Cryptonector, LLC
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorOrgAbbrev
+status open
+
+\begin_layout Plain Layout
+Cryptonector
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorEmailAddr
+status open
+
+\begin_layout Plain Layout
+nico@cryptonector.com
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+This Internet-Draft proposes an extension to the Kerberos V5 security mechanism
+ for the Generic Security Services Application Programming Interface (GSS-API)
+ for avoiding the need for a replay cache.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+The Kerberos V5 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4120
+\end_layout
+
+\end_inset
+
+ AP protocol, and therefore the Kerberos V5 GSS mechanism 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4121
+\end_layout
+
+\end_inset
+
+, is a one-round-trip protocol that requires a replay cache on the server/accept
+or side in order to protect against replays of AP-REQ PDUs (and therefore
+ security context tokens).
+\end_layout
+
+\begin_layout Standard
+It turns out that building secure, 
+\emph on
+high-performance
+\emph default
+ replay caches is very difficult.
+ It is even 
+\emph on
+more
+\emph default
+ difficult to implement a secure, high-performance replay cache in clustered
+ servers.
+ Secure, high-performance replay caches are so difficult to implement that
+ many implementations forgo a replay cache altogether.
+\end_layout
+
+\begin_layout Standard
+Therefore we want to avoid the need for replay caches.
+\end_layout
+
+\begin_layout Standard
+We could, of course, pursue a protocol extension involving a third security
+ context token sent from the initiator to the server, but this is very difficult
+ to build and deploy for non-GSS applications.
+ We may well pursue a multi-round trip extension to the Kerberos V5 GSS
+ mechanism for other reasons, but for this document we do not.
+\end_layout
+
+\begin_layout Standard
+Instead we note that many application protocols that use the GSS-API are
+ by their nature inmune to replayed security context tokens, therefore we
+ propose an extension based on that observation.
+ We propose that we rely on applications and/or local configuration to indicate
+ to the implementation when a replay cache can be avoided due to application
+ protocols using a pattern that is insusceptible to replay attacks based
+ on replaying security context tokens.
+\end_layout
+
+\begin_layout Standard
+We use a credential option so that applications can signal that their protocol
+ is inmune to replays of security context tokens.
+ We also rely on local configuration on a per-service principal name basis
+ (or on a per-service name basis) to indicate that all application protocols
+ spoken by that service principal are inmune to replays of security context
+ tokens -- this is useful when the application doesn't know how to signal
+ this via a credential option.
+ Additionally, we have some requirements regarding the sharing of service
+ keys across multiple service principals with the same hostname component.
+\end_layout
+
+\begin_layout Standard
+Together these API extensions and local configuration allow mechanism acceptor
+ implementations to decide when to forgo the use of a replay cache, namely
+ when all applications using a given key are inmune to replays of security
+ context tokens.
+\end_layout
+
+\begin_layout Standard
+We also document fast replay caching techniques and propose an option to
+ negotiate the use of a third security context token.
+\end_layout
+
+\begin_layout Subsection
+Definitions
+\end_layout
+
+\begin_layout Standard
+In addition to traditional Kerberos and GSS-API terminology we define two
+ terms here just for use in this document.
+ We will primarily use GSS-API terminology in this section.
+ This section is NORMATIVE.
+\end_layout
+
+\begin_layout Description
+Inmune
+\begin_inset space ~
+\end_inset
+
+applications Acceptor applications that are inmune to replays of AP-REQs.
+ These are all acceptor applications where the application protocol involves
+ a security context token exchange with: a) no per-message tokens made and
+ sent by the initiator prior to completing the AP exchange (i.e., without
+ making use of PROT_READY), b) no sensitive data is sent nor action taken
+ by the acceptor prior to receiving at least one per-message token from
+ the initiator, c) the acceptor's mechanism asserts a sub-session key to
+ replace that selected by the initiator, and d) the acceptor mechanism rejects
+ any initiator per-message tokens using any sub-session key other than the
+ one asserted by the initiator.
+\end_layout
+
+\begin_layout Description
+Susceptible
+\begin_inset space ~
+\end_inset
+
+applications Acceptor applications that are susceptible to replays of AP-REQs.
+ These are all acceptor applications that do not meet the requirements for
+ being considered inmune applications.
+\end_layout
+
+\begin_layout Subsection
+Conventions used in this document
+\end_layout
+
+\begin_layout Standard
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+ "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are
+ to be interpreted as described in 
+\begin_inset Flex EntityXRef
+status open
+
+\begin_layout Plain Layout
+RFC2119
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Fast Replay Caching
+\end_layout
+
+\begin_layout Standard
+We note here that there is a fast replay caching technique that consists
+ of avoiding synchronization to stable storage of replay cache data that
+ is in the past relative to the current time + some fraction of the time
+ it normally takes the host to restart.
+ The acceptor mechanism that implements this technique MUST reject AP-REQs
+ whose Authenticators' timestamp predates the latest time that could have
+ been accepted without commitment to stable storage.
+\end_layout
+
+\begin_layout Section
+Replay Cache Avoidance
+\end_layout
+
+\begin_layout Standard
+Avoidance of replay caching on systems with where multiple Kerberos V5 service/a
+cceptor implementations co-exist and share keys is problematic: it is necessary
+ to ensure that all those implementations implement the same replay cache
+ avoidance techniques, otherwise there's the risk that an AP-REQ from one
+ application protocol may be replayed to another application on the same
+ host (or another host in the same cluster) without detection.
+ If the only implementations that don't perform replay cache avoidance are
+ those used by inmune applications then the risk is lower or zero, but it
+ is often the case that the susceptible applications are the ones that are
+ hardest to switch to a new or updated Kerberos implementation.
+\end_layout
+
+\begin_layout Standard
+Therefore we strongly RECOMMEND that all local Kerberos V5 service and acceptor
+ mechanism implementations on a host/cluster support replay cache avoidance
+ before replay cache avoidance is enabled.
+\end_layout
+
+\begin_layout Standard
+To avoid a replay cache an implementation of a Kerberos V5 server/acceptor
+ MUST
+\end_layout
+
+\begin_layout Itemize
+ascertain that all server/acceptor applications using a given service key
+ are inmune to replayed AP-REQs;
+\end_layout
+
+\begin_layout Itemize
+ascertain that no susceptible server/acceptor applications have run within
+ the current replay cache window;
+\end_layout
+
+\begin_layout Standard
+and
+\end_layout
+
+\begin_layout Itemize
+prevent susceptible server/acceptor applications from running within a replay
+ cache time window of the last AP-REQ accepted when no susceptible applications
+ were running.
+\end_layout
+
+\begin_layout Standard
+The first two requirements might be met statically through configuration
+ (i.e., configuration that declares all server/acceptor applications to be
+ inmune), or dynamically through the use (and non-use) of an API for signalling
+ application susceptibility to replay attacks.
+ The third requirement can only be ignored when the mechanism acceptor implement
+ation relies entirely on configuration for the first two requirements, otherwise
+ the third requirement must be met either by always delaying the start of
+ susceptible applications or by always recording the last time that any
+ AP-REQ was received.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Alternatively
+\emph default
+, the acceptor mechanism SHOULD avoid replay caching when a) the application
+ indicates it is an inmune application, b) the Authenticator has an Authorizatio
+n-Data element marking it as used only in inmune applications, and c) all
+ susceptible applications sharing the same key use acceptor mechanism implementa
+tions that know to reject such Authenticators in susceptible applications.
+\end_layout
+
+\begin_layout Subsection
+Stable Storage of Timestamps for Dynamic Replay Cache Avoidance Decision
+\end_layout
+
+\begin_layout Standard
+Note that in order to dynamically determine when to avoid a replay cache
+ the acceptor mechanism implementation must keep track of two timestamps:
+\end_layout
+
+\begin_layout Enumerate
+the timestamp from the Authenticator of the last AP-REQ accepted;
+\end_layout
+
+\begin_layout Enumerate
+the timestamp from the Authenticator of the last AP-REQ accepted for a susceptib
+le applications.
+\end_layout
+
+\begin_layout Standard
+The mechanism SHOULD use stable storage for these timestamps, but if not
+ it SHOULD delay acceptance of AP-REQs for susceptible applications at host
+ restart time until the time of restart plus a replay skew window.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Sharing-Keys-Across"
+
+\end_inset
+
+Sharing Keys Across Multiple Service Principals with the Same Hostname Component
+\end_layout
+
+\begin_layout Standard
+...
+\end_layout
+
+\begin_layout Subsection
+Authorization-Data Elements
+\end_layout
+
+\begin_layout Standard
+We introduce two Authorization-Data elements for use in Authenticators inside
+ an AD-IF-RELEVANT container.
+\end_layout
+
+\begin_layout Standard
+One authorization data element is for indicating the client/initiator's
+ assertion that the application protocol is inmune to AP-REQ replays.
+\end_layout
+
+\begin_layout Standard
+The other is for protecting the Ticket against modifications of the sname
+ field (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Sharing-Keys-Across"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsubsection
+AD-Application-Protocol-Is-AP-Replay-Safe
+\end_layout
+
+\begin_layout Standard
+This authorization data element has an empty ad-value.
+ Its presence is sufficient.
+\end_layout
+
+\begin_layout Subsubsection
+AD-Ticket-Binding
+\end_layout
+
+\begin_layout Standard
+This authorization data element's ad-value carries the DER encoding of a
+ Checksum of the Ticket.
+\end_layout
+
+\begin_layout Standard
+[Alternative design.
+ The A-D element's ad-value carries the DER encoding of the following explicitly
+ tagged ASN.1 type:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ AD-Ticket-Binding-Data ::= SEQUENCE {
+\end_layout
+
+\begin_layout Plain Layout
+
+   srealm [0] Realm,            -- realm from the Ticket
+\end_layout
+
+\begin_layout Plain Layout
+
+   sname  [1] PrincipalName,    -- sname from the Ticket
+\end_layout
+
+\begin_layout Plain Layout
+
+   cksum  [2] Checksum OPTIONAL -- taken over the Ticket
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+AD-Ticket-Binding ad-value contents
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In practice it will always suffice to repeat the ticket's sname/srealm,
+ and it will be faster too than authenticating the entire Ticket, but from
+ a purist cryptographic protocol design perspective it's best to bind the
+ whole Ticket.]
+\end_layout
+
+\begin_layout Section
+Negotiation of Explicit Third Security Context Token
+\end_layout
+
+\begin_layout Standard
+...
+\end_layout
+
+\begin_layout Section
+API Extensions and Local Configuration
+\end_layout
+
+\begin_layout Standard
+...
+\end_layout
+
+\begin_layout Section
+Security Considerations
+\end_layout
+
+\begin_layout Standard
+This document deals with security.
+ Running Kerberos services without a replay cache.
+\end_layout
+
+\begin_layout Section
+IANA Considerations
+\end_layout
+
+\begin_layout Standard
+This document has no IANA considerations.
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:References"
+
+\end_inset
+
+Normative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2119"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2743"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2744"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4120"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4121"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Informative References
+\end_layout
+
+\end_body
+\end_document

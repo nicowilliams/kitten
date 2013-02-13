@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc tocindent="no"?>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc tocindent="no"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc2743 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">
+<!ENTITY rfc2744 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">
+<!ENTITY rfc4120 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">
+<!ENTITY rfc4121 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">
+]>
+<rfc docName="draft-williams-kitten-krb5-rcache-avoidance-00" ipr="trust200902" category="std" updates="RFC4121">
+  <front>
+    <title abbrev="GSS Channel Bound Flag">Replay Cache Avoidance for the Kerberos V5 Generic Security Services Mechanism</title>
+    <author initials="N." surname="Williams" fullname="Nicolas Williams">
+      <organization abbrev="Cryptonector">Cryptonector, LLC</organization>
+      <address>
+        <email>nico@cryptonector.com</email>
+      </address>
+    </author>
+    <date month="February" year="2013"/>
+    <area>
+Security Area
+</area>
+    <keyword>Internet-Draft</keyword>
+    <abstract>
+      <t>
+This Internet-Draft proposes an extension to the Kerberos V5 security mechanism for the Generic Security Services Application Programming Interface (GSS-API) for avoiding the need for a replay cache.</t>
+    </abstract>
+  </front>
+  <middle>
+    <section title="Introduction" anchor="d1e235">
+      <t>
+The Kerberos V5 <xref target="RFC4120"/> AP protocol, and therefore the Kerberos V5 GSS mechanism <xref target="RFC4121"/>, is a one-round-trip protocol that requires a replay cache on the server/acceptor side in order to protect against replays of AP-REQ PDUs (and therefore security context tokens).</t>
+      <t>
+It turns out that building secure, <spanx>high-performance</spanx>  replay caches is very difficult. It is even <spanx>more</spanx>  difficult to implement a secure, high-performance replay cache in clustered servers. Secure, high-performance replay caches are so difficult to implement that many implementations forgo a replay cache altogether.</t>
+      <t>
+Therefore we want to avoid the need for replay caches.</t>
+      <t>
+We could, of course, pursue a protocol extension involving a third security context token sent from the initiator to the server, but this is very difficult to build and deploy for non-GSS applications. We may well pursue a multi-round trip extension to the Kerberos V5 GSS mechanism for other reasons, but for this document we do not.</t>
+      <t>
+Instead we note that many application protocols that use the GSS-API are by their nature inmune to replayed security context tokens, therefore we propose an extension based on that observation. We propose that we rely on applications and/or local configuration to indicate to the implementation when a replay cache can be avoided due to application protocols using a pattern that is insusceptible to replay attacks based on replaying security context tokens.</t>
+      <t>
+We use a credential option so that applications can signal that their protocol is inmune to replays of security context tokens. We also rely on local configuration on a per-service principal name basis (or on a per-service name basis) to indicate that all application protocols spoken by that service principal are inmune to replays of security context tokens – this is useful when the application doesn't know how to signal this via a credential option. Additionally, we have some requirements regarding the sharing of service keys across multiple service principals with the same hostname component.</t>
+      <t>
+Together these API extensions and local configuration allow mechanism acceptor implementations to decide when to forgo the use of a replay cache, namely when all applications using a given key are inmune to replays of security context tokens.</t>
+      <t>
+We also document fast replay caching techniques and propose an option to negotiate the use of a third security context token.</t>
+      <section title="Definitions" anchor="d1e284">
+        <t>
+In addition to traditional Kerberos and GSS-API terminology we define two terms here just for use in this document. We will primarily use GSS-API terminology in this section. This section is NORMATIVE.</t>
+        <t>
+          <list style="hanging">
+            <t hangText="Inmune applications">
+ Acceptor applications that are inmune to replays of AP-REQs. These are all acceptor applications where the application protocol involves a security context token exchange with: a) no per-message tokens made and sent by the initiator prior to completing the AP exchange (i.e., without making use of PROT_READY), b) no sensitive data is sent nor action taken by the acceptor prior to receiving at least one per-message token from the initiator, c) the acceptor's mechanism asserts a sub-session key to replace that selected by the initiator, and d) the acceptor mechanism rejects any initiator per-message tokens using any sub-session key other than the one asserted by the initiator.</t>
+            <t hangText="Susceptible applications">
+ Acceptor applications that are susceptible to replays of AP-REQs. These are all acceptor applications that do not meet the requirements for being considered inmune applications.</t>
+          </list>
+        </t>
+      </section>
+      <section title="Conventions used in this document" anchor="d1e304">
+        <t>
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
+      </section>
+    </section>
+    <section title="Fast Replay Caching" anchor="d1e319">
+      <t>
+We note here that there is a fast replay caching technique that consists of avoiding synchronization to stable storage of replay cache data that is in the past relative to the current time + some fraction of the time it normally takes the host to restart. The acceptor mechanism that implements this technique MUST reject AP-REQs whose Authenticators' timestamp predates the latest time that could have been accepted without commitment to stable storage.</t>
+    </section>
+    <section title="Replay Cache Avoidance" anchor="d1e329">
+      <t>
+Avoidance of replay caching on systems with where multiple Kerberos V5 service/acceptor implementations co-exist and share keys is problematic: it is necessary to ensure that all those implementations implement the same replay cache avoidance techniques, otherwise there's the risk that an AP-REQ from one application protocol may be replayed to another application on the same host (or another host in the same cluster) without detection. If the only implementations that don't perform replay cache avoidance are those used by inmune applications then the risk is lower or zero, but it is often the case that the susceptible applications are the ones that are hardest to switch to a new or updated Kerberos implementation.</t>
+      <t>
+Therefore we strongly RECOMMEND that all local Kerberos V5 service and acceptor mechanism implementations on a host/cluster support replay cache avoidance before replay cache avoidance is enabled.</t>
+      <t>
+To avoid a replay cache an implementation of a Kerberos V5 server/acceptor MUST</t>
+      <t>
+        <list style="symbols">
+          <t>
+ascertain that all server/acceptor applications using a given service key are inmune to replayed AP-REQs;</t>
+          <t>
+ascertain that no susceptible server/acceptor applications have run within the current replay cache window;</t>
+        </list>
+      </t>
+      <t>
+and</t>
+      <t>
+        <list style="symbols">
+          <t>
+prevent susceptible server/acceptor applications from running within a replay cache time window of the last AP-REQ accepted when no susceptible applications were running.</t>
+        </list>
+      </t>
+      <t>
+The first two requirements might be met statically through configuration (i.e., configuration that declares all server/acceptor applications to be inmune), or dynamically through the use (and non-use) of an API for signalling application susceptibility to replay attacks. The third requirement can only be ignored when the mechanism acceptor implementation relies entirely on configuration for the first two requirements, otherwise the third requirement must be met either by always delaying the start of susceptible applications or by always recording the last time that any AP-REQ was received.</t>
+      <t><spanx>Alternatively</spanx> , the acceptor mechanism SHOULD avoid replay caching when a) the application indicates it is an inmune application, b) the Authenticator has an Authorization-Data element marking it as used only in inmune applications, and c) all susceptible applications sharing the same key use acceptor mechanism implementations that know to reject such Authenticators in susceptible applications.</t>
+      <section title="Stable Storage of Timestamps for Dynamic Replay Cache Avoidance Decision" anchor="d1e367">
+        <t>
+Note that in order to dynamically determine when to avoid a replay cache the acceptor mechanism implementation must keep track of two timestamps:</t>
+        <t>
+          <list style="numbers">
+            <t>
+the timestamp from the Authenticator of the last AP-REQ accepted;</t>
+            <t>
+the timestamp from the Authenticator of the last AP-REQ accepted for a susceptible applications.</t>
+          </list>
+        </t>
+        <t>
+The mechanism SHOULD use stable storage for these timestamps, but if not it SHOULD delay acceptance of AP-REQs for susceptible applications at host restart time until the time of restart plus a replay skew window.</t>
+      </section>
+      <section title="Sharing Keys Across Multiple Service Principals with the Same Hostname Component" anchor="sub_Sharing_Keys_Across">
+        <t>
+...</t>
+      </section>
+      <section title="Authorization-Data Elements" anchor="d1e398">
+        <t>
+We introduce two Authorization-Data elements for use in Authenticators inside an AD-IF-RELEVANT container.</t>
+        <t>
+One authorization data element is for indicating the client/initiator's assertion that the application protocol is inmune to AP-REQ replays.</t>
+        <t>
+The other is for protecting the Ticket against modifications of the sname field (see  <xref target="sub_Sharing_Keys_Across"/>).</t>
+        <section title="AD-Application-Protocol-Is-AP-Replay-Safe" anchor="d1e416">
+          <t>
+This authorization data element has an empty ad-value. Its presence is sufficient.</t>
+        </section>
+        <section title="AD-Ticket-Binding" anchor="d1e426">
+          <t>
+This authorization data element's ad-value carries the DER encoding of a Checksum of the Ticket.</t>
+          <t>
+[Alternative design. The A-D element's ad-value carries the DER encoding of the following explicitly tagged ASN.1 type:</t>
+          <t>
+</t>
+          <t>
+            <figure anchor="magicparlabel-139" title="AD-Ticket-Binding ad-value contents">
+              <artwork> AD-Ticket-Binding-Data ::= SEQUENCE {
+   srealm [0] Realm,            – realm from the Ticket
+   sname  [1] PrincipalName,    – sname from the Ticket
+   cksum  [2] Checksum OPTIONAL – taken over the Ticket</artwork>
+            </figure>
+          </t>
+          <t>
+In practice it will always suffice to repeat the ticket's sname/srealm, and it will be faster too than authenticating the entire Ticket, but from a purist cryptographic protocol design perspective it's best to bind the whole Ticket.]</t>
+        </section>
+      </section>
+    </section>
+    <section title="Negotiation of Explicit Third Security Context Token" anchor="d1e467">
+      <t>
+...</t>
+    </section>
+    <section title="API Extensions and Local Configuration" anchor="d1e476">
+      <t>
+...</t>
+    </section>
+    <section title="Security Considerations" anchor="d1e485">
+      <t>
+This document deals with security. Running Kerberos services without a replay cache.</t>
+    </section>
+    <section title="IANA Considerations" anchor="d1e495">
+      <t>
+This document has no IANA considerations.</t>
+    </section>
+    <section title="Informative References" anchor="d1e562"/>
+  </middle>
+  <back>
+    <references title="Normative References">&rfc2119;
+&rfc2743;
+&rfc2744;
+&rfc4120;
+&rfc4121;
+</references>
+  </back>
+</rfc>

@@ -1,0 +1,840 @@
+
+
+
+Network Working Group                                        N. Williams
+Internet-Draft                                              Cryptonector
+Updates: RFC4121 (if approved)                         February 13, 2013
+Intended status: Standards Track
+Expires: August 17, 2013
+
+
+  Replay Cache Avoidance for the Kerberos V5 Generic Security Services
+                               Mechanism
+             draft-williams-kitten-krb5-rcache-avoidance-00
+
+Abstract
+
+   This Internet-Draft proposes an extension to the Kerberos V5 security
+   mechanism for the Generic Security Services Application Programming
+   Interface (GSS-API) for avoiding the need for a replay cache.
+
+Status of this Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on August 17, 2013.
+
+Copyright Notice
+
+   Copyright (c) 2013 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+
+
+Williams                 Expires August 17, 2013                [Page 1]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+Table of Contents
+
+   1.      Introduction . . . . . . . . . . . . . . . . . . . . . . .  3
+   1.1.    Definitions  . . . . . . . . . . . . . . . . . . . . . . .  4
+   1.2.    Conventions used in this document  . . . . . . . . . . . .  4
+   2.      Fast Replay Caching  . . . . . . . . . . . . . . . . . . .  5
+   3.      Replay Cache Avoidance . . . . . . . . . . . . . . . . . .  6
+   3.1.    Stable Storage of Timestamps for Dynamic Replay Cache
+           Avoidance Decision . . . . . . . . . . . . . . . . . . . .  7
+   3.2.    Sharing Keys Across Multiple Service Principals with
+           the Same Hostname Component  . . . . . . . . . . . . . . .  7
+   3.3.    Authorization-Data Elements  . . . . . . . . . . . . . . .  7
+   3.3.1.  AD-Application-Protocol-Is-AP-Replay-Safe  . . . . . . . .  7
+   3.3.2.  AD-Ticket-Binding  . . . . . . . . . . . . . . . . . . . .  7
+   4.      Negotiation of Explicit Third Security Context Token . . .  9
+   5.      API Extensions and Local Configuration . . . . . . . . . . 10
+   6.      Security Considerations  . . . . . . . . . . . . . . . . . 11
+   7.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 12
+   8.      Informative References . . . . . . . . . . . . . . . . . . 13
+   9.      Normative References . . . . . . . . . . . . . . . . . . . 14
+           Author's Address . . . . . . . . . . . . . . . . . . . . . 15
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 2]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+1.  Introduction
+
+   The Kerberos V5 [RFC4120] AP protocol, and therefore the Kerberos V5
+   GSS mechanism [RFC4121], is a one-round-trip protocol that requires a
+   replay cache on the server/acceptor side in order to protect against
+   replays of AP-REQ PDUs (and therefore security context tokens).
+
+   It turns out that building secure, _high-performance_ replay caches
+   is very difficult.  It is even _more_ difficult to implement a
+   secure, high-performance replay cache in clustered servers.  Secure,
+   high-performance replay caches are so difficult to implement that
+   many implementations forgo a replay cache altogether.
+
+   Therefore we want to avoid the need for replay caches.
+
+   We could, of course, pursue a protocol extension involving a third
+   security context token sent from the initiator to the server, but
+   this is very difficult to build and deploy for non-GSS applications.
+   We may well pursue a multi-round trip extension to the Kerberos V5
+   GSS mechanism for other reasons, but for this document we do not.
+
+   Instead we note that many application protocols that use the GSS-API
+   are by their nature inmune to replayed security context tokens,
+   therefore we propose an extension based on that observation.  We
+   propose that we rely on applications and/or local configuration to
+   indicate to the implementation when a replay cache can be avoided due
+   to application protocols using a pattern that is insusceptible to
+   replay attacks based on replaying security context tokens.
+
+   We use a credential option so that applications can signal that their
+   protocol is inmune to replays of security context tokens.  We also
+   rely on local configuration on a per-service principal name basis (or
+   on a per-service name basis) to indicate that all application
+   protocols spoken by that service principal are inmune to replays of
+   security context tokens - this is useful when the application doesn't
+   know how to signal this via a credential option.  Additionally, we
+   have some requirements regarding the sharing of service keys across
+   multiple service principals with the same hostname component.
+
+   Together these API extensions and local configuration allow mechanism
+   acceptor implementations to decide when to forgo the use of a replay
+   cache, namely when all applications using a given key are inmune to
+   replays of security context tokens.
+
+   We also document fast replay caching techniques and propose an option
+   to negotiate the use of a third security context token.
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 3]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+1.1.  Definitions
+
+   In addition to traditional Kerberos and GSS-API terminology we define
+   two terms here just for use in this document.  We will primarily use
+   GSS-API terminology in this section.  This section is NORMATIVE.
+
+   Inmune applications  Acceptor applications that are inmune to replays
+      of AP-REQs.  These are all acceptor applications where the
+      application protocol involves a security context token exchange
+      with: a) no per-message tokens made and sent by the initiator
+      prior to completing the AP exchange (i.e., without making use of
+      PROT_READY), b) no sensitive data is sent nor action taken by the
+      acceptor prior to receiving at least one per-message token from
+      the initiator, c) the acceptor's mechanism asserts a sub-session
+      key to replace that selected by the initiator, and d) the acceptor
+      mechanism rejects any initiator per-message tokens using any sub-
+      session key other than the one asserted by the initiator.
+
+   Susceptible applications  Acceptor applications that are susceptible
+      to replays of AP-REQs.  These are all acceptor applications that
+      do not meet the requirements for being considered inmune
+      applications.
+
+1.2.  Conventions used in this document
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 4]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+2.  Fast Replay Caching
+
+   We note here that there is a fast replay caching technique that
+   consists of avoiding synchronization to stable storage of replay
+   cache data that is in the past relative to the current time + some
+   fraction of the time it normally takes the host to restart.  The
+   acceptor mechanism that implements this technique MUST reject AP-REQs
+   whose Authenticators' timestamp predates the latest time that could
+   have been accepted without commitment to stable storage.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 5]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+3.  Replay Cache Avoidance
+
+   Avoidance of replay caching on systems with where multiple Kerberos
+   V5 service/acceptor implementations co-exist and share keys is
+   problematic: it is necessary to ensure that all those implementations
+   implement the same replay cache avoidance techniques, otherwise
+   there's the risk that an AP-REQ from one application protocol may be
+   replayed to another application on the same host (or another host in
+   the same cluster) without detection.  If the only implementations
+   that don't perform replay cache avoidance are those used by inmune
+   applications then the risk is lower or zero, but it is often the case
+   that the susceptible applications are the ones that are hardest to
+   switch to a new or updated Kerberos implementation.
+
+   Therefore we strongly RECOMMEND that all local Kerberos V5 service
+   and acceptor mechanism implementations on a host/cluster support
+   replay cache avoidance before replay cache avoidance is enabled.
+
+   To avoid a replay cache an implementation of a Kerberos V5 server/
+   acceptor MUST
+
+   o  ascertain that all server/acceptor applications using a given
+      service key are inmune to replayed AP-REQs;
+
+   o  ascertain that no susceptible server/acceptor applications have
+      run within the current replay cache window;
+
+   and
+
+   o  prevent susceptible server/acceptor applications from running
+      within a replay cache time window of the last AP-REQ accepted when
+      no susceptible applications were running.
+
+   The first two requirements might be met statically through
+   configuration (i.e., configuration that declares all server/acceptor
+   applications to be inmune), or dynamically through the use (and non-
+   use) of an API for signalling application susceptibility to replay
+   attacks.  The third requirement can only be ignored when the
+   mechanism acceptor implementation relies entirely on configuration
+   for the first two requirements, otherwise the third requirement must
+   be met either by always delaying the start of susceptible
+   applications or by always recording the last time that any AP-REQ was
+   received.
+
+   _Alternatively_ , the acceptor mechanism SHOULD avoid replay caching
+   when a) the application indicates it is an inmune application, b) the
+   Authenticator has an Authorization-Data element marking it as used
+   only in inmune applications, and c) all susceptible applications
+
+
+
+Williams                 Expires August 17, 2013                [Page 6]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+   sharing the same key use acceptor mechanism implementations that know
+   to reject such Authenticators in susceptible applications.
+
+3.1.  Stable Storage of Timestamps for Dynamic Replay Cache Avoidance
+      Decision
+
+   Note that in order to dynamically determine when to avoid a replay
+   cache the acceptor mechanism implementation must keep track of two
+   timestamps:
+
+   1.  the timestamp from the Authenticator of the last AP-REQ accepted;
+
+   2.  the timestamp from the Authenticator of the last AP-REQ accepted
+       for a susceptible applications.
+
+   The mechanism SHOULD use stable storage for these timestamps, but if
+   not it SHOULD delay acceptance of AP-REQs for susceptible
+   applications at host restart time until the time of restart plus a
+   replay skew window.
+
+3.2.  Sharing Keys Across Multiple Service Principals with the Same
+      Hostname Component
+
+   ...
+
+3.3.  Authorization-Data Elements
+
+   We introduce two Authorization-Data elements for use in
+   Authenticators inside an AD-IF-RELEVANT container.
+
+   One authorization data element is for indicating the client/
+   initiator's assertion that the application protocol is inmune to AP-
+   REQ replays.
+
+   The other is for protecting the Ticket against modifications of the
+   sname field (see Section 3.2).
+
+3.3.1.  AD-Application-Protocol-Is-AP-Replay-Safe
+
+   This authorization data element has an empty ad-value.  Its presence
+   is sufficient.
+
+3.3.2.  AD-Ticket-Binding
+
+   This authorization data element's ad-value carries the DER encoding
+   of a Checksum of the Ticket.
+
+   [Alternative design.  The A-D element's ad-value carries the DER
+
+
+
+Williams                 Expires August 17, 2013                [Page 7]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+   encoding of the following explicitly tagged ASN.1 type:
+
+    AD-Ticket-Binding-Data ::= SEQUENCE {
+      srealm [0] Realm,            - realm from the Ticket
+      sname  [1] PrincipalName,    - sname from the Ticket
+      cksum  [2] Checksum OPTIONAL - taken over the Ticket
+
+               Figure 1: AD-Ticket-Binding ad-value contents
+
+   In practice it will always suffice to repeat the ticket's sname/
+   srealm, and it will be faster too than authenticating the entire
+   Ticket, but from a purist cryptographic protocol design perspective
+   it's best to bind the whole Ticket.]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 8]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+4.  Negotiation of Explicit Third Security Context Token
+
+   ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 9]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+5.  API Extensions and Local Configuration
+
+   ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013               [Page 10]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+6.  Security Considerations
+
+   This document deals with security.  Running Kerberos services without
+   a replay cache.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013               [Page 11]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+7.  IANA Considerations
+
+   This document has no IANA considerations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013               [Page 12]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+8.  Informative References
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013               [Page 13]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+9.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+   [RFC2743]  Linn, J., "Generic Security Service Application Program
+              Interface Version 2, Update 1", RFC 2743, January 2000.
+
+   [RFC2744]  Wray, J., "Generic Security Service API Version 2 :
+              C-bindings", RFC 2744, January 2000.
+
+   [RFC4120]  Neuman, C., Yu, T., Hartman, S., and K. Raeburn, "The
+              Kerberos Network Authentication Service (V5)", RFC 4120,
+              July 2005.
+
+   [RFC4121]  Zhu, L., Jaganathan, K., and S. Hartman, "The Kerberos
+              Version 5 Generic Security Service Application Program
+              Interface (GSS-API) Mechanism: Version 2", RFC 4121,
+              July 2005.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013               [Page 14]
+
+Internet-Draft           GSS Channel Bound Flag            February 2013
+
+
+Author's Address
+
+   Nicolas Williams
+   Cryptonector, LLC
+
+   Email: nico@cryptonector.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013               [Page 15]
+

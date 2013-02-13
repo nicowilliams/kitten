@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "file:///home/nico/I-Ds/kitten/../test/src/../data/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="GENERATOR" content="LyX 2.0.0" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>Replay Cache Avoidance for the Kerberos V5 Generic Security Services Mechanism</title>
+
+<!-- Text Class Preamble -->
+<style type="text/css">
+div.toc {
+margin: 2em 0em;
+border-style: solid;
+border-width: 2px 0px;
+padding: 1em 0em;
+}
+div.tochead { font-size: x-large; font-weight: bold; }
+div.lyxtoc-0 {
+margin: 2em 0em 0em 0em;
+font-size: xx-large;
+font-weight: bold;
+}
+div.lyxtoc-1 {
+margin: 1em 0em 0em 0em;
+font-size: x-large;
+font-weight: bold;
+}
+div.lyxtoc-2 {
+margin: 0em 0em 0em 1em;
+font-size: large;
+font-weight: normal;
+}
+div.lyxtoc-3 { margin: 0em 0em 0em 0.5em; font-size: medium; }
+div.lyxtoc-4 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-5 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-6 { margin: 0em 0em 0em 0.5em; }
+a.tocentry {
+text-decoration: none;
+color: black;
+}
+a.tocentry:visited { color: black; }
+a.tocarrow {
+font-weight: bold;
+text-decoration: none;
+color: #909090;
+}
+a.tocarrow:visited { color: #C0C0C0; }
+</style>
+
+<!-- Preamble Snippets -->
+
+<!-- Layout-provided Styles -->
+<style type='text/css'>
+h1.title {
+font-size: x-large;
+margin-bottom: 1ex;
+text-align: center;
+
+}
+div.standard {
+text-align: left;
+
+}
+div.plain_layout {
+text-align: left;
+
+}
+div.author {
+font-size: large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: center;
+
+}
+div.abstract {
+font-size: small;
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+margin-right: 3ex;
+text-align: left;
+
+}
+div.abstract_label {
+font-weight: bold;
+font-size: large;
+text-align: center;
+
+}
+
+div.abstract {
+margin: 4ex;
+}
+div.abstract_item {
+font-size: small;
+padding-top: 1ex;
+}
+div.abstract_label {
+font-weight: bold;
+}
+h2.section {
+font-weight: bold;
+font-size: x-large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: left;
+
+}
+h3.subsection {
+font-weight: bold;
+font-size: large;
+margin-top: 0.9ex;
+margin-bottom: 0.5ex;
+text-align: left;
+
+}
+dl.description dt { font-weight: bold; }
+ul.itemize {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+ol.enumerate {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+h4.subsubsection {
+font-weight: bold;
+font-size: medium;
+margin-top: 0.7ex;
+margin-bottom: 0.4ex;
+text-align: left;
+
+}
+div.flex_docname {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ipr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_intendedstatus {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_titleabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ietfarea {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_xml_rfckeyword {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_updates {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_toc {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_symrefs {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_tocindent {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororg {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororgabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authoremailaddr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_entityxref {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.float {
+border: 2px solid black;
+text-align: center;
+}
+div.listings {
+font-family: monospace;
+}
+div.float-caption {
+text-align: center;
+border: 2px solid black;
+padding: 1ex;
+margin: 1ex;
+}
+div.flex_bibxml {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+</style>
+</head>
+<body>
+<h1 class="title"><a id='magicparlabel-1' />
+Replay Cache Avoidance for the Kerberos V5 Generic Security Services Mechanism</h1>
+<div class="standard"><a id='magicparlabel-2' />
+<div class="flex_docname"><div class="plain_layout"><a id='magicparlabel-6' />
+draft-williams-kitten-krb5-rcache-avoidance-00</div>
+</div><div class="flex_ipr"><div class="plain_layout"><a id='magicparlabel-10' />
+trust200902</div>
+</div><div class="flex_intendedstatus"><div class="plain_layout"><a id='magicparlabel-14' />
+std</div>
+</div><div class="flex_titleabbrev"><div class="plain_layout"><a id='magicparlabel-18' />
+GSS Channel Bound Flag</div>
+</div><div class="flex_ietfarea"><div class="plain_layout"><a id='magicparlabel-22' />
+Security Area</div>
+</div><div class="flex_xml_rfckeyword"><div class="plain_layout"><a id='magicparlabel-26' />
+Internet-Draft</div>
+</div><div class="flex_updates"><div class="plain_layout"><a id='magicparlabel-30' />
+RFC4121</div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-31' />
+<div class="flex_pi_toc"><div class="plain_layout"><a id='magicparlabel-35' />
+yes</div>
+</div><div class="flex_pi_symrefs"><div class="plain_layout"><a id='magicparlabel-39' />
+yes</div>
+</div><div class="flex_pi_tocindent"><div class="plain_layout"><a id='magicparlabel-43' />
+no</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-47' />
+comments="yes"</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-51' />
+inline="yes"</div>
+</div></div>
+
+<div class="author"><div class="author_item"><a id='magicparlabel-52' />
+Nicolas Williams<div class="flex_authororg"><div class="plain_layout"><a id='magicparlabel-56' />
+Cryptonector, LLC</div>
+</div><div class="flex_authororgabbrev"><div class="plain_layout"><a id='magicparlabel-60' />
+Cryptonector</div>
+</div><div class="flex_authoremailaddr"><div class="plain_layout"><a id='magicparlabel-64' />
+nico@cryptonector.com</div>
+</div></div>
+</div>
+
+<div class="abstract"><div class="abstract_label">Abstract</div>
+<div class="abstract_item"><a id='magicparlabel-65' />
+This Internet-Draft proposes an extension to the Kerberos V5 security mechanism for the Generic Security Services Application Programming Interface (GSS-API) for avoiding the need for a replay cache.</div>
+</div>
+<div class="standard"><a id='magicparlabel-66' />
+</div>
+<div class='toc'><div class='tochead part_'>Table of Contents</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-67' class='tocentry'>1 Introduction</a> <a href='#magicparlabel-67' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-84' class='tocentry'>1.1 Definitions</a> <a href='#magicparlabel-84' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-88' class='tocentry'>1.2 Conventions used in this document</a> <a href='#magicparlabel-88' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-94' class='tocentry'>2 Fast Replay Caching</a> <a href='#magicparlabel-94' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-96' class='tocentry'>3 Replay Cache Avoidance</a> <a href='#magicparlabel-96' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-106' class='tocentry'>3.1 Stable Storage of Timestamps for Dynamic Replay Cache Avoidance Decision</a> <a href='#magicparlabel-106' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-111' class='tocentry'>3.2 Sharing Keys Across Multiple Service Principals with the Same Hostname Component</a> <a href='#magicparlabel-111' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-113' class='tocentry'>3.3 Authorization-Data Elements</a> <a href='#magicparlabel-113' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-117' class='tocentry'>3.3.1 AD-Application-Protocol-Is-AP-Replay-Safe</a> <a href='#magicparlabel-117' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-119' class='tocentry'>3.3.2 AD-Ticket-Binding</a> <a href='#magicparlabel-119' class='tocarrow'>&gt;</a></div>
+</div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-141' class='tocentry'>4 Negotiation of Explicit Third Security Context Token</a> <a href='#magicparlabel-141' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-143' class='tocentry'>5 API Extensions and Local Configuration</a> <a href='#magicparlabel-143' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-145' class='tocentry'>6 Security Considerations</a> <a href='#magicparlabel-145' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-147' class='tocentry'>7 IANA Considerations</a> <a href='#magicparlabel-147' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-149' class='tocentry'>8 Normative References</a> <a href='#magicparlabel-149' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-175' class='tocentry'>9 Informative References</a> <a href='#magicparlabel-175' class='tocarrow'>&gt;</a></div>
+</div>
+
+<h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-67' />
+Introduction</h2>
+<div class="standard"><a id='magicparlabel-68' />
+The Kerberos V5 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-72' />
+RFC4120</div>
+</div> AP protocol, and therefore the Kerberos V5 GSS mechanism <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-76' />
+RFC4121</div>
+</div>, is a one-round-trip protocol that requires a replay cache on the server/acceptor side in order to protect against replays of AP-REQ PDUs (and therefore security context tokens).</div>
+
+<div class="standard"><a id='magicparlabel-77' />
+It turns out that building secure, <em>high-performance</em> replay caches is very difficult. It is even <em>more</em> difficult to implement a secure, high-performance replay cache in clustered servers. Secure, high-performance replay caches are so difficult to implement that many implementations forgo a replay cache altogether.</div>
+
+<div class="standard"><a id='magicparlabel-78' />
+Therefore we want to avoid the need for replay caches.</div>
+
+<div class="standard"><a id='magicparlabel-79' />
+We could, of course, pursue a protocol extension involving a third security context token sent from the initiator to the server, but this is very difficult to build and deploy for non-GSS applications. We may well pursue a multi-round trip extension to the Kerberos V5 GSS mechanism for other reasons, but for this document we do not.</div>
+
+<div class="standard"><a id='magicparlabel-80' />
+Instead we note that many application protocols that use the GSS-API are by their nature inmune to replayed security context tokens, therefore we propose an extension based on that observation. We propose that we rely on applications and/or local configuration to indicate to the implementation when a replay cache can be avoided due to application protocols using a pattern that is insusceptible to replay attacks based on replaying security context tokens.</div>
+
+<div class="standard"><a id='magicparlabel-81' />
+We use a credential option so that applications can signal that their protocol is inmune to replays of security context tokens. We also rely on local configuration on a per-service principal name basis (or on a per-service name basis) to indicate that all application protocols spoken by that service principal are inmune to replays of security context tokens &ndash; this is useful when the application doesn't know how to signal this via a credential option. Additionally, we have some requirements regarding the sharing of service keys across multiple service principals with the same hostname component.</div>
+
+<div class="standard"><a id='magicparlabel-82' />
+Together these API extensions and local configuration allow mechanism acceptor implementations to decide when to forgo the use of a replay cache, namely when all applications using a given key are inmune to replays of security context tokens.</div>
+
+<div class="standard"><a id='magicparlabel-83' />
+We also document fast replay caching techniques and propose an option to negotiate the use of a third security context token.</div>
+<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-84' />
+Definitions</h3>
+<div class="standard"><a id='magicparlabel-85' />
+In addition to traditional Kerberos and GSS-API terminology we define two terms here just for use in this document. We will primarily use GSS-API terminology in this section. This section is NORMATIVE.</div>
+
+<dl class='description'><dt class="description_label">Inmune&nbsp;applications</dt>
+<dd class="description_item"><a id='magicparlabel-86' />
+ Acceptor applications that are inmune to replays of AP-REQs. These are all acceptor applications where the application protocol involves a security context token exchange with: a) no per-message tokens made and sent by the initiator prior to completing the AP exchange (i.e., without making use of PROT_READY), b) no sensitive data is sent nor action taken by the acceptor prior to receiving at least one per-message token from the initiator, c) the acceptor's mechanism asserts a sub-session key to replace that selected by the initiator, and d) the acceptor mechanism rejects any initiator per-message tokens using any sub-session key other than the one asserted by the initiator.</dd>
+<dt class="description_label">Susceptible&nbsp;applications</dt>
+<dd class="description_item"><a id='magicparlabel-87' />
+ Acceptor applications that are susceptible to replays of AP-REQs. These are all acceptor applications that do not meet the requirements for being considered inmune applications.</dd>
+</dl>
+<h3 class="subsection"><span class="subsection_label">1.2</span> <a id='magicparlabel-88' />
+Conventions used in this document</h3>
+<div class="standard"><a id='magicparlabel-89' />
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-93' />
+RFC2119</div>
+</div>.</div>
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-94' />
+Fast Replay Caching</h2>
+<div class="standard"><a id='magicparlabel-95' />
+We note here that there is a fast replay caching technique that consists of avoiding synchronization to stable storage of replay cache data that is in the past relative to the current time + some fraction of the time it normally takes the host to restart. The acceptor mechanism that implements this technique MUST reject AP-REQs whose Authenticators' timestamp predates the latest time that could have been accepted without commitment to stable storage.</div>
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-96' />
+Replay Cache Avoidance</h2>
+<div class="standard"><a id='magicparlabel-97' />
+Avoidance of replay caching on systems with where multiple Kerberos V5 service/acceptor implementations co-exist and share keys is problematic: it is necessary to ensure that all those implementations implement the same replay cache avoidance techniques, otherwise there's the risk that an AP-REQ from one application protocol may be replayed to another application on the same host (or another host in the same cluster) without detection. If the only implementations that don't perform replay cache avoidance are those used by inmune applications then the risk is lower or zero, but it is often the case that the susceptible applications are the ones that are hardest to switch to a new or updated Kerberos implementation.</div>
+
+<div class="standard"><a id='magicparlabel-98' />
+Therefore we strongly RECOMMEND that all local Kerberos V5 service and acceptor mechanism implementations on a host/cluster support replay cache avoidance before replay cache avoidance is enabled.</div>
+
+<div class="standard"><a id='magicparlabel-99' />
+To avoid a replay cache an implementation of a Kerberos V5 server/acceptor MUST</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-100' />
+ascertain that all server/acceptor applications using a given service key are inmune to replayed AP-REQs;</li>
+<li class="itemize_item"><a id='magicparlabel-101' />
+ascertain that no susceptible server/acceptor applications have run within the current replay cache window;</li>
+</ul>
+<div class="standard"><a id='magicparlabel-102' />
+and</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-103' />
+prevent susceptible server/acceptor applications from running within a replay cache time window of the last AP-REQ accepted when no susceptible applications were running.</li>
+</ul>
+<div class="standard"><a id='magicparlabel-104' />
+The first two requirements might be met statically through configuration (i.e., configuration that declares all server/acceptor applications to be inmune), or dynamically through the use (and non-use) of an API for signalling application susceptibility to replay attacks. The third requirement can only be ignored when the mechanism acceptor implementation relies entirely on configuration for the first two requirements, otherwise the third requirement must be met either by always delaying the start of susceptible applications or by always recording the last time that any AP-REQ was received.</div>
+
+<div class="standard"><a id='magicparlabel-105' />
+<em>Alternatively</em>, the acceptor mechanism SHOULD avoid replay caching when a) the application indicates it is an inmune application, b) the Authenticator has an Authorization-Data element marking it as used only in inmune applications, and c) all susceptible applications sharing the same key use acceptor mechanism implementations that know to reject such Authenticators in susceptible applications.</div>
+<h3 class="subsection"><span class="subsection_label">3.1</span> <a id='magicparlabel-106' />
+Stable Storage of Timestamps for Dynamic Replay Cache Avoidance Decision</h3>
+<div class="standard"><a id='magicparlabel-107' />
+Note that in order to dynamically determine when to avoid a replay cache the acceptor mechanism implementation must keep track of two timestamps:</div>
+
+<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-108' />
+the timestamp from the Authenticator of the last AP-REQ accepted;</li>
+<li class="enumerate_item"><a id='magicparlabel-109' />
+the timestamp from the Authenticator of the last AP-REQ accepted for a susceptible applications.</li>
+</ol>
+<div class="standard"><a id='magicparlabel-110' />
+The mechanism SHOULD use stable storage for these timestamps, but if not it SHOULD delay acceptance of AP-REQs for susceptible applications at host restart time until the time of restart plus a replay skew window.</div>
+<h3 class="subsection"><span class="subsection_label">3.2</span> <a id='magicparlabel-111' />
+<a id="sub_Sharing_Keys_Across" />
+Sharing Keys Across Multiple Service Principals with the Same Hostname Component</h3>
+<div class="standard"><a id='magicparlabel-112' />
+...</div>
+<h3 class="subsection"><span class="subsection_label">3.3</span> <a id='magicparlabel-113' />
+Authorization-Data Elements</h3>
+<div class="standard"><a id='magicparlabel-114' />
+We introduce two Authorization-Data elements for use in Authenticators inside an AD-IF-RELEVANT container.</div>
+
+<div class="standard"><a id='magicparlabel-115' />
+One authorization data element is for indicating the client/initiator's assertion that the application protocol is inmune to AP-REQ replays.</div>
+
+<div class="standard"><a id='magicparlabel-116' />
+The other is for protecting the Ticket against modifications of the sname field (see <a href="#sub_Sharing_Keys_Across">3.2</a>).</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.3.1</span> <a id='magicparlabel-117' />
+AD-Application-Protocol-Is-AP-Replay-Safe</h4>
+<div class="standard"><a id='magicparlabel-118' />
+This authorization data element has an empty ad-value. Its presence is sufficient.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.3.2</span> <a id='magicparlabel-119' />
+AD-Ticket-Binding</h4>
+<div class="standard"><a id='magicparlabel-120' />
+This authorization data element's ad-value carries the DER encoding of a Checksum of the Ticket.</div>
+
+<div class="standard"><a id='magicparlabel-121' />
+[Alternative design. The A-D element's ad-value carries the DER encoding of the following explicitly tagged ASN.1 type:</div>
+
+<div class="standard"><a id='magicparlabel-122' />
+</div>
+<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-126' />
+</div>
+<div class='float float-listings'><pre> AD-Ticket-Binding-Data ::= SEQUENCE {
+   srealm [0] Realm,            &ndash; realm from the Ticket
+   sname  [1] PrincipalName,    &ndash; sname from the Ticket
+   cksum  [2] Checksum OPTIONAL &ndash; taken over the Ticket</pre></div>
+
+
+<div class="plain_layout"><a id='magicparlabel-134' />
+<div class='float-caption float-caption-figure'>Figure 1:<div class="plain_layout"><a id='magicparlabel-138' />
+AD-Ticket-Binding ad-value contents</div>
+</div></div>
+
+<div class="plain_layout"><a id='magicparlabel-139' />
+</div>
+</div>
+
+
+<div class="standard"><a id='magicparlabel-140' />
+In practice it will always suffice to repeat the ticket's sname/srealm, and it will be faster too than authenticating the entire Ticket, but from a purist cryptographic protocol design perspective it's best to bind the whole Ticket.]</div>
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-141' />
+Negotiation of Explicit Third Security Context Token</h2>
+<div class="standard"><a id='magicparlabel-142' />
+...</div>
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-143' />
+API Extensions and Local Configuration</h2>
+<div class="standard"><a id='magicparlabel-144' />
+...</div>
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-145' />
+Security Considerations</h2>
+<div class="standard"><a id='magicparlabel-146' />
+This document deals with security. Running Kerberos services without a replay cache.</div>
+<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-147' />
+IANA Considerations</h2>
+<div class="standard"><a id='magicparlabel-148' />
+This document has no IANA considerations.</div>
+<h2 class="section"><span class="section_label">8</span> <a id='magicparlabel-149' />
+<a id="sec_References" />
+Normative References</h2>
+<div class="standard"><a id='magicparlabel-150' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-154' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-155' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-159' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">rfc2743</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-160' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-164' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">rfc2744</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-165' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-169' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-170' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-174' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">rfc4121</a></div>
+</div></div>
+<h2 class="section"><span class="section_label">9</span> <a id='magicparlabel-175' />
+Informative References</h2>
+</body>
+</html>
