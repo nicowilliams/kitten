@@ -312,7 +312,7 @@ std
 status open
 
 \begin_layout Plain Layout
-GSS Channel Bound Flag
+Kerberos RCache Avoidance
 \end_layout
 
 \end_inset

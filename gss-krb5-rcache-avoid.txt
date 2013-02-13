@@ -54,7 +54,7 @@ Copyright Notice
 
 Williams                 Expires August 17, 2013                [Page 1]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 Table of Contents
@@ -110,7 +110,7 @@ Table of Contents
 
 Williams                 Expires August 17, 2013                [Page 2]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 1.  Introduction
@@ -166,7 +166,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013                [Page 3]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 1.1.  Definitions
@@ -222,7 +222,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013                [Page 4]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 2.  Fast Replay Caching
@@ -278,7 +278,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013                [Page 5]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 3.  Replay Cache Avoidance
@@ -334,7 +334,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013                [Page 6]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
    sharing the same key use acceptor mechanism implementations that know
@@ -390,7 +390,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013                [Page 7]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
    encoding of the following explicitly tagged ASN.1 type:
@@ -446,7 +446,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013                [Page 8]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 4.  Negotiation of Explicit Third Security Context Token
@@ -502,7 +502,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013                [Page 9]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 5.  API Extensions and Local Configuration
@@ -558,7 +558,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013               [Page 10]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 6.  Security Considerations
@@ -614,7 +614,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013               [Page 11]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 7.  IANA Considerations
@@ -670,7 +670,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013               [Page 12]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 8.  Informative References
@@ -726,7 +726,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013               [Page 13]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 9.  Normative References
@@ -782,7 +782,7 @@ Internet-Draft           GSS Channel Bound Flag            February 2013
 
 Williams                 Expires August 17, 2013               [Page 14]
 
-Internet-Draft           GSS Channel Bound Flag            February 2013
+Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 Author's Address

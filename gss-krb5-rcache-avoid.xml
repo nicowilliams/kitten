@@ -16,7 +16,7 @@
 ]>
 <rfc docName="draft-williams-kitten-krb5-rcache-avoidance-00" ipr="trust200902" category="std" updates="RFC4121">
   <front>
-    <title abbrev="GSS Channel Bound Flag">Replay Cache Avoidance for the Kerberos V5 Generic Security Services Mechanism</title>
+    <title abbrev="Kerberos RCache Avoidance">Replay Cache Avoidance for the Kerberos V5 Generic Security Services Mechanism</title>
     <author initials="N." surname="Williams" fullname="Nicolas Williams">
       <organization abbrev="Cryptonector">Cryptonector, LLC</organization>
       <address>
