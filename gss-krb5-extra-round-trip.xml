@@ -23,6 +23,12 @@
         <email>nico@cryptonector.com</email>
       </address>
     </author>
+    <author initials="R." surname="Dowdeswell" fullname="Roland Charles Dowdeswell">
+      <organization abbrev="Dowdeswell Security Architecture">Dowdeswell Security Architecture</organization>
+      <address>
+        <email>elric@imrryr.org</email>
+      </address>
+    </author>
     <date month="February" year="2013"/>
     <area>
 Security Area
@@ -34,15 +40,15 @@ This Internet-Draft proposes an extension to the Kerberos V5 security mechanism 
     </abstract>
   </front>
   <middle>
-    <section title="Introduction" anchor="d1e178">
+    <section title="Introduction" anchor="d1e197">
       <t>
 The Kerberos V5 <xref target="RFC4120"/> AP protocol, and therefore the Kerberos V5 GSS mechanism <xref target="RFC4121"/> security context token exchange, is a one-round-trip protocol. Occasionally there are errors that the protocol could recover from by using an additional round trip, but until now there was no way to execute such an additional round trip. For many application protocols the failure of the Kerberos AP protocol is fatal, requiring closing TCP connections and starting over; often there is no automatic recovery. This document proposes a negotiation of an additional round trip for automatic recovery from certain errors.</t>
-      <section title="Conventions used in this document" anchor="d1e199">
+      <section title="Conventions used in this document" anchor="d1e218">
         <t>
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
       </section>
     </section>
-    <section title="Negotiation" anchor="d1e215">
+    <section title="Negotiation" anchor="d1e234">
       <t>
 We introduce the following new protocol elements:</t>
       <t>
@@ -107,11 +113,11 @@ KRB_AP_ERR_MODIFIED</t>
       </t>
       <t>
 It is also possible for an acceptor to request that the initiator re-authenticate but to a different service principal, in which case the error code SHALL be KRB_AP_ERR_NOT_US, the KRB-ERROR2 encrypted part MUST be encrypted in the sub-session key from the Authenticator, and the sname and realm fields of the KRB-ERROR2 MUST be present.</t>
-      <section title="ASN.1 for New Protocol Elements" anchor="d1e297">
+      <section title="ASN.1 for New Protocol Elements" anchor="d1e316">
         <t>
 </t>
         <t>
-          <figure anchor="magicparlabel-156" title="ASN.1 module (with explicit tagging)">
+          <figure anchor="magicparlabel-169" title="ASN.1 module (with explicit tagging)">
             <artwork> APOptions       ::= KerberosFlags
          – reserved(0),
          – use-session-key(1),
@@ -150,17 +156,17 @@ It is also possible for an acceptor to request that the initiator re-authenticat
         </t>
       </section>
     </section>
-    <section title="Security Considerations" anchor="d1e330">
+    <section title="Security Considerations" anchor="d1e349">
       <t>
 This document deals with security.</t>
       <t>
 [XXX Note the resource using attacks that are feasible when we have multiple round-trips and note that they are nothing new and nothing to worry about because services should already have timeouts on pre-authenticated protocol phases, and even post-authentication.]</t>
     </section>
-    <section title="IANA Considerations" anchor="d1e342">
+    <section title="IANA Considerations" anchor="d1e361">
       <t>
 This document has no IANA considerations.</t>
     </section>
-    <section title="Informative References" anchor="d1e410"/>
+    <section title="Informative References" anchor="d1e429"/>
   </middle>
   <back>
     <references title="Normative References">&rfc2119;

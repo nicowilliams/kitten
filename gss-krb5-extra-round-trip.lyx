@@ -438,6 +438,40 @@ nico@cryptonector.com
 
 \end_layout
 
+\begin_layout Author
+Roland Charles Dowdeswell
+\begin_inset Flex AuthorOrg
+status open
+
+\begin_layout Plain Layout
+Dowdeswell Security Architecture
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorOrgAbbrev
+status open
+
+\begin_layout Plain Layout
+Dowdeswell Security Architecture
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorEmailAddr
+status open
+
+\begin_layout Plain Layout
+elric@imrryr.org
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Abstract
 This Internet-Draft proposes an extension to the Kerberos V5 security mechanism
  for the Generic Security Services Application Programming Interface (GSS-API)

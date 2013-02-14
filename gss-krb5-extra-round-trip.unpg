@@ -3,9 +3,9 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: RFC4121 (if approved)                         February 13, 2013
-Intended status: Standards Track
-Expires: August 17, 2013
+Updates: RFC4121 (if approved)                             R. Dowdeswell
+Intended status: Standards Track        Dowdeswell Security Architecture
+Expires: August 17, 2013                               February 13, 2013
 
 
     Negotiation of Extra Round Trip for Kerberos V5 Generic Security
@@ -62,7 +62,7 @@ Table of Contents
    4.    IANA Considerations
    5.    Informative References
    6.    Normative References
-         Author's Address
+         Authors' Addresses
 
 
 1.  Introduction
@@ -245,10 +245,16 @@ Table of Contents
               July 2005.
 
 
-Author's Address
+Authors' Addresses
 
    Nicolas Williams
    Cryptonector, LLC
 
    Email: nico@cryptonector.com
+
+
+   Roland Charles Dowdeswell
+   Dowdeswell Security Architecture
+
+   Email: elric@imrryr.org
 

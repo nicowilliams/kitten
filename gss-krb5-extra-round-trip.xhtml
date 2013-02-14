@@ -289,112 +289,120 @@ Cryptonector</div>
 </div><div class="flex_authoremailaddr"><div class="plain_layout"><a id='magicparlabel-64' />
 nico@cryptonector.com</div>
 </div></div>
+<div class="author_item"><a id='magicparlabel-65' />
+Roland Charles Dowdeswell<div class="flex_authororg"><div class="plain_layout"><a id='magicparlabel-69' />
+Dowdeswell Security Architecture</div>
+</div><div class="flex_authororgabbrev"><div class="plain_layout"><a id='magicparlabel-73' />
+Dowdeswell Security Architecture</div>
+</div><div class="flex_authoremailaddr"><div class="plain_layout"><a id='magicparlabel-77' />
+elric@imrryr.org</div>
+</div></div>
 </div>
 
 <div class="abstract"><div class="abstract_label">Abstract</div>
-<div class="abstract_item"><a id='magicparlabel-65' />
+<div class="abstract_item"><a id='magicparlabel-78' />
 This Internet-Draft proposes an extension to the Kerberos V5 security mechanism for the Generic Security Services Application Programming Interface (GSS-API) for using an extra pair of security context tokens in order to recover from certain errors.</div>
 </div>
-<div class="standard"><a id='magicparlabel-66' />
+<div class="standard"><a id='magicparlabel-79' />
 </div>
 <div class='toc'><div class='tochead part_'>Table of Contents</div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-67' class='tocentry'>1 Introduction</a> <a href='#magicparlabel-67' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-1'><a href='#magicparlabel-80' class='tocentry'>1 Introduction</a> <a href='#magicparlabel-80' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-77' class='tocentry'>1.1 Conventions used in this document</a> <a href='#magicparlabel-77' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-90' class='tocentry'>1.1 Conventions used in this document</a> <a href='#magicparlabel-90' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-83' class='tocentry'>2 Negotiation</a> <a href='#magicparlabel-83' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-1'><a href='#magicparlabel-96' class='tocentry'>2 Negotiation</a> <a href='#magicparlabel-96' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-108' class='tocentry'>2.1 ASN.1 for New Protocol Elements</a> <a href='#magicparlabel-108' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-121' class='tocentry'>2.1 ASN.1 for New Protocol Elements</a> <a href='#magicparlabel-121' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-157' class='tocentry'>3 Security Considerations</a> <a href='#magicparlabel-157' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-170' class='tocentry'>3 Security Considerations</a> <a href='#magicparlabel-170' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-160' class='tocentry'>4 IANA Considerations</a> <a href='#magicparlabel-160' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-173' class='tocentry'>4 IANA Considerations</a> <a href='#magicparlabel-173' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-162' class='tocentry'>5 Normative References</a> <a href='#magicparlabel-162' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-175' class='tocentry'>5 Normative References</a> <a href='#magicparlabel-175' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-188' class='tocentry'>6 Informative References</a> <a href='#magicparlabel-188' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-201' class='tocentry'>6 Informative References</a> <a href='#magicparlabel-201' class='tocarrow'>&gt;</a></div>
 </div>
 
-<h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-67' />
+<h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-80' />
 Introduction</h2>
-<div class="standard"><a id='magicparlabel-68' />
-The Kerberos V5 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-72' />
+<div class="standard"><a id='magicparlabel-81' />
+The Kerberos V5 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-85' />
 RFC4120</div>
-</div> AP protocol, and therefore the Kerberos V5 GSS mechanism <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-76' />
+</div> AP protocol, and therefore the Kerberos V5 GSS mechanism <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-89' />
 RFC4121</div>
 </div> security context token exchange, is a one-round-trip protocol. Occasionally there are errors that the protocol could recover from by using an additional round trip, but until now there was no way to execute such an additional round trip. For many application protocols the failure of the Kerberos AP protocol is fatal, requiring closing TCP connections and starting over; often there is no automatic recovery. This document proposes a negotiation of an additional round trip for automatic recovery from certain errors.</div>
-<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-77' />
+<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-90' />
 Conventions used in this document</h3>
-<div class="standard"><a id='magicparlabel-78' />
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-82' />
+<div class="standard"><a id='magicparlabel-91' />
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-95' />
 RFC2119</div>
 </div>.</div>
-<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-83' />
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-96' />
 Negotiation</h2>
-<div class="standard"><a id='magicparlabel-84' />
+<div class="standard"><a id='magicparlabel-97' />
 We introduce the following new protocol elements:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-85' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-98' />
 a new ap-options flag for use in the cleartext part of AP-REQs to indicate the desire for an extra round trip if need be;</li>
-<li class="itemize_item"><a id='magicparlabel-86' />
+<li class="itemize_item"><a id='magicparlabel-99' />
 a new Authorization-Data element for use in Authenticators to also indicate the desire for an extra round trip if need be;</li>
-<li class="itemize_item"><a id='magicparlabel-87' />
+<li class="itemize_item"><a id='magicparlabel-100' />
 a new Authorization-Data element for use in Authenticators for quoting back a challenge nonce from the acceptor;</li>
-<li class="itemize_item"><a id='magicparlabel-88' />
+<li class="itemize_item"><a id='magicparlabel-101' />
 a new PDU: KRB-ERROR2, with additional fields and support for authenticated errors.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-89' />
+<div class="standard"><a id='magicparlabel-102' />
 Initiators SHALL NOT use the new ap-options flag and AD element if mutual authentication was not requested. Otherwise initiators and acceptors MUST act as follows:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-90' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-103' />
 To request this feature, initiators SHALL add the new authorization-data element (in an AD-IF-RELEVANT container) with empty ad-value to their Authenticators, and they SHALL add the new ap-options flag to their AP-REQs.</li>
-<li class="itemize_item"><a id='magicparlabel-91' />
+<li class="itemize_item"><a id='magicparlabel-104' />
 Acceptors that wish to request an additional round trip SHOULD do so when initiators indicate support for it, and do so by returning a KRB-ERROR2. The encrypted part of the KRB-ERROR2 SHALL be encrypted in one of the following keys: the sub-session key from the AP-REQ's Authenticator if it could be decrypted, the session key from the Ticket, if it could be decrypted, or the null enctype and null key. The KRB-ERROR2 in this case SHALL have a the continue-needed e-flag set. The acceptor SHALL also return GSS_S_CONTINUE_NEEDED to the application.</li>
-<li class="itemize_item"><a id='magicparlabel-92' />
+<li class="itemize_item"><a id='magicparlabel-105' />
 Initiators that request this feature and receive a KRB-ERROR with the ke-continue-needed e-flag set MUST attempt to recover and MUST produce a token to send to the acceptor (possibly a KRB-ERROR2 if the initiator failed to recover, or possibly a new AP-REQ with the traditional GSS-API pseudo-ASN.1 mechanism OID header). A final error token from the initiator to the acceptor</li>
-<li class="itemize_item"><a id='magicparlabel-93' />
+<li class="itemize_item"><a id='magicparlabel-106' />
 Initiators that request this feature and receive a KRB-ERROR2 SHALL attempt to recover.</li>
-<li class="itemize_item"><a id='magicparlabel-94' />
+<li class="itemize_item"><a id='magicparlabel-107' />
 Initiators that support this feature and successfully recover from a KRB-ERROR or KRB-ERROR2 SHALL return GSS_S_CONTINUE_NEEDED. Otherwise they MUST generate a KRB-ERROR to send to the acceptor and return an error to the application.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-95' />
+<div class="standard"><a id='magicparlabel-108' />
 The following Kerberos errors can be recovered from using this protocol:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-96' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-109' />
 KRB_AP_ERR_TKT_EXPIRED</li>
-<li class="itemize_item"><a id='magicparlabel-97' />
+<li class="itemize_item"><a id='magicparlabel-110' />
 KRB_AP_ERR_TKT_NYV</li>
-<li class="itemize_item"><a id='magicparlabel-98' />
+<li class="itemize_item"><a id='magicparlabel-111' />
 KRB_AP_ERR_REPEAT</li>
-<li class="itemize_item"><a id='magicparlabel-99' />
+<li class="itemize_item"><a id='magicparlabel-112' />
 KRB_AP_ERR_BADMATCH</li>
-<li class="itemize_item"><a id='magicparlabel-100' />
+<li class="itemize_item"><a id='magicparlabel-113' />
 KRB_AP_ERR_SKEW</li>
-<li class="itemize_item"><a id='magicparlabel-101' />
+<li class="itemize_item"><a id='magicparlabel-114' />
 KRB_AP_ERR_BADKEYVER</li>
-<li class="itemize_item"><a id='magicparlabel-102' />
+<li class="itemize_item"><a id='magicparlabel-115' />
 KRB_AP_PATH_NOT_ACCEPTED</li>
 </ul>
-<div class="standard"><a id='magicparlabel-103' />
+<div class="standard"><a id='magicparlabel-116' />
 Error codes that denote PDU corruption can also be recovered from:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-104' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-117' />
 KRB_AP_ERR_BADVERSION</li>
-<li class="itemize_item"><a id='magicparlabel-105' />
+<li class="itemize_item"><a id='magicparlabel-118' />
 KRB_AP_ERR_MSG_TYPE</li>
-<li class="itemize_item"><a id='magicparlabel-106' />
+<li class="itemize_item"><a id='magicparlabel-119' />
 KRB_AP_ERR_MODIFIED</li>
 </ul>
-<div class="standard"><a id='magicparlabel-107' />
+<div class="standard"><a id='magicparlabel-120' />
 It is also possible for an acceptor to request that the initiator re-authenticate but to a different service principal, in which case the error code SHALL be KRB_AP_ERR_NOT_US, the KRB-ERROR2 encrypted part MUST be encrypted in the sub-session key from the Authenticator, and the sname and realm fields of the KRB-ERROR2 MUST be present.</div>
-<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-108' />
+<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-121' />
 ASN.1 for New Protocol Elements</h3>
-<div class="standard"><a id='magicparlabel-109' />
+<div class="standard"><a id='magicparlabel-122' />
 </div>
-<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-113' />
+<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-126' />
 </div>
 <div class='float float-listings'><pre> APOptions       ::= KerberosFlags
          &ndash; reserved(0),
@@ -432,54 +440,54 @@ ASN.1 for New Protocol Elements</h3>
  }</pre></div>
 
 
-<div class="plain_layout"><a id='magicparlabel-151' />
-<div class='float-caption float-caption-figure'>Figure 1:<div class="plain_layout"><a id='magicparlabel-155' />
+<div class="plain_layout"><a id='magicparlabel-164' />
+<div class='float-caption float-caption-figure'>Figure 1:<div class="plain_layout"><a id='magicparlabel-168' />
 ASN.1 module (with explicit tagging)</div>
 </div></div>
 
-<div class="plain_layout"><a id='magicparlabel-156' />
+<div class="plain_layout"><a id='magicparlabel-169' />
 </div>
 </div>
 
-<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-157' />
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-170' />
 Security Considerations</h2>
-<div class="standard"><a id='magicparlabel-158' />
+<div class="standard"><a id='magicparlabel-171' />
 This document deals with security.</div>
 
-<div class="standard"><a id='magicparlabel-159' />
+<div class="standard"><a id='magicparlabel-172' />
 [XXX Note the resource using attacks that are feasible when we have multiple round-trips and note that they are nothing new and nothing to worry about because services should already have timeouts on pre-authenticated protocol phases, and even post-authentication.]</div>
-<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-160' />
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-173' />
 IANA Considerations</h2>
-<div class="standard"><a id='magicparlabel-161' />
+<div class="standard"><a id='magicparlabel-174' />
 This document has no IANA considerations.</div>
-<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-162' />
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-175' />
 <a id="sec_References" />
 Normative References</h2>
-<div class="standard"><a id='magicparlabel-163' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-167' />
+<div class="standard"><a id='magicparlabel-176' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-180' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-168' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-172' />
+<div class="standard"><a id='magicparlabel-181' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-185' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">rfc2743</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-173' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-177' />
+<div class="standard"><a id='magicparlabel-186' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-190' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">rfc2744</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-178' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-182' />
+<div class="standard"><a id='magicparlabel-191' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-195' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-183' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-187' />
+<div class="standard"><a id='magicparlabel-196' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-200' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">rfc4121</a></div>
 </div></div>
-<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-188' />
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-201' />
 Informative References</h2>
 </body>
 </html>
