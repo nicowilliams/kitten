@@ -1,0 +1,901 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass docbook
+\use_default_options true
+\maintain_unincluded_children false
+\begin_local_layout
+Format 31
+
+InsetLayout Flex:PI_Strict
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_Strict
+End
+
+InsetLayout Flex:PI
+    LyXType Custom
+    HTMLTag div
+    LabelString PI
+End
+
+InsetLayout Flex:PI_SymRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SymRefs
+End
+
+InsetLayout Flex:PI_SortRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SortRefs
+End
+
+InsetLayout Flex:PI_TOC
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOC
+End
+
+InsetLayout Flex:PI_TOCIndent
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCIndent
+End
+
+InsetLayout Flex:PI_TOCDepth
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCDepth
+End
+
+InsetLayout Flex:PI_TOCNarrow
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCNarrow
+End
+
+InsetLayout Flex:PI_TOCCompact
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCCompact
+End
+
+InsetLayout Flex:PI_TOCAppendix
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCAppendix
+End
+
+InsetLayout Flex:DocName
+    LyXType Custom
+    HTMLTag div
+    LabelString DocName
+End
+
+InsetLayout Flex:IntendedStatus
+    LyXType Custom
+    HTMLTag div
+    LabelString IntendedStatus
+End
+
+InsetLayout Flex:Updates
+    LyXType Custom
+    HTMLTag div
+    LabelString Updates
+End
+
+InsetLayout Flex:Obsoletes
+    LyXType Custom
+    HTMLTag div
+    LabelString Obsoletes
+End
+
+InsetLayout Flex:SeriesNo
+    LyXType Custom
+    HTMLTag div
+    LabelString SeriesNo
+End
+
+InsetLayout Flex:RFCNumber
+    LyXType Custom
+    HTMLTag div
+    LabelString RFCNumber
+End
+
+InsetLayout Flex:IPR
+    LyXType Custom
+    HTMLTag div
+    LabelString IPR
+End
+
+InsetLayout Flex:IETFArea
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFArea
+End
+
+InsetLayout Flex:IETFWorkingGroup
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFWorkingGroup
+End
+
+InsetLayout Flex:XML2RFCKeyword
+    LyXType Custom
+    HTMLTag div
+    LabelString XML2RFCKeyword
+End
+
+InsetLayout Flex:TitleAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString TitleAbbrev
+End
+
+InsetLayout Flex:AuthorRole
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthRole
+End
+
+InsetLayout Flex:AuthorInitials
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthInitials
+End
+
+InsetLayout Flex:AuthorSurname
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthSurname
+End
+
+InsetLayout Flex:AuthorOrg
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrg
+End
+
+InsetLayout Flex:AuthorOrgAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrgAbbrev
+End
+
+InsetLayout Flex:AuthorEmailAddr
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthEmailAddr
+End
+
+InsetLayout Flex:AuthorAddrStreet
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrStreet
+End
+
+InsetLayout Flex:AuthorAddrCity
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCity
+End
+
+InsetLayout Flex:AuthorAddrRegion
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrRegion
+End
+
+InsetLayout Flex:AuthorAddrCode
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCode
+End
+
+InsetLayout Flex:AuthorAddrCountry
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCountry
+End
+
+InsetLayout Flex:EntityXRef
+    LyXType Custom
+    HTMLTag div
+    LabelString EntityXRef
+End
+
+InsetLayout Flex:BibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString BibXML
+End
+
+InsetLayout Flex:EmbeddedBibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString EmbeddedBibXML
+End
+\end_local_layout
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman cmr
+\font_sans cmss
+\font_typewriter cmtt
+\font_default_family ttdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Negotiation of Extra Round Trip for Kerberos V5 Generic Security Services
+ Mechanism
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex DocName
+status open
+
+\begin_layout Plain Layout
+draft-williams-kitten-krb5-extra-rt-00
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IPR
+status open
+
+\begin_layout Plain Layout
+trust200902
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IntendedStatus
+status open
+
+\begin_layout Plain Layout
+std
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex TitleAbbrev
+status open
+
+\begin_layout Plain Layout
+Kerberos Extra AP
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IETFArea
+status open
+
+\begin_layout Plain Layout
+Security Area
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex XML2RFCKeyword
+status open
+
+\begin_layout Plain Layout
+Internet-Draft
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Updates
+status open
+
+\begin_layout Plain Layout
+RFC4121
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex PI TOC
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI SymRefs
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI TOCIndent
+status open
+
+\begin_layout Plain Layout
+no
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+comments="yes"
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+inline="yes"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Nicolas Williams
+\begin_inset Flex AuthorOrg
+status open
+
+\begin_layout Plain Layout
+Cryptonector, LLC
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorOrgAbbrev
+status open
+
+\begin_layout Plain Layout
+Cryptonector
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorEmailAddr
+status open
+
+\begin_layout Plain Layout
+nico@cryptonector.com
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+This Internet-Draft proposes an extension to the Kerberos V5 security mechanism
+ for the Generic Security Services Application Programming Interface (GSS-API)
+ for using an extra pair of security context tokens in order to recover
+ from certain errors.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+The Kerberos V5 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4120
+\end_layout
+
+\end_inset
+
+ AP protocol, and therefore the Kerberos V5 GSS mechanism 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4121
+\end_layout
+
+\end_inset
+
+ security context token exchange, is a one-round-trip protocol.
+ Occasionally there are errors that the protocol could recover from by using
+ an additional round trip, but until now there was no way to execute such
+ an additional round trip.
+ For many application protocols the failure of the Kerberos AP protocol
+ is fatal, requiring closing TCP connections and starting over; often there
+ is no automatic recovery.
+ This document proposes a negotiation of an additional round trip for automatic
+ recovery from certain errors.
+\end_layout
+
+\begin_layout Subsection
+Conventions used in this document
+\end_layout
+
+\begin_layout Standard
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+ "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are
+ to be interpreted as described in 
+\begin_inset Flex EntityXRef
+status open
+
+\begin_layout Plain Layout
+RFC2119
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Negotiation
+\end_layout
+
+\begin_layout Standard
+We introduce the following new protocol elements:
+\end_layout
+
+\begin_layout Itemize
+a new ap-options flag for use in the cleartext part of AP-REQs to indicate
+ the desire for an extra round trip if need be;
+\end_layout
+
+\begin_layout Itemize
+a new Authorization-Data element for use in Authenticators to also indicate
+ the desire for an extra round trip if need be;
+\end_layout
+
+\begin_layout Itemize
+a new TYPED-DATA element for use in KRB-ERROR e-data to indicate acceptor
+ willingness to engage in an extra round trip;
+\end_layout
+
+\begin_layout Itemize
+a new TYPED-DATA element for use in KRB-ERROR e-data to indicate initiator
+ recovery failure;
+\end_layout
+
+\begin_layout Itemize
+a new PDU, KRB-ERROR2, for authenticated errors.
+\end_layout
+
+\begin_layout Standard
+Initiators SHALL NOT use the new ap-options flag and AD element if mutual
+ authentication was not requested.
+ Otherwise initiators and acceptors MUST act as follows:
+\end_layout
+
+\begin_layout Itemize
+Initiators that support this feature SHALL add the new authorization-data
+ element (in an AD-IF-RELEVANT container) with empty ad-value to their Authentic
+ators, and they SHALL add the new ap-options flag to their AP-REQs.
+\end_layout
+
+\begin_layout Itemize
+Acceptors that support this feature but fail to verify and decrypt the AP-REQ's
+ Ticket and Authenticator SHOULD respond with a KRB-ERROR with a TYPED-DATA
+ with the new TD element indicating that an additional round trip is expected,
+ and when they do they SHALL return GSS_S_CONTINUE_NEEDED to the acceptor
+ application.
+\end_layout
+
+\begin_layout Itemize
+Acceptors that support this feature and decrypt an AP-REQ's Ticket and Authentic
+ator successfully but otherwise reject the AP-REQ SHOULD respond with a
+ KRB-ERROR2 message, with the enc-part encrypted in the Authenticator's
+ sub-session key or, if there is none, in the Ticket's session key (XXX
+ do we want to derive a key here?).
+\end_layout
+
+\begin_layout Itemize
+Initiators that support this feature SHALL attempt to decode a TYPED-DATA
+ from the e-data field of any KRB-ERROR tokens from acceptors, and if the
+ new TD element is present the initiators MUST attempt to recover and MUST
+ produce a token to send to the acceptor (possibly a KRB-ERROR if the initiator
+ failed to recover, or possibly a new AP-REQ with the traditional GSS-API
+ pseudo-ASN.1 mechanism OID header).
+\end_layout
+
+\begin_layout Itemize
+Initiators that support this feature and successfully recover from a KRB-ERROR
+ SHALL return GSS_S_CONTINUE_NEEDED.
+\end_layout
+
+\begin_layout Subsection
+ASN.1 for New Protocol Elements
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ APOptions       ::= KerberosFlags
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- reserved(0),
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- use-session-key(1),
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- mutual-required(2) 
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- continue-needed-ok(TBD)
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ ad-continue-needed-ok Int32 ::= <TBD>
+\end_layout
+
+\begin_layout Plain Layout
+
+ td-continue-needed    Int32 ::= <TBD>
+\end_layout
+
+\begin_layout Plain Layout
+
+ td-continue-failed    Int32 ::= <TBD>
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ KRB-ERROR2          ::= [APPLICATION <TBD>] SEQUENCE {
+\end_layout
+
+\begin_layout Plain Layout
+
+         pvno            [0] INTEGER (5),
+\end_layout
+
+\begin_layout Plain Layout
+
+         msg-type        [1] INTEGER (<TBD>),
+\end_layout
+
+\begin_layout Plain Layout
+
+         enc-part        [2] EncryptedData -- EncKRBErrorPart
+\end_layout
+
+\begin_layout Plain Layout
+
+ }
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ EncAPRepPart    ::= [APPLICATION <TBD>] SEQUENCE {
+\end_layout
+
+\begin_layout Plain Layout
+
+         nonce           [0] OCTET STRING (16),
+\end_layout
+
+\begin_layout Plain Layout
+
+         stime           [1] KerberosTime,
+\end_layout
+
+\begin_layout Plain Layout
+
+         susec           [2] Microseconds,
+\end_layout
+
+\begin_layout Plain Layout
+
+         error-code      [3] Int32,
+\end_layout
+
+\begin_layout Plain Layout
+
+         realm           [4] Realm -- service realm --,
+\end_layout
+
+\begin_layout Plain Layout
+
+         sname           [5] PrincipalName -- service name --,
+\end_layout
+
+\begin_layout Plain Layout
+
+         e-text          [6] KerberosString OPTIONAL,
+\end_layout
+
+\begin_layout Plain Layout
+
+         e-data          [7] OCTET STRING OPTIONAL,
+\end_layout
+
+\begin_layout Plain Layout
+
+         e-typed-data    [8] TYPED-DATA OPTIONAL
+\end_layout
+
+\begin_layout Plain Layout
+
+ } 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Security Considerations
+\end_layout
+
+\begin_layout Standard
+This document deals with security.
+\end_layout
+
+\begin_layout Standard
+[XXX Note the resource using attacks that are feasible when we have multiple
+ round-trips and note that they are nothing new and nothing to worry about
+ because services should already have timeouts on pre-authenticated protocol
+ phases, and even post-authentication.]
+\end_layout
+
+\begin_layout Section
+IANA Considerations
+\end_layout
+
+\begin_layout Standard
+This document has no IANA considerations.
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:References"
+
+\end_inset
+
+Normative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2119"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2743"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2744"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4120"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4121"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Informative References
+\end_layout
+
+\end_body
+\end_document

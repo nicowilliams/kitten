@@ -1,0 +1,560 @@
+
+
+
+Network Working Group                                        N. Williams
+Internet-Draft                                              Cryptonector
+Updates: RFC4121 (if approved)                         February 13, 2013
+Intended status: Standards Track
+Expires: August 17, 2013
+
+
+    Negotiation of Extra Round Trip for Kerberos V5 Generic Security
+                           Services Mechanism
+                 draft-williams-kitten-krb5-extra-rt-00
+
+Abstract
+
+   This Internet-Draft proposes an extension to the Kerberos V5 security
+   mechanism for the Generic Security Services Application Programming
+   Interface (GSS-API) for using an extra pair of security context
+   tokens in order to recover from certain errors.
+
+Status of this Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on August 17, 2013.
+
+Copyright Notice
+
+   Copyright (c) 2013 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+
+
+
+Williams                 Expires August 17, 2013                [Page 1]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
+   described in the Simplified BSD License.
+
+
+Table of Contents
+
+   1.    Introduction . . . . . . . . . . . . . . . . . . . . . . . .  3
+   1.1.  Conventions used in this document  . . . . . . . . . . . . .  3
+   2.    Negotiation  . . . . . . . . . . . . . . . . . . . . . . . .  4
+   2.1.  ASN.1 for New Protocol Elements  . . . . . . . . . . . . . .  5
+   3.    Security Considerations  . . . . . . . . . . . . . . . . . .  6
+   4.    IANA Considerations  . . . . . . . . . . . . . . . . . . . .  7
+   5.    Informative References . . . . . . . . . . . . . . . . . . .  8
+   6.    Normative References . . . . . . . . . . . . . . . . . . . .  9
+         Author's Address . . . . . . . . . . . . . . . . . . . . . . 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 2]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
+1.  Introduction
+
+   The Kerberos V5 [RFC4120] AP protocol, and therefore the Kerberos V5
+   GSS mechanism [RFC4121] security context token exchange, is a one-
+   round-trip protocol.  Occasionally there are errors that the protocol
+   could recover from by using an additional round trip, but until now
+   there was no way to execute such an additional round trip.  For many
+   application protocols the failure of the Kerberos AP protocol is
+   fatal, requiring closing TCP connections and starting over; often
+   there is no automatic recovery.  This document proposes a negotiation
+   of an additional round trip for automatic recovery from certain
+   errors.
+
+1.1.  Conventions used in this document
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 3]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
+2.  Negotiation
+
+   We introduce the following new protocol elements:
+
+   o  a new ap-options flag for use in the cleartext part of AP-REQs to
+      indicate the desire for an extra round trip if need be;
+
+   o  a new Authorization-Data element for use in Authenticators to also
+      indicate the desire for an extra round trip if need be;
+
+   o  a new TYPED-DATA element for use in KRB-ERROR e-data to indicate
+      acceptor willingness to engage in an extra round trip;
+
+   o  a new TYPED-DATA element for use in KRB-ERROR e-data to indicate
+      initiator recovery failure;
+
+   o  a new PDU, KRB-ERROR2, for authenticated errors.
+
+   Initiators SHALL NOT use the new ap-options flag and AD element if
+   mutual authentication was not requested.  Otherwise initiators and
+   acceptors MUST act as follows:
+
+   o  Initiators that support this feature SHALL add the new
+      authorization-data element (in an AD-IF-RELEVANT container) with
+      empty ad-value to their Authenticators, and they SHALL add the new
+      ap-options flag to their AP-REQs.
+
+   o  Acceptors that support this feature but fail to verify and decrypt
+      the AP-REQ's Ticket and Authenticator SHOULD respond with a KRB-
+      ERROR with a TYPED-DATA with the new TD element indicating that an
+      additional round trip is expected, and when they do they SHALL
+      return GSS_S_CONTINUE_NEEDED to the acceptor application.
+
+   o  Acceptors that support this feature and decrypt an AP-REQ's Ticket
+      and Authenticator successfully but otherwise reject the AP-REQ
+      SHOULD respond with a KRB-ERROR2 message, with the enc-part
+      encrypted in the Authenticator's sub-session key or, if there is
+      none, in the Ticket's session key (XXX do we want to derive a key
+      here?).
+
+   o  Initiators that support this feature SHALL attempt to decode a
+      TYPED-DATA from the e-data field of any KRB-ERROR tokens from
+      acceptors, and if the new TD element is present the initiators
+      MUST attempt to recover and MUST produce a token to send to the
+      acceptor (possibly a KRB-ERROR if the initiator failed to recover,
+      or possibly a new AP-REQ with the traditional GSS-API pseudo-ASN.1
+      mechanism OID header).
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 4]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
+   o  Initiators that support this feature and successfully recover from
+      a KRB-ERROR SHALL return GSS_S_CONTINUE_NEEDED.
+
+2.1.  ASN.1 for New Protocol Elements
+
+    APOptions       ::= KerberosFlags
+            - reserved(0),
+            - use-session-key(1),
+            - mutual-required(2)
+            - continue-needed-ok(TBD)
+
+    ad-continue-needed-ok Int32 ::= <TBD>
+    td-continue-needed    Int32 ::= <TBD>
+    td-continue-failed    Int32 ::= <TBD>
+
+    KRB-ERROR2          ::= [APPLICATION <TBD>] SEQUENCE {
+            pvno            [0] INTEGER (5),
+            msg-type        [1] INTEGER (<TBD>),
+            enc-part        [2] EncryptedData - EncKRBErrorPart
+    }
+
+    EncAPRepPart    ::= [APPLICATION <TBD>] SEQUENCE {
+            nonce           [0] OCTET STRING (16),
+            stime           [1] KerberosTime,
+            susec           [2] Microseconds,
+            error-code      [3] Int32,
+            realm           [4] Realm - service realm -,
+            sname           [5] PrincipalName - service name -,
+            e-text          [6] KerberosString OPTIONAL,
+            e-data          [7] OCTET STRING OPTIONAL,
+            e-typed-data    [8] TYPED-DATA OPTIONAL
+    }
+
+                                 Figure 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 5]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
+3.  Security Considerations
+
+   This document deals with security.
+
+   [XXX Note the resource using attacks that are feasible when we have
+   multiple round-trips and note that they are nothing new and nothing
+   to worry about because services should already have timeouts on pre-
+   authenticated protocol phases, and even post-authentication.]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 6]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
+4.  IANA Considerations
+
+   This document has no IANA considerations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 7]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
+5.  Informative References
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 8]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
+6.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+   [RFC2743]  Linn, J., "Generic Security Service Application Program
+              Interface Version 2, Update 1", RFC 2743, January 2000.
+
+   [RFC2744]  Wray, J., "Generic Security Service API Version 2 :
+              C-bindings", RFC 2744, January 2000.
+
+   [RFC4120]  Neuman, C., Yu, T., Hartman, S., and K. Raeburn, "The
+              Kerberos Network Authentication Service (V5)", RFC 4120,
+              July 2005.
+
+   [RFC4121]  Zhu, L., Jaganathan, K., and S. Hartman, "The Kerberos
+              Version 5 Generic Security Service Application Program
+              Interface (GSS-API) Mechanism: Version 2", RFC 4121,
+              July 2005.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013                [Page 9]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
+Author's Address
+
+   Nicolas Williams
+   Cryptonector, LLC
+
+   Email: nico@cryptonector.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 17, 2013               [Page 10]
+

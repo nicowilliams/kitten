@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "file:///home/nico/I-Ds/kitten/../test/src/../data/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="GENERATOR" content="LyX 2.0.0" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>Negotiation of Extra Round Trip for Kerberos V5 Generic Security Services Mechanism</title>
+
+<!-- Text Class Preamble -->
+<style type="text/css">
+div.toc {
+margin: 2em 0em;
+border-style: solid;
+border-width: 2px 0px;
+padding: 1em 0em;
+}
+div.tochead { font-size: x-large; font-weight: bold; }
+div.lyxtoc-0 {
+margin: 2em 0em 0em 0em;
+font-size: xx-large;
+font-weight: bold;
+}
+div.lyxtoc-1 {
+margin: 1em 0em 0em 0em;
+font-size: x-large;
+font-weight: bold;
+}
+div.lyxtoc-2 {
+margin: 0em 0em 0em 1em;
+font-size: large;
+font-weight: normal;
+}
+div.lyxtoc-3 { margin: 0em 0em 0em 0.5em; font-size: medium; }
+div.lyxtoc-4 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-5 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-6 { margin: 0em 0em 0em 0.5em; }
+a.tocentry {
+text-decoration: none;
+color: black;
+}
+a.tocentry:visited { color: black; }
+a.tocarrow {
+font-weight: bold;
+text-decoration: none;
+color: #909090;
+}
+a.tocarrow:visited { color: #C0C0C0; }
+</style>
+
+<!-- Preamble Snippets -->
+
+<!-- Layout-provided Styles -->
+<style type='text/css'>
+h1.title {
+font-size: x-large;
+margin-bottom: 1ex;
+text-align: center;
+
+}
+div.standard {
+text-align: left;
+
+}
+div.plain_layout {
+text-align: left;
+
+}
+div.author {
+font-size: large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: center;
+
+}
+div.abstract {
+font-size: small;
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+margin-right: 3ex;
+text-align: left;
+
+}
+div.abstract_label {
+font-weight: bold;
+font-size: large;
+text-align: center;
+
+}
+
+div.abstract {
+margin: 4ex;
+}
+div.abstract_item {
+font-size: small;
+padding-top: 1ex;
+}
+div.abstract_label {
+font-weight: bold;
+}
+h2.section {
+font-weight: bold;
+font-size: x-large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: left;
+
+}
+h3.subsection {
+font-weight: bold;
+font-size: large;
+margin-top: 0.9ex;
+margin-bottom: 0.5ex;
+text-align: left;
+
+}
+ul.itemize {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+div.flex_docname {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ipr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_intendedstatus {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_titleabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ietfarea {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_xml_rfckeyword {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_updates {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_toc {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_symrefs {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_tocindent {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororg {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororgabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authoremailaddr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_entityxref {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.float {
+border: 2px solid black;
+text-align: center;
+}
+div.listings {
+font-family: monospace;
+}
+div.float-caption {
+text-align: center;
+border: 2px solid black;
+padding: 1ex;
+margin: 1ex;
+}
+div.flex_bibxml {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+</style>
+</head>
+<body>
+<h1 class="title"><a id='magicparlabel-1' />
+Negotiation of Extra Round Trip for Kerberos V5 Generic Security Services Mechanism</h1>
+<div class="standard"><a id='magicparlabel-2' />
+<div class="flex_docname"><div class="plain_layout"><a id='magicparlabel-6' />
+draft-williams-kitten-krb5-extra-rt-00</div>
+</div><div class="flex_ipr"><div class="plain_layout"><a id='magicparlabel-10' />
+trust200902</div>
+</div><div class="flex_intendedstatus"><div class="plain_layout"><a id='magicparlabel-14' />
+std</div>
+</div><div class="flex_titleabbrev"><div class="plain_layout"><a id='magicparlabel-18' />
+Kerberos Extra AP</div>
+</div><div class="flex_ietfarea"><div class="plain_layout"><a id='magicparlabel-22' />
+Security Area</div>
+</div><div class="flex_xml_rfckeyword"><div class="plain_layout"><a id='magicparlabel-26' />
+Internet-Draft</div>
+</div><div class="flex_updates"><div class="plain_layout"><a id='magicparlabel-30' />
+RFC4121</div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-31' />
+<div class="flex_pi_toc"><div class="plain_layout"><a id='magicparlabel-35' />
+yes</div>
+</div><div class="flex_pi_symrefs"><div class="plain_layout"><a id='magicparlabel-39' />
+yes</div>
+</div><div class="flex_pi_tocindent"><div class="plain_layout"><a id='magicparlabel-43' />
+no</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-47' />
+comments="yes"</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-51' />
+inline="yes"</div>
+</div></div>
+
+<div class="author"><div class="author_item"><a id='magicparlabel-52' />
+Nicolas Williams<div class="flex_authororg"><div class="plain_layout"><a id='magicparlabel-56' />
+Cryptonector, LLC</div>
+</div><div class="flex_authororgabbrev"><div class="plain_layout"><a id='magicparlabel-60' />
+Cryptonector</div>
+</div><div class="flex_authoremailaddr"><div class="plain_layout"><a id='magicparlabel-64' />
+nico@cryptonector.com</div>
+</div></div>
+</div>
+
+<div class="abstract"><div class="abstract_label">Abstract</div>
+<div class="abstract_item"><a id='magicparlabel-65' />
+This Internet-Draft proposes an extension to the Kerberos V5 security mechanism for the Generic Security Services Application Programming Interface (GSS-API) for using an extra pair of security context tokens in order to recover from certain errors.</div>
+</div>
+<div class="standard"><a id='magicparlabel-66' />
+</div>
+<div class='toc'><div class='tochead part_'>Table of Contents</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-67' class='tocentry'>1 Introduction</a> <a href='#magicparlabel-67' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-77' class='tocentry'>1.1 Conventions used in this document</a> <a href='#magicparlabel-77' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-83' class='tocentry'>2 Negotiation</a> <a href='#magicparlabel-83' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-96' class='tocentry'>2.1 ASN.1 for New Protocol Elements</a> <a href='#magicparlabel-96' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-138' class='tocentry'>3 Security Considerations</a> <a href='#magicparlabel-138' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-141' class='tocentry'>4 IANA Considerations</a> <a href='#magicparlabel-141' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-143' class='tocentry'>5 Normative References</a> <a href='#magicparlabel-143' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-169' class='tocentry'>6 Informative References</a> <a href='#magicparlabel-169' class='tocarrow'>&gt;</a></div>
+</div>
+
+<h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-67' />
+Introduction</h2>
+<div class="standard"><a id='magicparlabel-68' />
+The Kerberos V5 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-72' />
+RFC4120</div>
+</div> AP protocol, and therefore the Kerberos V5 GSS mechanism <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-76' />
+RFC4121</div>
+</div> security context token exchange, is a one-round-trip protocol. Occasionally there are errors that the protocol could recover from by using an additional round trip, but until now there was no way to execute such an additional round trip. For many application protocols the failure of the Kerberos AP protocol is fatal, requiring closing TCP connections and starting over; often there is no automatic recovery. This document proposes a negotiation of an additional round trip for automatic recovery from certain errors.</div>
+<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-77' />
+Conventions used in this document</h3>
+<div class="standard"><a id='magicparlabel-78' />
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-82' />
+RFC2119</div>
+</div>.</div>
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-83' />
+Negotiation</h2>
+<div class="standard"><a id='magicparlabel-84' />
+We introduce the following new protocol elements:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-85' />
+a new ap-options flag for use in the cleartext part of AP-REQs to indicate the desire for an extra round trip if need be;</li>
+<li class="itemize_item"><a id='magicparlabel-86' />
+a new Authorization-Data element for use in Authenticators to also indicate the desire for an extra round trip if need be;</li>
+<li class="itemize_item"><a id='magicparlabel-87' />
+a new TYPED-DATA element for use in KRB-ERROR e-data to indicate acceptor willingness to engage in an extra round trip;</li>
+<li class="itemize_item"><a id='magicparlabel-88' />
+a new TYPED-DATA element for use in KRB-ERROR e-data to indicate initiator recovery failure;</li>
+<li class="itemize_item"><a id='magicparlabel-89' />
+a new PDU, KRB-ERROR2, for authenticated errors.</li>
+</ul>
+<div class="standard"><a id='magicparlabel-90' />
+Initiators SHALL NOT use the new ap-options flag and AD element if mutual authentication was not requested. Otherwise initiators and acceptors MUST act as follows:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-91' />
+Initiators that support this feature SHALL add the new authorization-data element (in an AD-IF-RELEVANT container) with empty ad-value to their Authenticators, and they SHALL add the new ap-options flag to their AP-REQs.</li>
+<li class="itemize_item"><a id='magicparlabel-92' />
+Acceptors that support this feature but fail to verify and decrypt the AP-REQ's Ticket and Authenticator SHOULD respond with a KRB-ERROR with a TYPED-DATA with the new TD element indicating that an additional round trip is expected, and when they do they SHALL return GSS_S_CONTINUE_NEEDED to the acceptor application.</li>
+<li class="itemize_item"><a id='magicparlabel-93' />
+Acceptors that support this feature and decrypt an AP-REQ's Ticket and Authenticator successfully but otherwise reject the AP-REQ SHOULD respond with a KRB-ERROR2 message, with the enc-part encrypted in the Authenticator's sub-session key or, if there is none, in the Ticket's session key (XXX do we want to derive a key here?).</li>
+<li class="itemize_item"><a id='magicparlabel-94' />
+Initiators that support this feature SHALL attempt to decode a TYPED-DATA from the e-data field of any KRB-ERROR tokens from acceptors, and if the new TD element is present the initiators MUST attempt to recover and MUST produce a token to send to the acceptor (possibly a KRB-ERROR if the initiator failed to recover, or possibly a new AP-REQ with the traditional GSS-API pseudo-ASN.1 mechanism OID header).</li>
+<li class="itemize_item"><a id='magicparlabel-95' />
+Initiators that support this feature and successfully recover from a KRB-ERROR SHALL return GSS_S_CONTINUE_NEEDED.</li>
+</ul>
+<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-96' />
+ASN.1 for New Protocol Elements</h3>
+<div class="standard"><a id='magicparlabel-97' />
+</div>
+<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-101' />
+</div>
+<div class='float float-listings'><pre> APOptions       ::= KerberosFlags
+         &ndash; reserved(0),
+         &ndash; use-session-key(1),
+         &ndash; mutual-required(2) 
+         &ndash; continue-needed-ok(TBD)
+ 
+ ad-continue-needed-ok Int32 ::= &lt;TBD&gt;
+ td-continue-needed    Int32 ::= &lt;TBD&gt;
+ td-continue-failed    Int32 ::= &lt;TBD&gt;
+ 
+ KRB-ERROR2          ::= [APPLICATION &lt;TBD&gt;] SEQUENCE {
+         pvno            [0] INTEGER (5),
+         msg-type        [1] INTEGER (&lt;TBD&gt;),
+         enc-part        [2] EncryptedData &ndash; EncKRBErrorPart
+ }
+ 
+ EncAPRepPart    ::= [APPLICATION &lt;TBD&gt;] SEQUENCE {
+         nonce           [0] OCTET STRING (16),
+         stime           [1] KerberosTime,
+         susec           [2] Microseconds,
+         error-code      [3] Int32,
+         realm           [4] Realm &ndash; service realm &ndash;,
+         sname           [5] PrincipalName &ndash; service name &ndash;,
+         e-text          [6] KerberosString OPTIONAL,
+         e-data          [7] OCTET STRING OPTIONAL,
+         e-typed-data    [8] TYPED-DATA OPTIONAL
+ } </pre></div>
+
+
+<div class="plain_layout"><a id='magicparlabel-132' />
+<div class='float-caption float-caption-figure'>Figure 1:<div class="plain_layout"><a id='magicparlabel-136' />
+</div>
+</div></div>
+
+<div class="plain_layout"><a id='magicparlabel-137' />
+</div>
+</div>
+
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-138' />
+Security Considerations</h2>
+<div class="standard"><a id='magicparlabel-139' />
+This document deals with security.</div>
+
+<div class="standard"><a id='magicparlabel-140' />
+[XXX Note the resource using attacks that are feasible when we have multiple round-trips and note that they are nothing new and nothing to worry about because services should already have timeouts on pre-authenticated protocol phases, and even post-authentication.]</div>
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-141' />
+IANA Considerations</h2>
+<div class="standard"><a id='magicparlabel-142' />
+This document has no IANA considerations.</div>
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-143' />
+<a id="sec_References" />
+Normative References</h2>
+<div class="standard"><a id='magicparlabel-144' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-148' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-149' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-153' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">rfc2743</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-154' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-158' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">rfc2744</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-159' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-163' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-164' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-168' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">rfc4121</a></div>
+</div></div>
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-169' />
+Informative References</h2>
+</body>
+</html>

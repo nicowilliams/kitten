@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc tocindent="no"?>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc tocindent="no"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc2743 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">
+<!ENTITY rfc2744 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">
+<!ENTITY rfc4120 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">
+<!ENTITY rfc4121 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">
+]>
+<rfc docName="draft-williams-kitten-krb5-extra-rt-00" ipr="trust200902" category="std" updates="RFC4121">
+  <front>
+    <title abbrev="Kerberos Extra AP">Negotiation of Extra Round Trip for Kerberos V5 Generic Security Services Mechanism</title>
+    <author initials="N." surname="Williams" fullname="Nicolas Williams">
+      <organization abbrev="Cryptonector">Cryptonector, LLC</organization>
+      <address>
+        <email>nico@cryptonector.com</email>
+      </address>
+    </author>
+    <date month="February" year="2013"/>
+    <area>
+Security Area
+</area>
+    <keyword>Internet-Draft</keyword>
+    <abstract>
+      <t>
+This Internet-Draft proposes an extension to the Kerberos V5 security mechanism for the Generic Security Services Application Programming Interface (GSS-API) for using an extra pair of security context tokens in order to recover from certain errors.</t>
+    </abstract>
+  </front>
+  <middle>
+    <section title="Introduction" anchor="d1e178">
+      <t>
+The Kerberos V5 <xref target="RFC4120"/> AP protocol, and therefore the Kerberos V5 GSS mechanism <xref target="RFC4121"/> security context token exchange, is a one-round-trip protocol. Occasionally there are errors that the protocol could recover from by using an additional round trip, but until now there was no way to execute such an additional round trip. For many application protocols the failure of the Kerberos AP protocol is fatal, requiring closing TCP connections and starting over; often there is no automatic recovery. This document proposes a negotiation of an additional round trip for automatic recovery from certain errors.</t>
+      <section title="Conventions used in this document" anchor="d1e199">
+        <t>
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
+      </section>
+    </section>
+    <section title="Negotiation" anchor="d1e215">
+      <t>
+We introduce the following new protocol elements:</t>
+      <t>
+        <list style="symbols">
+          <t>
+a new ap-options flag for use in the cleartext part of AP-REQs to indicate the desire for an extra round trip if need be;</t>
+          <t>
+a new Authorization-Data element for use in Authenticators to also indicate the desire for an extra round trip if need be;</t>
+          <t>
+a new TYPED-DATA element for use in KRB-ERROR e-data to indicate acceptor willingness to engage in an extra round trip;</t>
+          <t>
+a new TYPED-DATA element for use in KRB-ERROR e-data to indicate initiator recovery failure;</t>
+          <t>
+a new PDU, KRB-ERROR2, for authenticated errors.</t>
+        </list>
+      </t>
+      <t>
+Initiators SHALL NOT use the new ap-options flag and AD element if mutual authentication was not requested. Otherwise initiators and acceptors MUST act as follows:</t>
+      <t>
+        <list style="symbols">
+          <t>
+Initiators that support this feature SHALL add the new authorization-data element (in an AD-IF-RELEVANT container) with empty ad-value to their Authenticators, and they SHALL add the new ap-options flag to their AP-REQs.</t>
+          <t>
+Acceptors that support this feature but fail to verify and decrypt the AP-REQ's Ticket and Authenticator SHOULD respond with a KRB-ERROR with a TYPED-DATA with the new TD element indicating that an additional round trip is expected, and when they do they SHALL return GSS_S_CONTINUE_NEEDED to the acceptor application.</t>
+          <t>
+Acceptors that support this feature and decrypt an AP-REQ's Ticket and Authenticator successfully but otherwise reject the AP-REQ SHOULD respond with a KRB-ERROR2 message, with the enc-part encrypted in the Authenticator's sub-session key or, if there is none, in the Ticket's session key (XXX do we want to derive a key here?).</t>
+          <t>
+Initiators that support this feature SHALL attempt to decode a TYPED-DATA from the e-data field of any KRB-ERROR tokens from acceptors, and if the new TD element is present the initiators MUST attempt to recover and MUST produce a token to send to the acceptor (possibly a KRB-ERROR if the initiator failed to recover, or possibly a new AP-REQ with the traditional GSS-API pseudo-ASN.1 mechanism OID header).</t>
+          <t>
+Initiators that support this feature and successfully recover from a KRB-ERROR SHALL return GSS_S_CONTINUE_NEEDED.</t>
+        </list>
+      </t>
+      <section title="ASN.1 for New Protocol Elements" anchor="d1e259">
+        <t>
+</t>
+        <t>
+          <figure anchor="magicparlabel-137" title="">
+            <artwork> APOptions       ::= KerberosFlags
+         – reserved(0),
+         – use-session-key(1),
+         – mutual-required(2) 
+         – continue-needed-ok(TBD)
+ 
+ ad-continue-needed-ok Int32 ::= &lt;TBD&gt;
+ td-continue-needed    Int32 ::= &lt;TBD&gt;
+ td-continue-failed    Int32 ::= &lt;TBD&gt;
+ 
+ KRB-ERROR2          ::= [APPLICATION &lt;TBD&gt;] SEQUENCE {
+         pvno            [0] INTEGER (5),
+         msg-type        [1] INTEGER (&lt;TBD&gt;),
+         enc-part        [2] EncryptedData – EncKRBErrorPart
+ }
+ 
+ EncAPRepPart    ::= [APPLICATION &lt;TBD&gt;] SEQUENCE {
+         nonce           [0] OCTET STRING (16),
+         stime           [1] KerberosTime,
+         susec           [2] Microseconds,
+         error-code      [3] Int32,
+         realm           [4] Realm – service realm –,
+         sname           [5] PrincipalName – service name –,
+         e-text          [6] KerberosString OPTIONAL,
+         e-data          [7] OCTET STRING OPTIONAL,
+         e-typed-data    [8] TYPED-DATA OPTIONAL
+ } </artwork>
+          </figure>
+        </t>
+      </section>
+    </section>
+    <section title="Security Considerations" anchor="d1e291">
+      <t>
+This document deals with security.</t>
+      <t>
+[XXX Note the resource using attacks that are feasible when we have multiple round-trips and note that they are nothing new and nothing to worry about because services should already have timeouts on pre-authenticated protocol phases, and even post-authentication.]</t>
+    </section>
+    <section title="IANA Considerations" anchor="d1e304">
+      <t>
+This document has no IANA considerations.</t>
+    </section>
+    <section title="Informative References" anchor="d1e371"/>
+  </middle>
+  <back>
+    <references title="Normative References">&rfc2119;
+&rfc2743;
+&rfc2744;
+&rfc4120;
+&rfc4121;
+</references>
+  </back>
+</rfc>
