@@ -477,6 +477,8 @@ This Internet-Draft proposes an extension to the Kerberos V5 security mechanism
  for the Generic Security Services Application Programming Interface (GSS-API)
  for using an extra pair of security context tokens in order to recover
  from certain errors.
+ Other benefits include: user2user authentication, authenticated errors
+ (in some cases), and more.
 \end_layout
 
 \begin_layout Standard
@@ -522,6 +524,10 @@ RFC4121
  is no automatic recovery.
  This document proposes a negotiation of an additional round trip for automatic
  recovery from certain errors.
+ This is done in a backwards-compatible way, thus retaining the existing
+ mechanism OID for the Kerberos V5 GSS mechanism.
+ Additionally we add support for user2user authentication and authenticated
+ errors, and provide a way to avoid the use of replay caching.
 \end_layout
 
 \begin_layout Subsection
@@ -549,7 +555,15 @@ Negotiation
 \end_layout
 
 \begin_layout Standard
-We introduce the following new protocol elements:
+We introduce the following new protocol elements.
+ An ASN.1 module is given in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:ASN.1-for-New"
+
+\end_inset
+
+, and references to its contents are made below.
 \end_layout
 
 \begin_layout Itemize
@@ -573,9 +587,7 @@ a new PDU: KRB-ERROR2, with additional fields and support for authenticated
 \end_layout
 
 \begin_layout Standard
-Initiators SHALL NOT use the new ap-options flag and AD element if mutual
- authentication was not requested.
- Otherwise initiators and acceptors MUST act as follows:
+To use this feature, initiators and acceptors MUST act as follows:
 \end_layout
 
 \begin_layout Itemize
@@ -596,19 +608,26 @@ Acceptors that wish to request an additional round trip SHOULD do so when
 \end_layout
 
 \begin_layout Itemize
-Initiators that request this feature and receive a KRB-ERROR with the ke-continu
-e-needed e-flag set MUST attempt to recover and MUST produce a token to
- send to the acceptor (possibly a KRB-ERROR2 if the initiator failed to
- recover, or possibly a new AP-REQ with the traditional GSS-API pseudo-ASN.1
- mechanism OID header).
- A final error token from the initiator to the acceptor
-\end_layout
-
-\begin_layout Itemize
 Initiators that request this feature and receive a KRB-ERROR2 SHALL attempt
  to recover.
 \end_layout
 
+\begin_layout Itemize
+Initiators that request this feature and receive a KRB-ERROR2 with the ke-contin
+ue-needed e-flag set MUST attempt to recover and MUST produce a token to
+ send to the acceptor: either a KRB-ERROR2 if the initiator failed to recover,
+ or a new AP-REQ (with the traditional GSS-API pseudo-ASN.1 mechanism OID
+ header).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In the successful recovery case the initiator MUST quote the nonce from
+ the KRB-ERROR2 using an AD-CHALLENGE-RESPONSE-NONCE (see below) authorization
+ data element, and this MUST NOT be wrapped in an AD-IF-RELEVANT container.
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 Initiators that support this feature and successfully recover from a KRB-ERROR
  or KRB-ERROR2 SHALL return GSS_S_CONTINUE_NEEDED.
@@ -621,39 +640,46 @@ The following Kerberos errors can be recovered from using this protocol:
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_TKT_EXPIRED
+KRB_AP_ERR_TKT_EXPIRED: the initiator should get a new service ticket
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_TKT_NYV
+KRB_AP_ERR_TKT_NYV: the initiator should get a new service ticket
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_REPEAT
+KRB_AP_ERR_REPEAT: the initiator should build a new AP-REQ
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_BADMATCH
+KRB_AP_ERR_SKEW: the initiator should build a new AP-REQ with time corrected
+ for the offset between the initiator's and acceptor's clocks
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_SKEW
+KRB_AP_ERR_BADKEYVER: the initiator should get a new service ticket
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_BADKEYVER
-\end_layout
-
-\begin_layout Itemize
-KRB_AP_PATH_NOT_ACCEPTED
+KRB_AP_PATH_NOT_ACCEPTED: the initiator should get a new service ticket
+ using a different transit path
 \end_layout
 
 \begin_layout Standard
-Error codes that denote PDU corruption can also be recovered from:
+Error codes that denote PDU corruption (and/or an active attack) can also
+ be recovered from by attempting a new AP-REQ:
+\end_layout
+
+\begin_layout Itemize
+KRB_AP_ERR_BAD_INTEGRITY
 \end_layout
 
 \begin_layout Itemize
 KRB_AP_ERR_BADVERSION
+\end_layout
+
+\begin_layout Itemize
+KRB_AP_ERR_BADMATCH
 \end_layout
 
 \begin_layout Itemize
@@ -665,6 +691,17 @@ KRB_AP_ERR_MODIFIED
 \end_layout
 
 \begin_layout Standard
+Other error codes that may be recovered from:
+\end_layout
+
+\begin_layout Itemize
+KRB_AP_ERR_BADADDR; the acceptor SHOULD include a list of one or more client
+ network addresses as reported by the operating system, but if the acceptor
+ does not then the continue-needed e-flag MUST NOT be included and the error
+ must be final.
+\end_layout
+
+\begin_layout Standard
 It is also possible for an acceptor to request that the initiator re-authenticat
 e but to a different service principal, in which case the error code SHALL
  be KRB_AP_ERR_NOT_US, the KRB-ERROR2 encrypted part MUST be encrypted in
@@ -673,7 +710,89 @@ e but to a different service principal, in which case the error code SHALL
 \end_layout
 
 \begin_layout Subsection
+Use in Non-GSS Applications
+\end_layout
+
+\begin_layout Standard
+We only specify multiple round trips for the GSS mechanism and application
+ case.
+ We believe that some non-GSS Kerberos applications may also benefit from
+ this extension.
+\end_layout
+
+\begin_layout Subsection
+Number of Round Trips
+\end_layout
+
+\begin_layout Standard
+At most two round trips should be needed in general.
+ Implementations MUST impose a limit of either two or three round trips.
+ An initiator that rejects an additional round-trip MUST respond with a
+ KRB-ERROR2.
+\end_layout
+
+\begin_layout Subsection
+User-to-User Authentication
+\end_layout
+
+\begin_layout Standard
+There are two user2user authentication cases:
+\end_layout
+
+\begin_layout Enumerate
+the KDC only allows a service principal to use user2user authentication,
+\end_layout
+
+\begin_layout Enumerate
+the service principal does not know its long-term keys or otherwise wants
+ to use user2user authentication even though the KDC vended a service ticket.
+\end_layout
+
+\begin_layout Standard
+In the first case the initiator knows this because the KDC returns KDC_ERR_MUST_
+USE_USER2USER.
+ The initiator cannot make a valid AP-REQ in this case, yet it must send
+ an AP-REQ or fail to make even an initial security context token.
+ For this case we propose that the initiator make an AP-REQ with invalid
+ ticket (really, the enc-part of the Ticket will contain some OCTET STRING
+ of length 1 or longer, but no longer than the minimum ciphertext length
+ for the enctype listed in the EncryptedData) and authenticator (an OCTET
+ STRING of length 1 or longer, but no longer than the minimum ciphertext
+ length for some enctype supported by the initiator).
+ The acceptor will fail to process the AP-REQ, of course, both because the
+ Ticket and Authenticator embedded in it are not valid, and because the
+ acceptor will likely not possess the key to decrypt a real Ticket.
+ The acceptor SHOULD respond with a continue-needed KRB-ERROR2 (using the
+ null enctype for the enc-part) that includes a TGT for the acceptor.
+\end_layout
+
+\begin_layout Standard
+In the second case the initiator does manage to get a real service ticket
+ for the acceptor but the acceptor nonetheless wishes to use user2user authentic
+ation.
+ In this case the acceptor responds with a KRB-ERROR2, using either the
+ null enctype for the enc-part, or the initiator's sub-session key, and
+ includes a TGT for itself.
+\end_layout
+
+\begin_layout Standard
+In both cases the initiator then does a TGS request with a second ticket
+ to get a new, user2user Ticket.
+ Then the initiator makes a new AP-REQ using the new Ticket, and proceeds.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:ASN.1-for-New"
+
+\end_inset
+
 ASN.1 for New Protocol Elements
+\end_layout
+
+\begin_layout Standard
+An ASN.1 module appears below.
 \end_layout
 
 \begin_layout Standard
@@ -724,7 +843,17 @@ status open
 
 \begin_layout Plain Layout
 
+        -- indicate extra round trip support 
+\end_layout
+
+\begin_layout Plain Layout
+
  ad-continue-nonce     Int32 ::= <TBD>
+\end_layout
+
+\begin_layout Plain Layout
+
+        -- ad-value is challenge nonce from KRB-ERROR2
 \end_layout
 
 \begin_layout Plain Layout
@@ -734,7 +863,47 @@ status open
 
 \begin_layout Plain Layout
 
+        -- indicate that extra round trip is expected
+\end_layout
+
+\begin_layout Plain Layout
+
  td-continue-failed    Int32 ::= <TBD>
+\end_layout
+
+\begin_layout Plain Layout
+
+        -- indicate protocol failure
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ KrbErrorEncPartFlags ::= KerberosFlags
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- reserved(0)  [XXX sounds like cargo cult!]
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- use-initiator-subkey(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- use-ticket-session-key(2)
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- use-null-enctype(3)
 \end_layout
 
 \begin_layout Plain Layout
@@ -759,7 +928,12 @@ status open
 
 \begin_layout Plain Layout
 
-         enc-part        [2] EncryptedData -- EncKRBErrorPart
+         enc-part-key    [2] KrbErrorEncPartFlags,
+\end_layout
+
+\begin_layout Plain Layout
+
+         enc-part        [3] EncryptedData -- EncKRBErrorPart
 \end_layout
 
 \begin_layout Plain Layout
@@ -794,6 +968,11 @@ status open
 
 \begin_layout Plain Layout
 
+         -- user2user(3)
+\end_layout
+
+\begin_layout Plain Layout
+
  
 \end_layout
 
@@ -804,7 +983,7 @@ status open
 
 \begin_layout Plain Layout
 
-         nonce           [0] OCTET STRING (16),
+         challenge-nonce [0] OCTET STRING (16),
 \end_layout
 
 \begin_layout Plain Layout
@@ -824,7 +1003,7 @@ status open
 
 \begin_layout Plain Layout
 
-         e-flags         [4] KerberosFlags,
+         e-flags         [4] ErrorFlags,
 \end_layout
 
 \begin_layout Plain Layout
@@ -839,22 +1018,52 @@ status open
 
 \begin_layout Plain Layout
 
-         e-typed-data    [7] TYPED-DATA OPTIONAL
+         e-typed-data    [7] TYPED-DATA OPTIONAL,
 \end_layout
 
 \begin_layout Plain Layout
 
-         realm           [8] Realm OPTIONAL, -- service realm
+         caddrs          [8] HostAddresses OPTIONAL,
 \end_layout
 
 \begin_layout Plain Layout
 
-         sname           [9] PrincipalName OPTIONAL, -- service name
+         saddrs          [9] HostAddresses OPTIONAL,
 \end_layout
 
 \begin_layout Plain Layout
 
- }
+         tgt            [10] Ticket OPTIONAL, -- for user2user
+\end_layout
+
+\begin_layout Plain Layout
+
+         ticket         [11] Ticket OPTIONAL, -- fast-re-auth
+\end_layout
+
+\begin_layout Plain Layout
+
+         srealm         [12] Realm OPTIONAL,  -- service realm
+\end_layout
+
+\begin_layout Plain Layout
+
+         sname          [13] PrincipalName OPTIONAL,
+\end_layout
+
+\begin_layout Plain Layout
+
+         redir-srealm   [14] Realm OPTIONAL,
+\end_layout
+
+\begin_layout Plain Layout
+
+         redir-sname    [15] PrincipalName OPTIONAL,
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset
@@ -874,13 +1083,106 @@ ASN.1 module (with explicit tagging)
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Other Features
+\end_layout
+
+\begin_layout Standard
+Two other features are supported:
+\end_layout
+
+\begin_layout Itemize
+acceptor name redirection;
+\end_layout
+
+\begin_layout Itemize
+acceptor-issued service ticket (for the same acceptor name) issuance.
+\end_layout
+
+\begin_layout Subsubsection
+Acceptor Name Redirection
+\end_layout
+
+\begin_layout Standard
+In some use cases, such as clusters, for example, an acceptor may wish to
+ ask the initiator to use a different name (and ticket) for the acceptor.
+ This is indicated by setting the redir-srealm and redir-sname fields of
+ a continue-needed KRB-ERROR2.
+ The KRB-ERROR2's enc-part MUST be encrypted in the initiator's sub-session
+ key, and initiators MUST ignore the redir-srealm and redir-sname fields
+ of any KRB-ERROR2 where the enc-part is encrypted in the null enctype.
+\end_layout
+
+\begin_layout Standard
+Because the acceptor's name redirection is authenticated to the initiator,
+ it is safe for the initiator to get a service ticket for the new name and
+ re-try authentication with it.
+\end_layout
+
+\begin_layout Subsubsection
+Fast Re-Authentication Acceptor Ticket Issuance
+\end_layout
+
+\begin_layout Standard
+In view of future extensions where the Kerberos AP protocol may be extended
+ to use public key agreement protocols -which will likely be slow-, we provide
+ a field in the KRB-ERROR2 where the acceptor may include a Ticket for itself,
+ minted by the acceptor using a secret key of its choosing.
+ This service ticket may be used to speed up future otherwise-slow AP exchanges.
+\end_layout
+
+\begin_layout Subsection
+Replay Cache Avoidance
+\end_layout
+
+\begin_layout Standard
+By using an additional round trip and a challenge/response nonce, this protocol
+ is inmune to replays of AP-REQ PDUs.
+ Acceptor implementations MAY not enter Authenticators from extra round
+ trips into a replay cache when there are no other old implementations on
+ the same host (and with access to the same acceptor credentials) that ignore
+ critical authorization data or which don't know to reject initial AP-REQs
+ that contain a challenge response nonce.
+\end_layout
+
+\begin_layout Standard
+By the same token, acceptors that support this feature MUST reject initial
+ security context tokens that contain a challenge response nonce.
+\end_layout
+
+\begin_layout Subsection
+Other Requirements, Recommendations, and Non-Requirements
+\end_layout
+
+\begin_layout Standard
+All error PDUs in an AP exchange where the AP-REQ has the continue-needed-ok
+ ap-options flag MUST be KRB-ERROR2 PDUs.
+\end_layout
+
+\begin_layout Standard
+Whenever an acceptor is able to decrypt the Ticket from an AP-REQ and yet
+ wishes or has to output a KRB-ERROR2, then the enc-part of the KRB-ERROR2
+ MUST be encrypted in either the initiator's sub-session key (from the AP-REQ)
+ or the Ticket's session key (if the acceptor could not decrypt the Authenticato
+r), and the srealm and sname fields MUST be set to be the same as the realm
+ and sname fields from the Ticket.
+\end_layout
+
+\begin_layout Standard
+Whenever an initiator receives a KRB-ERROR2 with enc-part encrypted in either
+ the initiator's sub-session key or the Ticket's session key, then the initiator
+ SHOULD check that the srealm and sname fields of the KRB-ERROR2 encrypted
+ part match the ones used in the initiator's AP-REQ's Ticket (XXX what should
+ the initiator do if these don't match?!).
+\end_layout
+
+\begin_layout Standard
+...
 \end_layout
 
 \begin_layout Section
