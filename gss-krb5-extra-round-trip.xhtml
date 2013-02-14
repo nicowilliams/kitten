@@ -306,16 +306,16 @@ This Internet-Draft proposes an extension to the Kerberos V5 security mechanism 
 
 <div class='lyxtoc-1'><a href='#magicparlabel-83' class='tocentry'>2 Negotiation</a> <a href='#magicparlabel-83' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-96' class='tocentry'>2.1 ASN.1 for New Protocol Elements</a> <a href='#magicparlabel-96' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-108' class='tocentry'>2.1 ASN.1 for New Protocol Elements</a> <a href='#magicparlabel-108' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-138' class='tocentry'>3 Security Considerations</a> <a href='#magicparlabel-138' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-157' class='tocentry'>3 Security Considerations</a> <a href='#magicparlabel-157' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-141' class='tocentry'>4 IANA Considerations</a> <a href='#magicparlabel-141' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-160' class='tocentry'>4 IANA Considerations</a> <a href='#magicparlabel-160' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-143' class='tocentry'>5 Normative References</a> <a href='#magicparlabel-143' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-162' class='tocentry'>5 Normative References</a> <a href='#magicparlabel-162' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-169' class='tocentry'>6 Informative References</a> <a href='#magicparlabel-169' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-188' class='tocentry'>6 Informative References</a> <a href='#magicparlabel-188' class='tocarrow'>&gt;</a></div>
 </div>
 
 <h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-67' />
@@ -342,31 +342,59 @@ a new ap-options flag for use in the cleartext part of AP-REQs to indicate the d
 <li class="itemize_item"><a id='magicparlabel-86' />
 a new Authorization-Data element for use in Authenticators to also indicate the desire for an extra round trip if need be;</li>
 <li class="itemize_item"><a id='magicparlabel-87' />
-a new TYPED-DATA element for use in KRB-ERROR e-data to indicate acceptor willingness to engage in an extra round trip;</li>
+a new Authorization-Data element for use in Authenticators for quoting back a challenge nonce from the acceptor;</li>
 <li class="itemize_item"><a id='magicparlabel-88' />
-a new TYPED-DATA element for use in KRB-ERROR e-data to indicate initiator recovery failure;</li>
-<li class="itemize_item"><a id='magicparlabel-89' />
-a new PDU, KRB-ERROR2, for authenticated errors.</li>
+a new PDU: KRB-ERROR2, with additional fields and support for authenticated errors.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-90' />
+<div class="standard"><a id='magicparlabel-89' />
 Initiators SHALL NOT use the new ap-options flag and AD element if mutual authentication was not requested. Otherwise initiators and acceptors MUST act as follows:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-91' />
-Initiators that support this feature SHALL add the new authorization-data element (in an AD-IF-RELEVANT container) with empty ad-value to their Authenticators, and they SHALL add the new ap-options flag to their AP-REQs.</li>
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-90' />
+To request this feature, initiators SHALL add the new authorization-data element (in an AD-IF-RELEVANT container) with empty ad-value to their Authenticators, and they SHALL add the new ap-options flag to their AP-REQs.</li>
+<li class="itemize_item"><a id='magicparlabel-91' />
+Acceptors that wish to request an additional round trip SHOULD do so when initiators indicate support for it, and do so by returning a KRB-ERROR2. The encrypted part of the KRB-ERROR2 SHALL be encrypted in one of the following keys: the sub-session key from the AP-REQ's Authenticator if it could be decrypted, the session key from the Ticket, if it could be decrypted, or the null enctype and null key. The KRB-ERROR2 in this case SHALL have a the continue-needed e-flag set. The acceptor SHALL also return GSS_S_CONTINUE_NEEDED to the application.</li>
 <li class="itemize_item"><a id='magicparlabel-92' />
-Acceptors that support this feature but fail to verify and decrypt the AP-REQ's Ticket and Authenticator SHOULD respond with a KRB-ERROR with a TYPED-DATA with the new TD element indicating that an additional round trip is expected, and when they do they SHALL return GSS_S_CONTINUE_NEEDED to the acceptor application.</li>
+Initiators that request this feature and receive a KRB-ERROR with the ke-continue-needed e-flag set MUST attempt to recover and MUST produce a token to send to the acceptor (possibly a KRB-ERROR2 if the initiator failed to recover, or possibly a new AP-REQ with the traditional GSS-API pseudo-ASN.1 mechanism OID header). A final error token from the initiator to the acceptor</li>
 <li class="itemize_item"><a id='magicparlabel-93' />
-Acceptors that support this feature and decrypt an AP-REQ's Ticket and Authenticator successfully but otherwise reject the AP-REQ SHOULD respond with a KRB-ERROR2 message, with the enc-part encrypted in the Authenticator's sub-session key or, if there is none, in the Ticket's session key (XXX do we want to derive a key here?).</li>
+Initiators that request this feature and receive a KRB-ERROR2 SHALL attempt to recover.</li>
 <li class="itemize_item"><a id='magicparlabel-94' />
-Initiators that support this feature SHALL attempt to decode a TYPED-DATA from the e-data field of any KRB-ERROR tokens from acceptors, and if the new TD element is present the initiators MUST attempt to recover and MUST produce a token to send to the acceptor (possibly a KRB-ERROR if the initiator failed to recover, or possibly a new AP-REQ with the traditional GSS-API pseudo-ASN.1 mechanism OID header).</li>
-<li class="itemize_item"><a id='magicparlabel-95' />
-Initiators that support this feature and successfully recover from a KRB-ERROR SHALL return GSS_S_CONTINUE_NEEDED.</li>
+Initiators that support this feature and successfully recover from a KRB-ERROR or KRB-ERROR2 SHALL return GSS_S_CONTINUE_NEEDED. Otherwise they MUST generate a KRB-ERROR to send to the acceptor and return an error to the application.</li>
 </ul>
-<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-96' />
+<div class="standard"><a id='magicparlabel-95' />
+The following Kerberos errors can be recovered from using this protocol:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-96' />
+KRB_AP_ERR_TKT_EXPIRED</li>
+<li class="itemize_item"><a id='magicparlabel-97' />
+KRB_AP_ERR_TKT_NYV</li>
+<li class="itemize_item"><a id='magicparlabel-98' />
+KRB_AP_ERR_REPEAT</li>
+<li class="itemize_item"><a id='magicparlabel-99' />
+KRB_AP_ERR_BADMATCH</li>
+<li class="itemize_item"><a id='magicparlabel-100' />
+KRB_AP_ERR_SKEW</li>
+<li class="itemize_item"><a id='magicparlabel-101' />
+KRB_AP_ERR_BADKEYVER</li>
+<li class="itemize_item"><a id='magicparlabel-102' />
+KRB_AP_PATH_NOT_ACCEPTED</li>
+</ul>
+<div class="standard"><a id='magicparlabel-103' />
+Error codes that denote PDU corruption can also be recovered from:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-104' />
+KRB_AP_ERR_BADVERSION</li>
+<li class="itemize_item"><a id='magicparlabel-105' />
+KRB_AP_ERR_MSG_TYPE</li>
+<li class="itemize_item"><a id='magicparlabel-106' />
+KRB_AP_ERR_MODIFIED</li>
+</ul>
+<div class="standard"><a id='magicparlabel-107' />
+It is also possible for an acceptor to request that the initiator re-authenticate but to a different service principal, in which case the error code SHALL be KRB_AP_ERR_NOT_US, the KRB-ERROR2 encrypted part MUST be encrypted in the sub-session key from the Authenticator, and the sname and realm fields of the KRB-ERROR2 MUST be present.</div>
+<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-108' />
 ASN.1 for New Protocol Elements</h3>
-<div class="standard"><a id='magicparlabel-97' />
+<div class="standard"><a id='magicparlabel-109' />
 </div>
-<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-101' />
+<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-113' />
 </div>
 <div class='float float-listings'><pre> APOptions       ::= KerberosFlags
          &ndash; reserved(0),
@@ -375,6 +403,7 @@ ASN.1 for New Protocol Elements</h3>
          &ndash; continue-needed-ok(TBD)
  
  ad-continue-needed-ok Int32 ::= &lt;TBD&gt;
+ ad-continue-nonce     Int32 ::= &lt;TBD&gt;
  td-continue-needed    Int32 ::= &lt;TBD&gt;
  td-continue-failed    Int32 ::= &lt;TBD&gt;
  
@@ -384,67 +413,73 @@ ASN.1 for New Protocol Elements</h3>
          enc-part        [2] EncryptedData &ndash; EncKRBErrorPart
  }
  
+ ErrorFlags ::= KerberosFlags
+         &ndash; reserved(0)  [XXX sounds like cargo cult!]
+         &ndash; continue-needed(1)
+         &ndash; use-other-sname(2)
+ 
  EncAPRepPart    ::= [APPLICATION &lt;TBD&gt;] SEQUENCE {
          nonce           [0] OCTET STRING (16),
          stime           [1] KerberosTime,
          susec           [2] Microseconds,
          error-code      [3] Int32,
-         realm           [4] Realm &ndash; service realm &ndash;,
-         sname           [5] PrincipalName &ndash; service name &ndash;,
-         e-text          [6] KerberosString OPTIONAL,
-         e-data          [7] OCTET STRING OPTIONAL,
-         e-typed-data    [8] TYPED-DATA OPTIONAL
- } </pre></div>
+         e-flags         [4] KerberosFlags,
+         e-text          [5] KerberosString OPTIONAL,
+         e-data          [6] OCTET STRING OPTIONAL,
+         e-typed-data    [7] TYPED-DATA OPTIONAL
+         realm           [8] Realm OPTIONAL, &ndash; service realm
+         sname           [9] PrincipalName OPTIONAL, &ndash; service name
+ }</pre></div>
 
 
-<div class="plain_layout"><a id='magicparlabel-132' />
-<div class='float-caption float-caption-figure'>Figure 1:<div class="plain_layout"><a id='magicparlabel-136' />
-</div>
+<div class="plain_layout"><a id='magicparlabel-151' />
+<div class='float-caption float-caption-figure'>Figure 1:<div class="plain_layout"><a id='magicparlabel-155' />
+ASN.1 module (with explicit tagging)</div>
 </div></div>
 
-<div class="plain_layout"><a id='magicparlabel-137' />
+<div class="plain_layout"><a id='magicparlabel-156' />
 </div>
 </div>
 
-<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-138' />
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-157' />
 Security Considerations</h2>
-<div class="standard"><a id='magicparlabel-139' />
+<div class="standard"><a id='magicparlabel-158' />
 This document deals with security.</div>
 
-<div class="standard"><a id='magicparlabel-140' />
+<div class="standard"><a id='magicparlabel-159' />
 [XXX Note the resource using attacks that are feasible when we have multiple round-trips and note that they are nothing new and nothing to worry about because services should already have timeouts on pre-authenticated protocol phases, and even post-authentication.]</div>
-<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-141' />
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-160' />
 IANA Considerations</h2>
-<div class="standard"><a id='magicparlabel-142' />
+<div class="standard"><a id='magicparlabel-161' />
 This document has no IANA considerations.</div>
-<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-143' />
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-162' />
 <a id="sec_References" />
 Normative References</h2>
-<div class="standard"><a id='magicparlabel-144' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-148' />
+<div class="standard"><a id='magicparlabel-163' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-167' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-149' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-153' />
+<div class="standard"><a id='magicparlabel-168' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-172' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">rfc2743</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-154' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-158' />
+<div class="standard"><a id='magicparlabel-173' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-177' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">rfc2744</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-159' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-163' />
+<div class="standard"><a id='magicparlabel-178' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-182' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-164' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-168' />
+<div class="standard"><a id='magicparlabel-183' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-187' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">rfc4121</a></div>
 </div></div>
-<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-169' />
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-188' />
 Informative References</h2>
 </body>
 </html>

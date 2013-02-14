@@ -52,11 +52,9 @@ a new ap-options flag for use in the cleartext part of AP-REQs to indicate the d
           <t>
 a new Authorization-Data element for use in Authenticators to also indicate the desire for an extra round trip if need be;</t>
           <t>
-a new TYPED-DATA element for use in KRB-ERROR e-data to indicate acceptor willingness to engage in an extra round trip;</t>
+a new Authorization-Data element for use in Authenticators for quoting back a challenge nonce from the acceptor;</t>
           <t>
-a new TYPED-DATA element for use in KRB-ERROR e-data to indicate initiator recovery failure;</t>
-          <t>
-a new PDU, KRB-ERROR2, for authenticated errors.</t>
+a new PDU: KRB-ERROR2, with additional fields and support for authenticated errors.</t>
         </list>
       </t>
       <t>
@@ -64,22 +62,56 @@ Initiators SHALL NOT use the new ap-options flag and AD element if mutual authen
       <t>
         <list style="symbols">
           <t>
-Initiators that support this feature SHALL add the new authorization-data element (in an AD-IF-RELEVANT container) with empty ad-value to their Authenticators, and they SHALL add the new ap-options flag to their AP-REQs.</t>
+To request this feature, initiators SHALL add the new authorization-data element (in an AD-IF-RELEVANT container) with empty ad-value to their Authenticators, and they SHALL add the new ap-options flag to their AP-REQs.</t>
           <t>
-Acceptors that support this feature but fail to verify and decrypt the AP-REQ's Ticket and Authenticator SHOULD respond with a KRB-ERROR with a TYPED-DATA with the new TD element indicating that an additional round trip is expected, and when they do they SHALL return GSS_S_CONTINUE_NEEDED to the acceptor application.</t>
+Acceptors that wish to request an additional round trip SHOULD do so when initiators indicate support for it, and do so by returning a KRB-ERROR2. The encrypted part of the KRB-ERROR2 SHALL be encrypted in one of the following keys: the sub-session key from the AP-REQ's Authenticator if it could be decrypted, the session key from the Ticket, if it could be decrypted, or the null enctype and null key. The KRB-ERROR2 in this case SHALL have a the continue-needed e-flag set. The acceptor SHALL also return GSS_S_CONTINUE_NEEDED to the application.</t>
           <t>
-Acceptors that support this feature and decrypt an AP-REQ's Ticket and Authenticator successfully but otherwise reject the AP-REQ SHOULD respond with a KRB-ERROR2 message, with the enc-part encrypted in the Authenticator's sub-session key or, if there is none, in the Ticket's session key (XXX do we want to derive a key here?).</t>
+Initiators that request this feature and receive a KRB-ERROR with the ke-continue-needed e-flag set MUST attempt to recover and MUST produce a token to send to the acceptor (possibly a KRB-ERROR2 if the initiator failed to recover, or possibly a new AP-REQ with the traditional GSS-API pseudo-ASN.1 mechanism OID header). A final error token from the initiator to the acceptor</t>
           <t>
-Initiators that support this feature SHALL attempt to decode a TYPED-DATA from the e-data field of any KRB-ERROR tokens from acceptors, and if the new TD element is present the initiators MUST attempt to recover and MUST produce a token to send to the acceptor (possibly a KRB-ERROR if the initiator failed to recover, or possibly a new AP-REQ with the traditional GSS-API pseudo-ASN.1 mechanism OID header).</t>
+Initiators that request this feature and receive a KRB-ERROR2 SHALL attempt to recover.</t>
           <t>
-Initiators that support this feature and successfully recover from a KRB-ERROR SHALL return GSS_S_CONTINUE_NEEDED.</t>
+Initiators that support this feature and successfully recover from a KRB-ERROR or KRB-ERROR2 SHALL return GSS_S_CONTINUE_NEEDED. Otherwise they MUST generate a KRB-ERROR to send to the acceptor and return an error to the application.</t>
         </list>
       </t>
-      <section title="ASN.1 for New Protocol Elements" anchor="d1e259">
+      <t>
+The following Kerberos errors can be recovered from using this protocol:</t>
+      <t>
+        <list style="symbols">
+          <t>
+KRB_AP_ERR_TKT_EXPIRED</t>
+          <t>
+KRB_AP_ERR_TKT_NYV</t>
+          <t>
+KRB_AP_ERR_REPEAT</t>
+          <t>
+KRB_AP_ERR_BADMATCH</t>
+          <t>
+KRB_AP_ERR_SKEW</t>
+          <t>
+KRB_AP_ERR_BADKEYVER</t>
+          <t>
+KRB_AP_PATH_NOT_ACCEPTED</t>
+        </list>
+      </t>
+      <t>
+Error codes that denote PDU corruption can also be recovered from:</t>
+      <t>
+        <list style="symbols">
+          <t>
+KRB_AP_ERR_BADVERSION</t>
+          <t>
+KRB_AP_ERR_MSG_TYPE</t>
+          <t>
+KRB_AP_ERR_MODIFIED</t>
+        </list>
+      </t>
+      <t>
+It is also possible for an acceptor to request that the initiator re-authenticate but to a different service principal, in which case the error code SHALL be KRB_AP_ERR_NOT_US, the KRB-ERROR2 encrypted part MUST be encrypted in the sub-session key from the Authenticator, and the sname and realm fields of the KRB-ERROR2 MUST be present.</t>
+      <section title="ASN.1 for New Protocol Elements" anchor="d1e297">
         <t>
 </t>
         <t>
-          <figure anchor="magicparlabel-137" title="">
+          <figure anchor="magicparlabel-156" title="ASN.1 module (with explicit tagging)">
             <artwork> APOptions       ::= KerberosFlags
          – reserved(0),
          – use-session-key(1),
@@ -87,6 +119,7 @@ Initiators that support this feature and successfully recover from a KRB-ERROR S
          – continue-needed-ok(TBD)
  
  ad-continue-needed-ok Int32 ::= &lt;TBD&gt;
+ ad-continue-nonce     Int32 ::= &lt;TBD&gt;
  td-continue-needed    Int32 ::= &lt;TBD&gt;
  td-continue-failed    Int32 ::= &lt;TBD&gt;
  
@@ -96,32 +129,38 @@ Initiators that support this feature and successfully recover from a KRB-ERROR S
          enc-part        [2] EncryptedData – EncKRBErrorPart
  }
  
+ ErrorFlags ::= KerberosFlags
+         – reserved(0)  [XXX sounds like cargo cult!]
+         – continue-needed(1)
+         – use-other-sname(2)
+ 
  EncAPRepPart    ::= [APPLICATION &lt;TBD&gt;] SEQUENCE {
          nonce           [0] OCTET STRING (16),
          stime           [1] KerberosTime,
          susec           [2] Microseconds,
          error-code      [3] Int32,
-         realm           [4] Realm – service realm –,
-         sname           [5] PrincipalName – service name –,
-         e-text          [6] KerberosString OPTIONAL,
-         e-data          [7] OCTET STRING OPTIONAL,
-         e-typed-data    [8] TYPED-DATA OPTIONAL
- } </artwork>
+         e-flags         [4] KerberosFlags,
+         e-text          [5] KerberosString OPTIONAL,
+         e-data          [6] OCTET STRING OPTIONAL,
+         e-typed-data    [7] TYPED-DATA OPTIONAL
+         realm           [8] Realm OPTIONAL, – service realm
+         sname           [9] PrincipalName OPTIONAL, – service name
+ }</artwork>
           </figure>
         </t>
       </section>
     </section>
-    <section title="Security Considerations" anchor="d1e291">
+    <section title="Security Considerations" anchor="d1e330">
       <t>
 This document deals with security.</t>
       <t>
 [XXX Note the resource using attacks that are feasible when we have multiple round-trips and note that they are nothing new and nothing to worry about because services should already have timeouts on pre-authenticated protocol phases, and even post-authentication.]</t>
     </section>
-    <section title="IANA Considerations" anchor="d1e304">
+    <section title="IANA Considerations" anchor="d1e342">
       <t>
 This document has no IANA considerations.</t>
     </section>
-    <section title="Informative References" anchor="d1e371"/>
+    <section title="Informative References" anchor="d1e410"/>
   </middle>
   <back>
     <references title="Normative References">&rfc2119;
