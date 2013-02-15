@@ -5,7 +5,7 @@ Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
 Updates: RFC4121 (if approved)                             R. Dowdeswell
 Intended status: Standards Track        Dowdeswell Security Architecture
-Expires: August 18, 2013                               February 14, 2013
+Expires: August 19, 2013                               February 15, 2013
 
 
     Negotiation of Extra Round Trip for Kerberos V5 Generic Security
@@ -36,7 +36,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 18, 2013.
+   This Internet-Draft will expire on August 19, 2013.
 
 Copyright Notice
 
@@ -253,38 +253,38 @@ Table of Contents
    An ASN.1 module appears below.
 
     APOptions       ::= KerberosFlags
-            - reserved(0),
-            - use-session-key(1),
-            - mutual-required(2)
-            - continue-needed-ok(TBD)
+            -- reserved(0),
+            -- use-session-key(1),
+            -- mutual-required(2)
+            -- continue-needed-ok(TBD)
 
     ad-continue-needed-ok Int32 ::= <TBD>
-           - indicate extra round trip support
+           -- indicate extra round trip support
     ad-continue-nonce     Int32 ::= <TBD>
-           - ad-value is challenge nonce from KRB-ERROR2
+           -- ad-value is challenge nonce from KRB-ERROR2
     td-continue-needed    Int32 ::= <TBD>
-           - indicate that extra round trip is expected
+           -- indicate that extra round trip is expected
     td-continue-failed    Int32 ::= <TBD>
-           - indicate protocol failure
+           -- indicate protocol failure
 
     KrbErrorEncPartFlags ::= KerberosFlags
-            - reserved(0)  [XXX sounds like cargo cult!]
-            - use-initiator-subkey(1)
-            - use-ticket-session-key(2)
-            - use-null-enctype(3)
+            -- reserved(0)  [XXX sounds like cargo cult!]
+            -- use-initiator-subkey(1)
+            -- use-ticket-session-key(2)
+            -- use-null-enctype(3)
 
     KRB-ERROR2          ::= [APPLICATION <TBD>] SEQUENCE {
             pvno            [0] INTEGER (5),
             msg-type        [1] INTEGER (<TBD>),
             enc-part-key    [2] KrbErrorEncPartFlags,
-            enc-part        [3] EncryptedData - EncKRBErrorPart
+            enc-part        [3] EncryptedData -- EncKRBErrorPart
     }
 
     ErrorFlags ::= KerberosFlags
-            - reserved(0)  [XXX sounds like cargo cult!]
-            - continue-needed(1)
-            - use-other-sname(2)
-            - user2user(3)
+            -- reserved(0)  [XXX sounds like cargo cult!]
+            -- continue-needed(1)
+            -- use-other-sname(2)
+            -- user2user(3)
 
     EncAPRepPart    ::= [APPLICATION <TBD>] SEQUENCE {
             challenge-nonce [0] OCTET STRING (16),
@@ -297,9 +297,9 @@ Table of Contents
             e-typed-data    [7] TYPED-DATA OPTIONAL,
             caddrs          [8] HostAddresses OPTIONAL,
             saddrs          [9] HostAddresses OPTIONAL,
-            tgt            [10] Ticket OPTIONAL, - for user2user
-            ticket         [11] Ticket OPTIONAL, - fast-re-auth
-            srealm         [12] Realm OPTIONAL,  - service realm
+            tgt            [10] Ticket OPTIONAL, -- for user2user
+            ticket         [11] Ticket OPTIONAL, -- fast-re-auth
+            srealm         [12] Realm OPTIONAL,  -- service realm
             sname          [13] PrincipalName OPTIONAL,
             redir-srealm   [14] Realm OPTIONAL,
             redir-sname    [15] PrincipalName OPTIONAL,
