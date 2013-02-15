@@ -10,7 +10,7 @@ Expires: August 19, 2013                               February 15, 2013
 
     Negotiation of Extra Round Trip for Kerberos V5 Generic Security
                            Services Mechanism
-                 draft-williams-kitten-krb5-extra-rt-00
+                 draft-williams-kitten-krb5-extra-rt-01
 
 Abstract
 
@@ -61,18 +61,20 @@ Table of Contents
    2.      Negotiation
    2.1.    Use in Non-GSS Applications
    2.2.    Number of Round Trips
-   2.3.    User-to-User Authentication
-   2.4.    ASN.1 for New Protocol Elements
-   2.5.    Other Features
-   2.5.1.  Acceptor Name Redirection
-   2.5.2.  Fast Re-Authentication Acceptor Ticket Issuance
-   2.6.    Replay Cache Avoidance
-   2.7.    Other Requirements, Recommendations, and
+   3.      ASN.1 for New Protocol Elements
+   4.      Other Features
+   4.1.    Acceptor Name Redirection
+   4.2.    Fast Re-Authentication Acceptor Ticket Issuance
+   4.3.    Replay Cache Avoidance
+   4.4.    User-to-User Authentication
+   4.4.1.  Negotiation Issues for User-to-User Authentication
+   5.      Other Requirements, Recommendations, and
            Non-Requirements
-   3.      Security Considerations
-   4.      IANA Considerations
-   5.      Informative References
-   6.      Normative References
+   6.      Security Considerations
+   7.      IANA Considerations
+   8.      References
+   8.1.    Normative References
+   8.2.    Informative References
            Authors' Addresses
 
 
@@ -103,12 +105,9 @@ Table of Contents
 2.  Negotiation
 
    We introduce the following new protocol elements.  An ASN.1 module is
-   given in Section 2.4, and references to its contents are made below.
+   given in Section 3, and references to its contents are made below.
 
-   o  a new ap-options flag for use in the cleartext part of AP-REQs to
-      indicate the desire for an extra round trip if need be;
-
-   o  a new Authorization-Data element for use in Authenticators to also
+   o  a new ap-options flag for use in the clear-text part of AP-REQs to
       indicate the desire for an extra round trip if need be;
 
    o  a new Authorization-Data element for use in Authenticators for
@@ -119,18 +118,16 @@ Table of Contents
 
    To use this feature, initiators and acceptors MUST act as follows:
 
-   o  To request this feature, initiators SHALL add the new
-      authorization-data element (in an AD-IF-RELEVANT container) with
-      empty ad-value to their Authenticators, and they SHALL add the new
-      ap-options flag to their AP-REQs.
+   o  To request this feature, initiators SHALL add the new ap-options
+      flag to their AP-REQs.
 
    o  Acceptors that wish to request an additional round trip SHOULD do
       so when initiators indicate support for it, and do so by returning
       a KRB-ERROR2.  The encrypted part of the KRB-ERROR2 SHALL be
       encrypted in one of the following keys: the sub-session key from
       the AP-REQ's Authenticator if it could be decrypted, the session
-      key from the Ticket, if it could be decrypted, or the null enctype
-      and null key.  The KRB-ERROR2 in this case SHALL have a the
+      key from the Ticket, if it could be decrypted, or the null enc-
+      type and null key.  The KRB-ERROR2 in this case SHALL have a the
       continue-needed e-flag set.  The acceptor SHALL also return
       GSS_S_CONTINUE_NEEDED to the application.
 
@@ -208,47 +205,17 @@ Table of Contents
 2.2.  Number of Round Trips
 
    At most two round trips should be needed in general.  Implementations
-   MUST impose a limit of either two or three round trips.  An initiator
-   that rejects an additional round-trip MUST respond with a KRB-ERROR2.
+   SHOULD impose a limit of either two or three round trips.  An
+   initiator that rejects an additional round-trip MUST respond with a
+   KRB-ERROR2.
 
-2.3.  User-to-User Authentication
+   Note that in the user-to-user cases (see Section 4.4) it's possible
+   to have up to three round trips under normal conditions if, for
+   example, the acceptor wishes to avoid the use of replay caches (see
+   Section 4.3).
 
-   There are two user2user authentication cases:
 
-   1.  the KDC only allows a service principal to use user2user
-       authentication,
-
-   2.  the service principal does not know its long-term keys or
-       otherwise wants to use user2user authentication even though the
-       KDC vended a service ticket.
-
-   In the first case the initiator knows this because the KDC returns
-   KDC_ERR_MUST_USE_USER2USER.  The initiator cannot make a valid AP-REQ
-   in this case, yet it must send an AP-REQ or fail to make even an
-   initial security context token.  For this case we propose that the
-   initiator make an AP-REQ with invalid ticket (really, the enc-part of
-   the Ticket will contain some OCTET STRING of length 1 or longer, but
-   no longer than the minimum ciphertext length for the enctype listed
-   in the EncryptedData) and authenticator (an OCTET STRING of length 1
-   or longer, but no longer than the minimum ciphertext length for some
-   enctype supported by the initiator).  The acceptor will fail to
-   process the AP-REQ, of course, both because the Ticket and
-   Authenticator embedded in it are not valid, and because the acceptor
-   will likely not possess the key to decrypt a real Ticket.  The
-   acceptor SHOULD respond with a continue-needed KRB-ERROR2 (using the
-   null enctype for the enc-part) that includes a TGT for the acceptor.
-
-   In the second case the initiator does manage to get a real service
-   ticket for the acceptor but the acceptor nonetheless wishes to use
-   user2user authentication.  In this case the acceptor responds with a
-   KRB-ERROR2, using either the null enctype for the enc-part, or the
-   initiator's sub-session key, and includes a TGT for itself.
-
-   In both cases the initiator then does a TGS request with a second
-   ticket to get a new, user2user Ticket.  Then the initiator makes a
-   new AP-REQ using the new Ticket, and proceeds.
-
-2.4.  ASN.1 for New Protocol Elements
+3.  ASN.1 for New Protocol Elements
 
    An ASN.1 module appears below.
 
@@ -258,8 +225,6 @@ Table of Contents
             -- mutual-required(2)
             -- continue-needed-ok(TBD)
 
-    ad-continue-needed-ok Int32 ::= <TBD>
-           -- indicate extra round trip support
     ad-continue-nonce     Int32 ::= <TBD>
            -- ad-value is challenge nonce from KRB-ERROR2
     td-continue-needed    Int32 ::= <TBD>
@@ -307,7 +272,8 @@ Table of Contents
 
               Figure 1: ASN.1 module (with explicit tagging)
 
-2.5.  Other Features
+
+4.  Other Features
 
    Two other features are supported:
 
@@ -316,7 +282,7 @@ Table of Contents
    o  acceptor-issued service ticket (for the same acceptor name)
       issuance.
 
-2.5.1.  Acceptor Name Redirection
+4.1.  Acceptor Name Redirection
 
    In some use cases, such as clusters, for example, an acceptor may
    wish to ask the initiator to use a different name (and ticket) for
@@ -324,13 +290,13 @@ Table of Contents
    redir-sname fields of a continue-needed KRB-ERROR2.  The KRB-ERROR2's
    enc-part MUST be encrypted in the initiator's sub-session key, and
    initiators MUST ignore the redir-srealm and redir-sname fields of any
-   KRB-ERROR2 where the enc-part is encrypted in the null enctype.
+   KRB-ERROR2 where the enc-part is encrypted in the null enc-type.
 
    Because the acceptor's name redirection is authenticated to the
    initiator, it is safe for the initiator to get a service ticket for
    the new name and re-try authentication with it.
 
-2.5.2.  Fast Re-Authentication Acceptor Ticket Issuance
+4.2.  Fast Re-Authentication Acceptor Ticket Issuance
 
    In view of future extensions where the Kerberos AP protocol may be
    extended to use public key agreement protocols -which will likely be
@@ -339,10 +305,10 @@ Table of Contents
    key of its choosing.  This service ticket may be used to speed up
    future otherwise-slow AP exchanges.
 
-2.6.  Replay Cache Avoidance
+4.3.  Replay Cache Avoidance
 
    By using an additional round trip and a challenge/response nonce,
-   this protocol is inmune to replays of AP-REQ PDUs.  Acceptor
+   this protocol is immune to replays of AP-REQ PDUs.  Acceptor
    implementations MAY not enter Authenticators from extra round trips
    into a replay cache when there are no other old implementations on
    the same host (and with access to the same acceptor credentials) that
@@ -353,7 +319,64 @@ Table of Contents
    initial security context tokens that contain a challenge response
    nonce.
 
-2.7.  Other Requirements, Recommendations, and Non-Requirements
+4.4.  User-to-User Authentication
+
+   There are two user2user authentication cases:
+
+   1.  the KDC only allows a service principal to use user2user
+       authentication,
+
+   2.  the service principal does not know its long-term keys or
+       otherwise wants to use user2user authentication even though the
+       KDC vended a service ticket.
+
+   In the first case the initiator knows this because the KDC returns
+   KDC_ERR_MUST_USE_USER2USER.  The initiator cannot make a valid AP-REQ
+   in this case, yet it must send an AP-REQ or fail to make even an
+   initial security context token.  For this case we propose that the
+   initiator make an AP-REQ with invalid ticket (really, the enc-part of
+   the Ticket will contain some OCTET STRING of length 1 or longer, but
+   no longer than the minimum cipher-text length for the enc-type listed
+   in the EncryptedData) and authenticator (an OCTET STRING of length 1
+   or longer, but no longer than the minimum cipher-text length for some
+   enc-type supported by the initiator).  The acceptor will fail to
+   process the AP-REQ, of course, both because the Ticket and
+   Authenticator embedded in it are not valid, and because the acceptor
+   will likely not possess the key to decrypt a real Ticket.  The
+   acceptor SHOULD respond with a continue-needed KRB-ERROR2 (using the
+   null enc-type for the enc-part) that includes a TGT for the acceptor.
+
+   In the second case the initiator does manage to get a real service
+   ticket for the acceptor but the acceptor nonetheless wishes to use
+   user2user authentication.  In this case the acceptor responds with a
+   KRB-ERROR2, using either the null enc-type for the enc-part, or the
+   initiator's sub-session key, and includes a TGT for itself.
+
+   In both cases the initiator then does a TGS request with a second
+   ticket to get a new, user2user Ticket.  Then the initiator makes a
+   new AP-REQ using the new Ticket, and proceeds.
+
+4.4.1.  Negotiation Issues for User-to-User Authentication
+
+   Initiator applications that can negotiate security mechanisms and
+   which have available an existing user-to-user mechanism
+   [I-D.swift-win2k-krb-user2user] as well as the Kerberos V5 GSS
+   mechanism with the user-to-user extension defined here will have a
+   problem: they may end up negotiating the use of the Kerberos V5 GSS
+   mechanism and fail to establish a security context because the
+   acceptor does not support the features defined in this document, but
+   the application might have succeeded if it had selected the user-to-
+   user mechanism.
+
+   [Question: how should we address this?  We could say "give priority
+   to the user-to-user mechanism", but in some cases that might require
+   changes to the acceptor side.  Should we just remove the use of user-
+   to-user functionality?  We could remove half of the user-to-user
+   functionality, the half that is triggered by
+   KDC_ERR_MUST_USE_USER2USER KDC errors. -Nico]
+
+
+5.  Other Requirements, Recommendations, and Non-Requirements
 
    All error PDUs in an AP exchange where the AP-REQ has the continue-
    needed-ok ap-options flag MUST be KRB-ERROR2 PDUs.
@@ -376,7 +399,7 @@ Table of Contents
    ...
 
 
-3.  Security Considerations
+6.  Security Considerations
 
    This document deals with security.
 
@@ -386,15 +409,14 @@ Table of Contents
    authenticated protocol phases, and even post-authentication.]
 
 
-4.  IANA Considerations
+7.  IANA Considerations
 
    This document has no IANA considerations.
 
 
-5.  Informative References
+8.  References
 
-
-6.  Normative References
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -413,6 +435,14 @@ Table of Contents
               Version 5 Generic Security Service Application Program
               Interface (GSS-API) Mechanism: Version 2", RFC 4121,
               July 2005.
+
+8.2.  Informative References
+
+   [I-D.swift-win2k-krb-user2user]
+              Swift, M., Brezak, J., and P. Moore, "User to User
+              Kerberos Authentication using GSS-API",
+              draft-swift-win2k-krb-user2user-03 (work in progress),
+              February 2011.
 
 
 Authors' Addresses

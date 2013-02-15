@@ -261,6 +261,13 @@ font-style: normal;
 font-variant: normal;
 font-size: medium;
 }
+div.flex_embeddedbibxml {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
 </style>
 </head>
 <body>
@@ -268,7 +275,7 @@ font-size: medium;
 Negotiation of Extra Round Trip for Kerberos V5 Generic Security Services Mechanism</h1>
 <div class="standard"><a id='magicparlabel-2' />
 <div class="flex_docname"><div class="plain_layout"><a id='magicparlabel-6' />
-draft-williams-kitten-krb5-extra-rt-00</div>
+draft-williams-kitten-krb5-extra-rt-01</div>
 </div><div class="flex_ipr"><div class="plain_layout"><a id='magicparlabel-10' />
 trust200902</div>
 </div><div class="flex_intendedstatus"><div class="plain_layout"><a id='magicparlabel-14' />
@@ -329,33 +336,36 @@ This Internet-Draft proposes an extension to the Kerberos V5 security mechanism 
 
 <div class='lyxtoc-1'><a href='#magicparlabel-96' class='tocentry'>2 Negotiation</a> <a href='#magicparlabel-96' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-125' class='tocentry'>2.1 Use in Non-GSS Applications</a> <a href='#magicparlabel-125' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-124' class='tocentry'>2.1 Use in Non-GSS Applications</a> <a href='#magicparlabel-124' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-127' class='tocentry'>2.2 Number of Round Trips</a> <a href='#magicparlabel-127' class='tocarrow'>&gt;</a></div>
-
-<div class='lyxtoc-2'><a href='#magicparlabel-129' class='tocentry'>2.3 User-to-User Authentication</a> <a href='#magicparlabel-129' class='tocarrow'>&gt;</a></div>
-
-<div class='lyxtoc-2'><a href='#magicparlabel-136' class='tocentry'>2.4 ASN.1 for New Protocol Elements</a> <a href='#magicparlabel-136' class='tocarrow'>&gt;</a></div>
-
-<div class='lyxtoc-2'><a href='#magicparlabel-203' class='tocentry'>2.5 Other Features</a> <a href='#magicparlabel-203' class='tocarrow'>&gt;</a>
-
-<div class='lyxtoc-3'><a href='#magicparlabel-207' class='tocentry'>2.5.1 Acceptor Name Redirection</a> <a href='#magicparlabel-207' class='tocarrow'>&gt;</a></div>
-
-<div class='lyxtoc-3'><a href='#magicparlabel-210' class='tocentry'>2.5.2 Fast Re-Authentication Acceptor Ticket Issuance</a> <a href='#magicparlabel-210' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-126' class='tocentry'>2.2 Number of Round Trips</a> <a href='#magicparlabel-126' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-212' class='tocentry'>2.6 Replay Cache Avoidance</a> <a href='#magicparlabel-212' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-129' class='tocentry'>3 ASN.1 for New Protocol Elements</a> <a href='#magicparlabel-129' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-215' class='tocentry'>2.7 Other Requirements, Recommendations, and Non-Requirements</a> <a href='#magicparlabel-215' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-194' class='tocentry'>4 Other Features</a> <a href='#magicparlabel-194' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-198' class='tocentry'>4.1 Acceptor Name Redirection</a> <a href='#magicparlabel-198' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-201' class='tocentry'>4.2 Fast Re-Authentication Acceptor Ticket Issuance</a> <a href='#magicparlabel-201' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-203' class='tocentry'>4.3 Replay Cache Avoidance</a> <a href='#magicparlabel-203' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-206' class='tocentry'>4.4 User-to-User Authentication</a> <a href='#magicparlabel-206' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-213' class='tocentry'>4.4.1 Negotiation Issues for User-to-User Authentication</a> <a href='#magicparlabel-213' class='tocarrow'>&gt;</a></div>
+</div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-220' class='tocentry'>3 Security Considerations</a> <a href='#magicparlabel-220' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-220' class='tocentry'>5 Other Requirements, Recommendations, and Non-Requirements</a> <a href='#magicparlabel-220' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-223' class='tocentry'>4 IANA Considerations</a> <a href='#magicparlabel-223' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-225' class='tocentry'>6 Security Considerations</a> <a href='#magicparlabel-225' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-225' class='tocentry'>5 Normative References</a> <a href='#magicparlabel-225' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-228' class='tocentry'>7 IANA Considerations</a> <a href='#magicparlabel-228' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-251' class='tocentry'>6 Informative References</a> <a href='#magicparlabel-251' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-230' class='tocentry'>8 Normative References</a> <a href='#magicparlabel-230' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-256' class='tocentry'>9 Informative References</a> <a href='#magicparlabel-256' class='tocarrow'>&gt;</a></div>
 </div>
 
 <h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-80' />
@@ -375,108 +385,91 @@ RFC2119</div>
 <h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-96' />
 Negotiation</h2>
 <div class="standard"><a id='magicparlabel-97' />
-We introduce the following new protocol elements. An ASN.1 module is given in <a href="#sub_ASN_1_for_New">2.4</a>, and references to its contents are made below.</div>
+We introduce the following new protocol elements. An ASN.1 module is given in <a href="#sub_ASN_1_for_New">3</a>, and references to its contents are made below.</div>
 
 <ul class="itemize"><li class="itemize_item"><a id='magicparlabel-98' />
-a new ap-options flag for use in the cleartext part of AP-REQs to indicate the desire for an extra round trip if need be;</li>
+a new ap-options flag for use in the clear-text part of AP-REQs to indicate the desire for an extra round trip if need be;</li>
 <li class="itemize_item"><a id='magicparlabel-99' />
-a new Authorization-Data element for use in Authenticators to also indicate the desire for an extra round trip if need be;</li>
-<li class="itemize_item"><a id='magicparlabel-100' />
 a new Authorization-Data element for use in Authenticators for quoting back a challenge nonce from the acceptor;</li>
-<li class="itemize_item"><a id='magicparlabel-101' />
+<li class="itemize_item"><a id='magicparlabel-100' />
 a new PDU: KRB-ERROR2, with additional fields and support for authenticated errors.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-102' />
+<div class="standard"><a id='magicparlabel-101' />
 To use this feature, initiators and acceptors MUST act as follows:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-103' />
-To request this feature, initiators SHALL add the new authorization-data element (in an AD-IF-RELEVANT container) with empty ad-value to their Authenticators, and they SHALL add the new ap-options flag to their AP-REQs.</li>
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-102' />
+To request this feature, initiators SHALL add the new ap-options flag to their AP-REQs.</li>
+<li class="itemize_item"><a id='magicparlabel-103' />
+Acceptors that wish to request an additional round trip SHOULD do so when initiators indicate support for it, and do so by returning a KRB-ERROR2. The encrypted part of the KRB-ERROR2 SHALL be encrypted in one of the following keys: the sub-session key from the AP-REQ's Authenticator if it could be decrypted, the session key from the Ticket, if it could be decrypted, or the null enc-type and null key. The KRB-ERROR2 in this case SHALL have a the continue-needed e-flag set. The acceptor SHALL also return GSS_S_CONTINUE_NEEDED to the application.</li>
 <li class="itemize_item"><a id='magicparlabel-104' />
-Acceptors that wish to request an additional round trip SHOULD do so when initiators indicate support for it, and do so by returning a KRB-ERROR2. The encrypted part of the KRB-ERROR2 SHALL be encrypted in one of the following keys: the sub-session key from the AP-REQ's Authenticator if it could be decrypted, the session key from the Ticket, if it could be decrypted, or the null enctype and null key. The KRB-ERROR2 in this case SHALL have a the continue-needed e-flag set. The acceptor SHALL also return GSS_S_CONTINUE_NEEDED to the application.</li>
-<li class="itemize_item"><a id='magicparlabel-105' />
 Initiators that request this feature and receive a KRB-ERROR2 SHALL attempt to recover.</li>
-<li class="itemize_item"><a id='magicparlabel-106' />
+<li class="itemize_item"><a id='magicparlabel-105' />
 Initiators that request this feature and receive a KRB-ERROR2 with the ke-continue-needed e-flag set MUST attempt to recover and MUST produce a token to send to the acceptor: either a KRB-ERROR2 if the initiator failed to recover, or a new AP-REQ (with the traditional GSS-API pseudo-ASN.1 mechanism OID header).
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-107' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-106' />
 In the successful recovery case the initiator MUST quote the nonce from the KRB-ERROR2 using an AD-CHALLENGE-RESPONSE-NONCE (see below) authorization data element, and this MUST NOT be wrapped in an AD-IF-RELEVANT container.</li>
 </ul>
-</li><li class="itemize_item"><a id='magicparlabel-108' />
+</li><li class="itemize_item"><a id='magicparlabel-107' />
 Initiators that support this feature and successfully recover from a KRB-ERROR or KRB-ERROR2 SHALL return GSS_S_CONTINUE_NEEDED. Otherwise they MUST generate a KRB-ERROR to send to the acceptor and return an error to the application.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-109' />
+<div class="standard"><a id='magicparlabel-108' />
 The following Kerberos errors can be recovered from using this protocol:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-110' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-109' />
 KRB_AP_ERR_TKT_EXPIRED: the initiator should get a new service ticket</li>
-<li class="itemize_item"><a id='magicparlabel-111' />
+<li class="itemize_item"><a id='magicparlabel-110' />
 KRB_AP_ERR_TKT_NYV: the initiator should get a new service ticket</li>
-<li class="itemize_item"><a id='magicparlabel-112' />
+<li class="itemize_item"><a id='magicparlabel-111' />
 KRB_AP_ERR_REPEAT: the initiator should build a new AP-REQ</li>
-<li class="itemize_item"><a id='magicparlabel-113' />
+<li class="itemize_item"><a id='magicparlabel-112' />
 KRB_AP_ERR_SKEW: the initiator should build a new AP-REQ with time corrected for the offset between the initiator's and acceptor's clocks</li>
-<li class="itemize_item"><a id='magicparlabel-114' />
+<li class="itemize_item"><a id='magicparlabel-113' />
 KRB_AP_ERR_BADKEYVER: the initiator should get a new service ticket</li>
-<li class="itemize_item"><a id='magicparlabel-115' />
+<li class="itemize_item"><a id='magicparlabel-114' />
 KRB_AP_PATH_NOT_ACCEPTED: the initiator should get a new service ticket using a different transit path</li>
 </ul>
-<div class="standard"><a id='magicparlabel-116' />
+<div class="standard"><a id='magicparlabel-115' />
 Error codes that denote PDU corruption (and/or an active attack) can also be recovered from by attempting a new AP-REQ:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-117' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-116' />
 KRB_AP_ERR_BAD_INTEGRITY</li>
-<li class="itemize_item"><a id='magicparlabel-118' />
+<li class="itemize_item"><a id='magicparlabel-117' />
 KRB_AP_ERR_BADVERSION</li>
-<li class="itemize_item"><a id='magicparlabel-119' />
+<li class="itemize_item"><a id='magicparlabel-118' />
 KRB_AP_ERR_BADMATCH</li>
-<li class="itemize_item"><a id='magicparlabel-120' />
+<li class="itemize_item"><a id='magicparlabel-119' />
 KRB_AP_ERR_MSG_TYPE</li>
-<li class="itemize_item"><a id='magicparlabel-121' />
+<li class="itemize_item"><a id='magicparlabel-120' />
 KRB_AP_ERR_MODIFIED</li>
 </ul>
-<div class="standard"><a id='magicparlabel-122' />
+<div class="standard"><a id='magicparlabel-121' />
 Other error codes that may be recovered from:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-123' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-122' />
 KRB_AP_ERR_BADADDR; the acceptor SHOULD include a list of one or more client network addresses as reported by the operating system, but if the acceptor does not then the continue-needed e-flag MUST NOT be included and the error must be final.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-124' />
+<div class="standard"><a id='magicparlabel-123' />
 It is also possible for an acceptor to request that the initiator re-authenticate but to a different service principal, in which case the error code SHALL be KRB_AP_ERR_NOT_US, the KRB-ERROR2 encrypted part MUST be encrypted in the sub-session key from the Authenticator, and the sname and realm fields of the KRB-ERROR2 MUST be present.</div>
-<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-125' />
+<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-124' />
 Use in Non-GSS Applications</h3>
-<div class="standard"><a id='magicparlabel-126' />
+<div class="standard"><a id='magicparlabel-125' />
 We only specify multiple round trips for the GSS mechanism and application case. We believe that some non-GSS Kerberos applications may also benefit from this extension.</div>
-<h3 class="subsection"><span class="subsection_label">2.2</span> <a id='magicparlabel-127' />
+<h3 class="subsection"><span class="subsection_label">2.2</span> <a id='magicparlabel-126' />
 Number of Round Trips</h3>
+<div class="standard"><a id='magicparlabel-127' />
+At most two round trips should be needed in general. Implementations SHOULD impose a limit of either two or three round trips. An initiator that rejects an additional round-trip MUST respond with a KRB-ERROR2.</div>
+
 <div class="standard"><a id='magicparlabel-128' />
-At most two round trips should be needed in general. Implementations MUST impose a limit of either two or three round trips. An initiator that rejects an additional round-trip MUST respond with a KRB-ERROR2.</div>
-<h3 class="subsection"><span class="subsection_label">2.3</span> <a id='magicparlabel-129' />
-User-to-User Authentication</h3>
-<div class="standard"><a id='magicparlabel-130' />
-There are two user2user authentication cases:</div>
-
-<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-131' />
-the KDC only allows a service principal to use user2user authentication,</li>
-<li class="enumerate_item"><a id='magicparlabel-132' />
-the service principal does not know its long-term keys or otherwise wants to use user2user authentication even though the KDC vended a service ticket.</li>
-</ol>
-<div class="standard"><a id='magicparlabel-133' />
-In the first case the initiator knows this because the KDC returns KDC_ERR_MUST_USE_USER2USER. The initiator cannot make a valid AP-REQ in this case, yet it must send an AP-REQ or fail to make even an initial security context token. For this case we propose that the initiator make an AP-REQ with invalid ticket (really, the enc-part of the Ticket will contain some OCTET STRING of length 1 or longer, but no longer than the minimum ciphertext length for the enctype listed in the EncryptedData) and authenticator (an OCTET STRING of length 1 or longer, but no longer than the minimum ciphertext length for some enctype supported by the initiator). The acceptor will fail to process the AP-REQ, of course, both because the Ticket and Authenticator embedded in it are not valid, and because the acceptor will likely not possess the key to decrypt a real Ticket. The acceptor SHOULD respond with a continue-needed KRB-ERROR2 (using the null enctype for the enc-part) that includes a TGT for the acceptor.</div>
-
-<div class="standard"><a id='magicparlabel-134' />
-In the second case the initiator does manage to get a real service ticket for the acceptor but the acceptor nonetheless wishes to use user2user authentication. In this case the acceptor responds with a KRB-ERROR2, using either the null enctype for the enc-part, or the initiator's sub-session key, and includes a TGT for itself.</div>
-
-<div class="standard"><a id='magicparlabel-135' />
-In both cases the initiator then does a TGS request with a second ticket to get a new, user2user Ticket. Then the initiator makes a new AP-REQ using the new Ticket, and proceeds.</div>
-<h3 class="subsection"><span class="subsection_label">2.4</span> <a id='magicparlabel-136' />
+Note that in the user-to-user cases (see <a href="#sub_User_to_User_Authentication">4.4</a>) it's possible to have up to three round trips under normal conditions if, for example, the acceptor wishes to avoid the use of replay caches (see <a href="#sub_Replay_Cache_Avoidance">4.3</a>).</div>
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-129' />
 <a id="sub_ASN_1_for_New" />
-ASN.1 for New Protocol Elements</h3>
-<div class="standard"><a id='magicparlabel-137' />
+ASN.1 for New Protocol Elements</h2>
+<div class="standard"><a id='magicparlabel-130' />
 An ASN.1 module appears below.</div>
 
-<div class="standard"><a id='magicparlabel-138' />
+<div class="standard"><a id='magicparlabel-131' />
 </div>
-<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-142' />
+<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-135' />
 </div>
 <div class='float float-listings'><pre> APOptions       ::= KerberosFlags
          &ndash; reserved(0),
@@ -484,8 +477,6 @@ An ASN.1 module appears below.</div>
          &ndash; mutual-required(2) 
          &ndash; continue-needed-ok(TBD)
  
- ad-continue-needed-ok Int32 ::= &lt;TBD&gt;
-        &ndash; indicate extra round trip support 
  ad-continue-nonce     Int32 ::= &lt;TBD&gt;
         &ndash; ad-value is challenge nonce from KRB-ERROR2
  td-continue-needed    Int32 ::= &lt;TBD&gt;
@@ -532,92 +523,125 @@ An ASN.1 module appears below.</div>
 }</pre></div>
 
 
-<div class="plain_layout"><a id='magicparlabel-198' />
-<div class='float-caption float-caption-figure'>Figure 1:<div class="plain_layout"><a id='magicparlabel-202' />
+<div class="plain_layout"><a id='magicparlabel-189' />
+<div class='float-caption float-caption-figure'>Figure 1:<div class="plain_layout"><a id='magicparlabel-193' />
 ASN.1 module (with explicit tagging)</div>
 </div></div>
 </div>
 
-<h3 class="subsection"><span class="subsection_label">2.5</span> <a id='magicparlabel-203' />
-Other Features</h3>
-<div class="standard"><a id='magicparlabel-204' />
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-194' />
+Other Features</h2>
+<div class="standard"><a id='magicparlabel-195' />
 Two other features are supported:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-205' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-196' />
 acceptor name redirection;</li>
-<li class="itemize_item"><a id='magicparlabel-206' />
+<li class="itemize_item"><a id='magicparlabel-197' />
 acceptor-issued service ticket (for the same acceptor name) issuance.</li>
 </ul>
-<h4 class="subsubsection"><span class="subsubsection_label">2.5.1</span> <a id='magicparlabel-207' />
-Acceptor Name Redirection</h4>
-<div class="standard"><a id='magicparlabel-208' />
-In some use cases, such as clusters, for example, an acceptor may wish to ask the initiator to use a different name (and ticket) for the acceptor. This is indicated by setting the redir-srealm and redir-sname fields of a continue-needed KRB-ERROR2. The KRB-ERROR2's enc-part MUST be encrypted in the initiator's sub-session key, and initiators MUST ignore the redir-srealm and redir-sname fields of any KRB-ERROR2 where the enc-part is encrypted in the null enctype.</div>
+<h3 class="subsection"><span class="subsection_label">4.1</span> <a id='magicparlabel-198' />
+Acceptor Name Redirection</h3>
+<div class="standard"><a id='magicparlabel-199' />
+In some use cases, such as clusters, for example, an acceptor may wish to ask the initiator to use a different name (and ticket) for the acceptor. This is indicated by setting the redir-srealm and redir-sname fields of a continue-needed KRB-ERROR2. The KRB-ERROR2's enc-part MUST be encrypted in the initiator's sub-session key, and initiators MUST ignore the redir-srealm and redir-sname fields of any KRB-ERROR2 where the enc-part is encrypted in the null enc-type.</div>
 
-<div class="standard"><a id='magicparlabel-209' />
+<div class="standard"><a id='magicparlabel-200' />
 Because the acceptor's name redirection is authenticated to the initiator, it is safe for the initiator to get a service ticket for the new name and re-try authentication with it.</div>
-<h4 class="subsubsection"><span class="subsubsection_label">2.5.2</span> <a id='magicparlabel-210' />
-Fast Re-Authentication Acceptor Ticket Issuance</h4>
-<div class="standard"><a id='magicparlabel-211' />
+<h3 class="subsection"><span class="subsection_label">4.2</span> <a id='magicparlabel-201' />
+Fast Re-Authentication Acceptor Ticket Issuance</h3>
+<div class="standard"><a id='magicparlabel-202' />
 In view of future extensions where the Kerberos AP protocol may be extended to use public key agreement protocols -which will likely be slow-, we provide a field in the KRB-ERROR2 where the acceptor may include a Ticket for itself, minted by the acceptor using a secret key of its choosing. This service ticket may be used to speed up future otherwise-slow AP exchanges.</div>
-<h3 class="subsection"><span class="subsection_label">2.6</span> <a id='magicparlabel-212' />
+<h3 class="subsection"><span class="subsection_label">4.3</span> <a id='magicparlabel-203' />
+<a id="sub_Replay_Cache_Avoidance" />
 Replay Cache Avoidance</h3>
-<div class="standard"><a id='magicparlabel-213' />
-By using an additional round trip and a challenge/response nonce, this protocol is inmune to replays of AP-REQ PDUs. Acceptor implementations MAY not enter Authenticators from extra round trips into a replay cache when there are no other old implementations on the same host (and with access to the same acceptor credentials) that ignore critical authorization data or which don't know to reject initial AP-REQs that contain a challenge response nonce.</div>
+<div class="standard"><a id='magicparlabel-204' />
+By using an additional round trip and a challenge/response nonce, this protocol is immune to replays of AP-REQ PDUs. Acceptor implementations MAY not enter Authenticators from extra round trips into a replay cache when there are no other old implementations on the same host (and with access to the same acceptor credentials) that ignore critical authorization data or which don't know to reject initial AP-REQs that contain a challenge response nonce.</div>
 
-<div class="standard"><a id='magicparlabel-214' />
+<div class="standard"><a id='magicparlabel-205' />
 By the same token, acceptors that support this feature MUST reject initial security context tokens that contain a challenge response nonce.</div>
-<h3 class="subsection"><span class="subsection_label">2.7</span> <a id='magicparlabel-215' />
-Other Requirements, Recommendations, and Non-Requirements</h3>
-<div class="standard"><a id='magicparlabel-216' />
-All error PDUs in an AP exchange where the AP-REQ has the continue-needed-ok ap-options flag MUST be KRB-ERROR2 PDUs.</div>
+<h3 class="subsection"><span class="subsection_label">4.4</span> <a id='magicparlabel-206' />
+<a id="sub_User_to_User_Authentication" />
+User-to-User Authentication</h3>
+<div class="standard"><a id='magicparlabel-207' />
+There are two user2user authentication cases:</div>
 
-<div class="standard"><a id='magicparlabel-217' />
-Whenever an acceptor is able to decrypt the Ticket from an AP-REQ and yet wishes or has to output a KRB-ERROR2, then the enc-part of the KRB-ERROR2 MUST be encrypted in either the initiator's sub-session key (from the AP-REQ) or the Ticket's session key (if the acceptor could not decrypt the Authenticator), and the srealm and sname fields MUST be set to be the same as the realm and sname fields from the Ticket.</div>
+<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-208' />
+the KDC only allows a service principal to use user2user authentication,</li>
+<li class="enumerate_item"><a id='magicparlabel-209' />
+the service principal does not know its long-term keys or otherwise wants to use user2user authentication even though the KDC vended a service ticket.</li>
+</ol>
+<div class="standard"><a id='magicparlabel-210' />
+In the first case the initiator knows this because the KDC returns KDC_ERR_MUST_USE_USER2USER. The initiator cannot make a valid AP-REQ in this case, yet it must send an AP-REQ or fail to make even an initial security context token. For this case we propose that the initiator make an AP-REQ with invalid ticket (really, the enc-part of the Ticket will contain some OCTET STRING of length 1 or longer, but no longer than the minimum cipher-text length for the enc-type listed in the EncryptedData) and authenticator (an OCTET STRING of length 1 or longer, but no longer than the minimum cipher-text length for some enc-type supported by the initiator). The acceptor will fail to process the AP-REQ, of course, both because the Ticket and Authenticator embedded in it are not valid, and because the acceptor will likely not possess the key to decrypt a real Ticket. The acceptor SHOULD respond with a continue-needed KRB-ERROR2 (using the null enc-type for the enc-part) that includes a TGT for the acceptor.</div>
 
-<div class="standard"><a id='magicparlabel-218' />
-Whenever an initiator receives a KRB-ERROR2 with enc-part encrypted in either the initiator's sub-session key or the Ticket's session key, then the initiator SHOULD check that the srealm and sname fields of the KRB-ERROR2 encrypted part match the ones used in the initiator's AP-REQ's Ticket (XXX what should the initiator do if these don't match?!).</div>
+<div class="standard"><a id='magicparlabel-211' />
+In the second case the initiator does manage to get a real service ticket for the acceptor but the acceptor nonetheless wishes to use user2user authentication. In this case the acceptor responds with a KRB-ERROR2, using either the null enc-type for the enc-part, or the initiator's sub-session key, and includes a TGT for itself.</div>
+
+<div class="standard"><a id='magicparlabel-212' />
+In both cases the initiator then does a TGS request with a second ticket to get a new, user2user Ticket. Then the initiator makes a new AP-REQ using the new Ticket, and proceeds.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">4.4.1</span> <a id='magicparlabel-213' />
+Negotiation Issues for User-to-User Authentication</h4>
+<div class="standard"><a id='magicparlabel-214' />
+Initiator applications that can negotiate security mechanisms and which have available an existing user-to-user mechanism <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-218' />
+I-D.swift-win2k-krb-user2user</div>
+</div> as well as the Kerberos V5 GSS mechanism with the user-to-user extension defined here will have a problem: they may end up negotiating the use of the Kerberos V5 GSS mechanism and fail to establish a security context because the acceptor does not support the features defined in this document, but the application might have succeeded if it had selected the user-to-user mechanism.</div>
 
 <div class="standard"><a id='magicparlabel-219' />
-...</div>
-<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-220' />
-Security Considerations</h2>
+[Question: how should we address this? We could say &ldquo;give priority to the user-to-user mechanism&rdquo;, but in some cases that might require changes to the acceptor side. Should we just remove the use of user-to-user functionality? We could remove half of the user-to-user functionality, the half that is triggered by KDC_ERR_MUST_USE_USER2USER KDC errors. -Nico]</div>
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-220' />
+Other Requirements, Recommendations, and Non-Requirements</h2>
 <div class="standard"><a id='magicparlabel-221' />
-This document deals with security.</div>
+All error PDUs in an AP exchange where the AP-REQ has the continue-needed-ok ap-options flag MUST be KRB-ERROR2 PDUs.</div>
 
 <div class="standard"><a id='magicparlabel-222' />
-[XXX Note the resource using attacks that are feasible when we have multiple round-trips and note that they are nothing new and nothing to worry about because services should already have timeouts on pre-authenticated protocol phases, and even post-authentication.]</div>
-<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-223' />
-IANA Considerations</h2>
+Whenever an acceptor is able to decrypt the Ticket from an AP-REQ and yet wishes or has to output a KRB-ERROR2, then the enc-part of the KRB-ERROR2 MUST be encrypted in either the initiator's sub-session key (from the AP-REQ) or the Ticket's session key (if the acceptor could not decrypt the Authenticator), and the srealm and sname fields MUST be set to be the same as the realm and sname fields from the Ticket.</div>
+
+<div class="standard"><a id='magicparlabel-223' />
+Whenever an initiator receives a KRB-ERROR2 with enc-part encrypted in either the initiator's sub-session key or the Ticket's session key, then the initiator SHOULD check that the srealm and sname fields of the KRB-ERROR2 encrypted part match the ones used in the initiator's AP-REQ's Ticket (XXX what should the initiator do if these don't match?!).</div>
+
 <div class="standard"><a id='magicparlabel-224' />
+...</div>
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-225' />
+Security Considerations</h2>
+<div class="standard"><a id='magicparlabel-226' />
+This document deals with security.</div>
+
+<div class="standard"><a id='magicparlabel-227' />
+[XXX Note the resource using attacks that are feasible when we have multiple round-trips and note that they are nothing new and nothing to worry about because services should already have timeouts on pre-authenticated protocol phases, and even post-authentication.]</div>
+<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-228' />
+IANA Considerations</h2>
+<div class="standard"><a id='magicparlabel-229' />
 This document has no IANA considerations.</div>
-<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-225' />
+<h2 class="section"><span class="section_label">8</span> <a id='magicparlabel-230' />
 <a id="sec_References" />
 Normative References</h2>
-<div class="standard"><a id='magicparlabel-226' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-230' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
-</div></div>
-
 <div class="standard"><a id='magicparlabel-231' />
 <div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-235' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">rfc2743</a></div>
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
 </div></div>
 
 <div class="standard"><a id='magicparlabel-236' />
 <div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-240' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">rfc2744</a></div>
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">rfc2743</a></div>
 </div></div>
 
 <div class="standard"><a id='magicparlabel-241' />
 <div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-245' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">rfc2744</a></div>
 </div></div>
 
 <div class="standard"><a id='magicparlabel-246' />
 <div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-250' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-251' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-255' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">rfc4121</a></div>
 </div></div>
-<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-251' />
+<h2 class="section"><span class="section_label">9</span> <a id='magicparlabel-256' />
 Informative References</h2>
+<div class="standard"><a id='magicparlabel-257' />
+<div class="flex_embeddedbibxml"><div class="plain_layout"><a id='magicparlabel-261' />
+&lt;reference anchor='I-D.swift-win2k-krb-user2user'&gt; &lt;front&gt; &lt;title&gt;User to User Kerberos Authentication using GSS-API&lt;/title&gt; &lt;author initials='M.' surname='Swift' fullname='Michael Swift'&gt; &lt;organization/&gt; &lt;/author&gt; &lt;author initials='J.' surname='Brezak' fullname='John Brezak'&gt; &lt;organization/&gt; &lt;/author&gt; &lt;author initials='P.' surname='Moore' fullname='Patrick Moore'&gt; &lt;organization/&gt; &lt;/author&gt; &lt;date month='February' day='21' year='2011' /&gt; &lt;abstract&gt;&lt;t&gt;The security model of the web platform has evolved over time to meet the needs of new applications and to correct earlier mistakes. Although web security has evolved largely organically, the security model has converged towards a handful of key concepts. This document presents those concepts and provides advice to designers of new pieces of the web platform.&lt;/t&gt;&lt;/abstract&gt; &lt;/front&gt; &lt;seriesInfo name='Internet-Draft' value='draft-swift-win2k-krb-user2user-03' /&gt; &lt;format type='TXT' target='http://www.ietf.org/internet-drafts/draft-swift-win2k-krb-user2user-03.txt' /&gt; &lt;/reference&gt;</div>
+</div></div>
 </body>
 </html>
