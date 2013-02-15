@@ -78,15 +78,15 @@ Table of Contents
    4.4.1.  Negotiation Issues for User-to-User Authentication . . . . 11
    5.      Other Requirements, Recommendations, and
            Non-Requirements . . . . . . . . . . . . . . . . . . . . . 13
-   6.      Security Considerations  . . . . . . . . . . . . . . . . . 14
-   7.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 15
-   8.      TODO . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
-   9.      References . . . . . . . . . . . . . . . . . . . . . . . . 17
-   9.1.    Normative References . . . . . . . . . . . . . . . . . . . 17
-   9.2.    Informative References . . . . . . . . . . . . . . . . . . 17
-           Authors' Addresses . . . . . . . . . . . . . . . . . . . . 18
-
-
+   6.      Application Compatibility Note . . . . . . . . . . . . . . 14
+   7.      Differences from "DCE style" . . . . . . . . . . . . . . . 15
+   8.      Security Considerations  . . . . . . . . . . . . . . . . . 16
+   9.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 17
+   10.     TODO . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+   11.     References . . . . . . . . . . . . . . . . . . . . . . . . 19
+   11.1.   Normative References . . . . . . . . . . . . . . . . . . . 19
+   11.2.   Informative References . . . . . . . . . . . . . . . . . . 19
+           Authors' Addresses . . . . . . . . . . . . . . . . . . . . 20
 
 
 
@@ -729,7 +729,119 @@ Williams & Dowdeswell    Expires August 19, 2013               [Page 13]
 Internet-Draft              Kerberos Extra AP              February 2013
 
 
-6.  Security Considerations
+6.  Application Compatibility Note
+
+   Some GSS-API applications assume that no more than one round trip is
+   required for security context token establishment.  Most such
+   applications will fail safe if GSS_Init_sec_context() or
+   GSS_Accept_sec_context() return GSS_S_CONTINUE_NEEDED when they
+   expect GSS_S_COMPLETE -- such applications already should be able to
+   handle errors in this case.  Such applications will fail to interop
+   when used with initiator and acceptor mechanism implementations that
+   support these extensions if the acceptor mechanism decides to use
+   extra round trips.  Acceptor mechanism implementors might wish to
+   provide a configuration option for disabling extra round trips.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams & Dowdeswell    Expires August 19, 2013               [Page 14]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
+7.  Differences from "DCE style"
+
+   [XXX Add text explaining what DCE style is as well as a reference.]
+
+   There are four differences between this protocol extension and "DCE
+   style", three of which are consequential:
+
+   1.  DCE style is selected by the initiator _application_ via a
+       request flag.
+
+   2.  DCE style is, in practice, mandatory for the acceptor to
+       implement, else interop fails.  Because of difference #4 (see
+       below), initiators could detect that the acceptor did not
+       understand the DCE style flag and recover, but in practice they
+       do not.
+
+   3.  This extension is a) transparent to applications, b) generic,
+       allowing for arbitrary round trips for arbitrary purposes.
+       Indeed, this extension supports a number of additional features
+       beyond DCE style's replay cache avoidance: error recovery, user-
+       to-user authentication, and others (see above).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams & Dowdeswell    Expires August 19, 2013               [Page 15]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
+8.  Security Considerations
 
    This document deals with security.
 
@@ -780,12 +892,12 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013               [Page 14]
+Williams & Dowdeswell    Expires August 19, 2013               [Page 16]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
 
-7.  IANA Considerations
+9.  IANA Considerations
 
    This document has no IANA considerations.
 
@@ -836,12 +948,12 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013               [Page 15]
+Williams & Dowdeswell    Expires August 19, 2013               [Page 17]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
 
-8.  TODO
+10.  TODO
 
    o  Add references to ASN.1 and DER (X.680 and X.690).
 
@@ -892,14 +1004,14 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013               [Page 16]
+Williams & Dowdeswell    Expires August 19, 2013               [Page 18]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
 
-9.  References
+11.  References
 
-9.1.  Normative References
+11.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -919,7 +1031,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
               Interface (GSS-API) Mechanism: Version 2", RFC 4121,
               July 2005.
 
-9.2.  Informative References
+11.2.  Informative References
 
    [I-D.swift-win2k-krb-user2user]
               Swift, M., Brezak, J., and P. Moore, "User to User
@@ -948,7 +1060,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013               [Page 17]
+Williams & Dowdeswell    Expires August 19, 2013               [Page 19]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -1004,5 +1116,5 @@ Authors' Addresses
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013               [Page 18]
+Williams & Dowdeswell    Expires August 19, 2013               [Page 20]
 

@@ -40,15 +40,15 @@ This Internet-Draft proposes an extension to the Kerberos V5 security mechanism 
     </abstract>
   </front>
   <middle>
-    <section title="Introduction" anchor="d1e269">
+    <section title="Introduction" anchor="d1e284">
       <t>
 The Kerberos V5 <xref target="RFC4120"/> AP protocol, and therefore the Kerberos V5 GSS mechanism <xref target="RFC4121"/> security context token exchange, is a one-round-trip protocol. Occasionally there are errors that the protocol could recover from by using an additional round trip, but until now there was no way to execute such an additional round trip. For many application protocols the failure of the Kerberos AP protocol is fatal, requiring closing TCP connections and starting over; often there is no automatic recovery. This document proposes a negotiation of an additional round trip for automatic recovery from certain errors. This is done in a backwards-compatible way, thus retaining the existing mechanism OID for the Kerberos V5 GSS mechanism. Additionally we add support for user2user authentication and authenticated errors, and provide a way to avoid the need for replay caching.</t>
-      <section title="Conventions used in this document" anchor="d1e290">
+      <section title="Conventions used in this document" anchor="d1e305">
         <t>
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
       </section>
     </section>
-    <section title="Negotiation" anchor="d1e306">
+    <section title="Negotiation" anchor="d1e321">
       <t>
 We introduce the following new protocol elements. An ASN.1 module is given in  <xref target="sub_ASN_1_for_New"/>, and references to its contents are made below.</t>
       <t>
@@ -125,11 +125,11 @@ KRB_AP_ERR_BADADDR; the acceptor SHOULD include a list of one or more client net
       </t>
       <t>
 It is also possible for an acceptor to request that the initiator re-authenticate but to a different service principal, in which case the error code SHALL be KRB_AP_ERR_NOT_US, the KRB-ERROR2 encrypted part MUST be encrypted in the sub-session key from the Authenticator, and the sname and realm fields of the KRB-ERROR2 MUST be present.</t>
-      <section title="Use in Non-GSS Applications" anchor="d1e404">
+      <section title="Use in Non-GSS Applications" anchor="d1e419">
         <t>
 We only specify multiple round trips for the GSS mechanism and application case. We believe that some non-GSS Kerberos applications may also benefit from this extension.</t>
       </section>
-      <section title="Number of Round Trips" anchor="d1e413">
+      <section title="Number of Round Trips" anchor="d1e428">
         <t>
 At most two round trips should be needed in general. Implementations SHOULD impose a limit of either two or three round trips. An initiator that rejects an additional round-trip MUST respond with a KRB-ERROR2.</t>
         <t>
@@ -193,7 +193,7 @@ An ASN.1 module appears below.</t>
         </figure>
       </t>
     </section>
-    <section title="Other Features" anchor="d1e464">
+    <section title="Other Features" anchor="d1e479">
       <t>
 Two other features are supported:</t>
       <t>
@@ -204,13 +204,13 @@ acceptor name redirection;</t>
 acceptor-issued service ticket (for the same acceptor name) issuance.</t>
         </list>
       </t>
-      <section title="Acceptor Name Redirection" anchor="d1e481">
+      <section title="Acceptor Name Redirection" anchor="d1e496">
         <t>
 In some use cases, such as clusters, for example, an acceptor may wish to ask the initiator to use a different name (and ticket) for the acceptor. This is indicated by setting the redir-srealm and redir-sname fields of a continue-needed KRB-ERROR2. The KRB-ERROR2's enc-part MUST be encrypted in the initiator's sub-session key, and initiators MUST ignore the redir-srealm and redir-sname fields of any KRB-ERROR2 where the enc-part is encrypted in the null enc-type.</t>
         <t>
 Because the acceptor's name redirection is authenticated to the initiator, it is safe for the initiator to get a service ticket for the new name and re-try authentication with it.</t>
       </section>
-      <section title="Fast Re-Authentication Acceptor Ticket Issuance" anchor="d1e493">
+      <section title="Fast Re-Authentication Acceptor Ticket Issuance" anchor="d1e508">
         <t>
 In view of future extensions where the Kerberos AP protocol may be extended to use public key agreement protocols -which will likely be slow-, we provide a field in the KRB-ERROR2 where the acceptor may include a Ticket for itself, minted by the acceptor using a secret key of its choosing. This service ticket may be used to speed up future otherwise-slow AP exchanges.</t>
       </section>
@@ -239,7 +239,7 @@ In the first case the initiator knows this because the KDC returns KDC_ERR_MUST_
 In the second case the initiator does manage to get a real service ticket for the acceptor but the acceptor nonetheless wishes to use user2user authentication. In this case the acceptor responds with a KRB-ERROR2, using either the null enc-type for the enc-part, or the initiator's sub-session key, and includes a TGT for itself.</t>
         <t>
 In both cases the initiator then does a TGS request with a second ticket to get a new, user2user Ticket. Then the initiator makes a new AP-REQ using the new Ticket, and proceeds.</t>
-        <section title="Negotiation Issues for User-to-User Authentication" anchor="d1e547">
+        <section title="Negotiation Issues for User-to-User Authentication" anchor="d1e562">
           <t>
 Initiator applications that can negotiate security mechanisms and which have available an existing user-to-user mechanism <xref target="I-D.swift-win2k-krb-user2user"/> as well as the Kerberos V5 GSS mechanism with the user-to-user extension defined here will have a problem: they may end up negotiating the use of the Kerberos V5 GSS mechanism and fail to establish a security context because the acceptor does not support the features defined in this document, but the application might have succeeded if it had selected the user-to-user mechanism.</t>
           <t>
@@ -247,7 +247,7 @@ Initiator applications that can negotiate security mechanisms and which have ava
         </section>
       </section>
     </section>
-    <section title="Other Requirements, Recommendations, and Non-Requirements" anchor="d1e565">
+    <section title="Other Requirements, Recommendations, and Non-Requirements" anchor="d1e580">
       <t>
 All error PDUs in an AP exchange where the AP-REQ has the continue-needed-ok ap-options flag MUST be KRB-ERROR2 PDUs.</t>
       <t>
@@ -257,17 +257,37 @@ Whenever an initiator receives a KRB-ERROR2 with enc-part encrypted in either th
       <t>
 ...</t>
     </section>
-    <section title="Security Considerations" anchor="d1e584">
+    <section title="Application Compatibility Note" anchor="d1e599">
+      <t>
+Some GSS-API applications assume that no more than one round trip is required for security context token establishment. Most such applications will fail safe if GSS_Init_sec_context() or GSS_Accept_sec_context() return GSS_S_CONTINUE_NEEDED when they expect GSS_S_COMPLETE -- such applications already should be able to handle errors in this case. Such applications will fail to interop when used with initiator and acceptor mechanism implementations that support these extensions if the acceptor mechanism decides to use extra round trips. Acceptor mechanism implementors might wish to provide a configuration option for disabling extra round trips.</t>
+    </section>
+    <section title="Differences from “DCE style”" anchor="d1e608">
+      <t>
+[XXX Add text explaining what DCE style is as well as a reference.]</t>
+      <t>
+There are four differences between this protocol extension and “DCE style”, three of which are consequential:</t>
+      <t>
+        <list style="numbers">
+          <t>
+DCE style is selected by the initiator <spanx>application</spanx>  via a request flag.</t>
+          <t>
+DCE style is, in practice, mandatory for the acceptor to implement, else interop fails. Because of difference #4 (see below), initiators could detect that the acceptor did not understand the DCE style flag and recover, but in practice they do not.</t>
+          <t>
+This extension is a) transparent to applications, b) generic, allowing for arbitrary round trips for arbitrary purposes. Indeed, this extension supports a number of additional features beyond DCE style's replay cache avoidance: error recovery, user-to-user authentication, and others (see above).</t>
+        </list>
+      </t>
+    </section>
+    <section title="Security Considerations" anchor="d1e633">
       <t>
 This document deals with security.</t>
       <t>
 [XXX Note the resource using attacks that are feasible when we have multiple round-trips and note that they are nothing new and nothing to worry about because services should already have timeouts on pre-authenticated protocol phases, and even post-authentication.]</t>
     </section>
-    <section title="IANA Considerations" anchor="d1e596">
+    <section title="IANA Considerations" anchor="d1e646">
       <t>
 This document has no IANA considerations.</t>
     </section>
-    <section title="TODO" anchor="d1e605">
+    <section title="TODO" anchor="d1e655">
       <t>
         <list style="symbols">
           <t>

@@ -1233,6 +1233,75 @@ Whenever an initiator receives a KRB-ERROR2 with enc-part encrypted in either
 \end_layout
 
 \begin_layout Section
+Application Compatibility Note
+\end_layout
+
+\begin_layout Standard
+Some GSS-API applications assume that no more than one round trip is required
+ for security context token establishment.
+ Most such applications will fail safe if GSS_Init_sec_context() or GSS_Accept_s
+ec_context() return GSS_S_CONTINUE_NEEDED when they expect GSS_S_COMPLETE
+ -- such applications already should be able to handle errors in this case.
+ Such applications will fail to interop when used with initiator and acceptor
+ mechanism implementations that support these extensions if the acceptor
+ mechanism decides to use extra round trips.
+ Acceptor mechanism implementors might wish to provide a configuration option
+ for disabling extra round trips.
+\end_layout
+
+\begin_layout Section
+Differences from 
+\begin_inset Quotes eld
+\end_inset
+
+DCE style
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+[XXX Add text explaining what DCE style is as well as a reference.]
+\end_layout
+
+\begin_layout Standard
+There are four differences between this protocol extension and 
+\begin_inset Quotes eld
+\end_inset
+
+DCE style
+\begin_inset Quotes erd
+\end_inset
+
+, three of which are consequential:
+\end_layout
+
+\begin_layout Enumerate
+DCE style is selected by the initiator 
+\emph on
+application
+\emph default
+ via a request flag.
+\end_layout
+
+\begin_layout Enumerate
+DCE style is, in practice, mandatory for the acceptor to implement, else
+ interop fails.
+ Because of difference #4 (see below), initiators could detect that the
+ acceptor did not understand the DCE style flag and recover, but in practice
+ they do not.
+\end_layout
+
+\begin_layout Enumerate
+This extension is a) transparent to applications, b) generic, allowing for
+ arbitrary round trips for arbitrary purposes.
+ Indeed, this extension supports a number of additional features beyond
+ DCE style's replay cache avoidance: error recovery, user-to-user authentication
+, and others (see above).
+\end_layout
+
+\begin_layout Section
 Security Considerations
 \end_layout
 

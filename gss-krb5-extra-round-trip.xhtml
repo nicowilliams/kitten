@@ -359,15 +359,19 @@ This Internet-Draft proposes an extension to the Kerberos V5 security mechanism 
 
 <div class='lyxtoc-1'><a href='#magicparlabel-218' class='tocentry'>5 Other Requirements, Recommendations, and Non-Requirements</a> <a href='#magicparlabel-218' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-223' class='tocentry'>6 Security Considerations</a> <a href='#magicparlabel-223' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-223' class='tocentry'>6 Application Compatibility Note</a> <a href='#magicparlabel-223' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-226' class='tocentry'>7 IANA Considerations</a> <a href='#magicparlabel-226' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-225' class='tocentry'>7 Differences from DCE style</a> <a href='#magicparlabel-225' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-228' class='tocentry'>8 TODO</a> <a href='#magicparlabel-228' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-231' class='tocentry'>8 Security Considerations</a> <a href='#magicparlabel-231' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-230' class='tocentry'>9 Normative References</a> <a href='#magicparlabel-230' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-234' class='tocentry'>9 IANA Considerations</a> <a href='#magicparlabel-234' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-256' class='tocentry'>10 Informative References</a> <a href='#magicparlabel-256' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-236' class='tocentry'>10 TODO</a> <a href='#magicparlabel-236' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-238' class='tocentry'>11 Normative References</a> <a href='#magicparlabel-238' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-264' class='tocentry'>12 Informative References</a> <a href='#magicparlabel-264' class='tocarrow'>&gt;</a></div>
 </div>
 
 <h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-80' />
@@ -602,53 +606,72 @@ Whenever an initiator receives a KRB-ERROR2 with enc-part encrypted in either th
 <div class="standard"><a id='magicparlabel-222' />
 ...</div>
 <h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-223' />
-Security Considerations</h2>
+Application Compatibility Note</h2>
 <div class="standard"><a id='magicparlabel-224' />
+Some GSS-API applications assume that no more than one round trip is required for security context token establishment. Most such applications will fail safe if GSS_Init_sec_context() or GSS_Accept_sec_context() return GSS_S_CONTINUE_NEEDED when they expect GSS_S_COMPLETE &ndash; such applications already should be able to handle errors in this case. Such applications will fail to interop when used with initiator and acceptor mechanism implementations that support these extensions if the acceptor mechanism decides to use extra round trips. Acceptor mechanism implementors might wish to provide a configuration option for disabling extra round trips.</div>
+<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-225' />
+Differences from &ldquo;DCE style&rdquo;</h2>
+<div class="standard"><a id='magicparlabel-226' />
+[XXX Add text explaining what DCE style is as well as a reference.]</div>
+
+<div class="standard"><a id='magicparlabel-227' />
+There are four differences between this protocol extension and &ldquo;DCE style&rdquo;, three of which are consequential:</div>
+
+<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-228' />
+DCE style is selected by the initiator <em>application</em> via a request flag.</li>
+<li class="enumerate_item"><a id='magicparlabel-229' />
+DCE style is, in practice, mandatory for the acceptor to implement, else interop fails. Because of difference #4 (see below), initiators could detect that the acceptor did not understand the DCE style flag and recover, but in practice they do not.</li>
+<li class="enumerate_item"><a id='magicparlabel-230' />
+This extension is a) transparent to applications, b) generic, allowing for arbitrary round trips for arbitrary purposes. Indeed, this extension supports a number of additional features beyond DCE style's replay cache avoidance: error recovery, user-to-user authentication, and others (see above).</li>
+</ol>
+<h2 class="section"><span class="section_label">8</span> <a id='magicparlabel-231' />
+Security Considerations</h2>
+<div class="standard"><a id='magicparlabel-232' />
 This document deals with security.</div>
 
-<div class="standard"><a id='magicparlabel-225' />
+<div class="standard"><a id='magicparlabel-233' />
 [XXX Note the resource using attacks that are feasible when we have multiple round-trips and note that they are nothing new and nothing to worry about because services should already have timeouts on pre-authenticated protocol phases, and even post-authentication.]</div>
-<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-226' />
+<h2 class="section"><span class="section_label">9</span> <a id='magicparlabel-234' />
 IANA Considerations</h2>
-<div class="standard"><a id='magicparlabel-227' />
+<div class="standard"><a id='magicparlabel-235' />
 This document has no IANA considerations.</div>
-<h2 class="section"><span class="section_label">8</span> <a id='magicparlabel-228' />
+<h2 class="section"><span class="section_label">10</span> <a id='magicparlabel-236' />
 TODO</h2>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-229' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-237' />
 Add references to ASN.1 and DER (X.680 and X.690).</li>
 </ul>
-<h2 class="section"><span class="section_label">9</span> <a id='magicparlabel-230' />
+<h2 class="section"><span class="section_label">11</span> <a id='magicparlabel-238' />
 <a id="sec_References" />
 Normative References</h2>
-<div class="standard"><a id='magicparlabel-231' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-235' />
+<div class="standard"><a id='magicparlabel-239' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-243' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-236' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-240' />
+<div class="standard"><a id='magicparlabel-244' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-248' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">rfc2743</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-241' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-245' />
+<div class="standard"><a id='magicparlabel-249' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-253' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">rfc2744</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-246' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-250' />
+<div class="standard"><a id='magicparlabel-254' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-258' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-251' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-255' />
+<div class="standard"><a id='magicparlabel-259' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-263' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">rfc4121</a></div>
 </div></div>
-<h2 class="section"><span class="section_label">10</span> <a id='magicparlabel-256' />
+<h2 class="section"><span class="section_label">12</span> <a id='magicparlabel-264' />
 Informative References</h2>
-<div class="standard"><a id='magicparlabel-257' />
-<div class="flex_embeddedbibxml"><div class="plain_layout"><a id='magicparlabel-261' />
+<div class="standard"><a id='magicparlabel-265' />
+<div class="flex_embeddedbibxml"><div class="plain_layout"><a id='magicparlabel-269' />
 &lt;reference anchor='I-D.swift-win2k-krb-user2user'&gt; &lt;front&gt; &lt;title&gt;User to User Kerberos Authentication using GSS-API&lt;/title&gt; &lt;author initials='M.' surname='Swift' fullname='Michael Swift'&gt; &lt;organization/&gt; &lt;/author&gt; &lt;author initials='J.' surname='Brezak' fullname='John Brezak'&gt; &lt;organization/&gt; &lt;/author&gt; &lt;author initials='P.' surname='Moore' fullname='Patrick Moore'&gt; &lt;organization/&gt; &lt;/author&gt; &lt;date month='February' day='21' year='2011' /&gt; &lt;abstract&gt;&lt;t&gt;The security model of the web platform has evolved over time to meet the needs of new applications and to correct earlier mistakes. Although web security has evolved largely organically, the security model has converged towards a handful of key concepts. This document presents those concepts and provides advice to designers of new pieces of the web platform.&lt;/t&gt;&lt;/abstract&gt; &lt;/front&gt; &lt;seriesInfo name='Internet-Draft' value='draft-swift-win2k-krb-user2user-03' /&gt; &lt;format type='TXT' target='http://www.ietf.org/internet-drafts/draft-swift-win2k-krb-user2user-03.txt' /&gt; &lt;/reference&gt;</div>
 </div></div>
 </body>
