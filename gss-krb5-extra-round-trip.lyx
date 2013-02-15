@@ -527,7 +527,7 @@ RFC4121
  This is done in a backwards-compatible way, thus retaining the existing
  mechanism OID for the Kerberos V5 GSS mechanism.
  Additionally we add support for user2user authentication and authenticated
- errors, and provide a way to avoid the use of replay caching.
+ errors, and provide a way to avoid the need for replay caching.
 \end_layout
 
 \begin_layout Subsection
@@ -812,26 +812,6 @@ status open
 
 \begin_layout Plain Layout
 
- td-continue-needed    Int32 ::= <TBD>
-\end_layout
-
-\begin_layout Plain Layout
-
-        -- indicate that extra round trip is expected
-\end_layout
-
-\begin_layout Plain Layout
-
- td-continue-failed    Int32 ::= <TBD>
-\end_layout
-
-\begin_layout Plain Layout
-
-        -- indicate protocol failure
-\end_layout
-
-\begin_layout Plain Layout
-
  
 \end_layout
 
@@ -917,12 +897,17 @@ status open
 
 \begin_layout Plain Layout
 
-         -- use-other-sname(2)
+         -- continue-failed(2)
 \end_layout
 
 \begin_layout Plain Layout
 
-         -- user2user(3)
+         -- use-other-sname(3)
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- user2user(4)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1115,6 +1100,12 @@ By the same token, acceptors that support this feature MUST reject initial
  security context tokens that contain a challenge response nonce.
 \end_layout
 
+\begin_layout Standard
+Note that in the replay cache avoidance case, but where there's no actual
+ error (e.g., time skew) the acceptor's KRB-ERROR2 will have KDC_ERR_NONE
+ as the error code, with the continue-needed e-flag.
+\end_layout
+
 \begin_layout Subsection
 \begin_inset CommandInset label
 LatexCommand label
@@ -1262,6 +1253,14 @@ IANA Considerations
 
 \begin_layout Standard
 This document has no IANA considerations.
+\end_layout
+
+\begin_layout Section
+TODO
+\end_layout
+
+\begin_layout Itemize
+Add references to ASN.1 and DER (X.680 and X.690).
 \end_layout
 
 \begin_layout Section
