@@ -282,7 +282,7 @@ Replay Cache Avoidance for the Kerberos V5 Generic Security Services Mechanism
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-krb5-rcache-avoidance-00
+draft-williams-kitten-krb5-rcache-avoidance-01
 \end_layout
 
 \end_inset
@@ -459,7 +459,7 @@ Introduction
 \begin_layout Standard
 The Kerberos V5 
 \begin_inset Flex EntityXRef
-status collapsed
+status open
 
 \begin_layout Plain Layout
 RFC4120
@@ -469,7 +469,7 @@ RFC4120
 
  AP protocol, and therefore the Kerberos V5 GSS mechanism 
 \begin_inset Flex EntityXRef
-status collapsed
+status open
 
 \begin_layout Plain Layout
 RFC4121
@@ -885,7 +885,7 @@ Normative References
 
 \begin_layout Standard
 \begin_inset Flex BibXML
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset href
@@ -905,7 +905,7 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
 
 \begin_layout Standard
 \begin_inset Flex BibXML
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset href
@@ -925,7 +925,7 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml"
 
 \begin_layout Standard
 \begin_inset Flex BibXML
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset href
@@ -945,7 +945,7 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml"
 
 \begin_layout Standard
 \begin_inset Flex BibXML
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset href
@@ -965,7 +965,7 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
 
 \begin_layout Standard
 \begin_inset Flex BibXML
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset href
@@ -985,6 +985,59 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml"
 
 \begin_layout Section
 Informative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex EmbeddedBibXML
+status open
+
+\begin_layout Plain Layout
+<reference anchor="I-D.williams-kitten-krb5-extra-rt"> <front> <title>Negotiation
+ of Extra Round Trip for Kerberos V5 Generic Security Services Mechanism</title>
+ <author initials="N." surname="Williams" fullname="Nicolas Williams"> <organizat
+ion/> </author> <author initials="R." surname="Dowdeswell" fullname="Roland
+ Dowdeswell"> <organization/> </author> <date month="February" day="13"
+ year="2013"/> <abstract> <t>Abstract This Internet-Draft proposes an extension
+ to the Kerberos V5 security mechanism for the Generic Security Services
+ Application Programming Interface (GSS-API) for using an extra pair of
+ security context tokens in order to recover from certain errors.
+ Other benefits include: user2user authentication, authenticated errors
+ (in some cases), and more.</t> </abstract> </front> <seriesInfo name="Internet-D
+raft" value="draft-williams-kitten-krb5-extra-rt-01"/> <format type="TXT"
+ target="http://www.ietf.org/internet-drafts/draft-williams-kitten-krb5-extra-rt-0
+1.txt"/> </reference> 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex EmbeddedBibXML
+status open
+
+\begin_layout Plain Layout
+<reference anchor='I-D.swift-win2k-krb-user2user'> <front> <title>User to
+ User Kerberos Authentication using GSS-API</title> <author initials='M.'
+ surname='Swift' fullname='Michael Swift'> <organization/> </author> <author
+ initials='J.' surname='Brezak' fullname='John Brezak'> <organization/> </author>
+ <author initials='P.' surname='Moore' fullname='Patrick Moore'> <organization/>
+ </author> <date month='February' day='21' year='2011' /> <abstract><t>The
+ security model of the web platform has evolved over time to meet the needs
+ of new applications and to correct earlier mistakes.
+ Although web security has evolved largely organically, the security model
+ has converged towards a handful of key concepts.
+ This document presents those concepts and provides advice to designers
+ of new pieces of the web platform.</t></abstract> </front> <seriesInfo name='Int
+ernet-Draft' value='draft-swift-win2k-krb-user2user-03' /> <format type='TXT'
+ target='http://www.ietf.org/internet-drafts/draft-swift-win2k-krb-user2user-03.txt
+' /> </reference>
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

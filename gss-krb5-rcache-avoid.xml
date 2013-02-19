@@ -14,7 +14,7 @@
 <!ENTITY rfc4120 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">
 <!ENTITY rfc4121 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">
 ]>
-<rfc docName="draft-williams-kitten-krb5-rcache-avoidance-00" ipr="trust200902" category="std" updates="RFC4121">
+<rfc docName="draft-williams-kitten-krb5-rcache-avoidance-01" ipr="trust200902" category="std" updates="RFC4121">
   <front>
     <title abbrev="Kerberos RCache Avoidance">Replay Cache Avoidance for the Kerberos V5 Generic Security Services Mechanism</title>
     <author initials="N." surname="Williams" fullname="Nicolas Williams">
@@ -46,7 +46,7 @@ We could, of course, pursue a protocol extension involving a third security cont
       <t>
 Instead we note that many application protocols that use the GSS-API are by their nature inmune to replayed security context tokens, therefore we propose an extension based on that observation. We propose that we rely on applications and/or local configuration to indicate to the implementation when a replay cache can be avoided due to application protocols using a pattern that is insusceptible to replay attacks based on replaying security context tokens.</t>
       <t>
-We use a credential option so that applications can signal that their protocol is inmune to replays of security context tokens. We also rely on local configuration on a per-service principal name basis (or on a per-service name basis) to indicate that all application protocols spoken by that service principal are inmune to replays of security context tokens – this is useful when the application doesn't know how to signal this via a credential option. Additionally, we have some requirements regarding the sharing of service keys across multiple service principals with the same hostname component.</t>
+We use a credential option so that applications can signal that their protocol is inmune to replays of security context tokens. We also rely on local configuration on a per-service principal name basis (or on a per-service name basis) to indicate that all application protocols spoken by that service principal are inmune to replays of security context tokens -- this is useful when the application doesn't know how to signal this via a credential option. Additionally, we have some requirements regarding the sharing of service keys across multiple service principals with the same hostname component.</t>
       <t>
 Together these API extensions and local configuration allow mechanism acceptor implementations to decide when to forgo the use of a replay cache, namely when all applications using a given key are inmune to replays of security context tokens.</t>
       <t>
@@ -137,9 +137,9 @@ This authorization data element's ad-value carries the DER encoding of a Checksu
           <t>
             <figure anchor="magicparlabel-139" title="AD-Ticket-Binding ad-value contents">
               <artwork> AD-Ticket-Binding-Data ::= SEQUENCE {
-   srealm [0] Realm,            – realm from the Ticket
-   sname  [1] PrincipalName,    – sname from the Ticket
-   cksum  [2] Checksum OPTIONAL – taken over the Ticket</artwork>
+   srealm [0] Realm,            -- realm from the Ticket
+   sname  [1] PrincipalName,    -- sname from the Ticket
+   cksum  [2] Checksum OPTIONAL -- taken over the Ticket</artwork>
             </figure>
           </t>
           <t>
@@ -163,7 +163,6 @@ This document deals with security. Running Kerberos services without a replay ca
       <t>
 This document has no IANA considerations.</t>
     </section>
-    <section title="Informative References" anchor="d1e562"/>
   </middle>
   <back>
     <references title="Normative References">&rfc2119;
@@ -172,5 +171,44 @@ This document has no IANA considerations.</t>
 &rfc4120;
 &rfc4121;
 </references>
+    <references title="Informative References">
+      <reference anchor="I-D.williams-kitten-krb5-extra-rt">
+        <front>
+          <title>Negotiation of Extra Round Trip for Kerberos V5 Generic Security Services Mechanism</title>
+          <author initials="N." surname="Williams" fullname="Nicolas Williams">
+            <organization/>
+          </author>
+          <author initials="R." surname="Dowdeswell" fullname="Roland Dowdeswell">
+            <organization/>
+          </author>
+          <date month="February" day="13" year="2013"/>
+          <abstract>
+            <t>Abstract This Internet-Draft proposes an extension to the Kerberos V5 security mechanism for the Generic Security Services Application Programming Interface (GSS-API) for using an extra pair of security context tokens in order to recover from certain errors. Other benefits include: user2user authentication, authenticated errors (in some cases), and more.</t>
+          </abstract>
+        </front>
+        <seriesInfo name="Internet-Draft" value="draft-williams-kitten-krb5-extra-rt-01"/>
+        <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-williams-kitten-krb5-extra-rt-01.txt"/>
+      </reference>
+      <reference anchor="I-D.swift-win2k-krb-user2user">
+        <front>
+          <title>User to User Kerberos Authentication using GSS-API</title>
+          <author initials="M." surname="Swift" fullname="Michael Swift">
+            <organization/>
+          </author>
+          <author initials="J." surname="Brezak" fullname="John Brezak">
+            <organization/>
+          </author>
+          <author initials="P." surname="Moore" fullname="Patrick Moore">
+            <organization/>
+          </author>
+          <date month="February" day="21" year="2011"/>
+          <abstract>
+            <t>The security model of the web platform has evolved over time to meet the needs of new applications and to correct earlier mistakes. Although web security has evolved largely organically, the security model has converged towards a handful of key concepts. This document presents those concepts and provides advice to designers of new pieces of the web platform.</t>
+          </abstract>
+        </front>
+        <seriesInfo name="Internet-Draft" value="draft-swift-win2k-krb-user2user-03"/>
+        <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-swift-win2k-krb-user2user-03.txt"/>
+      </reference>
+    </references>
   </back>
 </rfc>

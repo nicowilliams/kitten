@@ -283,7 +283,7 @@ Negotiation of Extra Round Trip for Kerberos V5 Generic Security Services
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-krb5-extra-rt-01
+draft-williams-kitten-krb5-extra-rt-02
 \end_layout
 
 \end_inset
@@ -497,7 +497,7 @@ Introduction
 \begin_layout Standard
 The Kerberos V5 
 \begin_inset Flex EntityXRef
-status collapsed
+status open
 
 \begin_layout Plain Layout
 RFC4120
@@ -507,7 +507,7 @@ RFC4120
 
  AP protocol, and therefore the Kerberos V5 GSS mechanism 
 \begin_inset Flex EntityXRef
-status collapsed
+status open
 
 \begin_layout Plain Layout
 RFC4121
@@ -515,7 +515,7 @@ RFC4121
 
 \end_inset
 
- security context token exchange, is a one-round-trip protocol.
+ security context token exchange, is a one-round trip protocol.
  Occasionally there are errors that the protocol could recover from by using
  an additional round trip, but until now there was no way to execute such
  an additional round trip.
@@ -556,7 +556,17 @@ Negotiation
 
 \begin_layout Standard
 We introduce the following new protocol elements.
- An ASN.1 module is given in 
+ A partial ASN.1 
+\begin_inset Flex EntityXRef
+status open
+
+\begin_layout Plain Layout
+CCITT.X680.2002
+\end_layout
+
+\end_inset
+
+ module (for inclusion in the base Kerberos ASN.1 module) is given in 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:ASN.1-for-New"
@@ -629,8 +639,13 @@ Initiators that support this feature and successfully recover from a KRB-ERROR
  an error to the application.
 \end_layout
 
+\begin_layout Subsection
+Error Recovery
+\end_layout
+
 \begin_layout Standard
-The following Kerberos errors can be recovered from using this protocol:
+The following Kerberos errors can be recovered from automatically using
+ this protocol:
 \end_layout
 
 \begin_layout Itemize
@@ -704,25 +719,26 @@ e but to a different service principal, in which case the error code SHALL
 \end_layout
 
 \begin_layout Subsection
-Use in Non-GSS Applications
-\end_layout
-
-\begin_layout Standard
-We only specify multiple round trips for the GSS mechanism and application
- case.
- We believe that some non-GSS Kerberos applications may also benefit from
- this extension.
-\end_layout
-
-\begin_layout Subsection
 Number of Round Trips
 \end_layout
 
 \begin_layout Standard
-At most two round trips should be needed in general.
- Implementations SHOULD impose a limit of either two or three round trips.
- An initiator that rejects an additional round-trip MUST respond with a
- KRB-ERROR2.
+The first AP-REQ may well result in an error; the second should not.
+ Therefore acceptors SHOULD return a fatal error when a second error results
+ in one security context establishment attempt, except when the first error
+ is that the initiator should use user-to-user authentication.
+ This limits the maximum number of round trips to two (not user-to-user)
+ or three (user-to-user).
+\end_layout
+
+\begin_layout Standard
+Initiators and acceptors MUST impose some limit on the maximum number of
+ round trips.
+\end_layout
+
+\begin_layout Standard
+An initiator that rejects an additional round trip MUST respond with a KRB-ERROR
+2.
 \end_layout
 
 \begin_layout Standard
@@ -742,7 +758,22 @@ reference "sub:Replay-Cache-Avoidance"
 
 \end_inset
 
-).
+), or if the initiator's clock is too skewed, for example.
+\end_layout
+
+\begin_layout Subsection
+Use in Non-GSS Applications
+\end_layout
+
+\begin_layout Standard
+We only specify multiple round trips for the GSS mechanism and application
+ case.
+ We believe that some non-GSS Kerberos applications may also benefit from
+ this extension.
+ Non-GSS Kerberos applications typically assume that AP exchanges require
+ no more than two PDUs, therefore it's not likely that this extension will
+ ever be of use to non-GSS Kerberos applications, not before first extending
+ Kerberos APIs.
 \end_layout
 
 \begin_layout Section
@@ -756,7 +787,20 @@ ASN.1 for New Protocol Elements
 \end_layout
 
 \begin_layout Standard
-An ASN.1 module appears below.
+A partial ASN.1 module appears below.
+ This ASN.1 is to be used as if it were part of the base Kerberos ASN.1 module
+ (see RFC4120), therefore the encoding rules to be used are the Distinguished
+ Encoding Rules (DER) 
+\begin_inset Flex EntityXRef
+status open
+
+\begin_layout Plain Layout
+CCITT.X690.2002
+\end_layout
+
+\end_inset
+
+, and the environment is one of explicit tagging.
 \end_layout
 
 \begin_layout Standard
@@ -1075,6 +1119,13 @@ In view of future extensions where the Kerberos AP protocol may be extended
  This service ticket may be used to speed up future otherwise-slow AP exchanges.
 \end_layout
 
+\begin_layout Standard
+[XXX Actually, this is kinda broken right now as the issuance of a fast
+ re-auth ticket requires an extra round-trip, which we probably don't want!
+ Instead we need either an extended AP-REP or to add a field to the KRB-ERROR2
+ enc-part (or a TYPED-DATA) for embedding an AP-REP.]
+\end_layout
+
 \begin_layout Subsection
 \begin_inset CommandInset label
 LatexCommand label
@@ -1104,6 +1155,17 @@ By the same token, acceptors that support this feature MUST reject initial
 Note that in the replay cache avoidance case, but where there's no actual
  error (e.g., time skew) the acceptor's KRB-ERROR2 will have KDC_ERR_NONE
  as the error code, with the continue-needed e-flag.
+\end_layout
+
+\begin_layout Standard
+Readers should note the problem described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:TODO"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -1157,7 +1219,7 @@ ation.
 \end_layout
 
 \begin_layout Standard
-In both cases the initiator then does a TGS request with a second ticket
+In both cases the inlitiator then does a TGS request with a second ticket
  to get a new, user2user Ticket.
  Then the initiator makes a new AP-REQ using the new Ticket, and proceeds.
 \end_layout
@@ -1170,7 +1232,7 @@ Negotiation Issues for User-to-User Authentication
 Initiator applications that can negotiate security mechanisms and which
  have available an existing user-to-user mechanism 
 \begin_inset Flex EntityXRef
-status collapsed
+status open
 
 \begin_layout Plain Layout
 I-D.swift-win2k-krb-user2user
@@ -1310,10 +1372,27 @@ This document deals with security.
 \end_layout
 
 \begin_layout Standard
-[XXX Note the resource using attacks that are feasible when we have multiple
- round-trips and note that they are nothing new and nothing to worry about
- because services should already have timeouts on pre-authenticated protocol
- phases, and even post-authentication.]
+There are a number of unauthenticated protocol elements: the continue-needed-ok
+ flag that the initiator uses to indicate its willingness to have more than
+ one round trip, and some errors.
+ This is unavoidable.
+\end_layout
+
+\begin_layout Standard
+The new KRB-ERROR2 PDU is cryptographically distinguished from the original
+ mechanism's acceptor success security context token (AP-REQ).
+\end_layout
+
+\begin_layout Standard
+Because in the base Kerberos V5 GSS-API security mechanism all errors are
+ unauthenticated, and because even with this specification some elements
+ are unauthenticated, it is possible for an attacker to cause one peer to
+ think that the security context token exchange has failed while the other
+ thinks it will continue.
+ This can cause an acceptor to waste resources while waiting for additional
+ security context tokens from the initiator.
+ This is not really a new problem, however; acceptors should already have
+ suitable timeouts on pre-authentication phases of application protocols.
 \end_layout
 
 \begin_layout Section
@@ -1325,11 +1404,40 @@ This document has no IANA considerations.
 \end_layout
 
 \begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:TODO"
+
+\end_inset
+
 TODO
 \end_layout
 
 \begin_layout Itemize
-Add references to ASN.1 and DER (X.680 and X.690).
+Decide whether to keep any user-to-user functionality.
+\end_layout
+
+\begin_layout Itemize
+For the replay cache avoidance case we should only want an additional security
+ context token from the initiator, but not an additional one from the acceptor.
+ Because of PROT_READY the additional round trip (as opposed to half round
+ trip) should not be a concern, but for some applications this will be onerous
+ because they do not use the PROT_READY feature of the GSS-API.
+ Therefore we should have a security context token that denotes success-but-one-
+token-is-needed.
+ KRB-ERROR2 cannot be such a token, but neither can AP-REP -- AP-RE it has
+ no elements by which we can indicate the need for an additional token.
+ This means we should introduce an AP-REP2, or an extension to AP-REP that
+ is only to be used when the initiator sets the continue-needed-ok ap-options
+ flag.
+\end_layout
+
+\begin_layout Itemize
+Describe interaction with non-mutual authentication.
+ Specifically, setting the continue-needed-ok flag strongly implies that
+ mutual authentication is also desired as otherwise GSS_Init_sec_context()
+ will have returned GSS_S_COMPLETE, and any security context tokens from
+ the acceptor will implicitly have to be error tokens.
 \end_layout
 
 \begin_layout Section
@@ -1344,7 +1452,7 @@ Normative References
 
 \begin_layout Standard
 \begin_inset Flex BibXML
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset href
@@ -1364,7 +1472,7 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
 
 \begin_layout Standard
 \begin_inset Flex BibXML
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset href
@@ -1384,7 +1492,7 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml"
 
 \begin_layout Standard
 \begin_inset Flex BibXML
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset href
@@ -1404,7 +1512,7 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml"
 
 \begin_layout Standard
 \begin_inset Flex BibXML
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset href
@@ -1424,7 +1532,7 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
 
 \begin_layout Standard
 \begin_inset Flex BibXML
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset href
@@ -1442,13 +1550,76 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml"
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "x680"
+target "http://xml.resource.org/public/rfc/bibxml2/reference.CCITT.X680.2002.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "x690"
+target "http://xml.resource.org/public/rfc/bibxml2/reference.CCITT.X690.2002.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Informative References
 \end_layout
 
 \begin_layout Standard
 \begin_inset Flex EmbeddedBibXML
-status collapsed
+status open
+
+\begin_layout Plain Layout
+<reference anchor="I-D.williams-kitten-krb5-rcache-avoidance"> <front> <title>Rep
+lay Cache Avoidance for the Kerberos V5 Generic Security Services Mechanism</tit
+le> <author initials="N." surname="Williams" fullname="Nicolas Williams">
+ <organization/> </author> <date month="February" day="13" year="2013"/>
+ <abstract> <t>Abstract This Internet-Draft proposes an extension to the
+ Kerberos V5 security mechanism for the Generic Security Services Application
+ Programming Interface (GSS-API) for avoiding the need for a replay cache.</t>
+ </abstract> </front> <seriesInfo name="Internet-Draft" value="draft-williams-ki
+tten-krb5-rcache-avoidance-01"/> <format type="TXT" target="http://www.ietf.org/in
+ternet-drafts/draft-williams-kitten-krb5-rcache-avoidance-01.txt"/> </reference>
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex EmbeddedBibXML
+status open
 
 \begin_layout Plain Layout
 <reference anchor='I-D.swift-win2k-krb-user2user'> <front> <title>User to

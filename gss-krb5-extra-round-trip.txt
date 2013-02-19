@@ -5,12 +5,12 @@ Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
 Updates: RFC4121 (if approved)                             R. Dowdeswell
 Intended status: Standards Track        Dowdeswell Security Architecture
-Expires: August 19, 2013                               February 15, 2013
+Expires: August 22, 2013                               February 18, 2013
 
 
     Negotiation of Extra Round Trip for Kerberos V5 Generic Security
                            Services Mechanism
-                 draft-williams-kitten-krb5-extra-rt-01
+                 draft-williams-kitten-krb5-extra-rt-02
 
 Abstract
 
@@ -36,7 +36,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 19, 2013.
+   This Internet-Draft will expire on August 22, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013                [Page 1]
+Williams & Dowdeswell    Expires August 22, 2013                [Page 1]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -67,15 +67,16 @@ Table of Contents
    1.      Introduction . . . . . . . . . . . . . . . . . . . . . . .  3
    1.1.    Conventions used in this document  . . . . . . . . . . . .  3
    2.      Negotiation  . . . . . . . . . . . . . . . . . . . . . . .  4
-   2.1.    Use in Non-GSS Applications  . . . . . . . . . . . . . . .  6
+   2.1.    Error Recovery . . . . . . . . . . . . . . . . . . . . . .  5
    2.2.    Number of Round Trips  . . . . . . . . . . . . . . . . . .  6
+   2.3.    Use in Non-GSS Applications  . . . . . . . . . . . . . . .  6
    3.      ASN.1 for New Protocol Elements  . . . . . . . . . . . . .  7
    4.      Other Features . . . . . . . . . . . . . . . . . . . . . . 10
    4.1.    Acceptor Name Redirection  . . . . . . . . . . . . . . . . 10
    4.2.    Fast Re-Authentication Acceptor Ticket Issuance  . . . . . 10
    4.3.    Replay Cache Avoidance . . . . . . . . . . . . . . . . . . 10
    4.4.    User-to-User Authentication  . . . . . . . . . . . . . . . 11
-   4.4.1.  Negotiation Issues for User-to-User Authentication . . . . 11
+   4.4.1.  Negotiation Issues for User-to-User Authentication . . . . 12
    5.      Other Requirements, Recommendations, and
            Non-Requirements . . . . . . . . . . . . . . . . . . . . . 13
    6.      Application Compatibility Note . . . . . . . . . . . . . . 14
@@ -107,8 +108,7 @@ Table of Contents
 
 
 
-
-Williams & Dowdeswell    Expires August 19, 2013                [Page 2]
+Williams & Dowdeswell    Expires August 22, 2013                [Page 2]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -117,7 +117,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
    The Kerberos V5 [RFC4120] AP protocol, and therefore the Kerberos V5
    GSS mechanism [RFC4121] security context token exchange, is a one-
-   round-trip protocol.  Occasionally there are errors that the protocol
+   round trip protocol.  Occasionally there are errors that the protocol
    could recover from by using an additional round trip, but until now
    there was no way to execute such an additional round trip.  For many
    application protocols the failure of the Kerberos AP protocol is
@@ -164,15 +164,17 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013                [Page 3]
+Williams & Dowdeswell    Expires August 22, 2013                [Page 3]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
 
 2.  Negotiation
 
-   We introduce the following new protocol elements.  An ASN.1 module is
-   given in Section 3, and references to its contents are made below.
+   We introduce the following new protocol elements.  A partial ASN.1
+   [CCITT.X680.2002] module (for inclusion in the base Kerberos ASN.1
+   module) is given in Section 3, and references to its contents are
+   made below.
 
    o  a new ap-options flag for use in the clear-text part of AP-REQs to
       indicate the desire for an extra round trip if need be;
@@ -215,18 +217,20 @@ Internet-Draft              Kerberos Extra AP              February 2013
    o  Initiators that support this feature and successfully recover from
       a KRB-ERROR or KRB-ERROR2 SHALL return GSS_S_CONTINUE_NEEDED.
       Otherwise they MUST generate a KRB-ERROR to send to the acceptor
-      and return an error to the application.
 
 
 
-
-Williams & Dowdeswell    Expires August 19, 2013                [Page 4]
+Williams & Dowdeswell    Expires August 22, 2013                [Page 4]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
 
-   The following Kerberos errors can be recovered from using this
-   protocol:
+      and return an error to the application.
+
+2.1.  Error Recovery
+
+   The following Kerberos errors can be recovered from automatically
+   using this protocol:
 
    o  KRB_AP_ERR_TKT_EXPIRED: the initiator should get a new service
       ticket
@@ -269,35 +273,45 @@ Internet-Draft              Kerberos Extra AP              February 2013
    authenticate but to a different service principal, in which case the
    error code SHALL be KRB_AP_ERR_NOT_US, the KRB-ERROR2 encrypted part
    MUST be encrypted in the sub-session key from the Authenticator, and
-   the sname and realm fields of the KRB-ERROR2 MUST be present.
 
 
 
-
-
-
-Williams & Dowdeswell    Expires August 19, 2013                [Page 5]
+Williams & Dowdeswell    Expires August 22, 2013                [Page 5]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
 
-2.1.  Use in Non-GSS Applications
-
-   We only specify multiple round trips for the GSS mechanism and
-   application case.  We believe that some non-GSS Kerberos applications
-   may also benefit from this extension.
+   the sname and realm fields of the KRB-ERROR2 MUST be present.
 
 2.2.  Number of Round Trips
 
-   At most two round trips should be needed in general.  Implementations
-   SHOULD impose a limit of either two or three round trips.  An
-   initiator that rejects an additional round-trip MUST respond with a
-   KRB-ERROR2.
+   The first AP-REQ may well result in an error; the second should not.
+   Therefore acceptors SHOULD return a fatal error when a second error
+   results in one security context establishment attempt, except when
+   the first error is that the initiator should use user-to-user
+   authentication.  This limits the maximum number of round trips to two
+   (not user-to-user) or three (user-to-user).
+
+   Initiators and acceptors MUST impose some limit on the maximum number
+   of round trips.
+
+   An initiator that rejects an additional round trip MUST respond with
+   a KRB-ERROR2.
 
    Note that in the user-to-user cases (see Section 4.4) it's possible
    to have up to three round trips under normal conditions if, for
    example, the acceptor wishes to avoid the use of replay caches (see
-   Section 4.3).
+   Section 4.3), or if the initiator's clock is too skewed, for example.
+
+2.3.  Use in Non-GSS Applications
+
+   We only specify multiple round trips for the GSS mechanism and
+   application case.  We believe that some non-GSS Kerberos applications
+   may also benefit from this extension.  Non-GSS Kerberos applications
+   typically assume that AP exchanges require no more than two PDUs,
+   therefore it's not likely that this extension will ever be of use to
+   non-GSS Kerberos applications, not before first extending Kerberos
+   APIs.
 
 
 
@@ -318,28 +332,18 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams & Dowdeswell    Expires August 19, 2013                [Page 6]
+Williams & Dowdeswell    Expires August 22, 2013                [Page 6]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
 
 3.  ASN.1 for New Protocol Elements
 
-   An ASN.1 module appears below.
+   A partial ASN.1 module appears below.  This ASN.1 is to be used as if
+   it were part of the base Kerberos ASN.1 module (see RFC4120),
+   therefore the encoding rules to be used are the Distinguished
+   Encoding Rules (DER) [CCITT.X690.2002], and the environment is one of
+   explicit tagging.
 
 
 
@@ -384,11 +388,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-
-
-
-
-Williams & Dowdeswell    Expires August 19, 2013                [Page 7]
+Williams & Dowdeswell    Expires August 22, 2013                [Page 7]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -444,7 +444,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013                [Page 8]
+Williams & Dowdeswell    Expires August 22, 2013                [Page 8]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -500,7 +500,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013                [Page 9]
+Williams & Dowdeswell    Expires August 22, 2013                [Page 9]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -537,6 +537,12 @@ Internet-Draft              Kerberos Extra AP              February 2013
    key of its choosing.  This service ticket may be used to speed up
    future otherwise-slow AP exchanges.
 
+   [XXX Actually, this is kinda broken right now as the issuance of a
+   fast re-auth ticket requires an extra round-trip, which we probably
+   don't want!  Instead we need either an extended AP-REP or to add a
+   field to the KRB-ERROR2 enc-part (or a TYPED-DATA) for embedding an
+   AP-REP.]
+
 4.3.  Replay Cache Avoidance
 
    By using an additional round trip and a challenge/response nonce,
@@ -547,21 +553,23 @@ Internet-Draft              Kerberos Extra AP              February 2013
    ignore critical authorization data or which don't know to reject
    initial AP-REQs that contain a challenge response nonce.
 
+
+
+
+Williams & Dowdeswell    Expires August 22, 2013               [Page 10]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
+
    By the same token, acceptors that support this feature MUST reject
    initial security context tokens that contain a challenge response
    nonce.
 
    Note that in the replay cache avoidance case, but where there's no
    actual error (e.g., time skew) the acceptor's KRB-ERROR2 will have
-
-
-
-Williams & Dowdeswell    Expires August 19, 2013               [Page 10]
-
-Internet-Draft              Kerberos Extra AP              February 2013
-
-
    KDC_ERR_NONE as the error code, with the continue-needed e-flag.
+
+   Readers should note the problem described in Section 10.
 
 4.4.  User-to-User Authentication
 
@@ -596,9 +604,18 @@ Internet-Draft              Kerberos Extra AP              February 2013
    KRB-ERROR2, using either the null enc-type for the enc-part, or the
    initiator's sub-session key, and includes a TGT for itself.
 
-   In both cases the initiator then does a TGS request with a second
+   In both cases the inlitiator then does a TGS request with a second
    ticket to get a new, user2user Ticket.  Then the initiator makes a
    new AP-REQ using the new Ticket, and proceeds.
+
+
+
+
+
+Williams & Dowdeswell    Expires August 22, 2013               [Page 11]
+
+Internet-Draft              Kerberos Extra AP              February 2013
+
 
 4.4.1.  Negotiation Issues for User-to-User Authentication
 
@@ -609,14 +626,6 @@ Internet-Draft              Kerberos Extra AP              February 2013
    problem: they may end up negotiating the use of the Kerberos V5 GSS
    mechanism and fail to establish a security context because the
    acceptor does not support the features defined in this document, but
-
-
-
-Williams & Dowdeswell    Expires August 19, 2013               [Page 11]
-
-Internet-Draft              Kerberos Extra AP              February 2013
-
-
    the application might have succeeded if it had selected the user-to-
    user mechanism.
 
@@ -659,16 +668,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-
-
-
-
-
-
-
-
-
-Williams & Dowdeswell    Expires August 19, 2013               [Page 12]
+Williams & Dowdeswell    Expires August 22, 2013               [Page 12]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -724,7 +724,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013               [Page 13]
+Williams & Dowdeswell    Expires August 22, 2013               [Page 13]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -780,7 +780,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013               [Page 14]
+Williams & Dowdeswell    Expires August 22, 2013               [Page 14]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -836,7 +836,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013               [Page 15]
+Williams & Dowdeswell    Expires August 22, 2013               [Page 15]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -845,10 +845,24 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
    This document deals with security.
 
-   [XXX Note the resource using attacks that are feasible when we have
-   multiple round-trips and note that they are nothing new and nothing
-   to worry about because services should already have timeouts on pre-
-   authenticated protocol phases, and even post-authentication.]
+   There are a number of unauthenticated protocol elements: the
+   continue-needed-ok flag that the initiator uses to indicate its
+   willingness to have more than one round trip, and some errors.  This
+   is unavoidable.
+
+   The new KRB-ERROR2 PDU is cryptographically distinguished from the
+   original mechanism's acceptor success security context token (AP-
+   REQ).
+
+   Because in the base Kerberos V5 GSS-API security mechanism all errors
+   are unauthenticated, and because even with this specification some
+   elements are unauthenticated, it is possible for an attacker to cause
+   one peer to think that the security context token exchange has failed
+   while the other thinks it will continue.  This can cause an acceptor
+   to waste resources while waiting for additional security context
+   tokens from the initiator.  This is not really a new problem,
+   however; acceptors should already have suitable timeouts on pre-
+   authentication phases of application protocols.
 
 
 
@@ -878,21 +892,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams & Dowdeswell    Expires August 19, 2013               [Page 16]
+Williams & Dowdeswell    Expires August 22, 2013               [Page 16]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -948,14 +948,35 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013               [Page 17]
+Williams & Dowdeswell    Expires August 22, 2013               [Page 17]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
 
 10.  TODO
 
-   o  Add references to ASN.1 and DER (X.680 and X.690).
+   o  Decide whether to keep any user-to-user functionality.
+
+   o  For the replay cache avoidance case we should only want an
+      additional security context token from the initiator, but not an
+      additional one from the acceptor.  Because of PROT_READY the
+      additional round trip (as opposed to half round trip) should not
+      be a concern, but for some applications this will be onerous
+      because they do not use the PROT_READY feature of the GSS-API.
+      Therefore we should have a security context token that denotes
+      success-but-one-token-is-needed.  KRB-ERROR2 cannot be such a
+      token, but neither can AP-REP -- AP-RE it has no elements by which
+      we can indicate the need for an additional token.  This means we
+      should introduce an AP-REP2, or an extension to AP-REP that is
+      only to be used when the initiator sets the continue-needed-ok ap-
+      options flag.
+
+   o  Describe interaction with non-mutual authentication.
+      Specifically, setting the continue-needed-ok flag strongly implies
+      that mutual authentication is also desired as otherwise
+      GSS_Init_sec_context() will have returned GSS_S_COMPLETE, and any
+      security context tokens from the acceptor will implicitly have to
+      be error tokens.
 
 
 
@@ -983,28 +1004,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams & Dowdeswell    Expires August 19, 2013               [Page 18]
+Williams & Dowdeswell    Expires August 22, 2013               [Page 18]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -1031,7 +1031,26 @@ Internet-Draft              Kerberos Extra AP              February 2013
               Interface (GSS-API) Mechanism: Version 2", RFC 4121,
               July 2005.
 
+   [CCITT.X680.2002]
+              International International Telephone and Telegraph
+              Consultative Committee, "Abstract Syntax Notation One
+              (ASN.1): Specification of basic notation",
+              CCITT Recommendation X.680, July 2002.
+
+   [CCITT.X690.2002]
+              International International Telephone and Telegraph
+              Consultative Committee, "ASN.1 encoding rules:
+              Specification of basic encoding Rules (BER), Canonical
+              encoding rules (CER) and Distinguished encoding rules
+              (DER)", CCITT Recommendation X.690, July 2002.
+
 11.2.  Informative References
+
+   [I-D.williams-kitten-krb5-rcache-avoidance]
+              Williams, N., "Replay Cache Avoidance for the Kerberos V5
+              Generic Security Services Mechanism",
+              draft-williams-kitten-krb5-rcache-avoidance-01 (work in
+              progress), February 2013.
 
    [I-D.swift-win2k-krb-user2user]
               Swift, M., Brezak, J., and P. Moore, "User to User
@@ -1041,26 +1060,7 @@ Internet-Draft              Kerberos Extra AP              February 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams & Dowdeswell    Expires August 19, 2013               [Page 19]
+Williams & Dowdeswell    Expires August 22, 2013               [Page 19]
 
 Internet-Draft              Kerberos Extra AP              February 2013
 
@@ -1116,5 +1116,5 @@ Authors' Addresses
 
 
 
-Williams & Dowdeswell    Expires August 19, 2013               [Page 20]
+Williams & Dowdeswell    Expires August 22, 2013               [Page 20]
 

@@ -3,14 +3,14 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: RFC4121 (if approved)                         February 13, 2013
+Updates: RFC4121 (if approved)                         February 18, 2013
 Intended status: Standards Track
-Expires: August 17, 2013
+Expires: August 22, 2013
 
 
   Replay Cache Avoidance for the Kerberos V5 Generic Security Services
                                Mechanism
-             draft-williams-kitten-krb5-rcache-avoidance-00
+             draft-williams-kitten-krb5-rcache-avoidance-01
 
 Abstract
 
@@ -33,7 +33,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 17, 2013.
+   This Internet-Draft will expire on August 22, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Williams                 Expires August 17, 2013                [Page 1]
+Williams                 Expires August 22, 2013                [Page 1]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -75,9 +75,10 @@ Table of Contents
    5.      API Extensions and Local Configuration . . . . . . . . . . 10
    6.      Security Considerations  . . . . . . . . . . . . . . . . . 11
    7.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 12
-   8.      Informative References . . . . . . . . . . . . . . . . . . 13
-   9.      Normative References . . . . . . . . . . . . . . . . . . . 14
-           Author's Address . . . . . . . . . . . . . . . . . . . . . 15
+   8.      References . . . . . . . . . . . . . . . . . . . . . . . . 13
+   8.1.    Normative References . . . . . . . . . . . . . . . . . . . 13
+   8.2.    Informative References . . . . . . . . . . . . . . . . . . 13
+           Author's Address . . . . . . . . . . . . . . . . . . . . . 14
 
 
 
@@ -107,8 +108,7 @@ Table of Contents
 
 
 
-
-Williams                 Expires August 17, 2013                [Page 2]
+Williams                 Expires August 22, 2013                [Page 2]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -147,10 +147,11 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
    rely on local configuration on a per-service principal name basis (or
    on a per-service name basis) to indicate that all application
    protocols spoken by that service principal are inmune to replays of
-   security context tokens - this is useful when the application doesn't
-   know how to signal this via a credential option.  Additionally, we
-   have some requirements regarding the sharing of service keys across
-   multiple service principals with the same hostname component.
+   security context tokens -- this is useful when the application
+   doesn't know how to signal this via a credential option.
+   Additionally, we have some requirements regarding the sharing of
+   service keys across multiple service principals with the same
+   hostname component.
 
    Together these API extensions and local configuration allow mechanism
    acceptor implementations to decide when to forgo the use of a replay
@@ -163,8 +164,7 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 
-
-Williams                 Expires August 17, 2013                [Page 3]
+Williams                 Expires August 22, 2013                [Page 3]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -220,7 +220,7 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 
-Williams                 Expires August 17, 2013                [Page 4]
+Williams                 Expires August 22, 2013                [Page 4]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -276,7 +276,7 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 
-Williams                 Expires August 17, 2013                [Page 5]
+Williams                 Expires August 22, 2013                [Page 5]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -332,7 +332,7 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 
-Williams                 Expires August 17, 2013                [Page 6]
+Williams                 Expires August 22, 2013                [Page 6]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -388,7 +388,7 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 
-Williams                 Expires August 17, 2013                [Page 7]
+Williams                 Expires August 22, 2013                [Page 7]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -396,9 +396,9 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
    encoding of the following explicitly tagged ASN.1 type:
 
     AD-Ticket-Binding-Data ::= SEQUENCE {
-      srealm [0] Realm,            - realm from the Ticket
-      sname  [1] PrincipalName,    - sname from the Ticket
-      cksum  [2] Checksum OPTIONAL - taken over the Ticket
+      srealm [0] Realm,            -- realm from the Ticket
+      sname  [1] PrincipalName,    -- sname from the Ticket
+      cksum  [2] Checksum OPTIONAL -- taken over the Ticket
 
                Figure 1: AD-Ticket-Binding ad-value contents
 
@@ -444,7 +444,7 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 
-Williams                 Expires August 17, 2013                [Page 8]
+Williams                 Expires August 22, 2013                [Page 8]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -500,7 +500,7 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 
-Williams                 Expires August 17, 2013                [Page 9]
+Williams                 Expires August 22, 2013                [Page 9]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -556,7 +556,7 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 
-Williams                 Expires August 17, 2013               [Page 10]
+Williams                 Expires August 22, 2013               [Page 10]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -612,7 +612,7 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 
-Williams                 Expires August 17, 2013               [Page 11]
+Williams                 Expires August 22, 2013               [Page 11]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -668,68 +668,14 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 
-Williams                 Expires August 17, 2013               [Page 12]
+Williams                 Expires August 22, 2013               [Page 12]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
-8.  Informative References
+8.  References
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                 Expires August 17, 2013               [Page 13]
-
-Internet-Draft          Kerberos RCache Avoidance          February 2013
-
-
-9.  Normative References
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -749,6 +695,19 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
               Interface (GSS-API) Mechanism: Version 2", RFC 4121,
               July 2005.
 
+8.2.  Informative References
+
+   [I-D.williams-kitten-krb5-extra-rt]
+              Williams, N. and R. Dowdeswell, "Negotiation of Extra
+              Round Trip for Kerberos V5 Generic Security Services
+              Mechanism", draft-williams-kitten-krb5-extra-rt-01 (work
+              in progress), February 2013.
+
+   [I-D.swift-win2k-krb-user2user]
+              Swift, M., Brezak, J., and P. Moore, "User to User
+              Kerberos Authentication using GSS-API",
+              draft-swift-win2k-krb-user2user-03 (work in progress),
+              February 2011.
 
 
 
@@ -765,22 +724,7 @@ Internet-Draft          Kerberos RCache Avoidance          February 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                 Expires August 17, 2013               [Page 14]
+Williams                 Expires August 22, 2013               [Page 13]
 
 Internet-Draft          Kerberos RCache Avoidance          February 2013
 
@@ -836,5 +780,5 @@ Author's Address
 
 
 
-Williams                 Expires August 17, 2013               [Page 15]
+Williams                 Expires August 22, 2013               [Page 14]
 
