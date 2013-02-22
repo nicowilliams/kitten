@@ -1,0 +1,1891 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass docbook
+\use_default_options true
+\maintain_unincluded_children false
+\begin_local_layout
+Format 31
+
+InsetLayout Flex:PI_Strict
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_Strict
+End
+
+InsetLayout Flex:PI
+    LyXType Custom
+    HTMLTag div
+    LabelString PI
+End
+
+InsetLayout Flex:PI_SymRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SymRefs
+End
+
+InsetLayout Flex:PI_SortRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SortRefs
+End
+
+InsetLayout Flex:PI_TOC
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOC
+End
+
+InsetLayout Flex:PI_TOCIndent
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCIndent
+End
+
+InsetLayout Flex:PI_TOCDepth
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCDepth
+End
+
+InsetLayout Flex:PI_TOCNarrow
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCNarrow
+End
+
+InsetLayout Flex:PI_TOCCompact
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCCompact
+End
+
+InsetLayout Flex:PI_TOCAppendix
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCAppendix
+End
+
+InsetLayout Flex:DocName
+    LyXType Custom
+    HTMLTag div
+    LabelString DocName
+End
+
+InsetLayout Flex:IntendedStatus
+    LyXType Custom
+    HTMLTag div
+    LabelString IntendedStatus
+End
+
+InsetLayout Flex:Updates
+    LyXType Custom
+    HTMLTag div
+    LabelString Updates
+End
+
+InsetLayout Flex:Obsoletes
+    LyXType Custom
+    HTMLTag div
+    LabelString Obsoletes
+End
+
+InsetLayout Flex:SeriesNo
+    LyXType Custom
+    HTMLTag div
+    LabelString SeriesNo
+End
+
+InsetLayout Flex:RFCNumber
+    LyXType Custom
+    HTMLTag div
+    LabelString RFCNumber
+End
+
+InsetLayout Flex:IPR
+    LyXType Custom
+    HTMLTag div
+    LabelString IPR
+End
+
+InsetLayout Flex:IETFArea
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFArea
+End
+
+InsetLayout Flex:IETFWorkingGroup
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFWorkingGroup
+End
+
+InsetLayout Flex:XML2RFCKeyword
+    LyXType Custom
+    HTMLTag div
+    LabelString XML2RFCKeyword
+End
+
+InsetLayout Flex:TitleAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString TitleAbbrev
+End
+
+InsetLayout Flex:AuthorRole
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthRole
+End
+
+InsetLayout Flex:AuthorInitials
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthInitials
+End
+
+InsetLayout Flex:AuthorSurname
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthSurname
+End
+
+InsetLayout Flex:AuthorOrg
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrg
+End
+
+InsetLayout Flex:AuthorOrgAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrgAbbrev
+End
+
+InsetLayout Flex:AuthorEmailAddr
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthEmailAddr
+End
+
+InsetLayout Flex:AuthorAddrStreet
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrStreet
+End
+
+InsetLayout Flex:AuthorAddrCity
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCity
+End
+
+InsetLayout Flex:AuthorAddrRegion
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrRegion
+End
+
+InsetLayout Flex:AuthorAddrCode
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCode
+End
+
+InsetLayout Flex:AuthorAddrCountry
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCountry
+End
+
+InsetLayout Flex:EntityXRef
+    LyXType Custom
+    HTMLTag div
+    LabelString EntityXRef
+End
+
+InsetLayout Flex:BibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString BibXML
+End
+
+InsetLayout Flex:EmbeddedBibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString EmbeddedBibXML
+End
+\end_local_layout
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman cmr
+\font_sans cmss
+\font_typewriter cmtt
+\font_default_family ttdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Simplified and Asynchronous Security Context Interfaces for the Generic
+ Security Services Application Programming Interface
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex DocName
+status open
+
+\begin_layout Plain Layout
+draft-williams-kitten-ctx-simple-async-00
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IPR
+status open
+
+\begin_layout Plain Layout
+trust200902
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IntendedStatus
+status open
+
+\begin_layout Plain Layout
+std
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex TitleAbbrev
+status open
+
+\begin_layout Plain Layout
+Simple GSS
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IETFArea
+status open
+
+\begin_layout Plain Layout
+Security Area
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex XML2RFCKeyword
+status open
+
+\begin_layout Plain Layout
+Internet-Draft
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Updates
+status open
+
+\begin_layout Plain Layout
+RFC2743 RFC2744
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex PI TOC
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI SymRefs
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI TOCIndent
+status open
+
+\begin_layout Plain Layout
+no
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+comments="yes"
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+inline="yes"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Nicolas Williams
+\begin_inset Flex AuthorOrg
+status open
+
+\begin_layout Plain Layout
+Cryptonector, LLC
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorOrgAbbrev
+status open
+
+\begin_layout Plain Layout
+Cryptonector
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorEmailAddr
+status open
+
+\begin_layout Plain Layout
+nico@cryptonector.com
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+This Internet-Draft proposes extensions to the Generic Security Services
+ Application Programming Interface (GSS-API) for replacing the exiting GSS_Init_
+sec_context() and GSS_Accept_sec_context() functions with simplified forms
+ that also support asynchrony.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+We propose replacing the GSS_Init_sec_context() and GSS_Accept_sec_context()
+ functions with a set of simpler functions: one to create an 
+\begin_inset Quotes eld
+\end_inset
+
+empty
+\begin_inset Quotes erd
+\end_inset
+
+ security context, a set of functions to set context parameters, a single
+ function for 
+\begin_inset Quotes eld
+\end_inset
+
+stepping
+\begin_inset Quotes erd
+\end_inset
+
+ the security context token exchange, and additional security context inquiry
+ functions.
+ Support for non-blocking stepping of security context token exchange is
+ also included.
+\end_layout
+
+\begin_layout Subsection
+Conventions used in this document
+\end_layout
+
+\begin_layout Standard
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+ "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are
+ to be interpreted as described in 
+\begin_inset Flex EntityXRef
+status open
+
+\begin_layout Plain Layout
+RFC2119
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Simplified API
+\end_layout
+
+\begin_layout Standard
+We add a function for creating 
+\begin_inset Quotes eld
+\end_inset
+
+empty
+\begin_inset Quotes erd
+\end_inset
+
+ security contexts:
+\end_layout
+
+\begin_layout Itemize
+GSS_Create_sec_context()
+\end_layout
+
+\begin_layout Standard
+We add the following new mutator functions for empty security contexts:
+\end_layout
+
+\begin_layout Itemize
+GSS_Set_context_flags()
+\end_layout
+
+\begin_layout Itemize
+GSS_Set_context_credentials()
+\end_layout
+
+\begin_layout Itemize
+GSS_Set_context_role_init()
+\end_layout
+
+\begin_layout Itemize
+GSS_Set_context_channel_bindings()
+\end_layout
+
+\begin_layout Itemize
+GSS_Set_context_lifetime()
+\end_layout
+
+\begin_layout Itemize
+GSS_Set_async_IO_notification()
+\end_layout
+
+\begin_layout Standard
+We add a function for stepping through security context token exchanges:
+\end_layout
+
+\begin_layout Itemize
+GSS_Step_context()
+\end_layout
+
+\begin_layout Standard
+We add a function for retrieving delegated credentials from a security context
+ token:
+\end_layout
+
+\begin_layout Itemize
+GSS_Get_context_deleg_cred()
+\end_layout
+
+\begin_layout Subsection
+GSS_Create_sec_context()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Itemize
+<none>
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER -- note: mostly useless, but we should keep it
+\end_layout
+
+\begin_layout Itemize
+context SECURITY CONTEXT
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+GSS_S_UNAVAILABLE indicates that memory is not available, for example.
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Standard
+This function creates an 
+\begin_inset Quotes eld
+\end_inset
+
+empty
+\begin_inset Quotes erd
+\end_inset
+
+ security context handle that can be passed to GSS_Init_sec_context() or
+ GSS_Accept_sec_context() where they expect a NULL context.
+ The context can also be passed to the other new security context functions
+ defined in this document.
+\end_layout
+
+\begin_layout Subsubsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_create_sec_context(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                        gss_ctx_id_t *context);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+C-Bindings of GSS_Create_sec_context()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+GSS_Set_context_flags()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Description
+context
+\begin_inset space ~
+\end_inset
+
+CONTEXT
+\begin_inset space ~
+\end_inset
+
+HANDLE 
+\end_layout
+
+\begin_layout Description
+req_flags
+\begin_inset space ~
+\end_inset
+
+FLAGS Requested flags.
+ Applicable to acceptors and initiators.
+\end_layout
+
+\begin_layout Description
+ret_flags_understood
+\begin_inset space ~
+\end_inset
+
+FLAGS Return flags understood by the caller.
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Standard
+This function tells the mechanism (when one is eventually chosen and invoked)
+ that the application requests the given req_flags and undestands the given
+ ret_flags.
+ Initiators can override the req_flags in their GSS_Init_sec_context() call,
+ but if no flags are requested there then the req_flags set on the empty
+ context will be used.
+\end_layout
+
+\begin_layout Standard
+NOTE: The abstract GSS-API 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2743
+\end_layout
+
+\end_inset
+
+ uses individual elements -one per-flag- instead of a 
+\begin_inset Quotes eld
+\end_inset
+
+FLAGS
+\begin_inset Quotes erd
+\end_inset
+
+ type.
+ This is unwieldy, therefore we introduce an abstract type named 
+\begin_inset Quotes eld
+\end_inset
+
+FLAGS
+\begin_inset Quotes erd
+\end_inset
+
+ to act as a set of all the request/return flags defined for the abstract
+ GSS-API.
+\end_layout
+
+\begin_layout Subsubsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_set_context_flags(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                       gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                       uint64_t req_flags,
+\end_layout
+
+\begin_layout Plain Layout
+
+                       uint64_t ret_flags);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+C-Bindings of GSS_Set_context_flags()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+GSS_Set_context_credentials()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Description
+context
+\begin_inset space ~
+\end_inset
+
+CONTEXT
+\begin_inset space ~
+\end_inset
+
+HANDLE Empty security context
+\end_layout
+
+\begin_layout Description
+input_cred_handle
+\begin_inset space ~
+\end_inset
+
+CREDENTIAL
+\begin_inset space ~
+\end_inset
+
+HANDLE
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+...
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Standard
+This function sets the application's credentials.
+ If not set then the default credentials will be used.
+ Multiple acceptor credentials MAY be set on a security context; the mechanism
+ SHOULD allow accepting security contexts for any principal names for which
+ credentials were set, and MUST allow accepting security cotnexts for the
+ first credential's principal name.
+\end_layout
+
+\begin_layout Subsubsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_set_context_credentials(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             gss_const_cred_id_t input_cred_handle);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+C-Bindings of GSS_Set_context_credentials()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+GSS_Set_context_channel_bindings()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Description
+context
+\begin_inset space ~
+\end_inset
+
+CONTEXT
+\begin_inset space ~
+\end_inset
+
+HANDLE Empty security context
+\end_layout
+
+\begin_layout Description
+input_channel_bindings
+\begin_inset space ~
+\end_inset
+
+OCTET
+\begin_inset space ~
+\end_inset
+
+STRING
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+...
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Subsubsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_set_context_channel_bindings(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                  gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                  gss_const_buffer_t input_cb);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+C-Bindings of GSS_Set_context_lifetime()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+GSS_Set_context_lifetime()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Description
+context
+\begin_inset space ~
+\end_inset
+
+CONTEXT
+\begin_inset space ~
+\end_inset
+
+HANDLE Empty security context
+\end_layout
+
+\begin_layout Description
+lifetime_req
+\begin_inset space ~
+\end_inset
+
+INTEGER ...
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+...
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Subsubsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_set_context_lifetime(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                          gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                          uint64_t lifetime_req);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+C-Bindings of GSS_Set_context_lifetime()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+GSS_Set_async_IO_notification()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Description
+context
+\begin_inset space ~
+\end_inset
+
+CONTEXT
+\begin_inset space ~
+\end_inset
+
+HANDLE Empty security context
+\end_layout
+
+\begin_layout Description
+async_notification_method
+\begin_inset space ~
+\end_inset
+
+UNSPECIFIED
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+...
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Standard
+This function sets a method for informing the application that the given
+ security context is ready to have GSS_Step_context() called on it.
+ Whenever GSS_Step_context() returns GSS_S_CONTINUE_NEEDED and no output
+ token the application must wait for the async I/O completion notification
+ and then call GSS_Step_context() again (this time with no input token).
+ GSS_Step_context() will only work asynchronously when this function has
+ been used to set a completion notification method.
+\end_layout
+
+\begin_layout Standard
+The async I/O completion notification method is not specified for the abstract
+ API.
+ In the C bindings we allow for several different notification methods,
+ including:
+\end_layout
+
+\begin_layout Itemize
+callback function
+\end_layout
+
+\begin_layout Itemize
+file descriptor or file handle into which a single byte (any value) will
+ be written
+\end_layout
+
+\begin_layout Itemize
+a condition variable (and associated mutex) on which a signal will be sent
+\end_layout
+
+\begin_layout Standard
+Other completeion notification methods could be specified as well, but these
+ seem likely to be sufficient and reasonably portable.
+\end_layout
+
+\begin_layout Subsubsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ typedef void (*gss_async_cb_t)(gss_ctx_id_t context, void *cb_data);
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_set_context_async_io_cb(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             gss_async_cb_t cb,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             void *cb_data);
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_set_context_async_io_fd(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             int fd);
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_set_context_async_io_handle(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                 gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                 HANDLE h);
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_set_context_async_io_condvar(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                  gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                  pthread_cond_t cv,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                  pthread_mutex_t lock);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+C-Bindings of GSS_Set_async_IO_notification()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+GSS_Set_context_role_init()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Description
+context
+\begin_inset space ~
+\end_inset
+
+CONTEXT
+\begin_inset space ~
+\end_inset
+
+HANDLE Empty security context
+\end_layout
+
+\begin_layout Description
+mech_type
+\begin_inset space ~
+\end_inset
+
+OID Mechanism OID
+\end_layout
+
+\begin_layout Description
+target
+\begin_inset space ~
+\end_inset
+
+NAME Name of target service principal
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+GSS_S_UNAVAILABLE
+\end_layout
+
+\begin_layout Itemize
+...
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Standard
+This function sets the security context role to be that of an initiator,
+ with the given mechanism OID (possibly GSS_C_NO_OID), and the given target
+ name (possibly GSS_C_NO_NAME).
+\end_layout
+
+\begin_layout Subsubsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_set_context_context_role_init(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                   gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                   gss_const_OID mech_oid,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                   gss_const_name_t target_name);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+C-Bindings of GSS_Set_context_role_init()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+GSS_Step_context()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Description
+context
+\begin_inset space ~
+\end_inset
+
+CONTEXT
+\begin_inset space ~
+\end_inset
+
+HANDLE Empty security context
+\end_layout
+
+\begin_layout Description
+input_token
+\begin_inset space ~
+\end_inset
+
+OCTET
+\begin_inset space ~
+\end_inset
+
+STRING Input security context token, if any
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+output_token OCTET STRING -- output security context token, if any
+\end_layout
+
+\begin_layout Itemize
+actual_mech OID -- OID of mechanism used
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+GSS_S_CONTINUE_NEEDED ...
+\end_layout
+
+\begin_layout Itemize
+GSS_S_UNAVAILABLE
+\end_layout
+
+\begin_layout Itemize
+...
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Standard
+This function steps through one step of security context token exchange
+ for the given security context.
+\end_layout
+
+\begin_layout Standard
+Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is
+ output, then the function must be called again upon async I/O completion
+ notification.
+\end_layout
+
+\begin_layout Subsubsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_step_context(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                  gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                  gss_const_buffer_t input_token,
+\end_layout
+
+\begin_layout Plain Layout
+
+                  gss_buffer_t output_token,
+\end_layout
+
+\begin_layout Plain Layout
+
+                  gss_const_OID *actual_mech);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+C-Bindings of GSS_Step_context()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Security Considerations
+\end_layout
+
+\begin_layout Standard
+...
+\end_layout
+
+\begin_layout Section
+IANA Considerations
+\end_layout
+
+\begin_layout Standard
+[Add registrations for all the above functions.]
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:References"
+
+\end_inset
+
+Normative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2119"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2743"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2744"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc5056"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5056.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc5587"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5587.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Informative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc5653"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5653.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
