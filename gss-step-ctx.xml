@@ -67,6 +67,8 @@ GSS_Set_context_channel_bindings()</t>
           <t>
 GSS_Set_context_lifetime()</t>
           <t>
+GSS_Set_context_event_loop() [XXX not yet specified. I want to use libevent bases here, or libev. It seems silly to invent something new.]</t>
+          <t>
 GSS_Set_async_IO_notification()</t>
         </list>
       </t>
@@ -86,7 +88,7 @@ We add a function for retrieving delegated credentials from a security context t
 GSS_Get_context_deleg_cred()</t>
         </list>
       </t>
-      <section title="GSS_Create_sec_context()" anchor="d1e366">
+      <section title="GSS_Create_sec_context()" anchor="d1e369">
         <t>
 Inputs:</t>
         <t>
@@ -121,11 +123,11 @@ GSS_S_FAILURE indicates a general failure.</t>
         </t>
         <t>
 This function creates an “empty” security context handle that can be passed to GSS_Init_sec_context() or GSS_Accept_sec_context() where they expect a NULL context. The context can also be passed to the other new security context functions defined in this document.</t>
-        <section title="C-Bindings" anchor="d1e409">
+        <section title="C-Bindings" anchor="d1e412">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-117" title="C-Bindings of GSS_Create_sec_context()">
+            <figure anchor="magicparlabel-118" title="C-Bindings of GSS_Create_sec_context()">
               <artwork> OM_uint32
  gss_create_sec_context(OM_uint32 *minor_status,
                         gss_ctx_id_t *context);</artwork>
@@ -133,7 +135,7 @@ This function creates an “empty” security context handle that can be passed 
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_flags()" anchor="d1e437">
+      <section title="GSS_Set_context_flags()" anchor="d1e440">
         <t>
 Inputs:</t>
         <t>
@@ -170,11 +172,11 @@ GSS_S_FAILURE indicates a general failure.</t>
 This function tells the mechanism (when one is eventually chosen and invoked) that the application requests the given req_flags and undestands the given ret_flags. Initiators can override the req_flags in their GSS_Init_sec_context() call, but if no flags are requested there then the req_flags set on the empty context will be used.</t>
         <t>
 NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements -one per-flag- instead of a “FLAGS” type. This is unwieldy, therefore we introduce an abstract type named “FLAGS” to act as a set of all the request/return flags defined for the abstract GSS-API.</t>
-        <section title="C-Bindings" anchor="d1e495">
+        <section title="C-Bindings" anchor="d1e498">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-153" title="C-Bindings of GSS_Set_context_flags()">
+            <figure anchor="magicparlabel-154" title="C-Bindings of GSS_Set_context_flags()">
               <artwork> OM_uint32
  gss_set_context_flags(OM_uint32 *minor_status,
                        gss_ctx_id_t context,
@@ -184,7 +186,7 @@ NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements -on
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_credentials()" anchor="d1e523">
+      <section title="GSS_Set_context_credentials()" anchor="d1e526">
         <t>
 Inputs:</t>
         <t>
@@ -219,11 +221,11 @@ GSS_S_FAILURE indicates a general failure.</t>
         </t>
         <t>
 This function sets the application's credentials. If not set then the default credentials will be used. Multiple acceptor credentials MAY be set on a security context; the mechanism SHOULD allow accepting security contexts for any principal names for which credentials were set, and MUST allow accepting security cotnexts for the first credential's principal name.</t>
-        <section title="C-Bindings" anchor="d1e570">
+        <section title="C-Bindings" anchor="d1e573">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-183" title="C-Bindings of GSS_Set_context_credentials()">
+            <figure anchor="magicparlabel-184" title="C-Bindings of GSS_Set_context_credentials()">
               <artwork> OM_uint32
  gss_set_context_credentials(OM_uint32 *minor_status,
                              gss_ctx_id_t context,
@@ -232,7 +234,7 @@ This function sets the application's credentials. If not set then the default cr
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_channel_bindings()" anchor="d1e598">
+      <section title="GSS_Set_context_channel_bindings()" anchor="d1e601">
         <t>
 Inputs:</t>
         <t>
@@ -265,11 +267,11 @@ GSS_S_COMPLETE indicates success.</t>
 GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
-        <section title="C-Bindings" anchor="d1e642">
+        <section title="C-Bindings" anchor="d1e645">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-212" title="C-Bindings of GSS_Set_context_lifetime()">
+            <figure anchor="magicparlabel-213" title="C-Bindings of GSS_Set_context_lifetime()">
               <artwork> OM_uint32
  gss_set_context_channel_bindings(OM_uint32 *minor_status,
                                   gss_ctx_id_t context,
@@ -278,7 +280,7 @@ GSS_S_FAILURE indicates a general failure.</t>
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_lifetime()" anchor="d1e670">
+      <section title="GSS_Set_context_lifetime()" anchor="d1e673">
         <t>
 Inputs:</t>
         <t>
@@ -311,11 +313,11 @@ GSS_S_COMPLETE indicates success.</t>
 GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
-        <section title="C-Bindings" anchor="d1e714">
+        <section title="C-Bindings" anchor="d1e717">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-241" title="C-Bindings of GSS_Set_context_lifetime()">
+            <figure anchor="magicparlabel-242" title="C-Bindings of GSS_Set_context_lifetime()">
               <artwork> OM_uint32
  gss_set_context_lifetime(OM_uint32 *minor_status,
                           gss_ctx_id_t context,
@@ -324,7 +326,7 @@ GSS_S_FAILURE indicates a general failure.</t>
           </t>
         </section>
       </section>
-      <section title="GSS_Set_async_IO_notification()" anchor="d1e742">
+      <section title="GSS_Set_async_IO_notification()" anchor="d1e745">
         <t>
 Inputs:</t>
         <t>
@@ -373,11 +375,11 @@ a condition variable (and associated mutex) on which a signal will be sent</t>
         </t>
         <t>
 Other completeion notification methods could be specified as well, but these seem likely to be sufficient and reasonably portable.</t>
-        <section title="C-Bindings" anchor="d1e805">
+        <section title="C-Bindings" anchor="d1e808">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-296" title="C-Bindings of GSS_Set_async_IO_notification()">
+            <figure anchor="magicparlabel-297" title="C-Bindings of GSS_Set_async_IO_notification()">
               <artwork> typedef void (*gss_async_cb_t)(gss_ctx_id_t context, void *cb_data);
  
  OM_uint32
@@ -406,7 +408,7 @@ Other completeion notification methods could be specified as well, but these see
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_role_init()" anchor="d1e834">
+      <section title="GSS_Set_context_role_init()" anchor="d1e837">
         <t>
 Inputs:</t>
         <t>
@@ -445,11 +447,11 @@ GSS_S_FAILURE indicates a general failure.</t>
         </t>
         <t>
 This function sets the security context role to be that of an initiator, with the given mechanism OID (possibly GSS_C_NO_OID), and the given target name (possibly GSS_C_NO_NAME).</t>
-        <section title="C-Bindings" anchor="d1e888">
+        <section title="C-Bindings" anchor="d1e891">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-329" title="C-Bindings of GSS_Set_context_role_init()">
+            <figure anchor="magicparlabel-330" title="C-Bindings of GSS_Set_context_role_init()">
               <artwork> OM_uint32
  gss_set_context_context_role_init(OM_uint32 *minor_status,
                                    gss_ctx_id_t context,
@@ -459,7 +461,7 @@ This function sets the security context role to be that of an initiator, with th
           </t>
         </section>
       </section>
-      <section title="GSS_Step_context()" anchor="d1e917">
+      <section title="GSS_Step_context()" anchor="d1e920">
         <t>
 Inputs:</t>
         <t>
@@ -504,11 +506,11 @@ GSS_S_FAILURE indicates a general failure.</t>
 This function steps through one step of security context token exchange for the given security context.</t>
         <t>
 Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is output, then the function must be called again upon async I/O completion notification.</t>
-        <section title="C-Bindings" anchor="d1e978">
+        <section title="C-Bindings" anchor="d1e981">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-366" title="C-Bindings of GSS_Step_context()">
+            <figure anchor="magicparlabel-367" title="C-Bindings of GSS_Step_context()">
               <artwork> OM_uint32
  gss_step_context(OM_uint32 *minor_status,
                   gss_ctx_id_t context,
@@ -520,11 +522,11 @@ Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is output
         </section>
       </section>
     </section>
-    <section title="Security Considerations" anchor="d1e1007">
+    <section title="Security Considerations" anchor="d1e1010">
       <t>
 ...</t>
     </section>
-    <section title="IANA Considerations" anchor="d1e1016">
+    <section title="IANA Considerations" anchor="d1e1019">
       <t>
 [Add registrations for all the above functions.]</t>
     </section>

@@ -548,6 +548,12 @@ GSS_Set_context_lifetime()
 \end_layout
 
 \begin_layout Itemize
+GSS_Set_context_event_loop() [XXX not yet specified.
+ I want to use libevent bases here, or libev.
+ It seems silly to invent something new.]
+\end_layout
+
+\begin_layout Itemize
 GSS_Set_async_IO_notification()
 \end_layout
 

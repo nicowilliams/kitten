@@ -188,6 +188,10 @@ Internet-Draft                 Simple GSS                  February 2013
 
    o  GSS_Set_context_lifetime()
 
+   o  GSS_Set_context_event_loop() [XXX not yet specified.  I want to
+      use libevent bases here, or libev.  It seems silly to invent
+      something new.]
+
    o  GSS_Set_async_IO_notification()
 
    We add a function for stepping through security context token
@@ -213,10 +217,6 @@ Internet-Draft                 Simple GSS                  February 2013
    o  minor_status INTEGER -- note: mostly useless, but we should keep
       it
 
-   o  context SECURITY CONTEXT
-
-   Return major status codes:
-
 
 
 
@@ -224,6 +224,10 @@ Williams                 Expires August 26, 2013                [Page 4]
 
 Internet-Draft                 Simple GSS                  February 2013
 
+
+   o  context SECURITY CONTEXT
+
+   Return major status codes:
 
    o  GSS_S_COMPLETE indicates success.
 
@@ -269,10 +273,6 @@ Internet-Draft                 Simple GSS                  February 2013
    o  GSS_S_FAILURE indicates a general failure.
 
    This function tells the mechanism (when one is eventually chosen and
-   invoked) that the application requests the given req_flags and
-   undestands the given ret_flags.  Initiators can override the
-   req_flags in their GSS_Init_sec_context() call, but if no flags are
-   requested there then the req_flags set on the empty context will be
 
 
 
@@ -281,6 +281,10 @@ Williams                 Expires August 26, 2013                [Page 5]
 Internet-Draft                 Simple GSS                  February 2013
 
 
+   invoked) that the application requests the given req_flags and
+   undestands the given ret_flags.  Initiators can override the
+   req_flags in their GSS_Init_sec_context() call, but if no flags are
+   requested there then the req_flags set on the empty context will be
    used.
 
    NOTE: The abstract GSS-API [RFC2743] uses individual elements -one
@@ -325,10 +329,6 @@ Internet-Draft                 Simple GSS                  February 2013
    MAY be set on a security context; the mechanism SHOULD allow
    accepting security contexts for any principal names for which
    credentials were set, and MUST allow accepting security cotnexts for
-   the first credential's principal name.
-
-
-
 
 
 
@@ -336,6 +336,8 @@ Williams                 Expires August 26, 2013                [Page 6]
 
 Internet-Draft                 Simple GSS                  February 2013
 
+
+   the first credential's principal name.
 
 2.3.1.  C-Bindings
 
@@ -380,8 +382,6 @@ Internet-Draft                 Simple GSS                  February 2013
 2.5.  GSS_Set_context_lifetime()
 
    Inputs:
-
-
 
 
 
