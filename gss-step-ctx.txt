@@ -78,7 +78,8 @@ Table of Contents
    2.5.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  8
    2.6.    GSS_Set_async_IO_notification()  . . . . . . . . . . . . .  8
    2.6.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  9
-   2.7.    GSS_Set_context_role_init()  . . . . . . . . . . . . . . . 10
+   2.6.2.  A Word About Event Loops and Threading . . . . . . . . . . 10
+   2.7.    GSS_Set_context_role_init()  . . . . . . . . . . . . . . . 11
    2.7.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 11
    2.8.    GSS_Step_context() . . . . . . . . . . . . . . . . . . . . 11
    2.8.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 12
@@ -88,7 +89,6 @@ Table of Contents
    5.1.    Normative References . . . . . . . . . . . . . . . . . . . 15
    5.2.    Informative References . . . . . . . . . . . . . . . . . . 15
            Author's Address . . . . . . . . . . . . . . . . . . . . . 16
-
 
 
 
@@ -188,10 +188,6 @@ Internet-Draft                 Simple GSS                  February 2013
 
    o  GSS_Set_context_lifetime()
 
-   o  GSS_Set_context_event_loop() [XXX not yet specified.  I want to
-      use libevent bases here, or libev.  It seems silly to invent
-      something new.]
-
    o  GSS_Set_async_IO_notification()
 
    We add a function for stepping through security context token
@@ -217,6 +213,10 @@ Internet-Draft                 Simple GSS                  February 2013
    o  minor_status INTEGER -- note: mostly useless, but we should keep
       it
 
+   o  context SECURITY CONTEXT
+
+   Return major status codes:
+
 
 
 
@@ -224,10 +224,6 @@ Williams                 Expires August 26, 2013                [Page 4]
 
 Internet-Draft                 Simple GSS                  February 2013
 
-
-   o  context SECURITY CONTEXT
-
-   Return major status codes:
 
    o  GSS_S_COMPLETE indicates success.
 
@@ -273,6 +269,10 @@ Internet-Draft                 Simple GSS                  February 2013
    o  GSS_S_FAILURE indicates a general failure.
 
    This function tells the mechanism (when one is eventually chosen and
+   invoked) that the application requests the given req_flags and
+   undestands the given ret_flags.  Initiators can override the
+   req_flags in their GSS_Init_sec_context() call, but if no flags are
+   requested there then the req_flags set on the empty context will be
 
 
 
@@ -281,10 +281,6 @@ Williams                 Expires August 26, 2013                [Page 5]
 Internet-Draft                 Simple GSS                  February 2013
 
 
-   invoked) that the application requests the given req_flags and
-   undestands the given ret_flags.  Initiators can override the
-   req_flags in their GSS_Init_sec_context() call, but if no flags are
-   requested there then the req_flags set on the empty context will be
    used.
 
    NOTE: The abstract GSS-API [RFC2743] uses individual elements -one
@@ -329,6 +325,10 @@ Internet-Draft                 Simple GSS                  February 2013
    MAY be set on a security context; the mechanism SHOULD allow
    accepting security contexts for any principal names for which
    credentials were set, and MUST allow accepting security cotnexts for
+   the first credential's principal name.
+
+
+
 
 
 
@@ -336,8 +336,6 @@ Williams                 Expires August 26, 2013                [Page 6]
 
 Internet-Draft                 Simple GSS                  February 2013
 
-
-   the first credential's principal name.
 
 2.3.1.  C-Bindings
 
@@ -382,6 +380,8 @@ Internet-Draft                 Simple GSS                  February 2013
 2.5.  GSS_Set_context_lifetime()
 
    Inputs:
+
+
 
 
 
@@ -532,6 +532,35 @@ Internet-Draft                 Simple GSS                  February 2013
 
           Figure 6: C-Bindings of GSS_Set_async_IO_notification()
 
+2.6.2.  A Word About Event Loops and Threading
+
+   Note that it is possible for the mechanism to use a standard event
+   loop library loop used by the application without having to tell the
+   mechanism about the event loop.  There exists a library specifically
+   for this purpose known as
+   "<git://git.fedorahosted.org/libverto.git>".  The verto library has a
+   lot of clever logic in it to find the event loop that the application
+   might be using, as long as the application uses an event loop library
+   known to verto, including: glib, libev, libevent, and tevent.  Verto
+   is portable to Unix and Unix-like systems (including Linux and BSDs)
+   as well as to Windows.
+
+   Given the large number of event loop interfaces and the ability of
+   mechanismst to find a suitable event loop or, if none exists, to
+   create a thread in which to run an event loop, it makes sense to not
+   specify interfaces by which to tell the mechanism which event loop to
+   use.  Otherwise we'd either have to make reference to the many event
+   loop APIs in the C bindings, or define an event loop API for the
+   application to implement and pass to the GSS-API.  The latter seems
+   much too complicated.
+
+
+
+Williams                 Expires August 26, 2013               [Page 10]
+
+Internet-Draft                 Simple GSS                  February 2013
+
+
 2.7.  GSS_Set_context_role_init()
 
    Inputs:
@@ -551,15 +580,6 @@ Internet-Draft                 Simple GSS                  February 2013
    Return major status codes:
 
    o  GSS_S_COMPLETE indicates success.
-
-
-
-
-
-Williams                 Expires August 26, 2013               [Page 10]
-
-Internet-Draft                 Simple GSS                  February 2013
-
 
    o  GSS_S_UNAVAILABLE
 
@@ -585,6 +605,18 @@ Internet-Draft                 Simple GSS                  February 2013
 
    Inputs:
 
+
+
+
+
+
+
+
+Williams                 Expires August 26, 2013               [Page 11]
+
+Internet-Draft                 Simple GSS                  February 2013
+
+
    context CONTEXT HANDLE  Empty security context
 
    input_token OCTET STRING  Input security context token, if any
@@ -609,14 +641,6 @@ Internet-Draft                 Simple GSS                  February 2013
 
    o  ...
 
-
-
-
-Williams                 Expires August 26, 2013               [Page 11]
-
-Internet-Draft                 Simple GSS                  February 2013
-
-
    o  GSS_S_FAILURE indicates a general failure.
 
    This function steps through one step of security context token
@@ -636,30 +660,6 @@ Internet-Draft                 Simple GSS                  February 2013
                      gss_const_OID *actual_mech);
 
                 Figure 8: C-Bindings of GSS_Step_context()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

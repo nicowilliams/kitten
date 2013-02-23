@@ -70,6 +70,7 @@ Table of Contents
    2.5.1.  C-Bindings
    2.6.    GSS_Set_async_IO_notification()
    2.6.1.  C-Bindings
+   2.6.2.  A Word About Event Loops and Threading
    2.7.    GSS_Set_context_role_init()
    2.7.1.  C-Bindings
    2.8.    GSS_Step_context()
@@ -117,10 +118,6 @@ Table of Contents
    o  GSS_Set_context_channel_bindings()
 
    o  GSS_Set_context_lifetime()
-
-   o  GSS_Set_context_event_loop() [XXX not yet specified.  I want to
-      use libevent bases here, or libev.  It seems silly to invent
-      something new.]
 
    o  GSS_Set_async_IO_notification()
 
@@ -390,6 +387,28 @@ Table of Contents
                                      pthread_mutex_t lock);
 
           Figure 6: C-Bindings of GSS_Set_async_IO_notification()
+
+2.6.2.  A Word About Event Loops and Threading
+
+   Note that it is possible for the mechanism to use a standard event
+   loop library loop used by the application without having to tell the
+   mechanism about the event loop.  There exists a library specifically
+   for this purpose known as
+   "<git://git.fedorahosted.org/libverto.git>".  The verto library has a
+   lot of clever logic in it to find the event loop that the application
+   might be using, as long as the application uses an event loop library
+   known to verto, including: glib, libev, libevent, and tevent.  Verto
+   is portable to Unix and Unix-like systems (including Linux and BSDs)
+   as well as to Windows.
+
+   Given the large number of event loop interfaces and the ability of
+   mechanismst to find a suitable event loop or, if none exists, to
+   create a thread in which to run an event loop, it makes sense to not
+   specify interfaces by which to tell the mechanism which event loop to
+   use.  Otherwise we'd either have to make reference to the many event
+   loop APIs in the C bindings, or define an event loop API for the
+   application to implement and pass to the GSS-API.  The latter seems
+   much too complicated.
 
 2.7.  GSS_Set_context_role_init()
 

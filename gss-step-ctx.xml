@@ -35,15 +35,15 @@ This Internet-Draft proposes extensions to the Generic Security Services Applica
     </abstract>
   </front>
   <middle>
-    <section title="Introduction" anchor="d1e292">
+    <section title="Introduction" anchor="d1e299">
       <t>
 We propose replacing the GSS_Init_sec_context() and GSS_Accept_sec_context() functions with a set of simpler functions: one to create an “empty” security context, a set of functions to set context parameters, a single function for “stepping” the security context token exchange, and additional security context inquiry functions. Support for non-blocking stepping of security context token exchange is also included.</t>
-      <section title="Conventions used in this document" anchor="d1e301">
+      <section title="Conventions used in this document" anchor="d1e308">
         <t>
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
       </section>
     </section>
-    <section title="Simplified API" anchor="d1e317">
+    <section title="Simplified API" anchor="d1e324">
       <t>
 We add a function for creating “empty” security contexts:</t>
       <t>
@@ -67,8 +67,6 @@ GSS_Set_context_channel_bindings()</t>
           <t>
 GSS_Set_context_lifetime()</t>
           <t>
-GSS_Set_context_event_loop() [XXX not yet specified. I want to use libevent bases here, or libev. It seems silly to invent something new.]</t>
-          <t>
 GSS_Set_async_IO_notification()</t>
         </list>
       </t>
@@ -88,7 +86,7 @@ We add a function for retrieving delegated credentials from a security context t
 GSS_Get_context_deleg_cred()</t>
         </list>
       </t>
-      <section title="GSS_Create_sec_context()" anchor="d1e369">
+      <section title="GSS_Create_sec_context()" anchor="d1e373">
         <t>
 Inputs:</t>
         <t>
@@ -123,11 +121,11 @@ GSS_S_FAILURE indicates a general failure.</t>
         </t>
         <t>
 This function creates an “empty” security context handle that can be passed to GSS_Init_sec_context() or GSS_Accept_sec_context() where they expect a NULL context. The context can also be passed to the other new security context functions defined in this document.</t>
-        <section title="C-Bindings" anchor="d1e412">
+        <section title="C-Bindings" anchor="d1e416">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-118" title="C-Bindings of GSS_Create_sec_context()">
+            <figure anchor="magicparlabel-117" title="C-Bindings of GSS_Create_sec_context()">
               <artwork> OM_uint32
  gss_create_sec_context(OM_uint32 *minor_status,
                         gss_ctx_id_t *context);</artwork>
@@ -135,7 +133,7 @@ This function creates an “empty” security context handle that can be passed 
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_flags()" anchor="d1e440">
+      <section title="GSS_Set_context_flags()" anchor="d1e444">
         <t>
 Inputs:</t>
         <t>
@@ -172,11 +170,11 @@ GSS_S_FAILURE indicates a general failure.</t>
 This function tells the mechanism (when one is eventually chosen and invoked) that the application requests the given req_flags and undestands the given ret_flags. Initiators can override the req_flags in their GSS_Init_sec_context() call, but if no flags are requested there then the req_flags set on the empty context will be used.</t>
         <t>
 NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements -one per-flag- instead of a “FLAGS” type. This is unwieldy, therefore we introduce an abstract type named “FLAGS” to act as a set of all the request/return flags defined for the abstract GSS-API.</t>
-        <section title="C-Bindings" anchor="d1e498">
+        <section title="C-Bindings" anchor="d1e502">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-154" title="C-Bindings of GSS_Set_context_flags()">
+            <figure anchor="magicparlabel-153" title="C-Bindings of GSS_Set_context_flags()">
               <artwork> OM_uint32
  gss_set_context_flags(OM_uint32 *minor_status,
                        gss_ctx_id_t context,
@@ -186,7 +184,7 @@ NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements -on
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_credentials()" anchor="d1e526">
+      <section title="GSS_Set_context_credentials()" anchor="d1e530">
         <t>
 Inputs:</t>
         <t>
@@ -221,11 +219,11 @@ GSS_S_FAILURE indicates a general failure.</t>
         </t>
         <t>
 This function sets the application's credentials. If not set then the default credentials will be used. Multiple acceptor credentials MAY be set on a security context; the mechanism SHOULD allow accepting security contexts for any principal names for which credentials were set, and MUST allow accepting security cotnexts for the first credential's principal name.</t>
-        <section title="C-Bindings" anchor="d1e573">
+        <section title="C-Bindings" anchor="d1e577">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-184" title="C-Bindings of GSS_Set_context_credentials()">
+            <figure anchor="magicparlabel-183" title="C-Bindings of GSS_Set_context_credentials()">
               <artwork> OM_uint32
  gss_set_context_credentials(OM_uint32 *minor_status,
                              gss_ctx_id_t context,
@@ -234,7 +232,7 @@ This function sets the application's credentials. If not set then the default cr
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_channel_bindings()" anchor="d1e601">
+      <section title="GSS_Set_context_channel_bindings()" anchor="d1e605">
         <t>
 Inputs:</t>
         <t>
@@ -267,11 +265,11 @@ GSS_S_COMPLETE indicates success.</t>
 GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
-        <section title="C-Bindings" anchor="d1e645">
+        <section title="C-Bindings" anchor="d1e649">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-213" title="C-Bindings of GSS_Set_context_lifetime()">
+            <figure anchor="magicparlabel-212" title="C-Bindings of GSS_Set_context_lifetime()">
               <artwork> OM_uint32
  gss_set_context_channel_bindings(OM_uint32 *minor_status,
                                   gss_ctx_id_t context,
@@ -280,7 +278,7 @@ GSS_S_FAILURE indicates a general failure.</t>
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_lifetime()" anchor="d1e673">
+      <section title="GSS_Set_context_lifetime()" anchor="d1e677">
         <t>
 Inputs:</t>
         <t>
@@ -313,11 +311,11 @@ GSS_S_COMPLETE indicates success.</t>
 GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
-        <section title="C-Bindings" anchor="d1e717">
+        <section title="C-Bindings" anchor="d1e721">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-242" title="C-Bindings of GSS_Set_context_lifetime()">
+            <figure anchor="magicparlabel-241" title="C-Bindings of GSS_Set_context_lifetime()">
               <artwork> OM_uint32
  gss_set_context_lifetime(OM_uint32 *minor_status,
                           gss_ctx_id_t context,
@@ -326,7 +324,7 @@ GSS_S_FAILURE indicates a general failure.</t>
           </t>
         </section>
       </section>
-      <section title="GSS_Set_async_IO_notification()" anchor="d1e745">
+      <section title="GSS_Set_async_IO_notification()" anchor="d1e749">
         <t>
 Inputs:</t>
         <t>
@@ -375,11 +373,11 @@ a condition variable (and associated mutex) on which a signal will be sent</t>
         </t>
         <t>
 Other completeion notification methods could be specified as well, but these seem likely to be sufficient and reasonably portable.</t>
-        <section title="C-Bindings" anchor="d1e808">
+        <section title="C-Bindings" anchor="d1e812">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-297" title="C-Bindings of GSS_Set_async_IO_notification()">
+            <figure anchor="magicparlabel-296" title="C-Bindings of GSS_Set_async_IO_notification()">
               <artwork> typedef void (*gss_async_cb_t)(gss_ctx_id_t context, void *cb_data);
  
  OM_uint32
@@ -407,8 +405,14 @@ Other completeion notification methods could be specified as well, but these see
             </figure>
           </t>
         </section>
+        <section title="A Word About Event Loops and Threading" anchor="d1e841">
+          <t>
+Note that it is possible for the mechanism to use a standard event loop library loop used by the application without having to tell the mechanism about the event loop. There exists a library specifically for this purpose known as “<eref target="git://git.fedorahosted.org/libverto.git"/>”. The verto library has a lot of clever logic in it to find the event loop that the application might be using, as long as the application uses an event loop library known to verto, including: glib, libev, libevent, and tevent. Verto is portable to Unix and Unix-like systems (including Linux and BSDs) as well as to Windows.</t>
+          <t>
+Given the large number of event loop interfaces and the ability of mechanismst to find a suitable event loop or, if none exists, to create a thread in which to run an event loop, it makes sense to not specify interfaces by which to tell the mechanism which event loop to use. Otherwise we'd either have to make reference to the many event loop APIs in the C bindings, or define an event loop API for the application to implement and pass to the GSS-API. The latter seems much too complicated.</t>
+        </section>
       </section>
-      <section title="GSS_Set_context_role_init()" anchor="d1e837">
+      <section title="GSS_Set_context_role_init()" anchor="d1e856">
         <t>
 Inputs:</t>
         <t>
@@ -447,11 +451,11 @@ GSS_S_FAILURE indicates a general failure.</t>
         </t>
         <t>
 This function sets the security context role to be that of an initiator, with the given mechanism OID (possibly GSS_C_NO_OID), and the given target name (possibly GSS_C_NO_NAME).</t>
-        <section title="C-Bindings" anchor="d1e891">
+        <section title="C-Bindings" anchor="d1e911">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-330" title="C-Bindings of GSS_Set_context_role_init()">
+            <figure anchor="magicparlabel-332" title="C-Bindings of GSS_Set_context_role_init()">
               <artwork> OM_uint32
  gss_set_context_context_role_init(OM_uint32 *minor_status,
                                    gss_ctx_id_t context,
@@ -461,7 +465,7 @@ This function sets the security context role to be that of an initiator, with th
           </t>
         </section>
       </section>
-      <section title="GSS_Step_context()" anchor="d1e920">
+      <section title="GSS_Step_context()" anchor="d1e939">
         <t>
 Inputs:</t>
         <t>
@@ -506,11 +510,11 @@ GSS_S_FAILURE indicates a general failure.</t>
 This function steps through one step of security context token exchange for the given security context.</t>
         <t>
 Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is output, then the function must be called again upon async I/O completion notification.</t>
-        <section title="C-Bindings" anchor="d1e981">
+        <section title="C-Bindings" anchor="d1e1001">
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-367" title="C-Bindings of GSS_Step_context()">
+            <figure anchor="magicparlabel-369" title="C-Bindings of GSS_Step_context()">
               <artwork> OM_uint32
  gss_step_context(OM_uint32 *minor_status,
                   gss_ctx_id_t context,
@@ -522,11 +526,11 @@ Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is output
         </section>
       </section>
     </section>
-    <section title="Security Considerations" anchor="d1e1010">
+    <section title="Security Considerations" anchor="d1e1029">
       <t>
 ...</t>
     </section>
-    <section title="IANA Considerations" anchor="d1e1019">
+    <section title="IANA Considerations" anchor="d1e1038">
       <t>
 [Add registrations for all the above functions.]</t>
     </section>
