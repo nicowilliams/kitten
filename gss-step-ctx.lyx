@@ -632,12 +632,6 @@ C-Bindings
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
 \begin_inset listings
 inline false
 status open
@@ -655,23 +649,6 @@ status open
 \begin_layout Plain Layout
 
                         gss_ctx_id_t *context);
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-C-Bindings of GSS_Create_sec_context()
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -786,12 +763,6 @@ C-Bindings
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
 \begin_inset listings
 inline false
 status open
@@ -819,23 +790,6 @@ status open
 \begin_layout Plain Layout
 
                        uint64_t ret_flags);
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-C-Bindings of GSS_Set_context_flags()
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -872,7 +826,7 @@ CREDENTIAL
 \begin_inset space ~
 \end_inset
 
-HANDLE
+HANDLE MUST NOT be the default credential.
 \end_layout
 
 \begin_layout Standard
@@ -905,11 +859,18 @@ GSS_S_FAILURE indicates a general failure.
 
 \begin_layout Standard
 This function sets the application's credentials.
- If not set then the default credentials will be used.
- Multiple acceptor credentials MAY be set on a security context; the mechanism
- SHOULD allow accepting security contexts for any principal names for which
- credentials were set, and MUST allow accepting security cotnexts for the
- first credential's principal name.
+ If no credentials are set then the default credentials will be used.
+\end_layout
+
+\begin_layout Standard
+Multiple credentials may be set on a security context.
+ The mechanism SHOULD allow accepting security contexts for any principals
+ for which credentials had elements for the mechanism used.
+ The mechanism SHOULD allow initiators to have multiple credentials, in
+ which case the mechanism should select the credential most likely to succeed
+ for the given target principal.
+ Where a mechanism does not support multiple credentials it MUST use the
+ first credential handle set by the application.
 \end_layout
 
 \begin_layout Subsubsection
@@ -917,12 +878,6 @@ C-Bindings
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
 \begin_inset listings
 inline false
 status open
@@ -945,23 +900,6 @@ status open
 \begin_layout Plain Layout
 
                              gss_const_cred_id_t input_cred_handle);
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-C-Bindings of GSS_Set_context_credentials()
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -1034,12 +972,6 @@ C-Bindings
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
 \begin_inset listings
 inline false
 status open
@@ -1062,23 +994,6 @@ status open
 \begin_layout Plain Layout
 
                                   gss_const_buffer_t input_cb);
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-C-Bindings of GSS_Set_context_lifetime()
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -1147,12 +1062,6 @@ C-Bindings
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
 \begin_inset listings
 inline false
 status open
@@ -1175,23 +1084,6 @@ status open
 \begin_layout Plain Layout
 
                           uint64_t lifetime_req);
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-C-Bindings of GSS_Set_context_lifetime()
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -1295,12 +1187,6 @@ C-Bindings
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
 \begin_inset listings
 inline false
 status open
@@ -1430,23 +1316,6 @@ status open
 
 \end_layout
 
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-C-Bindings of GSS_Set_async_IO_notification()
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsubsection
 A Word About Event Loops and Threading
 \end_layout
@@ -1492,6 +1361,12 @@ Given the large number of event loop interfaces and the ability of mechanismst
 \end_layout
 
 \begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:GSS_Set_context_role_init()"
+
+\end_inset
+
 GSS_Set_context_role_init()
 \end_layout
 
@@ -1563,6 +1438,16 @@ GSS_S_FAILURE indicates a general failure.
 This function sets the security context role to be that of an initiator,
  with the given mechanism OID (possibly GSS_C_NO_OID), and the given target
  name (possibly GSS_C_NO_NAME).
+ The difference between an initiator and an acceptor application is that
+ an initiator application calls this function and an acceptor does not;
+ both call GSS_Step_context() (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:GSS_Step_context()"
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Subsubsection
@@ -1570,12 +1455,6 @@ C-Bindings
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
 \begin_inset listings
 inline false
 status open
@@ -1610,24 +1489,13 @@ status open
 
 \end_layout
 
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-C-Bindings of GSS_Set_context_role_init()
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:GSS_Step_context()"
+
+\end_inset
+
 GSS_Step_context()
 \end_layout
 
@@ -1709,6 +1577,18 @@ This function steps through one step of security context token exchange
 \end_layout
 
 \begin_layout Standard
+Acceptors call this without having called GSS_Set_context_role_init(); see
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:GSS_Set_context_role_init()"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is
  output, then the function must be called again upon async I/O completion
  notification.
@@ -1719,12 +1599,6 @@ C-Bindings
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
 \begin_inset listings
 inline false
 status open
@@ -1764,29 +1638,14 @@ status open
 
 \end_layout
 
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-C-Bindings of GSS_Step_context()
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Section
 Security Considerations
 \end_layout
 
 \begin_layout Standard
-...
+The GSS-API is a security API, however, this document does not modify its
+ semantics in any security-relevant way.
+ There are no security considerations in this document.
 \end_layout
 
 \begin_layout Section

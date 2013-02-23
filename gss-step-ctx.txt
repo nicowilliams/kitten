@@ -63,32 +63,32 @@ Internet-Draft                 Simple GSS                  February 2013
 
 Table of Contents
 
-   1.      Introduction . . . . . . . . . . . . . . . . . . . . . . .  3
-   1.1.    Conventions used in this document  . . . . . . . . . . . .  3
-   2.      Simplified API . . . . . . . . . . . . . . . . . . . . . .  4
-   2.1.    GSS_Create_sec_context() . . . . . . . . . . . . . . . . .  4
-   2.1.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  5
-   2.2.    GSS_Set_context_flags()  . . . . . . . . . . . . . . . . .  5
-   2.2.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  6
-   2.3.    GSS_Set_context_credentials()  . . . . . . . . . . . . . .  6
-   2.3.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  7
-   2.4.    GSS_Set_context_channel_bindings() . . . . . . . . . . . .  7
-   2.4.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  7
-   2.5.    GSS_Set_context_lifetime() . . . . . . . . . . . . . . . .  7
-   2.5.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  8
-   2.6.    GSS_Set_async_IO_notification()  . . . . . . . . . . . . .  8
-   2.6.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  9
-   2.6.2.  A Word About Event Loops and Threading . . . . . . . . . . 10
-   2.7.    GSS_Set_context_role_init()  . . . . . . . . . . . . . . . 11
-   2.7.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 11
-   2.8.    GSS_Step_context() . . . . . . . . . . . . . . . . . . . . 11
-   2.8.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 12
-   3.      Security Considerations  . . . . . . . . . . . . . . . . . 13
-   4.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 14
-   5.      References . . . . . . . . . . . . . . . . . . . . . . . . 15
-   5.1.    Normative References . . . . . . . . . . . . . . . . . . . 15
-   5.2.    Informative References . . . . . . . . . . . . . . . . . . 15
-           Author's Address . . . . . . . . . . . . . . . . . . . . . 16
+   1.      Introduction  . . . . . . . . . . . . . . . . . . . . . d1e29
+   1.1.    Conventions used in this document . . . . . . . . . . . d1e30
+   2.      Simplified API  . . . . . . . . . . . . . . . . . . . . d1e32
+   2.1.    GSS_Create_sec_context()  . . . . . . . . . . . . . . . d1e37
+   2.1.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e41
+   2.2.    GSS_Set_context_flags() . . . . . . . . . . . . . . . . d1e42
+   2.2.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e48
+   2.3.    GSS_Set_context_credentials() . . . . . . . . . . . . . d1e49
+   2.3.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e54
+   2.4.    GSS_Set_context_channel_bindings()  . . . . . . . . . . d1e56
+   2.4.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e60
+   2.5.    GSS_Set_context_lifetime()  . . . . . . . . . . . . . . d1e61
+   2.5.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e66
+   2.6.    GSS_Set_async_IO_notification() . . . . . . . . . . . . d1e67
+   2.6.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e73
+   2.6.2.  A Word About Event Loops and Threading  . . . . . . . . d1e74
+   2.7.    GSS_Set_context_role_init() . . . . . . . . . . . . . . sub_G
+   2.7.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e82
+   2.8.    GSS_Step_context()  . . . . . . . . . . . . . . . . . . sub_G
+   2.8.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e90
+   3.      Security Considerations . . . . . . . . . . . . . . . . d1e91
+   4.      IANA Considerations . . . . . . . . . . . . . . . . . . d1e92
+   5.      References  . . . . . . . . . . . . . . . . . . . . . . ancho
+   5.1.    Normative References  . . . . . . . . . . . . . . . . . ancho
+   5.2.    Informative References  . . . . . . . . . . . . . . . . ancho
+           Author's Address  . . . . . . . . . . . . . . . . . . .     0
 
 
 
@@ -243,8 +243,6 @@ Internet-Draft                 Simple GSS                  February 2013
     gss_create_sec_context(OM_uint32 *minor_status,
                            gss_ctx_id_t *context);
 
-             Figure 1: C-Bindings of GSS_Create_sec_context()
-
 2.2.  GSS_Set_context_flags()
 
    Inputs:
@@ -273,6 +271,8 @@ Internet-Draft                 Simple GSS                  February 2013
    undestands the given ret_flags.  Initiators can override the
    req_flags in their GSS_Init_sec_context() call, but if no flags are
    requested there then the req_flags set on the empty context will be
+   used.
+
 
 
 
@@ -280,8 +280,6 @@ Williams                 Expires August 26, 2013                [Page 5]
 
 Internet-Draft                 Simple GSS                  February 2013
 
-
-   used.
 
    NOTE: The abstract GSS-API [RFC2743] uses individual elements -one
    per-flag- instead of a "FLAGS" type.  This is unwieldy, therefore we
@@ -296,15 +294,14 @@ Internet-Draft                 Simple GSS                  February 2013
                           uint64_t req_flags,
                           uint64_t ret_flags);
 
-              Figure 2: C-Bindings of GSS_Set_context_flags()
-
 2.3.  GSS_Set_context_credentials()
 
    Inputs:
 
    context CONTEXT HANDLE  Empty security context
 
-   input_cred_handle CREDENTIAL HANDLE
+   input_cred_handle CREDENTIAL HANDLE  MUST NOT be the default
+      credential.
 
    Outputs:
 
@@ -320,14 +317,17 @@ Internet-Draft                 Simple GSS                  February 2013
 
    o  GSS_S_FAILURE indicates a general failure.
 
-   This function sets the application's credentials.  If not set then
-   the default credentials will be used.  Multiple acceptor credentials
-   MAY be set on a security context; the mechanism SHOULD allow
-   accepting security contexts for any principal names for which
-   credentials were set, and MUST allow accepting security cotnexts for
-   the first credential's principal name.
+   This function sets the application's credentials.  If no credentials
+   are set then the default credentials will be used.
 
-
+   Multiple credentials may be set on a security context.  The mechanism
+   SHOULD allow accepting security contexts for any principals for which
+   credentials had elements for the mechanism used.  The mechanism
+   SHOULD allow initiators to have multiple credentials, in which case
+   the mechanism should select the credential most likely to succeed for
+   the given target principal.  Where a mechanism does not support
+   multiple credentials it MUST use the first credential handle set by
+   the application.
 
 
 
@@ -343,8 +343,6 @@ Internet-Draft                 Simple GSS                  February 2013
     gss_set_context_credentials(OM_uint32 *minor_status,
                                 gss_ctx_id_t context,
                                 gss_const_cred_id_t input_cred_handle);
-
-           Figure 3: C-Bindings of GSS_Set_context_credentials()
 
 2.4.  GSS_Set_context_channel_bindings()
 
@@ -375,13 +373,15 @@ Internet-Draft                 Simple GSS                  February 2013
                                      gss_ctx_id_t context,
                                      gss_const_buffer_t input_cb);
 
-            Figure 4: C-Bindings of GSS_Set_context_lifetime()
-
 2.5.  GSS_Set_context_lifetime()
 
    Inputs:
 
+   context CONTEXT HANDLE  Empty security context
 
+   lifetime_req INTEGER  ...
+
+   Outputs:
 
 
 
@@ -392,12 +392,6 @@ Williams                 Expires August 26, 2013                [Page 7]
 
 Internet-Draft                 Simple GSS                  February 2013
 
-
-   context CONTEXT HANDLE  Empty security context
-
-   lifetime_req INTEGER  ...
-
-   Outputs:
 
    o  major_status INTEGER
 
@@ -417,8 +411,6 @@ Internet-Draft                 Simple GSS                  February 2013
     gss_set_context_lifetime(OM_uint32 *minor_status,
                              gss_ctx_id_t context,
                              uint64_t lifetime_req);
-
-            Figure 5: C-Bindings of GSS_Set_context_lifetime()
 
 2.6.  GSS_Set_async_IO_notification()
 
@@ -440,15 +432,6 @@ Internet-Draft                 Simple GSS                  February 2013
 
    o  ...
 
-
-
-
-
-Williams                 Expires August 26, 2013                [Page 8]
-
-Internet-Draft                 Simple GSS                  February 2013
-
-
    o  GSS_S_FAILURE indicates a general failure.
 
    This function sets a method for informing the application that the
@@ -458,6 +441,14 @@ Internet-Draft                 Simple GSS                  February 2013
    notification and then call GSS_Step_context() again (this time with
    no input token).  GSS_Step_context() will only work asynchronously
    when this function has been used to set a completion notification
+
+
+
+Williams                 Expires August 26, 2013                [Page 8]
+
+Internet-Draft                 Simple GSS                  February 2013
+
+
    method.
 
    The async I/O completion notification method is not specified for the
@@ -476,34 +467,6 @@ Internet-Draft                 Simple GSS                  February 2013
    but these seem likely to be sufficient and reasonably portable.
 
 2.6.1.  C-Bindings
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                 Expires August 26, 2013                [Page 9]
-
-Internet-Draft                 Simple GSS                  February 2013
-
 
     typedef void (*gss_async_cb_t)(gss_ctx_id_t context, void *cb_data);
 
@@ -530,12 +493,18 @@ Internet-Draft                 Simple GSS                  February 2013
                                      pthread_cond_t cv,
                                      pthread_mutex_t lock);
 
-          Figure 6: C-Bindings of GSS_Set_async_IO_notification()
-
 2.6.2.  A Word About Event Loops and Threading
 
    Note that it is possible for the mechanism to use a standard event
    loop library loop used by the application without having to tell the
+
+
+
+Williams                 Expires August 26, 2013                [Page 9]
+
+Internet-Draft                 Simple GSS                  February 2013
+
+
    mechanism about the event loop.  There exists a library specifically
    for this purpose known as
    "<git://git.fedorahosted.org/libverto.git>".  The verto library has a
@@ -553,13 +522,6 @@ Internet-Draft                 Simple GSS                  February 2013
    loop APIs in the C bindings, or define an event loop API for the
    application to implement and pass to the GSS-API.  The latter seems
    much too complicated.
-
-
-
-Williams                 Expires August 26, 2013               [Page 10]
-
-Internet-Draft                 Simple GSS                  February 2013
-
 
 2.7.  GSS_Set_context_role_init()
 
@@ -589,7 +551,18 @@ Internet-Draft                 Simple GSS                  February 2013
 
    This function sets the security context role to be that of an
    initiator, with the given mechanism OID (possibly GSS_C_NO_OID), and
-   the given target name (possibly GSS_C_NO_NAME).
+   the given target name (possibly GSS_C_NO_NAME).  The difference
+   between an initiator and an acceptor application is that an initiator
+
+
+
+Williams                 Expires August 26, 2013               [Page 10]
+
+Internet-Draft                 Simple GSS                  February 2013
+
+
+   application calls this function and an acceptor does not; both call
+   GSS_Step_context() (see Section 2.8).
 
 2.7.1.  C-Bindings
 
@@ -599,23 +572,9 @@ Internet-Draft                 Simple GSS                  February 2013
                                       gss_const_OID mech_oid,
                                       gss_const_name_t target_name);
 
-            Figure 7: C-Bindings of GSS_Set_context_role_init()
-
 2.8.  GSS_Step_context()
 
    Inputs:
-
-
-
-
-
-
-
-
-Williams                 Expires August 26, 2013               [Page 11]
-
-Internet-Draft                 Simple GSS                  February 2013
-
 
    context CONTEXT HANDLE  Empty security context
 
@@ -646,7 +605,18 @@ Internet-Draft                 Simple GSS                  February 2013
    This function steps through one step of security context token
    exchange for the given security context.
 
+   Acceptors call this without having called
+   GSS_Set_context_role_init(); see Section 2.7.
+
    Note that if GSS_S_CONTINUE_NEEDED is returned but no security
+
+
+
+Williams                 Expires August 26, 2013               [Page 11]
+
+Internet-Draft                 Simple GSS                  February 2013
+
+
    context is output, then the function must be called again upon async
    I/O completion notification.
 
@@ -659,7 +629,37 @@ Internet-Draft                 Simple GSS                  February 2013
                      gss_buffer_t output_token,
                      gss_const_OID *actual_mech);
 
-                Figure 8: C-Bindings of GSS_Step_context()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -675,9 +675,9 @@ Internet-Draft                 Simple GSS                  February 2013
 
 3.  Security Considerations
 
-   ...
-
-
+   The GSS-API is a security API, however, this document does not modify
+   its semantics in any security-relevant way.  There are no security
+   considerations in this document.
 
 
 
