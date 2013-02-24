@@ -3,10 +3,10 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: RFC2743 RFC2744                               February 22, 2013
+Updates: RFC2743 RFC2744                               February 23, 2013
 (if approved)
 Intended status: Standards Track
-Expires: August 26, 2013
+Expires: August 27, 2013
 
 
 Simplified and Asynchronous Security Context Interfaces for the Generic
@@ -35,7 +35,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 26, 2013.
+   This Internet-Draft will expire on August 27, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Williams                 Expires August 26, 2013                [Page 1]
+Williams                 Expires August 27, 2013                [Page 1]
 
 Internet-Draft                 Simple GSS                  February 2013
 
@@ -63,28 +63,31 @@ Internet-Draft                 Simple GSS                  February 2013
 
 Table of Contents
 
-   1.      Introduction  . . . . . . . . . . . . . . . . . . . . . d1e29
-   1.1.    Conventions used in this document . . . . . . . . . . . d1e30
-   2.      Simplified API  . . . . . . . . . . . . . . . . . . . . d1e32
-   2.1.    GSS_Create_sec_context()  . . . . . . . . . . . . . . . d1e37
-   2.1.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e41
-   2.2.    GSS_Set_context_flags() . . . . . . . . . . . . . . . . d1e42
-   2.2.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e48
-   2.3.    GSS_Set_context_credentials() . . . . . . . . . . . . . d1e49
-   2.3.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e54
-   2.4.    GSS_Set_context_channel_bindings()  . . . . . . . . . . d1e56
-   2.4.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e60
-   2.5.    GSS_Set_context_lifetime()  . . . . . . . . . . . . . . d1e61
-   2.5.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e66
-   2.6.    GSS_Set_async_IO_notification() . . . . . . . . . . . . d1e67
-   2.6.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e73
-   2.6.2.  A Word About Event Loops and Threading  . . . . . . . . d1e74
-   2.7.    GSS_Set_context_role_init() . . . . . . . . . . . . . . sub_G
-   2.7.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e82
-   2.8.    GSS_Step_context()  . . . . . . . . . . . . . . . . . . sub_G
-   2.8.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e90
-   3.      Security Considerations . . . . . . . . . . . . . . . . d1e91
-   4.      IANA Considerations . . . . . . . . . . . . . . . . . . d1e92
+   1.      Introduction  . . . . . . . . . . . . . . . . . . . . . d1e32
+   1.1.    Conventions used in this document . . . . . . . . . . . d1e33
+   2.      Simplified API  . . . . . . . . . . . . . . . . . . . . d1e34
+   2.1.    GSS_Create_sec_context()  . . . . . . . . . . . . . . . d1e39
+   2.1.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e44
+   2.2.    GSS_Set_context_flags() . . . . . . . . . . . . . . . . d1e45
+   2.2.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e51
+   2.3.    GSS_Set_context_credentials() . . . . . . . . . . . . . d1e52
+   2.3.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e57
+   2.4.    GSS_Set_context_channel_bindings()  . . . . . . . . . . d1e58
+   2.4.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e63
+   2.5.    GSS_Set_context_lifetime()  . . . . . . . . . . . . . . d1e64
+   2.5.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e68
+   2.6.    GSS_Set_async_IO_notification() . . . . . . . . . . . . d1e69
+   2.6.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e76
+   2.7.    GSS_Set_event_loop()  . . . . . . . . . . . . . . . . . d1e77
+   2.7.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e88
+   2.8.    GSS_Indicate_event_loop_types() . . . . . . . . . . . . d1e89
+   2.8.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e93
+   2.9.    GSS_Set_context_role_init() . . . . . . . . . . . . . . sub_G
+   2.9.1.  C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e10
+   2.10.   GSS_Step_context()  . . . . . . . . . . . . . . . . . . sub_G
+   2.10.1. C-Bindings  . . . . . . . . . . . . . . . . . . . . . . d1e10
+   3.      Security Considerations . . . . . . . . . . . . . . . . d1e10
+   4.      IANA Considerations . . . . . . . . . . . . . . . . . . d1e11
    5.      References  . . . . . . . . . . . . . . . . . . . . . . ancho
    5.1.    Normative References  . . . . . . . . . . . . . . . . . ancho
    5.2.    Informative References  . . . . . . . . . . . . . . . . ancho
@@ -105,10 +108,7 @@ Table of Contents
 
 
 
-
-
-
-Williams                 Expires August 26, 2013                [Page 2]
+Williams                 Expires August 27, 2013                [Page 2]
 
 Internet-Draft                 Simple GSS                  February 2013
 
@@ -164,7 +164,7 @@ Internet-Draft                 Simple GSS                  February 2013
 
 
 
-Williams                 Expires August 26, 2013                [Page 3]
+Williams                 Expires August 27, 2013                [Page 3]
 
 Internet-Draft                 Simple GSS                  February 2013
 
@@ -189,6 +189,8 @@ Internet-Draft                 Simple GSS                  February 2013
    o  GSS_Set_context_lifetime()
 
    o  GSS_Set_async_IO_notification()
+
+   o  GSS_Set_async_event_loop()
 
    We add a function for stepping through security context token
    exchanges:
@@ -215,15 +217,15 @@ Internet-Draft                 Simple GSS                  February 2013
 
    o  context SECURITY CONTEXT
 
-   Return major status codes:
 
 
 
-
-Williams                 Expires August 26, 2013                [Page 4]
+Williams                 Expires August 27, 2013                [Page 4]
 
 Internet-Draft                 Simple GSS                  February 2013
 
+
+   Return major status codes:
 
    o  GSS_S_COMPLETE indicates success.
 
@@ -271,15 +273,15 @@ Internet-Draft                 Simple GSS                  February 2013
    undestands the given ret_flags.  Initiators can override the
    req_flags in their GSS_Init_sec_context() call, but if no flags are
    requested there then the req_flags set on the empty context will be
-   used.
 
 
 
-
-Williams                 Expires August 26, 2013                [Page 5]
+Williams                 Expires August 27, 2013                [Page 5]
 
 Internet-Draft                 Simple GSS                  February 2013
 
+
+   used.
 
    NOTE: The abstract GSS-API [RFC2743] uses individual elements -one
    per-flag- instead of a "FLAGS" type.  This is unwieldy, therefore we
@@ -327,15 +329,15 @@ Internet-Draft                 Simple GSS                  February 2013
    the mechanism should select the credential most likely to succeed for
    the given target principal.  Where a mechanism does not support
    multiple credentials it MUST use the first credential handle set by
-   the application.
 
 
 
-
-Williams                 Expires August 26, 2013                [Page 6]
+Williams                 Expires August 27, 2013                [Page 6]
 
 Internet-Draft                 Simple GSS                  February 2013
 
+
+   the application.
 
 2.3.1.  C-Bindings
 
@@ -386,9 +388,7 @@ Internet-Draft                 Simple GSS                  February 2013
 
 
 
-
-
-Williams                 Expires August 26, 2013                [Page 7]
+Williams                 Expires August 27, 2013                [Page 7]
 
 Internet-Draft                 Simple GSS                  February 2013
 
@@ -444,7 +444,7 @@ Internet-Draft                 Simple GSS                  February 2013
 
 
 
-Williams                 Expires August 26, 2013                [Page 8]
+Williams                 Expires August 27, 2013                [Page 8]
 
 Internet-Draft                 Simple GSS                  February 2013
 
@@ -463,10 +463,47 @@ Internet-Draft                 Simple GSS                  February 2013
    o  a condition variable (and associated mutex) on which a signal will
       be sent
 
-   Other completeion notification methods could be specified as well,
-   but these seem likely to be sufficient and reasonably portable.
+   Other completion notification methods could be specified as well, but
+   these seem likely to be sufficient and reasonably portable.
 
 2.6.1.  C-Bindings
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 27, 2013                [Page 9]
+
+Internet-Draft                 Simple GSS                  February 2013
+
 
     typedef void (*gss_async_cb_t)(gss_ctx_id_t context, void *cb_data);
 
@@ -481,57 +518,55 @@ Internet-Draft                 Simple GSS                  February 2013
                                 gss_ctx_id_t context,
                                 int fd);
 
-
+    #ifdef HAVE_WIN32
     OM_uint32
     gss_set_context_async_io_handle(OM_uint32 *minor_status,
                                     gss_ctx_id_t context,
                                     HANDLE h);
+    #endif /* HAVE_WIN32 */
 
+    #ifdef HAVE_PTHREADS
+    #include <pthread.h>
     OM_uint32
     gss_set_context_async_io_condvar(OM_uint32 *minor_status,
                                      gss_ctx_id_t context,
                                      pthread_cond_t cv,
                                      pthread_mutex_t lock);
+    #endif /* HAVE_PTHREADS */
 
-2.6.2.  A Word About Event Loops and Threading
+    #ifdef HAVE_WIN32
+    #include <windows.h>
+    #include <stdlib.h> #include <stdio.h>
+    OM_uint32
+    gss_set_context_async_io_condvar(OM_uint32 *minor_status,
+                                     gss_ctx_id_t context,
+                                     CONDITION_VARIABLE cv,
+                                     CRITICAL_SECTION lock);
+    #endif /* HAVE_WIN32 */
 
-   Note that it is possible for the mechanism to use a standard event
-   loop library loop used by the application without having to tell the
-
-
-
-Williams                 Expires August 26, 2013                [Page 9]
-
-Internet-Draft                 Simple GSS                  February 2013
-
-
-   mechanism about the event loop.  There exists a library specifically
-   for this purpose known as
-   "<git://git.fedorahosted.org/libverto.git>".  The verto library has a
-   lot of clever logic in it to find the event loop that the application
-   might be using, as long as the application uses an event loop library
-   known to verto, including: glib, libev, libevent, and tevent.  Verto
-   is portable to Unix and Unix-like systems (including Linux and BSDs)
-   as well as to Windows.
-
-   Given the large number of event loop interfaces and the ability of
-   mechanismst to find a suitable event loop or, if none exists, to
-   create a thread in which to run an event loop, it makes sense to not
-   specify interfaces by which to tell the mechanism which event loop to
-   use.  Otherwise we'd either have to make reference to the many event
-   loop APIs in the C bindings, or define an event loop API for the
-   application to implement and pass to the GSS-API.  The latter seems
-   much too complicated.
-
-2.7.  GSS_Set_context_role_init()
+2.7.  GSS_Set_event_loop()
 
    Inputs:
 
    context CONTEXT HANDLE  Empty security context
 
-   mech_type OID  Mechanism OID
 
-   target NAME  Name of target service principal
+
+
+
+
+
+Williams                 Expires August 27, 2013               [Page 10]
+
+Internet-Draft                 Simple GSS                  February 2013
+
+
+   event_loop_type INTEGER  Type of event loop
+
+   event_loop UNSPECIFIED  An event loop
+
+   event_loop_module UNSPECIFIED  A module implementing the interface of
+      the given event loop type
 
    Outputs:
 
@@ -543,7 +578,136 @@ Internet-Draft                 Simple GSS                  February 2013
 
    o  GSS_S_COMPLETE indicates success.
 
-   o  GSS_S_UNAVAILABLE
+   o  ...
+
+   o  GSS_S_FAILURE indicates a general failure.
+
+   This function sets an event loop to use by the mechanism.  We specify
+   no event loop interfaces here.  Instead we allow for the use of
+   existing event loop APIs.
+
+   The following event loop types are defined (but not their
+   interfaces):
+
+   o  EV_NONE (the mechanism MAY run a private event loop in a
+      background thread, but only if the application also set a
+      completion notification method);
+
+   o  EV_LIBVERTO <https://fedorahosted.org/libverto/>;
+
+   o  EV_LIBEVENT <http://libevent.org/>
+
+   o  EV_LIBEV <http://software.schmorp.de/pkg/libev.html>
+
+   o  EV_GLIB <http://developer.gnome.org/glib/stable/>
+
+   o  EV_TEVENT <http://tevent.samba.org/>
+
+   o  EV_GCD <https://libdispatch.macosforge.org/>
+
+   Asynchronous security context stepping is OPTIONAL.  It is
+   RECOMMENDED that mechanisms implement EV_LIBVERTO.  Note that if the
+   application's choice of event loop is not supported by a mechanism
+   then GSS_Step_context() will return
+
+
+
+Williams                 Expires August 27, 2013               [Page 11]
+
+Internet-Draft                 Simple GSS                  February 2013
+
+
+   GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE, in which case the application may
+   try another event loop type, likely EV_NONE.
+
+   An event loop module is a handle to a library implementing the
+   interfaces of the given event loop type; the mechanism can obtain
+   those interfaces (e.g., as function pointers in the C bindings).
+   Event loops and modules are unspecified in the abstract API, but the
+   intention is that the application passes to the mechanism a handle to
+   the module implementing the chosen event loop interfaces.
+
+2.7.1.  C-Bindings
+
+   typedef enum {
+       EV_NONE     = 1,
+       EV_LIBVERTO = 2,
+       EV_LIBEVENT = 4,
+       EV_LIBEV    = 8,
+       EV_GLIB     = 16,
+       EV_TEVENT   = 32,
+       EV_GCD      = 64
+   } gss_event_loop_type_t;
+
+   typedef void *(*gss_dlsym_t)(void *, const char *);
+
+   OM_uint32
+   gss_set_context_event_loop(OM_uint32 *minor_status,
+                              gss_ctx_id_t context,
+                              gss_event_loop_type_t event_loop_type,
+                              void *event_loop,
+                              gss_event_module_type_t event_module_type,
+                              void *event_module,
+                              gss_dlsym_t module_lookup);
+
+2.8.  GSS_Indicate_event_loop_types()
+
+   Inputs:
+
+   input_cred_handle CREDENTIAL HANDLE  May be GSS_C_NO_CREDENTIAL
+
+   Outputs:
+
+   o  major_status INTEGER
+
+   o  minor_status INTEGER
+
+   o  event_loop_types SET OF INTEGER
+
+   Return major status codes:
+
+
+
+Williams                 Expires August 27, 2013               [Page 12]
+
+Internet-Draft                 Simple GSS                  February 2013
+
+
+   o  GSS_S_COMPLETE indicates success.
+
+   o  GSS_S_FAILURE indicates a general failure.
+
+   This function indicates what event loop types are supported the
+   mechanisms for the given credentials handle.
+
+2.8.1.  C-Bindings
+
+    OM_uint32
+    gss_indicate_event_loop_types(OM_uint32 *minor_status,
+                                  gss_cred_id_t input_cred_handle,
+                                  gss_event_loop_type_t *ev_types);
+
+2.9.  GSS_Set_context_role_init()
+
+   Inputs:
+
+   context CONTEXT HANDLE  Empty security context handle
+
+   mech_type OID  Mechanism OID
+
+   target_name NAME  Name of target principal
+
+   Outputs:
+
+   o  major_status INTEGER
+
+   o  minor_status INTEGER
+
+   o  event_loop_types SET OF INTEGER
+
+   Return major status codes:
+
+   o  GSS_S_COMPLETE indicates success.
 
    o  ...
 
@@ -553,18 +717,19 @@ Internet-Draft                 Simple GSS                  February 2013
    initiator, with the given mechanism OID (possibly GSS_C_NO_OID), and
    the given target name (possibly GSS_C_NO_NAME).  The difference
    between an initiator and an acceptor application is that an initiator
+   application calls this function and an acceptor does not; both call
+   GSS_Step_context() (see Section 2.8).
 
 
 
-Williams                 Expires August 26, 2013               [Page 10]
+
+
+Williams                 Expires August 27, 2013               [Page 13]
 
 Internet-Draft                 Simple GSS                  February 2013
 
 
-   application calls this function and an acceptor does not; both call
-   GSS_Step_context() (see Section 2.8).
-
-2.7.1.  C-Bindings
+2.9.1.  C-Bindings
 
     OM_uint32
     gss_set_context_context_role_init(OM_uint32 *minor_status,
@@ -572,7 +737,7 @@ Internet-Draft                 Simple GSS                  February 2013
                                       gss_const_OID mech_oid,
                                       gss_const_name_t target_name);
 
-2.8.  GSS_Step_context()
+2.10.  GSS_Step_context()
 
    Inputs:
 
@@ -596,9 +761,13 @@ Internet-Draft                 Simple GSS                  February 2013
 
    o  GSS_S_CONTINUE_NEEDED ...
 
-   o  GSS_S_UNAVAILABLE
+   o  GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE indicates that the application's
+      choice of event loop type is not supported.  The mechanism will
+      have done no work in this case, and the application must change
+      the event loop and try again.
 
-   o  ...
+   o  All major status codes allowed for GSS_Init_sec_context() and
+      GSS_Accept_sec_context().
 
    o  GSS_S_FAILURE indicates a general failure.
 
@@ -606,21 +775,21 @@ Internet-Draft                 Simple GSS                  February 2013
    exchange for the given security context.
 
    Acceptors call this without having called
-   GSS_Set_context_role_init(); see Section 2.7.
-
-   Note that if GSS_S_CONTINUE_NEEDED is returned but no security
+   GSS_Set_context_role_init(); see Section 2.9.
 
 
 
-Williams                 Expires August 26, 2013               [Page 11]
+
+Williams                 Expires August 27, 2013               [Page 14]
 
 Internet-Draft                 Simple GSS                  February 2013
 
 
+   Note that if GSS_S_CONTINUE_NEEDED is returned but no security
    context is output, then the function must be called again upon async
    I/O completion notification.
 
-2.8.1.  C-Bindings
+2.10.1.  C-Bindings
 
     OM_uint32
     gss_step_context(OM_uint32 *minor_status,
@@ -667,8 +836,7 @@ Internet-Draft                 Simple GSS                  February 2013
 
 
 
-
-Williams                 Expires August 26, 2013               [Page 12]
+Williams                 Expires August 27, 2013               [Page 15]
 
 Internet-Draft                 Simple GSS                  February 2013
 
@@ -724,7 +892,7 @@ Internet-Draft                 Simple GSS                  February 2013
 
 
 
-Williams                 Expires August 26, 2013               [Page 13]
+Williams                 Expires August 27, 2013               [Page 16]
 
 Internet-Draft                 Simple GSS                  February 2013
 
@@ -780,7 +948,7 @@ Internet-Draft                 Simple GSS                  February 2013
 
 
 
-Williams                 Expires August 26, 2013               [Page 14]
+Williams                 Expires August 27, 2013               [Page 17]
 
 Internet-Draft                 Simple GSS                  February 2013
 
@@ -836,7 +1004,7 @@ Internet-Draft                 Simple GSS                  February 2013
 
 
 
-Williams                 Expires August 26, 2013               [Page 15]
+Williams                 Expires August 27, 2013               [Page 18]
 
 Internet-Draft                 Simple GSS                  February 2013
 
@@ -892,5 +1060,5 @@ Author's Address
 
 
 
-Williams                 Expires August 26, 2013               [Page 16]
+Williams                 Expires August 27, 2013               [Page 19]
 

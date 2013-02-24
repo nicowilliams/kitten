@@ -551,6 +551,10 @@ GSS_Set_context_lifetime()
 GSS_Set_async_IO_notification()
 \end_layout
 
+\begin_layout Itemize
+GSS_Set_async_event_loop()
+\end_layout
+
 \begin_layout Standard
 We add a function for stepping through security context token exchanges:
 \end_layout
@@ -1178,7 +1182,7 @@ a condition variable (and associated mutex) on which a signal will be sent
 \end_layout
 
 \begin_layout Standard
-Other completeion notification methods could be specified as well, but these
+Other completion notification methods could be specified as well, but these
  seem likely to be sufficient and reasonably portable.
 \end_layout
 
@@ -1258,7 +1262,7 @@ status open
 
 \begin_layout Plain Layout
 
- 
+ #ifdef HAVE_WIN32
 \end_layout
 
 \begin_layout Plain Layout
@@ -1283,7 +1287,22 @@ status open
 
 \begin_layout Plain Layout
 
+ #endif /* HAVE_WIN32 */
+\end_layout
+
+\begin_layout Plain Layout
+
  
+\end_layout
+
+\begin_layout Plain Layout
+
+ #ifdef HAVE_PTHREADS
+\end_layout
+
+\begin_layout Plain Layout
+
+ #include <pthread.h>
 \end_layout
 
 \begin_layout Plain Layout
@@ -1311,53 +1330,443 @@ status open
                                   pthread_mutex_t lock);
 \end_layout
 
+\begin_layout Plain Layout
+
+ #endif /* HAVE_PTHREADS */
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ #ifdef HAVE_WIN32
+\end_layout
+
+\begin_layout Plain Layout
+
+ #include <windows.h>
+\end_layout
+
+\begin_layout Plain Layout
+
+ #include <stdlib.h> #include <stdio.h>
+\end_layout
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_set_context_async_io_condvar(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                  gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                  CONDITION_VARIABLE cv,
+\end_layout
+
+\begin_layout Plain Layout
+
+                                  CRITICAL_SECTION lock);
+\end_layout
+
+\begin_layout Plain Layout
+
+ #endif /* HAVE_WIN32 */
+\end_layout
+
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+GSS_Set_event_loop()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Description
+context
+\begin_inset space ~
+\end_inset
+
+CONTEXT
+\begin_inset space ~
+\end_inset
+
+HANDLE Empty security context
+\end_layout
+
+\begin_layout Description
+event_loop_type
+\begin_inset space ~
+\end_inset
+
+INTEGER Type of event loop
+\end_layout
+
+\begin_layout Description
+event_loop
+\begin_inset space ~
+\end_inset
+
+UNSPECIFIED An event loop
+\end_layout
+
+\begin_layout Description
+event_loop_module
+\begin_inset space ~
+\end_inset
+
+UNSPECIFIED A module implementing the interface of the given event loop
+ type
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+...
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Standard
+This function sets an event loop to use by the mechanism.
+ We specify no event loop interfaces here.
+ Instead we allow for the use of existing event loop APIs.
+\end_layout
+
+\begin_layout Standard
+The following event loop types are defined (but not their interfaces):
+\end_layout
+
+\begin_layout Itemize
+EV_NONE (the mechanism MAY run a private event loop in a background thread,
+ but only if the application also set a completion notification method);
+\end_layout
+
+\begin_layout Itemize
+EV_LIBVERTO [
+\begin_inset CommandInset href
+LatexCommand href
+name "libverto"
+target "https://fedorahosted.org/libverto/"
+
+\end_inset
+
+];
+\end_layout
+
+\begin_layout Itemize
+EV_LIBEVENT [
+\begin_inset CommandInset href
+LatexCommand href
+name "libevent"
+target "http://libevent.org/"
+
+\end_inset
+
+]
+\end_layout
+
+\begin_layout Itemize
+EV_LIBEV [
+\begin_inset CommandInset href
+LatexCommand href
+name "libev"
+target "http://software.schmorp.de/pkg/libev.html"
+
+\end_inset
+
+]
+\end_layout
+
+\begin_layout Itemize
+EV_GLIB [
+\begin_inset CommandInset href
+LatexCommand href
+name "glib"
+target "http://developer.gnome.org/glib/stable/"
+
+\end_inset
+
+]
+\end_layout
+
+\begin_layout Itemize
+EV_TEVENT [
+\begin_inset CommandInset href
+LatexCommand href
+name "tevent"
+target "http://tevent.samba.org/"
+
+\end_inset
+
+]
+\end_layout
+
+\begin_layout Itemize
+EV_GCD [
+\begin_inset CommandInset href
+LatexCommand href
+name "Grand Central Dispatch"
+target "https://libdispatch.macosforge.org/"
+
+\end_inset
+
+]
+\end_layout
+
+\begin_layout Standard
+Asynchronous security context stepping is OPTIONAL.
+ It is RECOMMENDED that mechanisms implement EV_LIBVERTO.
+ Note that if the application's choice of event loop is not supported by
+ a mechanism then GSS_Step_context() will return GSS_S_UNAVAILABLE_EVENT_LOOP_TY
+PE, in which case the application may try another event loop type, likely
+ EV_NONE.
+\end_layout
+
+\begin_layout Standard
+An event loop module is a handle to a library implementing the interfaces
+ of the given event loop type; the mechanism can obtain those interfaces
+ (e.g., as function pointers in the C bindings).
+ Event loops and modules are unspecified in the abstract API, but the intention
+ is that the application passes to the mechanism a handle to the module
+ implementing the chosen event loop interfaces.
 \end_layout
 
 \begin_layout Subsubsection
-A Word About Event Loops and Threading
+C-Bindings
 \end_layout
 
 \begin_layout Standard
-Note that it is possible for the mechanism to use a standard event loop
- library loop used by the application without having to tell the mechanism
- about the event loop.
- There exists a library specifically for this purpose known as 
-\begin_inset Quotes eld
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ typedef enum {
+\end_layout
+
+\begin_layout Plain Layout
+
+     EV_NONE     = 1,
+\end_layout
+
+\begin_layout Plain Layout
+
+     EV_LIBVERTO = 2,
+\end_layout
+
+\begin_layout Plain Layout
+
+     EV_LIBEVENT = 4,
+\end_layout
+
+\begin_layout Plain Layout
+
+     EV_LIBEV    = 8,
+\end_layout
+
+\begin_layout Plain Layout
+
+     EV_GLIB     = 16,
+\end_layout
+
+\begin_layout Plain Layout
+
+     EV_TEVENT   = 32,
+\end_layout
+
+\begin_layout Plain Layout
+
+     EV_GCD      = 64
+\end_layout
+
+\begin_layout Plain Layout
+
+ } gss_event_loop_type_t;
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ typedef void *(*gss_dlsym_t)(void *, const char *);
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_set_context_event_loop(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            gss_event_loop_type_t event_loop_type,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            void *event_loop,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            gss_event_module_type_t event_module_type,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            void *event_module,
+\end_layout
+
+\begin_layout Plain Layout
+
+                            gss_dlsym_t module_lookup);
+\end_layout
+
 \end_inset
 
 
-\begin_inset CommandInset href
-LatexCommand href
-name "verto"
-target "git://git.fedorahosted.org/libverto.git"
+\end_layout
 
-\end_inset
-
-
-\begin_inset Quotes erd
-\end_inset
-
-.
- The verto library has a lot of clever logic in it to find the event loop
- that the application might be using, as long as the application uses an
- event loop library known to verto, including: glib, libev, libevent, and
- tevent.
- Verto is portable to Unix and Unix-like systems (including Linux and BSDs)
- as well as to Windows.
+\begin_layout Subsection
+GSS_Indicate_event_loop_types()
 \end_layout
 
 \begin_layout Standard
-Given the large number of event loop interfaces and the ability of mechanismst
- to find a suitable event loop or, if none exists, to create a thread in
- which to run an event loop, it makes sense to not specify interfaces by
- which to tell the mechanism which event loop to use.
- Otherwise we'd either have to make reference to the many event loop APIs
- in the C bindings, or define an event loop API for the application to implement
- and pass to the GSS-API.
- The latter seems much too complicated.
+Inputs:
+\end_layout
+
+\begin_layout Description
+input_cred_handle
+\begin_inset space ~
+\end_inset
+
+CREDENTIAL
+\begin_inset space ~
+\end_inset
+
+HANDLE May be GSS_C_NO_CREDENTIAL
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+event_loop_types SET OF INTEGER
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Standard
+This function indicates what event loop types are supported the mechanisms
+ for the given credentials handle.
+\end_layout
+
+\begin_layout Subsubsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_indicate_event_loop_types(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                               gss_cred_id_t input_cred_handle,
+\end_layout
+
+\begin_layout Plain Layout
+
+                               gss_event_loop_type_t *ev_types);
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -1383,7 +1792,7 @@ CONTEXT
 \begin_inset space ~
 \end_inset
 
-HANDLE Empty security context
+HANDLE Empty security context handle
 \end_layout
 
 \begin_layout Description
@@ -1395,11 +1804,11 @@ OID Mechanism OID
 \end_layout
 
 \begin_layout Description
-target
+target_name
 \begin_inset space ~
 \end_inset
 
-NAME Name of target service principal
+NAME Name of target principal
 \end_layout
 
 \begin_layout Standard
@@ -1414,16 +1823,16 @@ major_status INTEGER
 minor_status INTEGER
 \end_layout
 
+\begin_layout Itemize
+event_loop_types SET OF INTEGER
+\end_layout
+
 \begin_layout Standard
 Return major status codes:
 \end_layout
 
 \begin_layout Itemize
 GSS_S_COMPLETE indicates success.
-\end_layout
-
-\begin_layout Itemize
-GSS_S_UNAVAILABLE
 \end_layout
 
 \begin_layout Itemize
@@ -1440,14 +1849,8 @@ This function sets the security context role to be that of an initiator,
  name (possibly GSS_C_NO_NAME).
  The difference between an initiator and an acceptor application is that
  an initiator application calls this function and an acceptor does not;
- both call GSS_Step_context() (see 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:GSS_Step_context()"
-
-\end_inset
-
-).
+ both call GSS_Step_context() (see Section 2.8).
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -1481,7 +1884,7 @@ status open
 
 \begin_layout Plain Layout
 
-                                   gss_const_name_t target_name);
+                                   gss_const_name_t target_name); 
 \end_layout
 
 \end_inset
@@ -1560,11 +1963,15 @@ GSS_S_CONTINUE_NEEDED ...
 \end_layout
 
 \begin_layout Itemize
-GSS_S_UNAVAILABLE
+GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE indicates that the application's choice
+ of event loop type is not supported.
+ The mechanism will have done no work in this case, and the application
+ must change the event loop and try again.
 \end_layout
 
 \begin_layout Itemize
-...
+All major status codes allowed for GSS_Init_sec_context() and GSS_Accept_sec_con
+text().
 \end_layout
 
 \begin_layout Itemize
