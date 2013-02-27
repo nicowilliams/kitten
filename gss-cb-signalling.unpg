@@ -79,9 +79,7 @@ Table of Contents
    2.2.1.  C-Bindings
    2.3.    Return Flag for Channel Binding State Signalling
    2.3.1.  C-Bindings
-   2.4.    GSS_Inquire_channel_binding_status()
-   2.4.1.  C-Bindings
-   2.5.    Mechanism Attributes
+   2.4.    Mechanism Attributes
    3.      Modified Channel Binding Semantics
    4.      Security Considerations
    5.      IANA Considerations
@@ -191,9 +189,8 @@ Table of Contents
    We propose a new return flag for GSS_Init_sec_context() and
    GSS_Accept_sec_context(), as well as a pair of functions for a)
    creating "empty" security context handles, b) setting req_flags and
-   indicating which ret_flags the application understands.  We also
-   propose a function for extended channel binding state inquiry, and
-   add new mechanism attributes describing mechanism capabilities.
+   indicating which ret_flags the application understands.  We also add
+   new mechanism attributes describing mechanism capabilities.
 
    C bindings of these extensions are provided along the lines of
    [RFC2744] and [RFC5587].
@@ -294,68 +291,7 @@ Table of Contents
 
     #define GSS_C_CHANNEL_BOUND_FLAG 2048 /* 0x00000800 */
 
-2.4.  GSS_Inquire_channel_binding_status()
-
-   Inputs:
-
-   context CONTEXT HANDLE
-
-   Outputs:
-
-   o  major_status INTEGER
-
-   o  minor_status INTEGER
-
-   o  cb_initiator_attempted BOOLEAN
-
-   o  cb_acceptor_attempted BOOLEAN
-
-   o  cb_acceptor_cannot_signal BOOLEAN
-
-   Return major status codes:
-
-   o  GSS_S_COMPLETE indicates success.
-
-   o  GSS_S_FAILURE indicates a general failure.
-
-   This function indicates the status of channel binding for a fully
-   established security context.  The following states are possible:
-
-   1.  cb_initiator_attempted == FALSE, cb_acceptor_attempted == <don't
-       care>, cb_acceptor_cannot_signal == <don't care>
-
-   2.  cb_attempted == TRUE, cb_acceptor_attempted == FALSE,
-       cb_acceptor_cannot_signal = FALSE
-
-   3.  cb_attempted == TRUE, cb_acceptor_attempted == FALSE,
-       cb_acceptor_cannot_signal = TRUE
-
-   4.  cb_attempted == TRUE, cb_acceptor_attempted == TRUE,
-       cb_acceptor_cannot_signal = FALSE
-
-   Applications will generally fall into one of two categories:
-
-   o  applications that require acceptor confirmation of channel
-      bindings (i.e., case #4 above),
-
-   o  and applications that only require that initiators attempt channel
-      binding.
-
-   The former require case #4, while the latter require any of #2, #3,
-   or #4.
-
-2.4.1.  C-Bindings
-
-    #define GSS_C_CBS_INIT_ATTEMPTED 1
-    #define GSS_C_CBS_INIT_ATTEMPTED 2
-    #define GSS_C_CBS_INIT_ATTEMPTED 4
-
-    OM_uint32
-    gss_inquire_cb_status(OM_uint32 *minor_status,
-                          gss_ctx_id_t context,
-                          uint64_t cb_status_flags);
-
-2.5.  Mechanism Attributes
+2.4.  Mechanism Attributes
 
    o  We add a new mechanism attribute, GSS_C_MA_CBINDING_CONFIRM, to
       indicate that the initiator can and always does learn whether the
