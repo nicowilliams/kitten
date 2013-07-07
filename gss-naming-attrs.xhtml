@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "file:///home/nico/I-Ds/kitten/../test/src/../data/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="GENERATOR" content="LyX 2.0.2" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>Generic Naming Attributes for the Generic Security Services Application Programming Interface (GSS-API)</title>
+
+<!-- Text Class Preamble -->
+<style type="text/css">
+div.toc {
+margin: 2em 0em;
+border-style: solid;
+border-width: 2px 0px;
+padding: 1em 0em;
+}
+div.tochead { font-size: x-large; font-weight: bold; }
+div.lyxtoc-0 {
+margin: 2em 0em 0em 0em;
+font-size: xx-large;
+font-weight: bold;
+}
+div.lyxtoc-1 {
+margin: 1em 0em 0em 0em;
+font-size: x-large;
+font-weight: bold;
+}
+div.lyxtoc-2 {
+margin: 0em 0em 0em 1em;
+font-size: large;
+font-weight: normal;
+}
+div.lyxtoc-3 { margin: 0em 0em 0em 0.5em; font-size: medium; }
+div.lyxtoc-4 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-5 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-6 { margin: 0em 0em 0em 0.5em; }
+a.tocentry {
+text-decoration: none;
+color: black;
+}
+a.tocentry:visited { color: black; }
+a.tocarrow {
+font-weight: bold;
+text-decoration: none;
+color: #909090;
+}
+a.tocarrow:visited { color: #C0C0C0; }
+</style>
+
+<!-- Preamble Snippets -->
+
+<!-- Layout-provided Styles -->
+<style type='text/css'>
+h1.title {
+font-size: x-large;
+margin-bottom: 1ex;
+text-align: center;
+
+}
+div.standard {
+text-align: left;
+
+}
+div.plain_layout {
+text-align: left;
+
+}
+div.author {
+font-size: large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: center;
+
+}
+div.abstract {
+font-size: small;
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+margin-right: 3ex;
+text-align: left;
+
+}
+div.abstract_label {
+font-weight: bold;
+font-size: large;
+text-align: center;
+
+}
+
+div.abstract {
+margin: 4ex;
+}
+div.abstract_item {
+font-size: small;
+padding-top: 1ex;
+}
+div.abstract_label {
+font-weight: bold;
+}
+h2.section {
+font-weight: bold;
+font-size: x-large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: left;
+
+}
+h3.subsection {
+font-weight: bold;
+font-size: large;
+margin-top: 0.9ex;
+margin-bottom: 0.5ex;
+text-align: left;
+
+}
+h4.subsubsection {
+font-weight: bold;
+font-size: medium;
+margin-top: 0.7ex;
+margin-bottom: 0.4ex;
+text-align: left;
+
+}
+div.revisionremark {
+text-align: left;
+
+}
+ul.itemize {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+div.flex_docname {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ipr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_intendedstatus {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_titleabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ietfarea {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_xml_rfckeyword {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_updates {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_toc {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_symrefs {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_tocindent {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororg {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororgabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authoremailaddr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_entityxref {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_bibxml {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+</style>
+</head>
+<body>
+<h1 class="title"><a id='magicparlabel-1' />
+Generic Naming Attributes for the Generic Security Services Application Programming Interface (GSS-API)</h1>
+<div class="standard"><a id='magicparlabel-2' />
+<div class="flex_docname"><div class="plain_layout"><a id='magicparlabel-6' />
+draft-williams-kitten-generic-naming-attributes-00</div>
+</div><div class="flex_ipr"><div class="plain_layout"><a id='magicparlabel-10' />
+trust200902</div>
+</div><div class="flex_intendedstatus"><div class="plain_layout"><a id='magicparlabel-14' />
+std</div>
+</div><div class="flex_titleabbrev"><div class="plain_layout"><a id='magicparlabel-18' />
+Simple GSS</div>
+</div><div class="flex_ietfarea"><div class="plain_layout"><a id='magicparlabel-22' />
+Security Area</div>
+</div><div class="flex_xml_rfckeyword"><div class="plain_layout"><a id='magicparlabel-26' />
+Internet-Draft</div>
+</div><div class="flex_updates"><div class="plain_layout"><a id='magicparlabel-30' />
+2743, 2744</div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-31' />
+<div class="flex_pi_toc"><div class="plain_layout"><a id='magicparlabel-35' />
+yes</div>
+</div><div class="flex_pi_symrefs"><div class="plain_layout"><a id='magicparlabel-39' />
+yes</div>
+</div><div class="flex_pi_tocindent"><div class="plain_layout"><a id='magicparlabel-43' />
+no</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-47' />
+comments="yes"</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-51' />
+inline="yes"</div>
+</div></div>
+
+<div class="author"><div class="author_item"><a id='magicparlabel-52' />
+Nicolas Williams<div class="flex_authororg"><div class="plain_layout"><a id='magicparlabel-56' />
+Cryptonector, LLC</div>
+</div><div class="flex_authororgabbrev"><div class="plain_layout"><a id='magicparlabel-60' />
+Cryptonector</div>
+</div><div class="flex_authoremailaddr"><div class="plain_layout"><a id='magicparlabel-64' />
+nico@cryptonector.com</div>
+</div></div>
+</div>
+
+<div class="abstract"><div class="abstract_label">Abstract</div>
+<div class="abstract_item"><a id='magicparlabel-65' />
+This document specifies several useful generic naming attributes for use with the Generic Security Services Application Programming Interface (GSS-API) Naming Extensions specified in RFC6680.</div>
+<div class="abstract_item"><a id='magicparlabel-66' />
+These attributes allow applications to extract discrete components of a GSS-API &ldquo;mechanism name&rdquo; (MN) object: issuer (e.g., realm name, domain name, certification authority name), service and host names (for host-based service names), user names, and others.</div>
+</div>
+<div class="standard"><a id='magicparlabel-67' />
+</div>
+<div class='toc'><div class='tochead part_'>Table of Contents</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-68' class='tocentry'>1 Introduction</a> <a href='#magicparlabel-68' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-74' class='tocentry'>1.1 Conventions used in this document</a> <a href='#magicparlabel-74' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-80' class='tocentry'>2 Generic Attributes</a> <a href='#magicparlabel-80' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-82' class='tocentry'>2.1 Concrete Attributes</a> <a href='#magicparlabel-82' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-84' class='tocentry'>2.1.1 Issuer Name</a> <a href='#magicparlabel-84' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-94' class='tocentry'>2.1.2 User Name</a> <a href='#magicparlabel-94' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-98' class='tocentry'>2.1.3 Service Name</a> <a href='#magicparlabel-98' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-101' class='tocentry'>2.1.4 Host Name</a> <a href='#magicparlabel-101' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-117' class='tocentry'>2.1.5 Domain Name</a> <a href='#magicparlabel-117' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-133' class='tocentry'>2.2 Prefix Attributes</a> <a href='#magicparlabel-133' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-137' class='tocentry'>2.2.1 GSS_C_ATTR_GENERIC_UNCONSTRAINED</a> <a href='#magicparlabel-137' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-139' class='tocentry'>2.2.2 GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK</a> <a href='#magicparlabel-139' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-141' class='tocentry'>2.2.3 GSS_C_ATTR_GENERIC_FAST</a> <a href='#magicparlabel-141' class='tocarrow'>&gt;</a></div>
+</div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-143' class='tocentry'>3 Local Name Attributes</a> <a href='#magicparlabel-143' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-145' class='tocentry'>3.1 GSS_C_ATTR_LOCAL_LOGIN_USER</a> <a href='#magicparlabel-145' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-148' class='tocentry'>4 Suggested Mechanism-Specific Name Attributes (INFORMATIONAL)</a> <a href='#magicparlabel-148' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-150' class='tocentry'>4.1 Suggested Kerberos-Specific Name Attributes</a> <a href='#magicparlabel-150' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-162' class='tocentry'>4.2 Suggested PKU2U-Specific Name Attributes</a> <a href='#magicparlabel-162' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-173' class='tocentry'>5 Security Considerations</a> <a href='#magicparlabel-173' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-175' class='tocentry'>6 IANA Considerations</a> <a href='#magicparlabel-175' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-177' class='tocentry'>7 Normative References</a> <a href='#magicparlabel-177' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-213' class='tocentry'>8 Informative References</a> <a href='#magicparlabel-213' class='tocarrow'>&gt;</a></div>
+</div>
+
+<h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-68' />
+Introduction</h2>
+<div class="standard"><a id='magicparlabel-69' />
+In RFC6680 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-73' />
+RFC6680</div>
+</div> we introduced an interface by which to access &ldquo;attributes&rdquo; of names. This document specifies some such attributes.</div>
+<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-74' />
+Conventions used in this document</h3>
+<div class="standard"><a id='magicparlabel-75' />
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-79' />
+RFC2119</div>
+</div>.</div>
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-80' />
+Generic Attributes</h2>
+<div class="standard"><a id='magicparlabel-81' />
+We add a number of generic attributes. Some of these attributes can be used as prefixes of other attributes.</div>
+<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-82' />
+Concrete Attributes</h3>
+<div class="standard"><a id='magicparlabel-83' />
+These attributes generally have a single value. Only one of these attributes can also be used a prefix: the issuer name attribute.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.1.1</span> <a id='magicparlabel-84' />
+Issuer Name</h4>
+<div class="standard"><a id='magicparlabel-85' />
+We add an attribute by which to obtain a name of an issuer of a mechanism name (MN) or of an attribute of an MN. The API name for this attribute is GSS_C_ATTR_GENERIC_ISSUERNAME, and it's actual attribute name is &ldquo;urn:ietf:id:ietf-kitten-name-attrs-00-issuername&rdquo;.</div>
+
+<div class="standard"><a id='magicparlabel-86' />
+The display form of issuer names is mechanism-specific.</div>
+
+<div class="standard"><a id='magicparlabel-87' />
+The [non-display] form of issuer names SHALL be the exported name token form of the issuer's name. Not all mechanisms will support issuer names as MNs, therefore implementations MAY output a null non-display value.</div>
+
+<div class="standard"><a id='magicparlabel-88' />
+For example, for the Kerberos mechanism <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-92' />
+RFC4121</div>
+</div> an issuer name would generally (but not always!) be a Kerberos realm name, probably display as just the realm name. (But note that there is not yet a Kerberos realm name as MN specification.)</div>
+
+<div class="standard"><a id='magicparlabel-93' />
+This attribute can be used as prefix of other attributes. When used as a prefix, this attribute indicates that the application wishes to know the name of the issuer of the prefixed attribute of the given MN.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.1.2</span> <a id='magicparlabel-94' />
+User Name</h4>
+<div class="standard"><a id='magicparlabel-95' />
+We add an attribute by which to obtain the component of an MN naming a user. The API name for this attribute is GSS_C_ATTR_GENERIC_USERNAME, and it's actual attribute name is &ldquo;urn:ietf:id:ietf-kitten-name-attrs-00-username&rdquo;.</div>
+
+<div class="standard"><a id='magicparlabel-96' />
+The display form of user names is mechanism-specific.</div>
+
+<div class="standard"><a id='magicparlabel-97' />
+The non-display form of user names is mechanism-specific.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.1.3</span> <a id='magicparlabel-98' />
+Service Name</h4>
+<div class="standard"><a id='magicparlabel-99' />
+We add an attribute by which to obtain the component of an MN naming a service as part of a host- or domain-based service name. The API name for this attribute is GSS_C_ATTR_GENERIC_SERVICENAME, and it's actual attribute name is &ldquo;urn:ietf:id:ietf-kitten-name-attrs-00-servicename&rdquo;.</div>
+
+<div class="standard"><a id='magicparlabel-100' />
+The display and non-display forms of service names are the same: a character string corresponding to the service names used, for example, in calls to GSS_Import_name() with the GSS_C_NT_HOSTBASED_SERVICE name-type.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.1.4</span> <a id='magicparlabel-101' />
+Host Name</h4>
+<div class="standard"><a id='magicparlabel-102' />
+We add an attribute by which to obtain the component of an MN naming a host as part of a host- or domain-based service name. The API name for this attribute is GSS_C_ATTR_GENERIC_HOSTNAME, and it's actual attribute name is &ldquo;urn:ietf:id:ietf-kitten-name-attrs-00-hostname&rdquo;.</div>
+
+<div class="standard"><a id='magicparlabel-103' />
+The display form of a host name MAY be stylized and SHOULD use U-labels <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-107' />
+RFC5890</div>
+</div>.</div>
+
+<div class="standard"><a id='magicparlabel-108' />
+The non-display form of host names SHOULD be a character string as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-112' />
+RFC1123</div>
+</div>, and SHOULD use A-labels <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-116' />
+RFC5890</div>
+</div>.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.1.5</span> <a id='magicparlabel-117' />
+Domain Name</h4>
+<div class="standard"><a id='magicparlabel-118' />
+We add an attribute by which to obtain the component of an MN naming a domain as part of a domain-based service name. The API name for this attribute is GSS_C_ATTR_GENERIC_DOMAINNAME, and it's actual attribute name is &ldquo;urn:ietf:id:ietf-kitten-name-attrs-00-domainname&rdquo;.</div>
+
+<div class="standard"><a id='magicparlabel-119' />
+The display form of a domain name MAY be stylized and SHOULD use U-labels <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-123' />
+RFC5890</div>
+</div>.</div>
+
+<div class="standard"><a id='magicparlabel-124' />
+The non-display form of domain names SHOULD be a character string as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-128' />
+RFC1035</div>
+</div>, and SHOULD use A-labels <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-132' />
+RFC5890</div>
+</div>.</div>
+<h3 class="subsection"><span class="subsection_label">2.2</span> <a id='magicparlabel-133' />
+Prefix Attributes</h3>
+<div class="standard"><a id='magicparlabel-134' />
+GSS_Get_name_attribute() using attributes described in the preceding section SHALL fail if there are any name constraints that can be applied to the issuers of those names and, in applying those constraints, it is discovered that the issuer was not permitted to issue credentials for the MN.</div>
+
+<div class="standard"><a id='magicparlabel-135' />
+For example, a Kerberos realm named &ldquo;FOO.EXAMPLE&rdquo; might not be expected to issue credentials (tickets, keys) to host-based service names for hosts not ending in &ldquo;.foo.example&rdquo; or which are not &ldquo;foo.example&rdquo;.</div>
+
+<div class="standard"><a id='magicparlabel-136' />
+Several generic attribute prefixes are described below for overriding this behavior.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.2.1</span> <a id='magicparlabel-137' />
+GSS_C_ATTR_GENERIC_UNCONSTRAINED</h4>
+<div class="standard"><a id='magicparlabel-138' />
+This attribute prefix, named GSS_C_ATTR_GENERIC_UNCONSTRAINED in the API, and with an actual name of &ldquo;urn:ietf:id:ietf-kitten-name-attrs-00-gen-unconstrained&rdquo;, indicates that the application wants the value of the prefixed attribute without any name constraint checking.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.2.2</span> <a id='magicparlabel-139' />
+GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK</h4>
+<div class="standard"><a id='magicparlabel-140' />
+This attribute prefix, named GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK in the API, and with an actual name of &ldquo;urn:ietf:id:ietf-kitten-name-attrs-00-gen-unconstrained-ok&rdquo;, indicates that the application wants the value of the prefixed attribute regardless of any applicable naming constraints, but to indicate the name constraint status via the 'authenticated' output parameter of the GSS_Get_name_attribute() interface.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.2.3</span> <a id='magicparlabel-141' />
+GSS_C_ATTR_GENERIC_FAST</h4>
+<div class="standard"><a id='magicparlabel-142' />
+This attribute prefix, named GSS_C_ATTR_GENERIC_FAST in the API, and with an actual name of &ldquo;urn:ietf:id:ietf-kitten-name-attrs-00-gen-fast&rdquo;, indicates that the application requires that the mechanism not perform any slow operations (e.g., connecting to a directory for the purposes of name constraint validation) in obtaining the prefixed attribute of the given MN.</div>
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-143' />
+Local Name Attributes</h2>
+<div class="standard"><a id='magicparlabel-144' />
+Normally an Internet specification would not be expected to specify any local name attributes of GSS names. However, there is one common and very useful local name attribute, which we specify below. Implementations are free to use different names for this attribute or exclude it altogether &ndash; it is a local name attribute, after all.</div>
+<h3 class="subsection"><span class="subsection_label">3.1</span> <a id='magicparlabel-145' />
+GSS_C_ATTR_LOCAL_LOGIN_USER</h3>
+<div class="standard"><a id='magicparlabel-146' />
+This attribute, with suggested API name GSS_C_ATTR_LOCAL_LOGIN_USER, and suggested actual name &ldquo;local-login-user&rdquo;, requests a local user name corresponding to the given MN, if any.</div>
+
+<div class="standard"><a id='magicparlabel-147' />
+Obtaining the local user name corresponding to an MN may require complex name mapping or lookup operations that are completely implementation-defined.</div>
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-148' />
+Suggested Mechanism-Specific Name Attributes (INFORMATIONAL)</h2>
+<div class="revisionremark"><a id='magicparlabel-149' />
+This section should really be split out into separate Internet-Drafts. It is here only because the author lacks the time at the moment of writing to create such separate I-Ds.</div>
+<h3 class="subsection"><span class="subsection_label">4.1</span> <a id='magicparlabel-150' />
+Suggested Kerberos-Specific Name Attributes</h3>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-151' />
+realm (corresponding to issuer name)</li>
+<li class="itemize_item"><a id='magicparlabel-152' />
+component 0 (first component of a principal name)</li>
+<li class="itemize_item"><a id='magicparlabel-153' />
+component 1 (second component of a principal name)</li>
+<li class="itemize_item"><a id='magicparlabel-154' />
+..</li>
+<li class="itemize_item"><a id='magicparlabel-155' />
+component 9 (10th component of a principal name)</li>
+<li class="itemize_item"><a id='magicparlabel-156' />
+components (ordered set of components of a principal name)</li>
+<li class="itemize_item"><a id='magicparlabel-157' />
+transit path (ordered set of realm and CA names)</li>
+<li class="itemize_item"><a id='magicparlabel-158' />
+specific authorization data elements</li>
+<li class="itemize_item"><a id='magicparlabel-159' />
+PKINIT client certificate</li>
+<li class="itemize_item"><a id='magicparlabel-160' />
+session key enctype</li>
+<li class="itemize_item"><a id='magicparlabel-161' />
+enctypes involved in transit path (this would only be available to initiators)</li>
+</ul>
+<h3 class="subsection"><span class="subsection_label">4.2</span> <a id='magicparlabel-162' />
+Suggested PKU2U-Specific Name Attributes</h3>
+<div class="revisionremark"><a id='magicparlabel-163' />
+Add reference to PKU2U.</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-164' />
+issuer CA name</li>
+<li class="itemize_item"><a id='magicparlabel-165' />
+trust path to a trust anchor</li>
+<li class="itemize_item"><a id='magicparlabel-166' />
+certificate</li>
+<li class="itemize_item"><a id='magicparlabel-167' />
+certificate subject public key</li>
+<li class="itemize_item"><a id='magicparlabel-168' />
+certificate subject name</li>
+<li class="itemize_item"><a id='magicparlabel-169' />
+certificate subject alternate names</li>
+<li class="itemize_item"><a id='magicparlabel-170' />
+specific certificate extensions</li>
+<li class="itemize_item"><a id='magicparlabel-171' />
+certificate algorithm names</li>
+<li class="itemize_item"><a id='magicparlabel-172' />
+session key enctype</li>
+</ul>
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-173' />
+Security Considerations</h2>
+<div class="standard"><a id='magicparlabel-174' />
+[Add text regarding name constraint checking and explaining the default-to-safe design of the generic name attributes defined in section 2.]</div>
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-175' />
+IANA Considerations</h2>
+<div class="standard"><a id='magicparlabel-176' />
+[Add text regarding the registration and assignment of the name attributes described in the preceding sections. In particular we should want these attributes' names to not reflect an Internet-Draft name, but an RFC number.]</div>
+<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-177' />
+<a id="sec_References" />
+Normative References</h2>
+<div class="standard"><a id='magicparlabel-178' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-182' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-183' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-187' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.1035.xml">rfc1035</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-188' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-192' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.1123.xml">rfc1123</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-193' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-197' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">rfc2743</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-198' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-202' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">rfc2744</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-203' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-207' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">rfc5890</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-208' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-212' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.6680.xml">rfc6680</a></div>
+</div></div>
+<h2 class="section"><span class="section_label">8</span> <a id='magicparlabel-213' />
+Informative References</h2>
+<div class="standard"><a id='magicparlabel-214' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-218' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">rfc4121</a></div>
+</div></div>
+</body>
+</html>
