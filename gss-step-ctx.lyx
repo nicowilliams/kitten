@@ -343,7 +343,7 @@ Internet-Draft
 status open
 
 \begin_layout Plain Layout
-RFC2743 RFC2744
+2743, 2744
 \end_layout
 
 \end_inset
@@ -481,6 +481,24 @@ stepping
  functions.
  Support for non-blocking stepping of security context token exchange is
  also included.
+\end_layout
+
+\begin_layout Subsection
+Channel Binding Semantics Improvements
+\end_layout
+
+\begin_layout Standard
+The extensions specified in this document are a further extension to 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+I-D.williams-kitten-channel-bound-flag
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -1173,7 +1191,7 @@ callback function
 \end_layout
 
 \begin_layout Itemize
-file descriptor or file handle into which a single byte (any value) will
+file descriptor or file handle into which a single byte (of any value) will
  be written
 \end_layout
 
@@ -1237,6 +1255,11 @@ status open
 
 \begin_layout Plain Layout
 
+ #ifdef HAVE_POSIX
+\end_layout
+
+\begin_layout Plain Layout
+
  OM_uint32
 \end_layout
 
@@ -1253,6 +1276,11 @@ status open
 \begin_layout Plain Layout
 
                              int fd);
+\end_layout
+
+\begin_layout Plain Layout
+
+ #endif /* HAVE_POSIX */
 \end_layout
 
 \begin_layout Plain Layout
@@ -2166,6 +2194,39 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5587.xml"
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex EmbeddedBibXML
+status collapsed
+
+\begin_layout Plain Layout
+<reference anchor="I-D.williams-kitten-channel-bound-flag"> <front> <title>Channe
+l Binding Signalling for the Generic Security Services Application Programming
+ Interface</title> <author initials="N." surname="Williams" fullname="Nicolas
+ Williams"> <organization/> </author> <date month="February" day="13" year="2013
+"/> <abstract> <t>Abstract Channel binding is a technique that allows applicatio
+ns to use a secure channel at a lower layer without having to use authentication
+ at that lower layer.
+ The concept of channel binding comes from RFC2743 and its predecessors.
+ It turns out that the semantics implemented are different that those specified
+ in RFC2743, and the specification has a serious bug.
+ This document addresses both, the inconsistency as-implemented and the
+ specification bug.</t> <t>Abstract This Internet-Draft proposes the addition
+ of a “channel bound” return flag for the GSS_Init_sec_context() and GSS_Accept_
+sec_context() functions.
+ Two behaviors are specified: a default, safe behavior, and a behavior that
+ is only safe when the application specifically tells the Generic Security
+ Services Application Programming Interface (GSS-API) that it (the applicaiton)
+ supports the new behavior.</t> </abstract> </front> <seriesInfo name="Internet-D
+raft" value="draft-williams-kitten-channel-bound-flag-02"/> <format type="TXT"
+ target="http://www.ietf.org/internet-drafts/draft-williams-kitten-channel-bound-f
+lag-02.txt"/> </reference> 
 \end_layout
 
 \end_inset

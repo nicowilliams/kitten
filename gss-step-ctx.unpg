@@ -3,10 +3,9 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: RFC2743 RFC2744                               February 23, 2013
-(if approved)
+Updates: 2743, 2744 (if approved)                           July 7, 2013
 Intended status: Standards Track
-Expires: August 27, 2013
+Expires: January 8, 2014
 
 
 Simplified and Asynchronous Security Context Interfaces for the Generic
@@ -35,7 +34,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 27, 2013.
+   This Internet-Draft will expire on January 8, 2014.
 
 Copyright Notice
 
@@ -56,7 +55,8 @@ Copyright Notice
 Table of Contents
 
    1.      Introduction
-   1.1.    Conventions used in this document
+   1.1.    Channel Binding Semantics Improvements
+   1.2.    Conventions used in this document
    2.      Simplified API
    2.1.    GSS_Create_sec_context()
    2.1.1.  C-Bindings
@@ -96,7 +96,12 @@ Table of Contents
    functions.  Support for non-blocking stepping of security context
    token exchange is also included.
 
-1.1.  Conventions used in this document
+1.1.  Channel Binding Semantics Improvements
+
+   The extensions specified in this document are a further extension to
+   [I-D.williams-kitten-channel-bound-flag].
+
+1.2.  Conventions used in this document
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
@@ -167,9 +172,9 @@ Table of Contents
 
 2.1.1.  C-Bindings
 
-    OM_uint32
-    gss_create_sec_context(OM_uint32 *minor_status,
-                           gss_ctx_id_t *context);
+               OM_uint32
+               gss_create_sec_context(OM_uint32 *minor_status,
+                                      gss_ctx_id_t *context);
 
 2.2.  GSS_Set_context_flags()
 
@@ -208,11 +213,11 @@ Table of Contents
 
 2.2.1.  C-Bindings
 
-    OM_uint32
-    gss_set_context_flags(OM_uint32 *minor_status,
-                          gss_ctx_id_t context,
-                          uint64_t req_flags,
-                          uint64_t ret_flags);
+               OM_uint32
+               gss_set_context_flags(OM_uint32 *minor_status,
+                                     gss_ctx_id_t context,
+                                     uint64_t req_flags,
+                                     uint64_t ret_flags);
 
 2.3.  GSS_Set_context_credentials()
 
@@ -251,10 +256,10 @@ Table of Contents
 
 2.3.1.  C-Bindings
 
-    OM_uint32
-    gss_set_context_credentials(OM_uint32 *minor_status,
-                                gss_ctx_id_t context,
-                                gss_const_cred_id_t input_cred_handle);
+     OM_uint32
+     gss_set_context_credentials(OM_uint32 *minor_status,
+                                 gss_ctx_id_t context,
+                                 gss_const_cred_id_t input_cred_handle);
 
 2.4.  GSS_Set_context_channel_bindings()
 
@@ -280,10 +285,10 @@ Table of Contents
 
 2.4.1.  C-Bindings
 
-    OM_uint32
-    gss_set_context_channel_bindings(OM_uint32 *minor_status,
-                                     gss_ctx_id_t context,
-                                     gss_const_buffer_t input_cb);
+       OM_uint32
+       gss_set_context_channel_bindings(OM_uint32 *minor_status,
+                                        gss_ctx_id_t context,
+                                        gss_const_buffer_t input_cb);
 
 2.5.  GSS_Set_context_lifetime()
 
@@ -309,10 +314,10 @@ Table of Contents
 
 2.5.1.  C-Bindings
 
-    OM_uint32
-    gss_set_context_lifetime(OM_uint32 *minor_status,
-                             gss_ctx_id_t context,
-                             uint64_t lifetime_req);
+              OM_uint32
+              gss_set_context_lifetime(OM_uint32 *minor_status,
+                                       gss_ctx_id_t context,
+                                       uint64_t lifetime_req);
 
 2.6.  GSS_Set_async_IO_notification()
 
@@ -351,7 +356,7 @@ Table of Contents
 
    o  callback function
 
-   o  file descriptor or file handle into which a single byte (any
+   o  file descriptor or file handle into which a single byte (of any
       value) will be written
 
    o  a condition variable (and associated mutex) on which a signal will
@@ -362,44 +367,46 @@ Table of Contents
 
 2.6.1.  C-Bindings
 
-    typedef void (*gss_async_cb_t)(gss_ctx_id_t context, void *cb_data);
+     typedef void (*gss_async_cb_t)(gss_ctx_id_t context, void *cb_data);
 
-    OM_uint32
-    gss_set_context_async_io_cb(OM_uint32 *minor_status,
-                                gss_ctx_id_t context,
-                                gss_async_cb_t cb,
-                                void *cb_data);
+     OM_uint32
+     gss_set_context_async_io_cb(OM_uint32 *minor_status,
+                                 gss_ctx_id_t context,
+                                 gss_async_cb_t cb,
+                                 void *cb_data);
 
-    OM_uint32
-    gss_set_context_async_io_fd(OM_uint32 *minor_status,
-                                gss_ctx_id_t context,
-                                int fd);
+     #ifdef HAVE_POSIX
+     OM_uint32
+     gss_set_context_async_io_fd(OM_uint32 *minor_status,
+                                 gss_ctx_id_t context,
+                                 int fd);
+     #endif /* HAVE_POSIX */
 
-    #ifdef HAVE_WIN32
-    OM_uint32
-    gss_set_context_async_io_handle(OM_uint32 *minor_status,
-                                    gss_ctx_id_t context,
-                                    HANDLE h);
-    #endif /* HAVE_WIN32 */
-
-    #ifdef HAVE_PTHREADS
-    #include <pthread.h>
-    OM_uint32
-    gss_set_context_async_io_condvar(OM_uint32 *minor_status,
+     #ifdef HAVE_WIN32
+     OM_uint32
+     gss_set_context_async_io_handle(OM_uint32 *minor_status,
                                      gss_ctx_id_t context,
-                                     pthread_cond_t cv,
-                                     pthread_mutex_t lock);
-    #endif /* HAVE_PTHREADS */
+                                     HANDLE h);
+     #endif /* HAVE_WIN32 */
 
-    #ifdef HAVE_WIN32
-    #include <windows.h>
-    #include <stdlib.h> #include <stdio.h>
-    OM_uint32
-    gss_set_context_async_io_condvar(OM_uint32 *minor_status,
-                                     gss_ctx_id_t context,
-                                     CONDITION_VARIABLE cv,
-                                     CRITICAL_SECTION lock);
-    #endif /* HAVE_WIN32 */
+     #ifdef HAVE_PTHREADS
+     #include <pthread.h>
+     OM_uint32
+     gss_set_context_async_io_condvar(OM_uint32 *minor_status,
+                                      gss_ctx_id_t context,
+                                      pthread_cond_t cv,
+                                      pthread_mutex_t lock);
+     #endif /* HAVE_PTHREADS */
+
+     #ifdef HAVE_WIN32
+     #include <windows.h>
+     #include <stdlib.h> #include <stdio.h>
+     OM_uint32
+     gss_set_context_async_io_condvar(OM_uint32 *minor_status,
+                                      gss_ctx_id_t context,
+                                      CONDITION_VARIABLE cv,
+                                      CRITICAL_SECTION lock);
+     #endif /* HAVE_WIN32 */
 
 2.7.  GSS_Set_event_loop()
 
@@ -467,26 +474,26 @@ Table of Contents
 
 2.7.1.  C-Bindings
 
-   typedef enum {
-       EV_NONE     = 1,
-       EV_LIBVERTO = 2,
-       EV_LIBEVENT = 4,
-       EV_LIBEV    = 8,
-       EV_GLIB     = 16,
-       EV_TEVENT   = 32,
-       EV_GCD      = 64
-   } gss_event_loop_type_t;
+    typedef enum {
+        EV_NONE     = 1,
+        EV_LIBVERTO = 2,
+        EV_LIBEVENT = 4,
+        EV_LIBEV    = 8,
+        EV_GLIB     = 16,
+        EV_TEVENT   = 32,
+        EV_GCD      = 64
+    } gss_event_loop_type_t;
 
-   typedef void *(*gss_dlsym_t)(void *, const char *);
+    typedef void *(*gss_dlsym_t)(void *, const char *);
 
-   OM_uint32
-   gss_set_context_event_loop(OM_uint32 *minor_status,
-                              gss_ctx_id_t context,
-                              gss_event_loop_type_t event_loop_type,
-                              void *event_loop,
-                              gss_event_module_type_t event_module_type,
-                              void *event_module,
-                              gss_dlsym_t module_lookup);
+    OM_uint32
+    gss_set_context_event_loop(OM_uint32 *minor_status,
+                               gss_ctx_id_t context,
+                               gss_event_loop_type_t event_loop_type,
+                               void *event_loop,
+                               gss_event_module_type_t event_module_type,
+                               void *event_module,
+                               gss_dlsym_t module_lookup);
 
 2.8.  GSS_Indicate_event_loop_types()
 
@@ -513,10 +520,10 @@ Table of Contents
 
 2.8.1.  C-Bindings
 
-    OM_uint32
-    gss_indicate_event_loop_types(OM_uint32 *minor_status,
-                                  gss_cred_id_t input_cred_handle,
-                                  gss_event_loop_type_t *ev_types);
+       OM_uint32
+       gss_indicate_event_loop_types(OM_uint32 *minor_status,
+                                     gss_cred_id_t input_cred_handle,
+                                     gss_event_loop_type_t *ev_types);
 
 2.9.  GSS_Set_context_role_init()
 
@@ -553,11 +560,11 @@ Table of Contents
 
 2.9.1.  C-Bindings
 
-    OM_uint32
-    gss_set_context_context_role_init(OM_uint32 *minor_status,
-                                      gss_ctx_id_t context,
-                                      gss_const_OID mech_oid,
-                                      gss_const_name_t target_name);
+      OM_uint32
+      gss_set_context_context_role_init(OM_uint32 *minor_status,
+                                        gss_ctx_id_t context,
+                                        gss_const_OID mech_oid,
+                                        gss_const_name_t target_name);
 
 2.10.  GSS_Step_context()
 
@@ -605,12 +612,12 @@ Table of Contents
 
 2.10.1.  C-Bindings
 
-    OM_uint32
-    gss_step_context(OM_uint32 *minor_status,
-                     gss_ctx_id_t context,
-                     gss_const_buffer_t input_token,
-                     gss_buffer_t output_token,
-                     gss_const_OID *actual_mech);
+              OM_uint32
+              gss_step_context(OM_uint32 *minor_status,
+                               gss_ctx_id_t context,
+                               gss_const_buffer_t input_token,
+                               gss_buffer_t output_token,
+                               gss_const_OID *actual_mech);
 
 
 3.  Security Considerations
@@ -643,6 +650,12 @@ Table of Contents
 
    [RFC5587]  Williams, N., "Extended Generic Security Service Mechanism
               Inquiry APIs", RFC 5587, July 2009.
+
+   [I-D.williams-kitten-channel-bound-flag]
+              Williams, N., "Channel Binding Signalling for the Generic
+              Security Services Application Programming Interface",
+              draft-williams-kitten-channel-bound-flag-02 (work in
+              progress), February 2013.
 
 5.2.  Informative References
 

@@ -283,7 +283,7 @@ Channel Binding Signalling for the Generic Security Services Application
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-channel-bound-flag-03
+draft-ietf-kitten-channel-bound-flag-00
 \end_layout
 
 \end_inset
@@ -343,7 +343,17 @@ Internet-Draft
 status open
 
 \begin_layout Plain Layout
-RFC2743 RFC2744
+2743, 2744
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IETFWorkingGroup
+status collapsed
+
+\begin_layout Plain Layout
+KITTEN
 \end_layout
 
 \end_inset
@@ -444,8 +454,9 @@ Channel binding is a technique that allows applications to use a secure
  layer.
  The concept of channel binding comes from the Generic Security Services
  Application Programming Interface (GSS-API).
- It turns out that the semantics implemented are different that those specified
- in RFC2743, and the specification has a serious bug.
+ It turns out that the semantics commonly implemented are different that
+ those specified in the base GSS-API RFC (RFC2743), and that that specification
+ has a serious bug.
  This document addresses both, the inconsistency as-implemented and the
  specification bug.
 \end_layout
@@ -465,7 +476,8 @@ channel bound
  implementation deployments, and a behavior that is only safe when the applicati
 on specifically tells the GSS-API that it (the application) supports the
  new behavior.
- Additional API elements related to this are also added.
+ Additional API elements related to this are also added, including a new
+ security context establishment API.
 \end_layout
 
 \begin_layout Standard
@@ -533,8 +545,8 @@ RFC4121
  the acceptor application did not.
  This has helped deployment of channel binding in existing applications:
  first fix all the initiators, then fix all the acceptors.
- But even this is insufficient when there are many clients to fix, such
- that fixing them all will take a long time.
+ But even this technique is insufficient when there are many clients to
+ fix, such that fixing them all will take a long time.
 \end_layout
 
 \begin_layout Standard
@@ -641,13 +653,11 @@ Alternative Design
 \end_layout
 
 \begin_layout Standard
-The previous design was based on an existing, non-standard extension for
- carrying security context establishment options in CREDENTIAL HANDLEs.
- Note that a notion of CREDENTIAL HANDLE options might still be useful for
- options that are really specific to credentials rather than security context
- tokens (for example: setting an acceptable cryptographic security profile
- on a CREDENTIAL HANDLE and receiving a new handle with possibly fewer elements,
- reflecting that some credentials cannot meet the requirement).
+An earlier design was based on an existing, non-standard extension for carrying
+ security context establishment options in CREDENTIAL HANDLEs.
+ A notion of CREDENTIAL HANDLE options might still be useful for options
+ that are really specific to credentials rather than security context tokens,
+ but for the time being we have no use for such a thing.
 \end_layout
 
 \begin_layout Subsection
@@ -664,8 +674,8 @@ l security context inquiry functions.
  removed that could be set or retrieved with the other new functions.
  The only inputs that the new GSS_Init/Accept_sec_context() must have are:
  a security context handle (never NULL), and an input context token, and
- the only outputs should be the status indicators and an output token --
- in fact, we may want to have just one new function called, perhaps, GSS_Step_se
+ the only outputs should be the status indicators and an output token.
+ In fact, we may want to have just one new function called, perhaps, GSS_Step_se
 c_context(), with the role of initiator or acceptor set as a context option.
 \end_layout
 
@@ -777,7 +787,15 @@ minor_status INTEGER -- note: mostly useless, but we should keep it
 \end_layout
 
 \begin_layout Itemize
-context SECURITY CONTEXT
+context SECURITY CONTEXT -- 
+\begin_inset Quotes eld
+\end_inset
+
+empty
+\begin_inset Quotes erd
+\end_inset
+
+ security context
 \end_layout
 
 \begin_layout Standard
@@ -1013,6 +1031,12 @@ status open
 \end_layout
 
 \begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:New-Mechanism-Attributes"
+
+\end_inset
+
 New Mechanism Attributes
 \end_layout
 
@@ -1020,6 +1044,8 @@ New Mechanism Attributes
 We add a new mechanism attribute, GSS_C_MA_CBINDING_CONFIRM, to indicate
  that the initiator can and always does learn whether the acceptor application
  supplied channel bindings.
+ Mechanisms advertising this attribute MUST always indicate acceptor channel
+ bound state to the initiator.
 \end_layout
 
 \begin_layout Itemize
@@ -1027,6 +1053,10 @@ We add a new mechanism attribute, GSS_C_MA_CBINDING_MAY_CONFIRM, to indicate
  that the initiator may learn whether the acceptor application supplied
  channel bindings, but only when the acceptor implementation of the mechanism
  has been suitably updated.
+ Mechanisms MUST advertise this attribute when the local initiator functionality
+ for acceptor channel bound state indication exists but the acceptor may
+ lack the same functionality (because, for example, the mechanism predates
+ this specification).
 \end_layout
 
 \begin_layout Standard
@@ -1082,6 +1112,15 @@ status open
 
 \end_layout
 
+\begin_layout Subsection
+GSS_Delete_sec_context() Behavior When Applied to Empty Security Contexts
+\end_layout
+
+\begin_layout Standard
+GSS_Delete_sec_context() MUST NOT output a context deletion token when applied
+ to empty security contexts.
+\end_layout
+
 \begin_layout Section
 Modified Channel Binding Semantics
 \end_layout
@@ -1095,7 +1134,7 @@ Whenever both, the initiator and acceptor shall have provided input_channel_bind
 ings to GSS_Init/Accept_sec_context() and the channel bindings do not match,
  then the mechanism MUST fail to establish a security context token.
  This is a restatement of an existing requirement in the base specification,
- restated for convenience.
+ restated for the reader's convenience.
 \end_layout
 
 \begin_layout Itemize
@@ -1103,9 +1142,9 @@ Whenever the acceptor application shall have a) provided channel bindings
  to GSS_Accept_sec_context(), and b) not indicated support for the ret_channel_b
 ound_flag flag, then the mechanism MUST fail to establish a security context
  if the initiator did not provide channel bindings data.
- This requirement is for security purposes, to make applications predating
- this document secure, and this requirement reflects actual implementations
- as deployed.
+ This requirement is critical for security purposes, to make applications
+ predating this document secure, and this requirement reflects actual implementa
+tions as deployed.
 \end_layout
 
 \begin_layout Itemize
@@ -1132,7 +1171,7 @@ ntext.
  both) peer did not provide input_channel_bindings to GSS_Init/Accept_sec_contex
 t().
  This requirement restores the original base GSS-API specified behavior,
- with the addition of the ret_channel_bound_flag flag
+ with the addition of the ret_channel_bound_flag flag.
 \end_layout
 
 \begin_layout Section
@@ -1173,7 +1212,33 @@ IANA Considerations
 \end_layout
 
 \begin_layout Standard
-This document has no IANA considerations.
+Two GSS-API mechanism attributes are to be added to the 
+\begin_inset Quotes eld
+\end_inset
+
+SMI Security for Mechanism gsscma Codes
+\begin_inset Quotes erd
+\end_inset
+
+ registry established by RFC5587 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC5587
+\end_layout
+
+\end_inset
+
+.
+ See 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:New-Mechanism-Attributes"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section

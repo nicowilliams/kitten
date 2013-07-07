@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "file:///home/nico/I-Ds/kitten/../test/src/../data/xhtml-math11-f.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta name="GENERATOR" content="LyX 2.0.0" />
+<meta name="GENERATOR" content="LyX 2.0.2" />
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 <title>Simplified and Asynchronous Security Context Interfaces for the Generic Security Services Application Programming Interface</title>
 
@@ -245,6 +245,13 @@ font-style: normal;
 font-variant: normal;
 font-size: medium;
 }
+div.flex_embeddedbibxml {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
 </style>
 </head>
 <body>
@@ -264,7 +271,7 @@ Security Area</div>
 </div><div class="flex_xml_rfckeyword"><div class="plain_layout"><a id='magicparlabel-26' />
 Internet-Draft</div>
 </div><div class="flex_updates"><div class="plain_layout"><a id='magicparlabel-30' />
-RFC2743 RFC2744</div>
+2743, 2744</div>
 </div></div>
 
 <div class="standard"><a id='magicparlabel-31' />
@@ -300,69 +307,71 @@ This Internet-Draft proposes extensions to the Generic Security Services Applica
 
 <div class='lyxtoc-1'><a href='#magicparlabel-67' class='tocentry'>1 Introduction</a> <a href='#magicparlabel-67' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-69' class='tocentry'>1.1 Conventions used in this document</a> <a href='#magicparlabel-69' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-69' class='tocentry'>1.1 Channel Binding Semantics Improvements</a> <a href='#magicparlabel-69' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-75' class='tocentry'>1.2 Conventions used in this document</a> <a href='#magicparlabel-75' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-75' class='tocentry'>2 Simplified API</a> <a href='#magicparlabel-75' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-1'><a href='#magicparlabel-81' class='tocentry'>2 Simplified API</a> <a href='#magicparlabel-81' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-90' class='tocentry'>2.1 GSS_Create_sec_context()</a> <a href='#magicparlabel-90' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-96' class='tocentry'>2.1 GSS_Create_sec_context()</a> <a href='#magicparlabel-96' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-102' class='tocentry'>2.1.1 C-Bindings</a> <a href='#magicparlabel-102' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-108' class='tocentry'>2.1.1 C-Bindings</a> <a href='#magicparlabel-108' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-110' class='tocentry'>2.2 GSS_Set_context_flags()</a> <a href='#magicparlabel-110' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-116' class='tocentry'>2.2 GSS_Set_context_flags()</a> <a href='#magicparlabel-116' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-127' class='tocentry'>2.2.1 C-Bindings</a> <a href='#magicparlabel-127' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-133' class='tocentry'>2.2.1 C-Bindings</a> <a href='#magicparlabel-133' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-137' class='tocentry'>2.3 GSS_Set_context_credentials()</a> <a href='#magicparlabel-137' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-143' class='tocentry'>2.3 GSS_Set_context_credentials()</a> <a href='#magicparlabel-143' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-150' class='tocentry'>2.3.1 C-Bindings</a> <a href='#magicparlabel-150' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-156' class='tocentry'>2.3.1 C-Bindings</a> <a href='#magicparlabel-156' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-159' class='tocentry'>2.4 GSS_Set_context_channel_bindings()</a> <a href='#magicparlabel-159' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-165' class='tocentry'>2.4 GSS_Set_context_channel_bindings()</a> <a href='#magicparlabel-165' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-170' class='tocentry'>2.4.1 C-Bindings</a> <a href='#magicparlabel-170' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-176' class='tocentry'>2.4.1 C-Bindings</a> <a href='#magicparlabel-176' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-179' class='tocentry'>2.5 GSS_Set_context_lifetime()</a> <a href='#magicparlabel-179' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-185' class='tocentry'>2.5 GSS_Set_context_lifetime()</a> <a href='#magicparlabel-185' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-190' class='tocentry'>2.5.1 C-Bindings</a> <a href='#magicparlabel-190' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-196' class='tocentry'>2.5.1 C-Bindings</a> <a href='#magicparlabel-196' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-199' class='tocentry'>2.6 GSS_Set_async_IO_notification()</a> <a href='#magicparlabel-199' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-205' class='tocentry'>2.6 GSS_Set_async_IO_notification()</a> <a href='#magicparlabel-205' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-216' class='tocentry'>2.6.1 C-Bindings</a> <a href='#magicparlabel-216' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-222' class='tocentry'>2.6.1 C-Bindings</a> <a href='#magicparlabel-222' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-259' class='tocentry'>2.7 GSS_Set_event_loop()</a> <a href='#magicparlabel-259' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-267' class='tocentry'>2.7 GSS_Set_event_loop()</a> <a href='#magicparlabel-267' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-283' class='tocentry'>2.7.1 C-Bindings</a> <a href='#magicparlabel-283' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-291' class='tocentry'>2.7.1 C-Bindings</a> <a href='#magicparlabel-291' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-308' class='tocentry'>2.8 GSS_Indicate_event_loop_types()</a> <a href='#magicparlabel-308' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-316' class='tocentry'>2.8 GSS_Indicate_event_loop_types()</a> <a href='#magicparlabel-316' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-319' class='tocentry'>2.8.1 C-Bindings</a> <a href='#magicparlabel-319' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-327' class='tocentry'>2.8.1 C-Bindings</a> <a href='#magicparlabel-327' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-328' class='tocentry'>2.9 GSS_Set_context_role_init()</a> <a href='#magicparlabel-328' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-336' class='tocentry'>2.9 GSS_Set_context_role_init()</a> <a href='#magicparlabel-336' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-342' class='tocentry'>2.9.1 C-Bindings</a> <a href='#magicparlabel-342' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-350' class='tocentry'>2.9.1 C-Bindings</a> <a href='#magicparlabel-350' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-352' class='tocentry'>2.10 GSS_Step_context()</a> <a href='#magicparlabel-352' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-360' class='tocentry'>2.10 GSS_Step_context()</a> <a href='#magicparlabel-360' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-370' class='tocentry'>2.10.1 C-Bindings</a> <a href='#magicparlabel-370' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-378' class='tocentry'>2.10.1 C-Bindings</a> <a href='#magicparlabel-378' class='tocarrow'>&gt;</a></div>
 </div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-381' class='tocentry'>3 Security Considerations</a> <a href='#magicparlabel-381' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-389' class='tocentry'>3 Security Considerations</a> <a href='#magicparlabel-389' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-383' class='tocentry'>4 IANA Considerations</a> <a href='#magicparlabel-383' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-391' class='tocentry'>4 IANA Considerations</a> <a href='#magicparlabel-391' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-385' class='tocentry'>5 Normative References</a> <a href='#magicparlabel-385' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-393' class='tocentry'>5 Normative References</a> <a href='#magicparlabel-393' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-411' class='tocentry'>6 Informative References</a> <a href='#magicparlabel-411' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-424' class='tocentry'>6 Informative References</a> <a href='#magicparlabel-424' class='tocarrow'>&gt;</a></div>
 </div>
 
 <h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-67' />
@@ -370,128 +379,134 @@ Introduction</h2>
 <div class="standard"><a id='magicparlabel-68' />
 We propose replacing the GSS_Init_sec_context() and GSS_Accept_sec_context() functions with a set of simpler functions: one to create an &ldquo;empty&rdquo; security context, a set of functions to set context parameters, a single function for &ldquo;stepping&rdquo; the security context token exchange, and additional security context inquiry functions. Support for non-blocking stepping of security context token exchange is also included.</div>
 <h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-69' />
-Conventions used in this document</h3>
+Channel Binding Semantics Improvements</h3>
 <div class="standard"><a id='magicparlabel-70' />
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-74' />
+The extensions specified in this document are a further extension to <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-74' />
+I-D.williams-kitten-channel-bound-flag</div>
+</div>.</div>
+<h3 class="subsection"><span class="subsection_label">1.2</span> <a id='magicparlabel-75' />
+Conventions used in this document</h3>
+<div class="standard"><a id='magicparlabel-76' />
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-80' />
 RFC2119</div>
 </div>.</div>
-<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-75' />
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-81' />
 Simplified API</h2>
-<div class="standard"><a id='magicparlabel-76' />
+<div class="standard"><a id='magicparlabel-82' />
 We add a function for creating &ldquo;empty&rdquo; security contexts:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-77' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-83' />
 GSS_Create_sec_context()</li>
 </ul>
-<div class="standard"><a id='magicparlabel-78' />
+<div class="standard"><a id='magicparlabel-84' />
 We add the following new mutator functions for empty security contexts:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-79' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-85' />
 GSS_Set_context_flags()</li>
-<li class="itemize_item"><a id='magicparlabel-80' />
+<li class="itemize_item"><a id='magicparlabel-86' />
 GSS_Set_context_credentials()</li>
-<li class="itemize_item"><a id='magicparlabel-81' />
+<li class="itemize_item"><a id='magicparlabel-87' />
 GSS_Set_context_role_init()</li>
-<li class="itemize_item"><a id='magicparlabel-82' />
+<li class="itemize_item"><a id='magicparlabel-88' />
 GSS_Set_context_channel_bindings()</li>
-<li class="itemize_item"><a id='magicparlabel-83' />
+<li class="itemize_item"><a id='magicparlabel-89' />
 GSS_Set_context_lifetime()</li>
-<li class="itemize_item"><a id='magicparlabel-84' />
+<li class="itemize_item"><a id='magicparlabel-90' />
 GSS_Set_async_IO_notification()</li>
-<li class="itemize_item"><a id='magicparlabel-85' />
+<li class="itemize_item"><a id='magicparlabel-91' />
 GSS_Set_async_event_loop()</li>
 </ul>
-<div class="standard"><a id='magicparlabel-86' />
+<div class="standard"><a id='magicparlabel-92' />
 We add a function for stepping through security context token exchanges:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-87' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-93' />
 GSS_Step_context()</li>
 </ul>
-<div class="standard"><a id='magicparlabel-88' />
+<div class="standard"><a id='magicparlabel-94' />
 We add a function for retrieving delegated credentials from a security context token:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-89' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-95' />
 GSS_Get_context_deleg_cred()</li>
 </ul>
-<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-90' />
+<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-96' />
 GSS_Create_sec_context()</h3>
-<div class="standard"><a id='magicparlabel-91' />
+<div class="standard"><a id='magicparlabel-97' />
 Inputs:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-92' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-98' />
 &lt;none&gt;</li>
 </ul>
-<div class="standard"><a id='magicparlabel-93' />
+<div class="standard"><a id='magicparlabel-99' />
 Outputs:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-94' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-100' />
 major_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-95' />
+<li class="itemize_item"><a id='magicparlabel-101' />
 minor_status INTEGER &ndash; note: mostly useless, but we should keep it</li>
-<li class="itemize_item"><a id='magicparlabel-96' />
+<li class="itemize_item"><a id='magicparlabel-102' />
 context SECURITY CONTEXT</li>
 </ul>
-<div class="standard"><a id='magicparlabel-97' />
+<div class="standard"><a id='magicparlabel-103' />
 Return major status codes:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-98' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-104' />
 GSS_S_COMPLETE indicates success.</li>
-<li class="itemize_item"><a id='magicparlabel-99' />
+<li class="itemize_item"><a id='magicparlabel-105' />
 GSS_S_UNAVAILABLE indicates that memory is not available, for example.</li>
-<li class="itemize_item"><a id='magicparlabel-100' />
+<li class="itemize_item"><a id='magicparlabel-106' />
 GSS_S_FAILURE indicates a general failure.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-101' />
+<div class="standard"><a id='magicparlabel-107' />
 This function creates an &ldquo;empty&rdquo; security context handle that can be passed to GSS_Init_sec_context() or GSS_Accept_sec_context() where they expect a NULL context. The context can also be passed to the other new security context functions defined in this document.</div>
-<h4 class="subsubsection"><span class="subsubsection_label">2.1.1</span> <a id='magicparlabel-102' />
+<h4 class="subsubsection"><span class="subsubsection_label">2.1.1</span> <a id='magicparlabel-108' />
 C-Bindings</h4>
-<div class="standard"><a id='magicparlabel-103' />
+<div class="standard"><a id='magicparlabel-109' />
 </div>
 <div class='float float-listings'><pre> OM_uint32
  gss_create_sec_context(OM_uint32 *minor_status,
                         gss_ctx_id_t *context);</pre></div>
 
-<h3 class="subsection"><span class="subsection_label">2.2</span> <a id='magicparlabel-110' />
+<h3 class="subsection"><span class="subsection_label">2.2</span> <a id='magicparlabel-116' />
 GSS_Set_context_flags()</h3>
-<div class="standard"><a id='magicparlabel-111' />
+<div class="standard"><a id='magicparlabel-117' />
 Inputs:</div>
 
 <dl class='description'><dt class="description_label">context&nbsp;CONTEXT&nbsp;HANDLE</dt>
-<dd class="description_item"><a id='magicparlabel-112' />
+<dd class="description_item"><a id='magicparlabel-118' />
  </dd>
 <dt class="description_label">req_flags&nbsp;FLAGS</dt>
-<dd class="description_item"><a id='magicparlabel-113' />
+<dd class="description_item"><a id='magicparlabel-119' />
  Requested flags. Applicable to acceptors and initiators.</dd>
 <dt class="description_label">ret_flags_understood&nbsp;FLAGS</dt>
-<dd class="description_item"><a id='magicparlabel-114' />
+<dd class="description_item"><a id='magicparlabel-120' />
  Return flags understood by the caller.</dd>
 </dl>
-<div class="standard"><a id='magicparlabel-115' />
+<div class="standard"><a id='magicparlabel-121' />
 Outputs:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-116' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-122' />
 major_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-117' />
+<li class="itemize_item"><a id='magicparlabel-123' />
 minor_status INTEGER</li>
 </ul>
-<div class="standard"><a id='magicparlabel-118' />
+<div class="standard"><a id='magicparlabel-124' />
 Return major status codes:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-119' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-125' />
 GSS_S_COMPLETE indicates success.</li>
-<li class="itemize_item"><a id='magicparlabel-120' />
+<li class="itemize_item"><a id='magicparlabel-126' />
 GSS_S_FAILURE indicates a general failure.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-121' />
+<div class="standard"><a id='magicparlabel-127' />
 This function tells the mechanism (when one is eventually chosen and invoked) that the application requests the given req_flags and undestands the given ret_flags. Initiators can override the req_flags in their GSS_Init_sec_context() call, but if no flags are requested there then the req_flags set on the empty context will be used.</div>
 
-<div class="standard"><a id='magicparlabel-122' />
-NOTE: The abstract GSS-API <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-126' />
+<div class="standard"><a id='magicparlabel-128' />
+NOTE: The abstract GSS-API <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-132' />
 RFC2743</div>
 </div> uses individual elements -one per-flag- instead of a &ldquo;FLAGS&rdquo; type. This is unwieldy, therefore we introduce an abstract type named &ldquo;FLAGS&rdquo; to act as a set of all the request/return flags defined for the abstract GSS-API.</div>
-<h4 class="subsubsection"><span class="subsubsection_label">2.2.1</span> <a id='magicparlabel-127' />
+<h4 class="subsubsection"><span class="subsubsection_label">2.2.1</span> <a id='magicparlabel-133' />
 C-Bindings</h4>
-<div class="standard"><a id='magicparlabel-128' />
+<div class="standard"><a id='magicparlabel-134' />
 </div>
 <div class='float float-listings'><pre> OM_uint32
  gss_set_context_flags(OM_uint32 *minor_status,
@@ -499,176 +514,176 @@ C-Bindings</h4>
                        uint64_t req_flags,
                        uint64_t ret_flags);</pre></div>
 
-<h3 class="subsection"><span class="subsection_label">2.3</span> <a id='magicparlabel-137' />
+<h3 class="subsection"><span class="subsection_label">2.3</span> <a id='magicparlabel-143' />
 GSS_Set_context_credentials()</h3>
-<div class="standard"><a id='magicparlabel-138' />
+<div class="standard"><a id='magicparlabel-144' />
 Inputs:</div>
 
 <dl class='description'><dt class="description_label">context&nbsp;CONTEXT&nbsp;HANDLE</dt>
-<dd class="description_item"><a id='magicparlabel-139' />
+<dd class="description_item"><a id='magicparlabel-145' />
  Empty security context</dd>
 <dt class="description_label">input_cred_handle&nbsp;CREDENTIAL&nbsp;HANDLE</dt>
-<dd class="description_item"><a id='magicparlabel-140' />
+<dd class="description_item"><a id='magicparlabel-146' />
  MUST NOT be the default credential.</dd>
 </dl>
-<div class="standard"><a id='magicparlabel-141' />
+<div class="standard"><a id='magicparlabel-147' />
 Outputs:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-142' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-148' />
 major_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-143' />
+<li class="itemize_item"><a id='magicparlabel-149' />
 minor_status INTEGER</li>
 </ul>
-<div class="standard"><a id='magicparlabel-144' />
+<div class="standard"><a id='magicparlabel-150' />
 Return major status codes:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-145' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-151' />
 GSS_S_COMPLETE indicates success.</li>
-<li class="itemize_item"><a id='magicparlabel-146' />
+<li class="itemize_item"><a id='magicparlabel-152' />
 ...</li>
-<li class="itemize_item"><a id='magicparlabel-147' />
+<li class="itemize_item"><a id='magicparlabel-153' />
 GSS_S_FAILURE indicates a general failure.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-148' />
+<div class="standard"><a id='magicparlabel-154' />
 This function sets the application's credentials. If no credentials are set then the default credentials will be used.</div>
 
-<div class="standard"><a id='magicparlabel-149' />
+<div class="standard"><a id='magicparlabel-155' />
 Multiple credentials may be set on a security context. The mechanism SHOULD allow accepting security contexts for any principals for which credentials had elements for the mechanism used. The mechanism SHOULD allow initiators to have multiple credentials, in which case the mechanism should select the credential most likely to succeed for the given target principal. Where a mechanism does not support multiple credentials it MUST use the first credential handle set by the application.</div>
-<h4 class="subsubsection"><span class="subsubsection_label">2.3.1</span> <a id='magicparlabel-150' />
+<h4 class="subsubsection"><span class="subsubsection_label">2.3.1</span> <a id='magicparlabel-156' />
 C-Bindings</h4>
-<div class="standard"><a id='magicparlabel-151' />
+<div class="standard"><a id='magicparlabel-157' />
 </div>
 <div class='float float-listings'><pre> OM_uint32
  gss_set_context_credentials(OM_uint32 *minor_status,
                              gss_ctx_id_t context,
                              gss_const_cred_id_t input_cred_handle);</pre></div>
 
-<h3 class="subsection"><span class="subsection_label">2.4</span> <a id='magicparlabel-159' />
+<h3 class="subsection"><span class="subsection_label">2.4</span> <a id='magicparlabel-165' />
 GSS_Set_context_channel_bindings()</h3>
-<div class="standard"><a id='magicparlabel-160' />
+<div class="standard"><a id='magicparlabel-166' />
 Inputs:</div>
 
 <dl class='description'><dt class="description_label">context&nbsp;CONTEXT&nbsp;HANDLE</dt>
-<dd class="description_item"><a id='magicparlabel-161' />
+<dd class="description_item"><a id='magicparlabel-167' />
  Empty security context</dd>
 <dt class="description_label">input_channel_bindings&nbsp;OCTET&nbsp;STRING</dt>
-<dd class="description_item"><a id='magicparlabel-162' />
+<dd class="description_item"><a id='magicparlabel-168' />
 </dd>
 </dl>
-<div class="standard"><a id='magicparlabel-163' />
+<div class="standard"><a id='magicparlabel-169' />
 Outputs:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-164' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-170' />
 major_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-165' />
+<li class="itemize_item"><a id='magicparlabel-171' />
 minor_status INTEGER</li>
 </ul>
-<div class="standard"><a id='magicparlabel-166' />
+<div class="standard"><a id='magicparlabel-172' />
 Return major status codes:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-167' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-173' />
 GSS_S_COMPLETE indicates success.</li>
-<li class="itemize_item"><a id='magicparlabel-168' />
+<li class="itemize_item"><a id='magicparlabel-174' />
 ...</li>
-<li class="itemize_item"><a id='magicparlabel-169' />
+<li class="itemize_item"><a id='magicparlabel-175' />
 GSS_S_FAILURE indicates a general failure.</li>
 </ul>
-<h4 class="subsubsection"><span class="subsubsection_label">2.4.1</span> <a id='magicparlabel-170' />
+<h4 class="subsubsection"><span class="subsubsection_label">2.4.1</span> <a id='magicparlabel-176' />
 C-Bindings</h4>
-<div class="standard"><a id='magicparlabel-171' />
+<div class="standard"><a id='magicparlabel-177' />
 </div>
 <div class='float float-listings'><pre> OM_uint32
  gss_set_context_channel_bindings(OM_uint32 *minor_status,
                                   gss_ctx_id_t context,
                                   gss_const_buffer_t input_cb);</pre></div>
 
-<h3 class="subsection"><span class="subsection_label">2.5</span> <a id='magicparlabel-179' />
+<h3 class="subsection"><span class="subsection_label">2.5</span> <a id='magicparlabel-185' />
 GSS_Set_context_lifetime()</h3>
-<div class="standard"><a id='magicparlabel-180' />
+<div class="standard"><a id='magicparlabel-186' />
 Inputs:</div>
 
 <dl class='description'><dt class="description_label">context&nbsp;CONTEXT&nbsp;HANDLE</dt>
-<dd class="description_item"><a id='magicparlabel-181' />
+<dd class="description_item"><a id='magicparlabel-187' />
  Empty security context</dd>
 <dt class="description_label">lifetime_req&nbsp;INTEGER</dt>
-<dd class="description_item"><a id='magicparlabel-182' />
+<dd class="description_item"><a id='magicparlabel-188' />
  ...</dd>
 </dl>
-<div class="standard"><a id='magicparlabel-183' />
+<div class="standard"><a id='magicparlabel-189' />
 Outputs:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-184' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-190' />
 major_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-185' />
+<li class="itemize_item"><a id='magicparlabel-191' />
 minor_status INTEGER</li>
 </ul>
-<div class="standard"><a id='magicparlabel-186' />
+<div class="standard"><a id='magicparlabel-192' />
 Return major status codes:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-187' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-193' />
 GSS_S_COMPLETE indicates success.</li>
-<li class="itemize_item"><a id='magicparlabel-188' />
+<li class="itemize_item"><a id='magicparlabel-194' />
 ...</li>
-<li class="itemize_item"><a id='magicparlabel-189' />
+<li class="itemize_item"><a id='magicparlabel-195' />
 GSS_S_FAILURE indicates a general failure.</li>
 </ul>
-<h4 class="subsubsection"><span class="subsubsection_label">2.5.1</span> <a id='magicparlabel-190' />
+<h4 class="subsubsection"><span class="subsubsection_label">2.5.1</span> <a id='magicparlabel-196' />
 C-Bindings</h4>
-<div class="standard"><a id='magicparlabel-191' />
+<div class="standard"><a id='magicparlabel-197' />
 </div>
 <div class='float float-listings'><pre> OM_uint32
  gss_set_context_lifetime(OM_uint32 *minor_status,
                           gss_ctx_id_t context,
                           uint64_t lifetime_req);</pre></div>
 
-<h3 class="subsection"><span class="subsection_label">2.6</span> <a id='magicparlabel-199' />
+<h3 class="subsection"><span class="subsection_label">2.6</span> <a id='magicparlabel-205' />
 GSS_Set_async_IO_notification()</h3>
-<div class="standard"><a id='magicparlabel-200' />
+<div class="standard"><a id='magicparlabel-206' />
 Inputs:</div>
 
 <dl class='description'><dt class="description_label">context&nbsp;CONTEXT&nbsp;HANDLE</dt>
-<dd class="description_item"><a id='magicparlabel-201' />
+<dd class="description_item"><a id='magicparlabel-207' />
  Empty security context</dd>
 <dt class="description_label">async_notification_method&nbsp;UNSPECIFIED</dt>
-<dd class="description_item"><a id='magicparlabel-202' />
+<dd class="description_item"><a id='magicparlabel-208' />
 </dd>
 </dl>
-<div class="standard"><a id='magicparlabel-203' />
+<div class="standard"><a id='magicparlabel-209' />
 Outputs:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-204' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-210' />
 major_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-205' />
+<li class="itemize_item"><a id='magicparlabel-211' />
 minor_status INTEGER</li>
 </ul>
-<div class="standard"><a id='magicparlabel-206' />
+<div class="standard"><a id='magicparlabel-212' />
 Return major status codes:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-207' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-213' />
 GSS_S_COMPLETE indicates success.</li>
-<li class="itemize_item"><a id='magicparlabel-208' />
+<li class="itemize_item"><a id='magicparlabel-214' />
 ...</li>
-<li class="itemize_item"><a id='magicparlabel-209' />
+<li class="itemize_item"><a id='magicparlabel-215' />
 GSS_S_FAILURE indicates a general failure.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-210' />
+<div class="standard"><a id='magicparlabel-216' />
 This function sets a method for informing the application that the given security context is ready to have GSS_Step_context() called on it. Whenever GSS_Step_context() returns GSS_S_CONTINUE_NEEDED and no output token the application must wait for the async I/O completion notification and then call GSS_Step_context() again (this time with no input token). GSS_Step_context() will only work asynchronously when this function has been used to set a completion notification method.</div>
 
-<div class="standard"><a id='magicparlabel-211' />
+<div class="standard"><a id='magicparlabel-217' />
 The async I/O completion notification method is not specified for the abstract API. In the C bindings we allow for several different notification methods, including:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-212' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-218' />
 callback function</li>
-<li class="itemize_item"><a id='magicparlabel-213' />
-file descriptor or file handle into which a single byte (any value) will be written</li>
-<li class="itemize_item"><a id='magicparlabel-214' />
+<li class="itemize_item"><a id='magicparlabel-219' />
+file descriptor or file handle into which a single byte (of any value) will be written</li>
+<li class="itemize_item"><a id='magicparlabel-220' />
 a condition variable (and associated mutex) on which a signal will be sent</li>
 </ul>
-<div class="standard"><a id='magicparlabel-215' />
+<div class="standard"><a id='magicparlabel-221' />
 Other completion notification methods could be specified as well, but these seem likely to be sufficient and reasonably portable.</div>
-<h4 class="subsubsection"><span class="subsubsection_label">2.6.1</span> <a id='magicparlabel-216' />
+<h4 class="subsubsection"><span class="subsubsection_label">2.6.1</span> <a id='magicparlabel-222' />
 C-Bindings</h4>
-<div class="standard"><a id='magicparlabel-217' />
+<div class="standard"><a id='magicparlabel-223' />
 </div>
 <div class='float float-listings'><pre> typedef void (*gss_async_cb_t)(gss_ctx_id_t context, void *cb_data);
  
@@ -678,10 +693,12 @@ C-Bindings</h4>
                              gss_async_cb_t cb,
                              void *cb_data);
  
+ #ifdef HAVE_POSIX
  OM_uint32
  gss_set_context_async_io_fd(OM_uint32 *minor_status,
                              gss_ctx_id_t context,
                              int fd);
+ #endif /* HAVE_POSIX */
  
  #ifdef HAVE_WIN32
  OM_uint32
@@ -709,71 +726,71 @@ C-Bindings</h4>
                                   CRITICAL_SECTION lock);
  #endif /* HAVE_WIN32 */</pre></div>
 
-<h3 class="subsection"><span class="subsection_label">2.7</span> <a id='magicparlabel-259' />
+<h3 class="subsection"><span class="subsection_label">2.7</span> <a id='magicparlabel-267' />
 GSS_Set_event_loop()</h3>
-<div class="standard"><a id='magicparlabel-260' />
+<div class="standard"><a id='magicparlabel-268' />
 Inputs:</div>
 
 <dl class='description'><dt class="description_label">context&nbsp;CONTEXT&nbsp;HANDLE</dt>
-<dd class="description_item"><a id='magicparlabel-261' />
+<dd class="description_item"><a id='magicparlabel-269' />
  Empty security context</dd>
 <dt class="description_label">event_loop_type&nbsp;INTEGER</dt>
-<dd class="description_item"><a id='magicparlabel-262' />
+<dd class="description_item"><a id='magicparlabel-270' />
  Type of event loop</dd>
 <dt class="description_label">event_loop&nbsp;UNSPECIFIED</dt>
-<dd class="description_item"><a id='magicparlabel-263' />
+<dd class="description_item"><a id='magicparlabel-271' />
  An event loop</dd>
 <dt class="description_label">event_loop_module&nbsp;UNSPECIFIED</dt>
-<dd class="description_item"><a id='magicparlabel-264' />
+<dd class="description_item"><a id='magicparlabel-272' />
  A module implementing the interface of the given event loop type</dd>
 </dl>
-<div class="standard"><a id='magicparlabel-265' />
+<div class="standard"><a id='magicparlabel-273' />
 Outputs:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-266' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-274' />
 major_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-267' />
+<li class="itemize_item"><a id='magicparlabel-275' />
 minor_status INTEGER</li>
 </ul>
-<div class="standard"><a id='magicparlabel-268' />
+<div class="standard"><a id='magicparlabel-276' />
 Return major status codes:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-269' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-277' />
 GSS_S_COMPLETE indicates success.</li>
-<li class="itemize_item"><a id='magicparlabel-270' />
+<li class="itemize_item"><a id='magicparlabel-278' />
 ...</li>
-<li class="itemize_item"><a id='magicparlabel-271' />
+<li class="itemize_item"><a id='magicparlabel-279' />
 GSS_S_FAILURE indicates a general failure.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-272' />
+<div class="standard"><a id='magicparlabel-280' />
 This function sets an event loop to use by the mechanism. We specify no event loop interfaces here. Instead we allow for the use of existing event loop APIs.</div>
 
-<div class="standard"><a id='magicparlabel-273' />
+<div class="standard"><a id='magicparlabel-281' />
 The following event loop types are defined (but not their interfaces):</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-274' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-282' />
 EV_NONE (the mechanism MAY run a private event loop in a background thread, but only if the application also set a completion notification method);</li>
-<li class="itemize_item"><a id='magicparlabel-275' />
+<li class="itemize_item"><a id='magicparlabel-283' />
 EV_LIBVERTO [<a href="https://fedorahosted.org/libverto/">libverto</a>];</li>
-<li class="itemize_item"><a id='magicparlabel-276' />
+<li class="itemize_item"><a id='magicparlabel-284' />
 EV_LIBEVENT [<a href="http://libevent.org/">libevent</a>]</li>
-<li class="itemize_item"><a id='magicparlabel-277' />
+<li class="itemize_item"><a id='magicparlabel-285' />
 EV_LIBEV [<a href="http://software.schmorp.de/pkg/libev.html">libev</a>]</li>
-<li class="itemize_item"><a id='magicparlabel-278' />
+<li class="itemize_item"><a id='magicparlabel-286' />
 EV_GLIB [<a href="http://developer.gnome.org/glib/stable/">glib</a>]</li>
-<li class="itemize_item"><a id='magicparlabel-279' />
+<li class="itemize_item"><a id='magicparlabel-287' />
 EV_TEVENT [<a href="http://tevent.samba.org/">tevent</a>]</li>
-<li class="itemize_item"><a id='magicparlabel-280' />
+<li class="itemize_item"><a id='magicparlabel-288' />
 EV_GCD [<a href="https://libdispatch.macosforge.org/">Grand Central Dispatch</a>]</li>
 </ul>
-<div class="standard"><a id='magicparlabel-281' />
+<div class="standard"><a id='magicparlabel-289' />
 Asynchronous security context stepping is OPTIONAL. It is RECOMMENDED that mechanisms implement EV_LIBVERTO. Note that if the application's choice of event loop is not supported by a mechanism then GSS_Step_context() will return GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE, in which case the application may try another event loop type, likely EV_NONE.</div>
 
-<div class="standard"><a id='magicparlabel-282' />
+<div class="standard"><a id='magicparlabel-290' />
 An event loop module is a handle to a library implementing the interfaces of the given event loop type; the mechanism can obtain those interfaces (e.g., as function pointers in the C bindings). Event loops and modules are unspecified in the abstract API, but the intention is that the application passes to the mechanism a handle to the module implementing the chosen event loop interfaces.</div>
-<h4 class="subsubsection"><span class="subsubsection_label">2.7.1</span> <a id='magicparlabel-283' />
+<h4 class="subsubsection"><span class="subsubsection_label">2.7.1</span> <a id='magicparlabel-291' />
 C-Bindings</h4>
-<div class="standard"><a id='magicparlabel-284' />
+<div class="standard"><a id='magicparlabel-292' />
 </div>
 <div class='float float-listings'><pre> typedef enum {
      EV_NONE     = 1,
@@ -796,85 +813,85 @@ C-Bindings</h4>
                             void *event_module,
                             gss_dlsym_t module_lookup);</pre></div>
 
-<h3 class="subsection"><span class="subsection_label">2.8</span> <a id='magicparlabel-308' />
+<h3 class="subsection"><span class="subsection_label">2.8</span> <a id='magicparlabel-316' />
 GSS_Indicate_event_loop_types()</h3>
-<div class="standard"><a id='magicparlabel-309' />
+<div class="standard"><a id='magicparlabel-317' />
 Inputs:</div>
 
 <dl class='description'><dt class="description_label">input_cred_handle&nbsp;CREDENTIAL&nbsp;HANDLE</dt>
-<dd class="description_item"><a id='magicparlabel-310' />
+<dd class="description_item"><a id='magicparlabel-318' />
  May be GSS_C_NO_CREDENTIAL</dd>
 </dl>
-<div class="standard"><a id='magicparlabel-311' />
+<div class="standard"><a id='magicparlabel-319' />
 Outputs:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-312' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-320' />
 major_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-313' />
+<li class="itemize_item"><a id='magicparlabel-321' />
 minor_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-314' />
+<li class="itemize_item"><a id='magicparlabel-322' />
 event_loop_types SET OF INTEGER</li>
 </ul>
-<div class="standard"><a id='magicparlabel-315' />
+<div class="standard"><a id='magicparlabel-323' />
 Return major status codes:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-316' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-324' />
 GSS_S_COMPLETE indicates success.</li>
-<li class="itemize_item"><a id='magicparlabel-317' />
+<li class="itemize_item"><a id='magicparlabel-325' />
 GSS_S_FAILURE indicates a general failure.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-318' />
+<div class="standard"><a id='magicparlabel-326' />
 This function indicates what event loop types are supported the mechanisms for the given credentials handle.</div>
-<h4 class="subsubsection"><span class="subsubsection_label">2.8.1</span> <a id='magicparlabel-319' />
+<h4 class="subsubsection"><span class="subsubsection_label">2.8.1</span> <a id='magicparlabel-327' />
 C-Bindings</h4>
-<div class="standard"><a id='magicparlabel-320' />
+<div class="standard"><a id='magicparlabel-328' />
 </div>
 <div class='float float-listings'><pre> OM_uint32
  gss_indicate_event_loop_types(OM_uint32 *minor_status,
                                gss_cred_id_t input_cred_handle,
                                gss_event_loop_type_t *ev_types);</pre></div>
 
-<h3 class="subsection"><span class="subsection_label">2.9</span> <a id='magicparlabel-328' />
+<h3 class="subsection"><span class="subsection_label">2.9</span> <a id='magicparlabel-336' />
 <a id="sub_GSS_Set_context_role_init__" />
 GSS_Set_context_role_init()</h3>
-<div class="standard"><a id='magicparlabel-329' />
+<div class="standard"><a id='magicparlabel-337' />
 Inputs:</div>
 
 <dl class='description'><dt class="description_label">context&nbsp;CONTEXT&nbsp;HANDLE</dt>
-<dd class="description_item"><a id='magicparlabel-330' />
+<dd class="description_item"><a id='magicparlabel-338' />
  Empty security context handle</dd>
 <dt class="description_label">mech_type&nbsp;OID</dt>
-<dd class="description_item"><a id='magicparlabel-331' />
+<dd class="description_item"><a id='magicparlabel-339' />
  Mechanism OID</dd>
 <dt class="description_label">target_name&nbsp;NAME</dt>
-<dd class="description_item"><a id='magicparlabel-332' />
+<dd class="description_item"><a id='magicparlabel-340' />
  Name of target principal</dd>
 </dl>
-<div class="standard"><a id='magicparlabel-333' />
+<div class="standard"><a id='magicparlabel-341' />
 Outputs:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-334' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-342' />
 major_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-335' />
+<li class="itemize_item"><a id='magicparlabel-343' />
 minor_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-336' />
+<li class="itemize_item"><a id='magicparlabel-344' />
 event_loop_types SET OF INTEGER</li>
 </ul>
-<div class="standard"><a id='magicparlabel-337' />
+<div class="standard"><a id='magicparlabel-345' />
 Return major status codes:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-338' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-346' />
 GSS_S_COMPLETE indicates success.</li>
-<li class="itemize_item"><a id='magicparlabel-339' />
+<li class="itemize_item"><a id='magicparlabel-347' />
 ...</li>
-<li class="itemize_item"><a id='magicparlabel-340' />
+<li class="itemize_item"><a id='magicparlabel-348' />
 GSS_S_FAILURE indicates a general failure.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-341' />
+<div class="standard"><a id='magicparlabel-349' />
 This function sets the security context role to be that of an initiator, with the given mechanism OID (possibly GSS_C_NO_OID), and the given target name (possibly GSS_C_NO_NAME). The difference between an initiator and an acceptor application is that an initiator application calls this function and an acceptor does not; both call GSS_Step_context() (see Section 2.8). </div>
-<h4 class="subsubsection"><span class="subsubsection_label">2.9.1</span> <a id='magicparlabel-342' />
+<h4 class="subsubsection"><span class="subsubsection_label">2.9.1</span> <a id='magicparlabel-350' />
 C-Bindings</h4>
-<div class="standard"><a id='magicparlabel-343' />
+<div class="standard"><a id='magicparlabel-351' />
 </div>
 <div class='float float-listings'><pre> OM_uint32
  gss_set_context_context_role_init(OM_uint32 *minor_status,
@@ -882,56 +899,56 @@ C-Bindings</h4>
                                    gss_const_OID mech_oid,
                                    gss_const_name_t target_name); </pre></div>
 
-<h3 class="subsection"><span class="subsection_label">2.10</span> <a id='magicparlabel-352' />
+<h3 class="subsection"><span class="subsection_label">2.10</span> <a id='magicparlabel-360' />
 <a id="sub_GSS_Step_context__" />
 GSS_Step_context()</h3>
-<div class="standard"><a id='magicparlabel-353' />
+<div class="standard"><a id='magicparlabel-361' />
 Inputs:</div>
 
 <dl class='description'><dt class="description_label">context&nbsp;CONTEXT&nbsp;HANDLE</dt>
-<dd class="description_item"><a id='magicparlabel-354' />
+<dd class="description_item"><a id='magicparlabel-362' />
  Empty security context</dd>
 <dt class="description_label">input_token&nbsp;OCTET&nbsp;STRING</dt>
-<dd class="description_item"><a id='magicparlabel-355' />
+<dd class="description_item"><a id='magicparlabel-363' />
  Input security context token, if any</dd>
 </dl>
-<div class="standard"><a id='magicparlabel-356' />
+<div class="standard"><a id='magicparlabel-364' />
 Outputs:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-357' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-365' />
 major_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-358' />
+<li class="itemize_item"><a id='magicparlabel-366' />
 minor_status INTEGER</li>
-<li class="itemize_item"><a id='magicparlabel-359' />
+<li class="itemize_item"><a id='magicparlabel-367' />
 output_token OCTET STRING &ndash; output security context token, if any</li>
-<li class="itemize_item"><a id='magicparlabel-360' />
+<li class="itemize_item"><a id='magicparlabel-368' />
 actual_mech OID &ndash; OID of mechanism used</li>
 </ul>
-<div class="standard"><a id='magicparlabel-361' />
+<div class="standard"><a id='magicparlabel-369' />
 Return major status codes:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-362' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-370' />
 GSS_S_COMPLETE indicates success.</li>
-<li class="itemize_item"><a id='magicparlabel-363' />
+<li class="itemize_item"><a id='magicparlabel-371' />
 GSS_S_CONTINUE_NEEDED ...</li>
-<li class="itemize_item"><a id='magicparlabel-364' />
+<li class="itemize_item"><a id='magicparlabel-372' />
 GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE indicates that the application's choice of event loop type is not supported. The mechanism will have done no work in this case, and the application must change the event loop and try again.</li>
-<li class="itemize_item"><a id='magicparlabel-365' />
+<li class="itemize_item"><a id='magicparlabel-373' />
 All major status codes allowed for GSS_Init_sec_context() and GSS_Accept_sec_context().</li>
-<li class="itemize_item"><a id='magicparlabel-366' />
+<li class="itemize_item"><a id='magicparlabel-374' />
 GSS_S_FAILURE indicates a general failure.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-367' />
+<div class="standard"><a id='magicparlabel-375' />
 This function steps through one step of security context token exchange for the given security context.</div>
 
-<div class="standard"><a id='magicparlabel-368' />
+<div class="standard"><a id='magicparlabel-376' />
 Acceptors call this without having called GSS_Set_context_role_init(); see <a href="#sub_GSS_Set_context_role_init__">2.9</a>.</div>
 
-<div class="standard"><a id='magicparlabel-369' />
+<div class="standard"><a id='magicparlabel-377' />
 Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is output, then the function must be called again upon async I/O completion notification.</div>
-<h4 class="subsubsection"><span class="subsubsection_label">2.10.1</span> <a id='magicparlabel-370' />
+<h4 class="subsubsection"><span class="subsubsection_label">2.10.1</span> <a id='magicparlabel-378' />
 C-Bindings</h4>
-<div class="standard"><a id='magicparlabel-371' />
+<div class="standard"><a id='magicparlabel-379' />
 </div>
 <div class='float float-listings'><pre> OM_uint32
  gss_step_context(OM_uint32 *minor_status,
@@ -940,45 +957,50 @@ C-Bindings</h4>
                   gss_buffer_t output_token,
                   gss_const_OID *actual_mech);</pre></div>
 
-<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-381' />
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-389' />
 Security Considerations</h2>
-<div class="standard"><a id='magicparlabel-382' />
+<div class="standard"><a id='magicparlabel-390' />
 The GSS-API is a security API, however, this document does not modify its semantics in any security-relevant way. There are no security considerations in this document.</div>
-<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-383' />
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-391' />
 IANA Considerations</h2>
-<div class="standard"><a id='magicparlabel-384' />
+<div class="standard"><a id='magicparlabel-392' />
 [Add registrations for all the above functions.]</div>
-<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-385' />
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-393' />
 <a id="sec_References" />
 Normative References</h2>
-<div class="standard"><a id='magicparlabel-386' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-390' />
+<div class="standard"><a id='magicparlabel-394' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-398' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-391' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-395' />
+<div class="standard"><a id='magicparlabel-399' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-403' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">rfc2743</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-396' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-400' />
+<div class="standard"><a id='magicparlabel-404' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-408' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">rfc2744</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-401' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-405' />
+<div class="standard"><a id='magicparlabel-409' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-413' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5056.xml">rfc5056</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-406' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-410' />
+<div class="standard"><a id='magicparlabel-414' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-418' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5587.xml">rfc5587</a></div>
 </div></div>
-<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-411' />
+
+<div class="standard"><a id='magicparlabel-419' />
+<div class="flex_embeddedbibxml"><div class="plain_layout"><a id='magicparlabel-423' />
+&lt;reference anchor="I-D.williams-kitten-channel-bound-flag"&gt; &lt;front&gt; &lt;title&gt;Channel Binding Signalling for the Generic Security Services Application Programming Interface&lt;/title&gt; &lt;author initials="N." surname="Williams" fullname="Nicolas Williams"&gt; &lt;organization/&gt; &lt;/author&gt; &lt;date month="February" day="13" year="2013"/&gt; &lt;abstract&gt; &lt;t&gt;Abstract Channel binding is a technique that allows applications to use a secure channel at a lower layer without having to use authentication at that lower layer. The concept of channel binding comes from RFC2743 and its predecessors. It turns out that the semantics implemented are different that those specified in RFC2743, and the specification has a serious bug. This document addresses both, the inconsistency as-implemented and the specification bug.&lt;/t&gt; &lt;t&gt;Abstract This Internet-Draft proposes the addition of a “channel bound” return flag for the GSS_Init_sec_context() and GSS_Accept_sec_context() functions. Two behaviors are specified: a default, safe behavior, and a behavior that is only safe when the application specifically tells the Generic Security Services Application Programming Interface (GSS-API) that it (the applicaiton) supports the new behavior.&lt;/t&gt; &lt;/abstract&gt; &lt;/front&gt; &lt;seriesInfo name="Internet-Draft" value="draft-williams-kitten-channel-bound-flag-02"/&gt; &lt;format type="TXT" target="http://www.ietf.org/internet-drafts/draft-williams-kitten-channel-bound-flag-02.txt"/&gt; &lt;/reference&gt; </div>
+</div></div>
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-424' />
 Informative References</h2>
-<div class="standard"><a id='magicparlabel-412' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-416' />
+<div class="standard"><a id='magicparlabel-425' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-429' />
 <a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5653.xml">rfc5653</a></div>
 </div></div>
 </body>
