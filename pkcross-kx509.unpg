@@ -3,22 +3,25 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Intended status: Standards Track                           July 11, 2013
-Expires: January 12, 2014
+Intended status: Standards Track                           July 12, 2013
+Expires: January 13, 2014
 
 
-     Public Key-Based Kerberos Cross Realm Path Traversal Protocol
-                 draft-williams-kitten-krb5-pkcross-01
+  Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using
+        Kerberized Certification Authorities (kx509) and PKINIT
+                 draft-williams-kitten-krb5-pkcross-02
 
 Abstract
 
    This document specifies a protocol for obtaining cross-realm Kerberos
-   tickets using existing, related protocols.  The resulting protocol
-   has a number of desirable security properties, including privacy
-   protection for the user relative to their home realm's
-   infrastructure, as well a support for leap-of-faith trust
-   establishment, and automated cross-realm keying.  This protocol
-   allows Kerberos to scale to large numbers of realms.
+   tickets using existing, related protocols: kerberized certification
+   authorities (kx509) and public key cryptography initial
+   authentication in Kerberos (PKINIT).  The resulting protocol has a
+   number of desirable security properties, including privacy protection
+   for the user relative to their home realm's infrastructure, as well a
+   support for leap-of-faith trust establishment, and automated cross-
+   realm keying.  This protocol allows Kerberos to scale to large
+   numbers of realms.
 
 Status of this Memo
 
@@ -35,7 +38,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 12, 2014.
+   This Internet-Draft will expire on January 13, 2014.
 
 Copyright Notice
 
@@ -59,14 +62,16 @@ Table of Contents
    1.1.  Conventions used in this document
    2.    The Protocol
    2.1.  Exchange of Long-Term Cross-Realm Symmetric Keys
-   3.    Privacy Protection
-   4.    Leap-of-Faith / TOFU
-   5.    Using DNSSEC for Realm Certificate Validation
-   6.    Security Considerations
-   7.    IANA Considerations
-   8.    References
-   8.1.  Normative References
-   8.2.  Informative References
+   3.    Security Properties
+   3.1.  Automated Cross-Realm Keying
+   3.2.  Privacy Protection
+   3.3.  Leap-of-Faith / TOFU
+   4.    Using DANE (DNSSEC) for Realm Certificate Validation
+   5.    Security Considerations
+   6.    IANA Considerations
+   7.    References
+   7.1.  Normative References
+   7.2.  Informative References
          Author's Address
 
 
@@ -108,8 +113,8 @@ Table of Contents
        alternative name (SAN) corresponding to the client's principal
        name and realm;
 
-   3.  Request a certificate from the kx509 [I-D.hotz-kx509] service run
-       by the source realm;
+   3.  Request a certificate from the kx509 [RFC6717] service run by the
+       source realm;
 
    4.  Request a TGT from the destination realm using PKINIT [RFC4556].
 
@@ -164,15 +169,24 @@ Table of Contents
    cross-realm principals.
 
 
-3.  Privacy Protection
+3.  Security Properties
+
+   The proposed PKCROSS protocol has several useful properties described
+   below.
+
+3.1.  Automated Cross-Realm Keying
+
+   No more manual keying of cross-realm principals via exchanging
+   passwords on a telephone call (or similar).
+
+3.2.  Privacy Protection
 
    This protocol protects the privacy of client principals vis-a-vis
    their home realms: client principals' home realms need not know what
    destination realms the clients are speaking to because client
    principals need not ask their home realms.
 
-
-4.  Leap-of-Faith / TOFU
+3.3.  Leap-of-Faith / TOFU
 
    Clients need not validate the certificate trust path of destination
    realms.  When they do not, the services used through those
@@ -196,7 +210,7 @@ Table of Contents
    client.
 
 
-5.  Using DNSSEC for Realm Certificate Validation
+4.  Using DANE (DNSSEC) for Realm Certificate Validation
 
    [Specify how to use DNS-Based Authentication of Named Entities (DANE)
    [RFC6698] to authenticate the KDC certificates of realms with domain-
@@ -209,20 +223,20 @@ Table of Contents
    _88._tcp.destination.example.]
 
 
-6.  Security Considerations
+5.  Security Considerations
 
    [[anchor1: ...]]
 
 
-7.  IANA Considerations
+6.  IANA Considerations
 
    [[anchor2: Allocate the new KDCOptions flag (USE-SESSION-KEY-AS-
    REALM-KEY) and authorization-data element (AD-CLIENT-CERTIFICATE).]]
 
 
-8.  References
+7.  References
 
-8.1.  Normative References
+7.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -247,12 +261,10 @@ Table of Contents
               of Named Entities (DANE) Transport Layer Security (TLS)
               Protocol: TLSA", RFC 6698, August 2012.
 
-   [I-D.hotz-kx509]
-              Hotz, H. and R. Allbery, "KX509 Kerberized Certificate
-              Issuance Protocol in Use in 2012", draft-hotz-kx509-06
-              (work in progress), July 2012.
+   [RFC6717]  Hotz, H. and R. Allbery, "kx509 Kerberized Certificate
+              Issuance Protocol in Use in 2012", RFC 6717, August 2012.
 
-8.2.  Informative References
+7.2.  Informative References
 
    [RFC4251]  Ylonen, T. and C. Lonvick, "The Secure Shell (SSH)
               Protocol Architecture", RFC 4251, January 2006.

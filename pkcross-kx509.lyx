@@ -274,7 +274,8 @@ End
 \begin_body
 
 \begin_layout Title
-Public Key-Based Kerberos Cross Realm Path Traversal Protocol
+Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using Kerberized
+ Certification Authorities (kx509) and PKINIT
 \end_layout
 
 \begin_layout Standard
@@ -282,7 +283,7 @@ Public Key-Based Kerberos Cross Realm Path Traversal Protocol
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-krb5-pkcross-01
+draft-williams-kitten-krb5-pkcross-02
 \end_layout
 
 \end_inset
@@ -429,7 +430,9 @@ nico@cryptonector.com
 
 \begin_layout Abstract
 This document specifies a protocol for obtaining cross-realm Kerberos tickets
- using existing, related protocols.
+ using existing, related protocols: kerberized certification authorities
+ (kx509) and public key cryptography initial authentication in Kerberos
+ (PKINIT).
  The resulting protocol has a number of desirable security properties, including
  privacy protection for the user relative to their home realm's infrastructure,
  as well a support for leap-of-faith trust establishment, and automated
@@ -553,7 +556,7 @@ Request a certificate from the kx509
 status collapsed
 
 \begin_layout Plain Layout
-I-D.hotz-kx509
+RFC6717
 \end_layout
 
 \end_inset
@@ -636,6 +639,23 @@ ly, realms' KDCs MAY be configured to automatically key cross-realm principals
 \end_layout
 
 \begin_layout Section
+Security Properties
+\end_layout
+
+\begin_layout Standard
+The proposed PKCROSS protocol has several useful properties described below.
+\end_layout
+
+\begin_layout Subsection
+Automated Cross-Realm Keying
+\end_layout
+
+\begin_layout Standard
+No more manual keying of cross-realm principals via exchanging passwords
+ on a telephone call (or similar).
+\end_layout
+
+\begin_layout Subsection
 Privacy Protection
 \end_layout
 
@@ -646,7 +666,7 @@ This protocol protects the privacy of client principals vis-a-vis their
  their home realms.
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Leap-of-Faith / TOFU
 \end_layout
 
@@ -692,7 +712,7 @@ Destination services too may apply apply LoF/TOFU: by not validating the
 \end_layout
 
 \begin_layout Section
-Using DNSSEC for Realm Certificate Validation
+Using DANE (DNSSEC) for Realm Certificate Validation
 \end_layout
 
 \begin_layout Standard
@@ -870,8 +890,8 @@ status open
 \begin_layout Plain Layout
 \begin_inset CommandInset href
 LatexCommand href
-name "I-D.hotz-kx509"
-target "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.hotz-kx509.xml"
+name "rfc6717"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6717.xml"
 
 \end_inset
 

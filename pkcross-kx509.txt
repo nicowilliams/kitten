@@ -3,22 +3,25 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Intended status: Standards Track                           July 11, 2013
-Expires: January 12, 2014
+Intended status: Standards Track                           July 12, 2013
+Expires: January 13, 2014
 
 
-     Public Key-Based Kerberos Cross Realm Path Traversal Protocol
-                 draft-williams-kitten-krb5-pkcross-01
+  Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using
+        Kerberized Certification Authorities (kx509) and PKINIT
+                 draft-williams-kitten-krb5-pkcross-02
 
 Abstract
 
    This document specifies a protocol for obtaining cross-realm Kerberos
-   tickets using existing, related protocols.  The resulting protocol
-   has a number of desirable security properties, including privacy
-   protection for the user relative to their home realm's
-   infrastructure, as well a support for leap-of-faith trust
-   establishment, and automated cross-realm keying.  This protocol
-   allows Kerberos to scale to large numbers of realms.
+   tickets using existing, related protocols: kerberized certification
+   authorities (kx509) and public key cryptography initial
+   authentication in Kerberos (PKINIT).  The resulting protocol has a
+   number of desirable security properties, including privacy protection
+   for the user relative to their home realm's infrastructure, as well a
+   support for leap-of-faith trust establishment, and automated cross-
+   realm keying.  This protocol allows Kerberos to scale to large
+   numbers of realms.
 
 Status of this Memo
 
@@ -35,7 +38,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 12, 2014.
+   This Internet-Draft will expire on January 13, 2014.
 
 Copyright Notice
 
@@ -46,17 +49,17 @@ Copyright Notice
    Provisions Relating to IETF Documents
    (http://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
-   carefully, as they describe your rights and restrictions with respect
-   to this document.  Code Components extracted from this document must
-   include Simplified BSD License text as described in Section 4.e of
 
 
 
-Williams                Expires January 12, 2014                [Page 1]
+Williams                Expires January 13, 2014                [Page 1]
 
 Internet-Draft                   PKCROSS                       July 2013
 
 
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
    described in the Simplified BSD License.
 
@@ -67,15 +70,17 @@ Table of Contents
    1.1.  Conventions used in this document  . . . . . . . . . . . . .  3
    2.    The Protocol . . . . . . . . . . . . . . . . . . . . . . . .  4
    2.1.  Exchange of Long-Term Cross-Realm Symmetric Keys . . . . . .  4
-   3.    Privacy Protection . . . . . . . . . . . . . . . . . . . . .  6
-   4.    Leap-of-Faith / TOFU . . . . . . . . . . . . . . . . . . . .  7
-   5.    Using DNSSEC for Realm Certificate Validation  . . . . . . .  8
-   6.    Security Considerations  . . . . . . . . . . . . . . . . . .  9
-   7.    IANA Considerations  . . . . . . . . . . . . . . . . . . . . 10
-   8.    References . . . . . . . . . . . . . . . . . . . . . . . . . 11
-   8.1.  Normative References . . . . . . . . . . . . . . . . . . . . 11
-   8.2.  Informative References . . . . . . . . . . . . . . . . . . . 11
-         Author's Address . . . . . . . . . . . . . . . . . . . . . . 12
+   3.    Security Properties  . . . . . . . . . . . . . . . . . . . .  6
+   3.1.  Automated Cross-Realm Keying . . . . . . . . . . . . . . . .  6
+   3.2.  Privacy Protection . . . . . . . . . . . . . . . . . . . . .  6
+   3.3.  Leap-of-Faith / TOFU . . . . . . . . . . . . . . . . . . . .  6
+   4.    Using DANE (DNSSEC) for Realm Certificate Validation . . . .  7
+   5.    Security Considerations  . . . . . . . . . . . . . . . . . .  8
+   6.    IANA Considerations  . . . . . . . . . . . . . . . . . . . .  9
+   7.    References . . . . . . . . . . . . . . . . . . . . . . . . . 10
+   7.1.  Normative References . . . . . . . . . . . . . . . . . . . . 10
+   7.2.  Informative References . . . . . . . . . . . . . . . . . . . 10
+         Author's Address . . . . . . . . . . . . . . . . . . . . . . 11
 
 
 
@@ -103,12 +108,7 @@ Table of Contents
 
 
 
-
-
-
-
-
-Williams                Expires January 12, 2014                [Page 2]
+Williams                Expires January 13, 2014                [Page 2]
 
 Internet-Draft                   PKCROSS                       July 2013
 
@@ -164,7 +164,7 @@ Internet-Draft                   PKCROSS                       July 2013
 
 
 
-Williams                Expires January 12, 2014                [Page 3]
+Williams                Expires January 13, 2014                [Page 3]
 
 Internet-Draft                   PKCROSS                       July 2013
 
@@ -184,8 +184,8 @@ Internet-Draft                   PKCROSS                       July 2013
        alternative name (SAN) corresponding to the client's principal
        name and realm;
 
-   3.  Request a certificate from the kx509 [I-D.hotz-kx509] service run
-       by the source realm;
+   3.  Request a certificate from the kx509 [RFC6717] service run by the
+       source realm;
 
    4.  Request a TGT from the destination realm using PKINIT [RFC4556].
 
@@ -220,7 +220,7 @@ Internet-Draft                   PKCROSS                       July 2013
 
 
 
-Williams                Expires January 12, 2014                [Page 4]
+Williams                Expires January 13, 2014                [Page 4]
 
 Internet-Draft                   PKCROSS                       July 2013
 
@@ -276,68 +276,29 @@ Internet-Draft                   PKCROSS                       July 2013
 
 
 
-Williams                Expires January 12, 2014                [Page 5]
+Williams                Expires January 13, 2014                [Page 5]
 
 Internet-Draft                   PKCROSS                       July 2013
 
 
-3.  Privacy Protection
+3.  Security Properties
+
+   The proposed PKCROSS protocol has several useful properties described
+   below.
+
+3.1.  Automated Cross-Realm Keying
+
+   No more manual keying of cross-realm principals via exchanging
+   passwords on a telephone call (or similar).
+
+3.2.  Privacy Protection
 
    This protocol protects the privacy of client principals vis-a-vis
    their home realms: client principals' home realms need not know what
    destination realms the clients are speaking to because client
    principals need not ask their home realms.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                Expires January 12, 2014                [Page 6]
-
-Internet-Draft                   PKCROSS                       July 2013
-
-
-4.  Leap-of-Faith / TOFU
+3.3.  Leap-of-Faith / TOFU
 
    Clients need not validate the certificate trust path of destination
    realms.  When they do not, the services used through those
@@ -371,29 +332,12 @@ Internet-Draft                   PKCROSS                       July 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                Expires January 12, 2014                [Page 7]
+Williams                Expires January 13, 2014                [Page 6]
 
 Internet-Draft                   PKCROSS                       July 2013
 
 
-5.  Using DNSSEC for Realm Certificate Validation
+4.  Using DANE (DNSSEC) for Realm Certificate Validation
 
    [Specify how to use DNS-Based Authentication of Named Entities (DANE)
    [RFC6698] to authenticate the KDC certificates of realms with domain-
@@ -444,12 +388,12 @@ Internet-Draft                   PKCROSS                       July 2013
 
 
 
-Williams                Expires January 12, 2014                [Page 8]
+Williams                Expires January 13, 2014                [Page 7]
 
 Internet-Draft                   PKCROSS                       July 2013
 
 
-6.  Security Considerations
+5.  Security Considerations
 
    [[anchor1: ...]]
 
@@ -500,12 +444,12 @@ Internet-Draft                   PKCROSS                       July 2013
 
 
 
-Williams                Expires January 12, 2014                [Page 9]
+Williams                Expires January 13, 2014                [Page 8]
 
 Internet-Draft                   PKCROSS                       July 2013
 
 
-7.  IANA Considerations
+6.  IANA Considerations
 
    [[anchor2: Allocate the new KDCOptions flag (USE-SESSION-KEY-AS-
    REALM-KEY) and authorization-data element (AD-CLIENT-CERTIFICATE).]]
@@ -556,14 +500,14 @@ Internet-Draft                   PKCROSS                       July 2013
 
 
 
-Williams                Expires January 12, 2014               [Page 10]
+Williams                Expires January 13, 2014                [Page 9]
 
 Internet-Draft                   PKCROSS                       July 2013
 
 
-8.  References
+7.  References
 
-8.1.  Normative References
+7.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -588,12 +532,10 @@ Internet-Draft                   PKCROSS                       July 2013
               of Named Entities (DANE) Transport Layer Security (TLS)
               Protocol: TLSA", RFC 6698, August 2012.
 
-   [I-D.hotz-kx509]
-              Hotz, H. and R. Allbery, "KX509 Kerberized Certificate
-              Issuance Protocol in Use in 2012", draft-hotz-kx509-06
-              (work in progress), July 2012.
+   [RFC6717]  Hotz, H. and R. Allbery, "kx509 Kerberized Certificate
+              Issuance Protocol in Use in 2012", RFC 6717, August 2012.
 
-8.2.  Informative References
+7.2.  Informative References
 
    [RFC4251]  Ylonen, T. and C. Lonvick, "The Secure Shell (SSH)
               Protocol Architecture", RFC 4251, January 2006.
@@ -612,7 +554,9 @@ Internet-Draft                   PKCROSS                       July 2013
 
 
 
-Williams                Expires January 12, 2014               [Page 11]
+
+
+Williams                Expires January 13, 2014               [Page 10]
 
 Internet-Draft                   PKCROSS                       July 2013
 
@@ -668,5 +612,5 @@ Author's Address
 
 
 
-Williams                Expires January 12, 2014               [Page 12]
+Williams                Expires January 13, 2014               [Page 11]
 
