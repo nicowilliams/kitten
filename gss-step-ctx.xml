@@ -15,7 +15,7 @@
 <!ENTITY rfc5587 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5587.xml">
 <!ENTITY rfc5653 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5653.xml">
 ]>
-<rfc docName="draft-williams-kitten-ctx-simple-async-00" ipr="trust200902" category="std" updates="2743, 2744">
+<rfc docName="draft-williams-kitten-ctx-simple-async-01" ipr="trust200902" category="std" updates="2743, 2744">
   <front>
     <title abbrev="Simple GSS">Simplified and Asynchronous Security Context Interfaces for the Generic Security Services Application Programming Interface</title>
     <author initials="N." surname="Williams" fullname="Nicolas Williams">
@@ -35,19 +35,19 @@ This Internet-Draft proposes extensions to the Generic Security Services Applica
     </abstract>
   </front>
   <middle>
-    <section title="Introduction" anchor="d1e329">
+    <section title="Introduction" anchor="d1e352">
       <t>
 We propose replacing the GSS_Init_sec_context() and GSS_Accept_sec_context() functions with a set of simpler functions: one to create an “empty” security context, a set of functions to set context parameters, a single function for “stepping” the security context token exchange, and additional security context inquiry functions. Support for non-blocking stepping of security context token exchange is also included.</t>
-      <section title="Channel Binding Semantics Improvements" anchor="d1e338">
+      <section title="Channel Binding Semantics Improvements" anchor="d1e361">
         <t>
 The extensions specified in this document are a further extension to <xref target="I-D.williams-kitten-channel-bound-flag"/>.</t>
       </section>
-      <section title="Conventions used in this document" anchor="d1e354">
+      <section title="Conventions used in this document" anchor="d1e377">
         <t>
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
       </section>
     </section>
-    <section title="Simplified API" anchor="d1e369">
+    <section title="Simplified API" anchor="d1e392">
       <t>
 We add a function for creating “empty” security contexts:</t>
       <t>
@@ -92,7 +92,7 @@ We add a function for retrieving delegated credentials from a security context t
 GSS_Get_context_deleg_cred()</t>
         </list>
       </t>
-      <section title="GSS_Create_sec_context()" anchor="d1e422">
+      <section title="GSS_Create_sec_context()" anchor="d1e445">
         <t>
 Inputs:</t>
         <t>
@@ -127,7 +127,7 @@ GSS_S_FAILURE indicates a general failure.</t>
         </t>
         <t>
 This function creates an “empty” security context handle that can be passed to GSS_Init_sec_context() or GSS_Accept_sec_context() where they expect a NULL context. The context can also be passed to the other new security context functions defined in this document.</t>
-        <section title="C-Bindings" anchor="d1e464">
+        <section title="C-Bindings" anchor="d1e487">
           <t>
 </t>
           <t>
@@ -139,7 +139,7 @@ This function creates an “empty” security context handle that can be passed 
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_flags()" anchor="d1e477">
+      <section title="GSS_Set_context_flags()" anchor="d1e500">
         <t>
 Inputs:</t>
         <t>
@@ -176,7 +176,7 @@ GSS_S_FAILURE indicates a general failure.</t>
 This function tells the mechanism (when one is eventually chosen and invoked) that the application requests the given req_flags and undestands the given ret_flags. Initiators can override the req_flags in their GSS_Init_sec_context() call, but if no flags are requested there then the req_flags set on the empty context will be used.</t>
         <t>
 NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements -one per-flag- instead of a “FLAGS” type. This is unwieldy, therefore we introduce an abstract type named “FLAGS” to act as a set of all the request/return flags defined for the abstract GSS-API.</t>
-        <section title="C-Bindings" anchor="d1e534">
+        <section title="C-Bindings" anchor="d1e557">
           <t>
 </t>
           <t>
@@ -190,7 +190,7 @@ NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements -on
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_credentials()" anchor="d1e547">
+      <section title="GSS_Set_context_credentials()" anchor="d1e570">
         <t>
 Inputs:</t>
         <t>
@@ -227,7 +227,7 @@ GSS_S_FAILURE indicates a general failure.</t>
 This function sets the application's credentials. If no credentials are set then the default credentials will be used.</t>
         <t>
 Multiple credentials may be set on a security context. The mechanism SHOULD allow accepting security contexts for any principals for which credentials had elements for the mechanism used. The mechanism SHOULD allow initiators to have multiple credentials, in which case the mechanism should select the credential most likely to succeed for the given target principal. Where a mechanism does not support multiple credentials it MUST use the first credential handle set by the application.</t>
-        <section title="C-Bindings" anchor="d1e596">
+        <section title="C-Bindings" anchor="d1e619">
           <t>
 </t>
           <t>
@@ -240,7 +240,7 @@ Multiple credentials may be set on a security context. The mechanism SHOULD allo
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_channel_bindings()" anchor="d1e609">
+      <section title="GSS_Set_context_channel_bindings()" anchor="d1e632">
         <t>
 Inputs:</t>
         <t>
@@ -273,7 +273,7 @@ GSS_S_COMPLETE indicates success.</t>
 GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
-        <section title="C-Bindings" anchor="d1e652">
+        <section title="C-Bindings" anchor="d1e675">
           <t>
 </t>
           <t>
@@ -286,7 +286,7 @@ GSS_S_FAILURE indicates a general failure.</t>
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_lifetime()" anchor="d1e665">
+      <section title="GSS_Set_context_lifetime()" anchor="d1e688">
         <t>
 Inputs:</t>
         <t>
@@ -319,7 +319,7 @@ GSS_S_COMPLETE indicates success.</t>
 GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
-        <section title="C-Bindings" anchor="d1e708">
+        <section title="C-Bindings" anchor="d1e731">
           <t>
 </t>
           <t>
@@ -332,7 +332,7 @@ GSS_S_FAILURE indicates a general failure.</t>
           </t>
         </section>
       </section>
-      <section title="GSS_Set_async_IO_notification()" anchor="d1e721">
+      <section title="GSS_Set_async_IO_notification()" anchor="d1e744">
         <t>
 Inputs:</t>
         <t>
@@ -381,7 +381,7 @@ a condition variable (and associated mutex) on which a signal will be sent</t>
         </t>
         <t>
 Other completion notification methods could be specified as well, but these seem likely to be sufficient and reasonably portable.</t>
-        <section title="C-Bindings" anchor="d1e784">
+        <section title="C-Bindings" anchor="d1e807">
           <t>
 </t>
           <t>
@@ -430,7 +430,7 @@ Other completion notification methods could be specified as well, but these seem
           </t>
         </section>
       </section>
-      <section title="GSS_Set_event_loop()" anchor="d1e796">
+      <section title="GSS_Set_event_loop()" anchor="d1e819">
         <t>
 Inputs:</t>
         <t>
@@ -439,9 +439,9 @@ Inputs:</t>
  Empty security context</t>
             <t hangText="event_loop_type INTEGER">
  Type of event loop</t>
-            <t hangText="event_loop UNSPECIFIED">
+            <t hangText="event_loop EVENT LOOP HANDLE">
  An event loop</t>
-            <t hangText="event_loop_module UNSPECIFIED">
+            <t hangText="event_loop_module MODULE">
  A module implementing the interface of the given event loop type</t>
           </list>
         </t>
@@ -476,6 +476,8 @@ The following event loop types are defined (but not their interfaces):</t>
             <t>
 EV_NONE (the mechanism MAY run a private event loop in a background thread, but only if the application also set a completion notification method);</t>
             <t>
+EV_STANDARD [a subset of EV_LIBVERTO];</t>
+            <t>
 EV_LIBVERTO <eref target="https://fedorahosted.org/libverto/"/>;</t>
             <t>
 EV_LIBEVENT <eref target="http://libevent.org/"/>
@@ -495,10 +497,64 @@ EV_GCD <eref target="https://libdispatch.macosforge.org/"/>
           </list>
         </t>
         <t>
-Asynchronous security context stepping is OPTIONAL. It is RECOMMENDED that mechanisms implement EV_LIBVERTO. Note that if the application's choice of event loop is not supported by a mechanism then GSS_Step_context() will return GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE, in which case the application may try another event loop type, likely EV_NONE.</t>
+Asynchronous security context stepping is OPTIONAL. It is RECOMMENDED that mechanisms implement EV_STANDARD, a subset of EV_LIBVERTO. Note that if the application's choice of event loop is not supported by a mechanism then GSS_Step_context() will return GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE, in which case the application may try another event loop type, likely EV_NONE.</t>
         <t>
 An event loop module is a handle to a library implementing the interfaces of the given event loop type; the mechanism can obtain those interfaces (e.g., as function pointers in the C bindings). Event loops and modules are unspecified in the abstract API, but the intention is that the application passes to the mechanism a handle to the module implementing the chosen event loop interfaces.</t>
-        <section title="C-Bindings" anchor="d1e902">
+        <section title="MODULE" anchor="d1e928">
+          <t>
+A MODULE is a type that represents an implementation of an application programming interface. It might consist of an opaque value representing the implementation, and an accessor function for doing symbol lookups in that module. Alternatively a MODULE might consist of a discriminated union of tables of exported symbols. Either way, symbols might resolve to function and/or data values. Bindings to different languages might use radically different interpretations of a MODULE.</t>
+        </section>
+      </section>
+      <section title="EV_STANDARD" anchor="d1e937">
+        <t>
+The EV_STANDARD event loop is a subset of the EV_LIBVERTO event loop. It contains functions for adding events to a loop, with notifications delivered via callbacks, and it supports a number of event types:</t>
+        <t>
+          <list style="symbols">
+            <t>
+I/O events (input, output, exceptions available)</t>
+            <t>
+timer events</t>
+            <t>
+idle events</t>
+            <t>
+signal events</t>
+            <t>
+child process exit events</t>
+          </list>
+        </t>
+        <t>
+See the C-bindings for EV_STANDARD below.</t>
+        <section title="EV_STANDARD C-Bindings" anchor="d1e965">
+          <t>
+[TBD, everything in verto.h except:</t>
+          <t>
+            <list style="symbols">
+              <t>
+verto_new()</t>
+              <t>
+verto_default()</t>
+              <t>
+verto_set_default()</t>
+              <t>
+verto_set_allocator()</t>
+              <t>
+verto_free()</t>
+              <t>
+verto_run()</t>
+              <t>
+verto_run_once()</t>
+              <t>
+verto_break()</t>
+              <t>
+verto_reinitialize()</t>
+            </list>
+          </t>
+          <t>
+and all the remaining verto functions as typedef'ed function pointer types.]</t>
+          <t>
+The EV_STANDARD event loop module interface is simple enough to be defined by the application as an interface to any other event loop with relative ease. (Proof is in the pudding: libverto itself has such mappings onto several other event loops, all of which are simple.)</t>
+        </section>
+        <section title="C-Bindings" anchor="d1e1009">
           <t>
 </t>
           <t>
@@ -527,7 +583,7 @@ An event loop module is a handle to a library implementing the interfaces of the
           </t>
         </section>
       </section>
-      <section title="GSS_Indicate_event_loop_types()" anchor="d1e914">
+      <section title="GSS_Indicate_event_loop_types()" anchor="d1e1021">
         <t>
 Inputs:</t>
         <t>
@@ -560,7 +616,7 @@ GSS_S_FAILURE indicates a general failure.</t>
         </t>
         <t>
 This function indicates what event loop types are supported the mechanisms for the given credentials handle.</t>
-        <section title="C-Bindings" anchor="d1e956">
+        <section title="C-Bindings" anchor="d1e1063">
           <t>
 </t>
           <t>
@@ -612,7 +668,7 @@ GSS_S_FAILURE indicates a general failure.</t>
         </t>
         <t>
 This function sets the security context role to be that of an initiator, with the given mechanism OID (possibly GSS_C_NO_OID), and the given target name (possibly GSS_C_NO_NAME). The difference between an initiator and an acceptor application is that an initiator application calls this function and an acceptor does not; both call GSS_Step_context() (see Section 2.8). </t>
-        <section title="C-Bindings" anchor="d1e1025">
+        <section title="C-Bindings" anchor="d1e1132">
           <t>
 </t>
           <t>
@@ -673,7 +729,7 @@ This function steps through one step of security context token exchange for the 
 Acceptors call this without having called GSS_Set_context_role_init(); see  <xref target="sub_GSS_Set_context_role_init__"/>.</t>
         <t>
 Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is output, then the function must be called again upon async I/O completion notification.</t>
-        <section title="C-Bindings" anchor="d1e1107">
+        <section title="C-Bindings" anchor="d1e1214">
           <t>
 </t>
           <t>
@@ -689,11 +745,11 @@ Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is output
         </section>
       </section>
     </section>
-    <section title="Security Considerations" anchor="d1e1119">
+    <section title="Security Considerations" anchor="d1e1226">
       <t>
 The GSS-API is a security API, however, this document does not modify its semantics in any security-relevant way. There are no security considerations in this document.</t>
     </section>
-    <section title="IANA Considerations" anchor="d1e1129">
+    <section title="IANA Considerations" anchor="d1e1236">
       <t>
 [Add registrations for all the above functions.]</t>
     </section>

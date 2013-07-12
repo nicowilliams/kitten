@@ -283,7 +283,7 @@ Simplified and Asynchronous Security Context Interfaces for the Generic
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-ctx-simple-async-00
+draft-williams-kitten-ctx-simple-async-01
 \end_layout
 
 \end_inset
@@ -1451,7 +1451,15 @@ event_loop
 \begin_inset space ~
 \end_inset
 
-UNSPECIFIED An event loop
+EVENT
+\begin_inset space ~
+\end_inset
+
+LOOP
+\begin_inset space ~
+\end_inset
+
+HANDLE An event loop
 \end_layout
 
 \begin_layout Description
@@ -1459,8 +1467,7 @@ event_loop_module
 \begin_inset space ~
 \end_inset
 
-UNSPECIFIED A module implementing the interface of the given event loop
- type
+MODULE A module implementing the interface of the given event loop type
 \end_layout
 
 \begin_layout Standard
@@ -1504,6 +1511,10 @@ The following event loop types are defined (but not their interfaces):
 \begin_layout Itemize
 EV_NONE (the mechanism MAY run a private event loop in a background thread,
  but only if the application also set a completion notification method);
+\end_layout
+
+\begin_layout Itemize
+EV_STANDARD [a subset of EV_LIBVERTO];
 \end_layout
 
 \begin_layout Itemize
@@ -1580,7 +1591,8 @@ target "https://libdispatch.macosforge.org/"
 
 \begin_layout Standard
 Asynchronous security context stepping is OPTIONAL.
- It is RECOMMENDED that mechanisms implement EV_LIBVERTO.
+ It is RECOMMENDED that mechanisms implement EV_STANDARD, a subset of EV_LIBVERT
+O.
  Note that if the application's choice of event loop is not supported by
  a mechanism then GSS_Step_context() will return GSS_S_UNAVAILABLE_EVENT_LOOP_TY
 PE, in which case the application may try another event loop type, likely
@@ -1594,6 +1606,112 @@ An event loop module is a handle to a library implementing the interfaces
  Event loops and modules are unspecified in the abstract API, but the intention
  is that the application passes to the mechanism a handle to the module
  implementing the chosen event loop interfaces.
+\end_layout
+
+\begin_layout Subsubsection
+MODULE
+\end_layout
+
+\begin_layout Standard
+A MODULE is a type that represents an implementation of an application programmi
+ng interface.
+ It might consist of an opaque value representing the implementation, and
+ an accessor function for doing symbol lookups in that module.
+ Alternatively a MODULE might consist of a discriminated union of tables
+ of exported symbols.
+ Either way, symbols might resolve to function and/or data values.
+ Bindings to different languages might use radically different interpretations
+ of a MODULE.
+\end_layout
+
+\begin_layout Subsection
+EV_STANDARD
+\end_layout
+
+\begin_layout Standard
+The EV_STANDARD event loop is a subset of the EV_LIBVERTO event loop.
+ It contains functions for adding events to a loop, with notifications delivered
+ via callbacks, and it supports a number of event types:
+\end_layout
+
+\begin_layout Itemize
+I/O events (input, output, exceptions available)
+\end_layout
+
+\begin_layout Itemize
+timer events
+\end_layout
+
+\begin_layout Itemize
+idle events
+\end_layout
+
+\begin_layout Itemize
+signal events
+\end_layout
+
+\begin_layout Itemize
+child process exit events
+\end_layout
+
+\begin_layout Standard
+See the C-bindings for EV_STANDARD below.
+\end_layout
+
+\begin_layout Subsubsection
+EV_STANDARD C-Bindings
+\end_layout
+
+\begin_layout Standard
+[TBD, everything in verto.h except:
+\end_layout
+
+\begin_layout Itemize
+verto_new()
+\end_layout
+
+\begin_layout Itemize
+verto_default()
+\end_layout
+
+\begin_layout Itemize
+verto_set_default()
+\end_layout
+
+\begin_layout Itemize
+verto_set_allocator()
+\end_layout
+
+\begin_layout Itemize
+verto_free()
+\end_layout
+
+\begin_layout Itemize
+verto_run()
+\end_layout
+
+\begin_layout Itemize
+verto_run_once()
+\end_layout
+
+\begin_layout Itemize
+verto_break()
+\end_layout
+
+\begin_layout Itemize
+verto_reinitialize()
+\end_layout
+
+\begin_layout Standard
+and all the remaining verto functions as typedef'ed function pointer types.]
+\end_layout
+
+\begin_layout Standard
+The EV_STANDARD event loop module interface is simple enough to be defined
+ by the application as an interface to any other event loop with relative
+ ease.
+ (Proof is in the pudding: libverto itself has such mappings onto several
+ other event loops, all of which are simple.)
 \end_layout
 
 \begin_layout Subsubsection

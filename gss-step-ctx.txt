@@ -3,14 +3,14 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: 2743, 2744 (if approved)                           July 7, 2013
+Updates: 2743, 2744 (if approved)                          July 12, 2013
 Intended status: Standards Track
-Expires: January 8, 2014
+Expires: January 13, 2014
 
 
 Simplified and Asynchronous Security Context Interfaces for the Generic
           Security Services Application Programming Interface
-               draft-williams-kitten-ctx-simple-async-00
+               draft-williams-kitten-ctx-simple-async-01
 
 Abstract
 
@@ -34,7 +34,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 8, 2014.
+   This Internet-Draft will expire on January 13, 2014.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Williams                 Expires January 8, 2014                [Page 1]
+Williams                Expires January 13, 2014                [Page 1]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -79,19 +79,22 @@ Table of Contents
    2.6.    GSS_Set_async_IO_notification()  . . . . . . . . . . . . .  8
    2.6.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  9
    2.7.    GSS_Set_event_loop() . . . . . . . . . . . . . . . . . . . 10
-   2.7.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 12
-   2.8.    GSS_Indicate_event_loop_types()  . . . . . . . . . . . . . 12
-   2.8.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 13
-   2.9.    GSS_Set_context_role_init()  . . . . . . . . . . . . . . . 13
+   2.7.1.  MODULE . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+   2.8.    EV_STANDARD  . . . . . . . . . . . . . . . . . . . . . . . 12
+   2.8.1.  EV_STANDARD C-Bindings . . . . . . . . . . . . . . . . . . 12
+   2.8.2.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 13
+   2.9.    GSS_Indicate_event_loop_types()  . . . . . . . . . . . . . 14
    2.9.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 14
-   2.10.   GSS_Step_context() . . . . . . . . . . . . . . . . . . . . 14
+   2.10.   GSS_Set_context_role_init()  . . . . . . . . . . . . . . . 15
    2.10.1. C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 15
-   3.      Security Considerations  . . . . . . . . . . . . . . . . . 16
-   4.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 17
-   5.      References . . . . . . . . . . . . . . . . . . . . . . . . 18
-   5.1.    Normative References . . . . . . . . . . . . . . . . . . . 18
-   5.2.    Informative References . . . . . . . . . . . . . . . . . . 18
-           Author's Address . . . . . . . . . . . . . . . . . . . . . 19
+   2.11.   GSS_Step_context() . . . . . . . . . . . . . . . . . . . . 16
+   2.11.1. C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 16
+   3.      Security Considerations  . . . . . . . . . . . . . . . . . 18
+   4.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 19
+   5.      References . . . . . . . . . . . . . . . . . . . . . . . . 20
+   5.1.    Normative References . . . . . . . . . . . . . . . . . . . 20
+   5.2.    Informative References . . . . . . . . . . . . . . . . . . 20
+           Author's Address . . . . . . . . . . . . . . . . . . . . . 21
 
 
 
@@ -105,10 +108,7 @@ Table of Contents
 
 
 
-
-
-
-Williams                 Expires January 8, 2014                [Page 2]
+Williams                Expires January 13, 2014                [Page 2]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -164,7 +164,7 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014                [Page 3]
+Williams                Expires January 13, 2014                [Page 3]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -220,7 +220,7 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014                [Page 4]
+Williams                Expires January 13, 2014                [Page 4]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -276,7 +276,7 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014                [Page 5]
+Williams                Expires January 13, 2014                [Page 5]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -332,7 +332,7 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014                [Page 6]
+Williams                Expires January 13, 2014                [Page 6]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -388,7 +388,7 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014                [Page 7]
+Williams                Expires January 13, 2014                [Page 7]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -444,7 +444,7 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014                [Page 8]
+Williams                Expires January 13, 2014                [Page 8]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -500,7 +500,7 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014                [Page 9]
+Williams                Expires January 13, 2014                [Page 9]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -556,7 +556,7 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014               [Page 10]
+Williams                Expires January 13, 2014               [Page 10]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -565,10 +565,10 @@ Internet-Draft                 Simple GSS                      July 2013
 
    event_loop_type INTEGER  Type of event loop
 
-   event_loop UNSPECIFIED  An event loop
+   event_loop EVENT LOOP HANDLE  An event loop
 
-   event_loop_module UNSPECIFIED  A module implementing the interface of
-      the given event loop type
+   event_loop_module MODULE  A module implementing the interface of the
+      given event loop type
 
    Outputs:
 
@@ -595,6 +595,8 @@ Internet-Draft                 Simple GSS                      July 2013
       background thread, but only if the application also set a
       completion notification method);
 
+   o  EV_STANDARD [a subset of EV_LIBVERTO];
+
    o  EV_LIBVERTO <https://fedorahosted.org/libverto/>;
 
    o  EV_LIBEVENT <http://libevent.org/>
@@ -607,18 +609,18 @@ Internet-Draft                 Simple GSS                      July 2013
 
    o  EV_GCD <https://libdispatch.macosforge.org/>
 
-   Asynchronous security context stepping is OPTIONAL.  It is
-   RECOMMENDED that mechanisms implement EV_LIBVERTO.  Note that if the
 
 
 
-Williams                 Expires January 8, 2014               [Page 11]
+Williams                Expires January 13, 2014               [Page 11]
 
 Internet-Draft                 Simple GSS                      July 2013
 
 
-   application's choice of event loop is not supported by a mechanism
-   then GSS_Step_context() will return
+   Asynchronous security context stepping is OPTIONAL.  It is
+   RECOMMENDED that mechanisms implement EV_STANDARD, a subset of
+   EV_LIBVERTO.  Note that if the application's choice of event loop is
+   not supported by a mechanism then GSS_Step_context() will return
    GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE, in which case the application may
    try another event loop type, likely EV_NONE.
 
@@ -629,7 +631,103 @@ Internet-Draft                 Simple GSS                      July 2013
    intention is that the application passes to the mechanism a handle to
    the module implementing the chosen event loop interfaces.
 
-2.7.1.  C-Bindings
+2.7.1.  MODULE
+
+   A MODULE is a type that represents an implementation of an
+   application programming interface.  It might consist of an opaque
+   value representing the implementation, and an accessor function for
+   doing symbol lookups in that module.  Alternatively a MODULE might
+   consist of a discriminated union of tables of exported symbols.
+   Either way, symbols might resolve to function and/or data values.
+   Bindings to different languages might use radically different
+   interpretations of a MODULE.
+
+2.8.  EV_STANDARD
+
+   The EV_STANDARD event loop is a subset of the EV_LIBVERTO event loop.
+   It contains functions for adding events to a loop, with notifications
+   delivered via callbacks, and it supports a number of event types:
+
+   o  I/O events (input, output, exceptions available)
+
+   o  timer events
+
+   o  idle events
+
+   o  signal events
+
+   o  child process exit events
+
+   See the C-bindings for EV_STANDARD below.
+
+2.8.1.  EV_STANDARD C-Bindings
+
+   [TBD, everything in verto.h except:
+
+
+
+
+
+Williams                Expires January 13, 2014               [Page 12]
+
+Internet-Draft                 Simple GSS                      July 2013
+
+
+   o  verto_new()
+
+   o  verto_default()
+
+   o  verto_set_default()
+
+   o  verto_set_allocator()
+
+   o  verto_free()
+
+   o  verto_run()
+
+   o  verto_run_once()
+
+   o  verto_break()
+
+   o  verto_reinitialize()
+
+   and all the remaining verto functions as typedef'ed function pointer
+   types.]
+
+   The EV_STANDARD event loop module interface is simple enough to be
+   defined by the application as an interface to any other event loop
+   with relative ease.  (Proof is in the pudding: libverto itself has
+   such mappings onto several other event loops, all of which are
+   simple.)
+
+2.8.2.  C-Bindings
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                Expires January 13, 2014               [Page 13]
+
+Internet-Draft                 Simple GSS                      July 2013
+
 
     typedef enum {
         EV_NONE     = 1,
@@ -652,7 +750,7 @@ Internet-Draft                 Simple GSS                      July 2013
                                void *event_module,
                                gss_dlsym_t module_lookup);
 
-2.8.  GSS_Indicate_event_loop_types()
+2.9.  GSS_Indicate_event_loop_types()
 
    Inputs:
 
@@ -663,15 +761,6 @@ Internet-Draft                 Simple GSS                      July 2013
    o  major_status INTEGER
 
    o  minor_status INTEGER
-
-
-
-
-
-Williams                 Expires January 8, 2014               [Page 12]
-
-Internet-Draft                 Simple GSS                      July 2013
-
 
    o  event_loop_types SET OF INTEGER
 
@@ -684,14 +773,24 @@ Internet-Draft                 Simple GSS                      July 2013
    This function indicates what event loop types are supported the
    mechanisms for the given credentials handle.
 
-2.8.1.  C-Bindings
+2.9.1.  C-Bindings
+
+
+
+
+
+
+Williams                Expires January 13, 2014               [Page 14]
+
+Internet-Draft                 Simple GSS                      July 2013
+
 
        OM_uint32
        gss_indicate_event_loop_types(OM_uint32 *minor_status,
                                      gss_cred_id_t input_cred_handle,
                                      gss_event_loop_type_t *ev_types);
 
-2.9.  GSS_Set_context_role_init()
+2.10.  GSS_Set_context_role_init()
 
    Inputs:
 
@@ -721,18 +820,10 @@ Internet-Draft                 Simple GSS                      July 2013
    initiator, with the given mechanism OID (possibly GSS_C_NO_OID), and
    the given target name (possibly GSS_C_NO_NAME).  The difference
    between an initiator and an acceptor application is that an initiator
-
-
-
-Williams                 Expires January 8, 2014               [Page 13]
-
-Internet-Draft                 Simple GSS                      July 2013
-
-
    application calls this function and an acceptor does not; both call
    GSS_Step_context() (see Section 2.8).
 
-2.9.1.  C-Bindings
+2.10.1.  C-Bindings
 
       OM_uint32
       gss_set_context_context_role_init(OM_uint32 *minor_status,
@@ -740,7 +831,17 @@ Internet-Draft                 Simple GSS                      July 2013
                                         gss_const_OID mech_oid,
                                         gss_const_name_t target_name);
 
-2.10.  GSS_Step_context()
+
+
+
+
+
+Williams                Expires January 13, 2014               [Page 15]
+
+Internet-Draft                 Simple GSS                      July 2013
+
+
+2.11.  GSS_Step_context()
 
    Inputs:
 
@@ -777,22 +878,24 @@ Internet-Draft                 Simple GSS                      July 2013
    This function steps through one step of security context token
    exchange for the given security context.
 
-
-
-
-Williams                 Expires January 8, 2014               [Page 14]
-
-Internet-Draft                 Simple GSS                      July 2013
-
-
    Acceptors call this without having called
-   GSS_Set_context_role_init(); see Section 2.9.
+   GSS_Set_context_role_init(); see Section 2.10.
 
    Note that if GSS_S_CONTINUE_NEEDED is returned but no security
    context is output, then the function must be called again upon async
    I/O completion notification.
 
-2.10.1.  C-Bindings
+2.11.1.  C-Bindings
+
+
+
+
+
+
+Williams                Expires January 13, 2014               [Page 16]
+
+Internet-Draft                 Simple GSS                      July 2013
+
 
               OM_uint32
               gss_step_context(OM_uint32 *minor_status,
@@ -836,7 +939,16 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014               [Page 15]
+
+
+
+
+
+
+
+
+
+Williams                Expires January 13, 2014               [Page 17]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -892,7 +1004,7 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014               [Page 16]
+Williams                Expires January 13, 2014               [Page 18]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -948,7 +1060,7 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014               [Page 17]
+Williams                Expires January 13, 2014               [Page 19]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -1004,7 +1116,7 @@ Internet-Draft                 Simple GSS                      July 2013
 
 
 
-Williams                 Expires January 8, 2014               [Page 18]
+Williams                Expires January 13, 2014               [Page 20]
 
 Internet-Draft                 Simple GSS                      July 2013
 
@@ -1060,5 +1172,5 @@ Author's Address
 
 
 
-Williams                 Expires January 8, 2014               [Page 19]
+Williams                Expires January 13, 2014               [Page 21]
 

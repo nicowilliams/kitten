@@ -3,14 +3,14 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: 2743, 2744 (if approved)                           July 7, 2013
+Updates: 2743, 2744 (if approved)                          July 12, 2013
 Intended status: Standards Track
-Expires: January 8, 2014
+Expires: January 13, 2014
 
 
 Simplified and Asynchronous Security Context Interfaces for the Generic
           Security Services Application Programming Interface
-               draft-williams-kitten-ctx-simple-async-00
+               draft-williams-kitten-ctx-simple-async-01
 
 Abstract
 
@@ -34,7 +34,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 8, 2014.
+   This Internet-Draft will expire on January 13, 2014.
 
 Copyright Notice
 
@@ -71,13 +71,16 @@ Table of Contents
    2.6.    GSS_Set_async_IO_notification()
    2.6.1.  C-Bindings
    2.7.    GSS_Set_event_loop()
-   2.7.1.  C-Bindings
-   2.8.    GSS_Indicate_event_loop_types()
-   2.8.1.  C-Bindings
-   2.9.    GSS_Set_context_role_init()
+   2.7.1.  MODULE
+   2.8.    EV_STANDARD
+   2.8.1.  EV_STANDARD C-Bindings
+   2.8.2.  C-Bindings
+   2.9.    GSS_Indicate_event_loop_types()
    2.9.1.  C-Bindings
-   2.10.   GSS_Step_context()
+   2.10.   GSS_Set_context_role_init()
    2.10.1. C-Bindings
+   2.11.   GSS_Step_context()
+   2.11.1. C-Bindings
    3.      Security Considerations
    4.      IANA Considerations
    5.      References
@@ -416,10 +419,10 @@ Table of Contents
 
    event_loop_type INTEGER  Type of event loop
 
-   event_loop UNSPECIFIED  An event loop
+   event_loop EVENT LOOP HANDLE  An event loop
 
-   event_loop_module UNSPECIFIED  A module implementing the interface of
-      the given event loop type
+   event_loop_module MODULE  A module implementing the interface of the
+      given event loop type
 
    Outputs:
 
@@ -446,6 +449,8 @@ Table of Contents
       background thread, but only if the application also set a
       completion notification method);
 
+   o  EV_STANDARD [a subset of EV_LIBVERTO];
+
    o  EV_LIBVERTO <https://fedorahosted.org/libverto/>;
 
    o  EV_LIBEVENT <http://libevent.org/>
@@ -459,9 +464,9 @@ Table of Contents
    o  EV_GCD <https://libdispatch.macosforge.org/>
 
    Asynchronous security context stepping is OPTIONAL.  It is
-   RECOMMENDED that mechanisms implement EV_LIBVERTO.  Note that if the
-   application's choice of event loop is not supported by a mechanism
-   then GSS_Step_context() will return
+   RECOMMENDED that mechanisms implement EV_STANDARD, a subset of
+   EV_LIBVERTO.  Note that if the application's choice of event loop is
+   not supported by a mechanism then GSS_Step_context() will return
    GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE, in which case the application may
    try another event loop type, likely EV_NONE.
 
@@ -472,7 +477,67 @@ Table of Contents
    intention is that the application passes to the mechanism a handle to
    the module implementing the chosen event loop interfaces.
 
-2.7.1.  C-Bindings
+2.7.1.  MODULE
+
+   A MODULE is a type that represents an implementation of an
+   application programming interface.  It might consist of an opaque
+   value representing the implementation, and an accessor function for
+   doing symbol lookups in that module.  Alternatively a MODULE might
+   consist of a discriminated union of tables of exported symbols.
+   Either way, symbols might resolve to function and/or data values.
+   Bindings to different languages might use radically different
+   interpretations of a MODULE.
+
+2.8.  EV_STANDARD
+
+   The EV_STANDARD event loop is a subset of the EV_LIBVERTO event loop.
+   It contains functions for adding events to a loop, with notifications
+   delivered via callbacks, and it supports a number of event types:
+
+   o  I/O events (input, output, exceptions available)
+
+   o  timer events
+
+   o  idle events
+
+   o  signal events
+
+   o  child process exit events
+
+   See the C-bindings for EV_STANDARD below.
+
+2.8.1.  EV_STANDARD C-Bindings
+
+   [TBD, everything in verto.h except:
+
+   o  verto_new()
+
+   o  verto_default()
+
+   o  verto_set_default()
+
+   o  verto_set_allocator()
+
+   o  verto_free()
+
+   o  verto_run()
+
+   o  verto_run_once()
+
+   o  verto_break()
+
+   o  verto_reinitialize()
+
+   and all the remaining verto functions as typedef'ed function pointer
+   types.]
+
+   The EV_STANDARD event loop module interface is simple enough to be
+   defined by the application as an interface to any other event loop
+   with relative ease.  (Proof is in the pudding: libverto itself has
+   such mappings onto several other event loops, all of which are
+   simple.)
+
+2.8.2.  C-Bindings
 
     typedef enum {
         EV_NONE     = 1,
@@ -495,7 +560,7 @@ Table of Contents
                                void *event_module,
                                gss_dlsym_t module_lookup);
 
-2.8.  GSS_Indicate_event_loop_types()
+2.9.  GSS_Indicate_event_loop_types()
 
    Inputs:
 
@@ -518,14 +583,14 @@ Table of Contents
    This function indicates what event loop types are supported the
    mechanisms for the given credentials handle.
 
-2.8.1.  C-Bindings
+2.9.1.  C-Bindings
 
        OM_uint32
        gss_indicate_event_loop_types(OM_uint32 *minor_status,
                                      gss_cred_id_t input_cred_handle,
                                      gss_event_loop_type_t *ev_types);
 
-2.9.  GSS_Set_context_role_init()
+2.10.  GSS_Set_context_role_init()
 
    Inputs:
 
@@ -558,7 +623,7 @@ Table of Contents
    application calls this function and an acceptor does not; both call
    GSS_Step_context() (see Section 2.8).
 
-2.9.1.  C-Bindings
+2.10.1.  C-Bindings
 
       OM_uint32
       gss_set_context_context_role_init(OM_uint32 *minor_status,
@@ -566,7 +631,7 @@ Table of Contents
                                         gss_const_OID mech_oid,
                                         gss_const_name_t target_name);
 
-2.10.  GSS_Step_context()
+2.11.  GSS_Step_context()
 
    Inputs:
 
@@ -604,13 +669,13 @@ Table of Contents
    exchange for the given security context.
 
    Acceptors call this without having called
-   GSS_Set_context_role_init(); see Section 2.9.
+   GSS_Set_context_role_init(); see Section 2.10.
 
    Note that if GSS_S_CONTINUE_NEEDED is returned but no security
    context is output, then the function must be called again upon async
    I/O completion notification.
 
-2.10.1.  C-Bindings
+2.11.1.  C-Bindings
 
               OM_uint32
               gss_step_context(OM_uint32 *minor_status,
