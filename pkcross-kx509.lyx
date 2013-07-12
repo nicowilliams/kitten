@@ -1,0 +1,911 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass docbook
+\use_default_options true
+\maintain_unincluded_children false
+\begin_local_layout
+Format 31
+
+InsetLayout Flex:PI_Strict
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_Strict
+End
+
+InsetLayout Flex:PI
+    LyXType Custom
+    HTMLTag div
+    LabelString PI
+End
+
+InsetLayout Flex:PI_SymRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SymRefs
+End
+
+InsetLayout Flex:PI_SortRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SortRefs
+End
+
+InsetLayout Flex:PI_TOC
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOC
+End
+
+InsetLayout Flex:PI_TOCIndent
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCIndent
+End
+
+InsetLayout Flex:PI_TOCDepth
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCDepth
+End
+
+InsetLayout Flex:PI_TOCNarrow
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCNarrow
+End
+
+InsetLayout Flex:PI_TOCCompact
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCCompact
+End
+
+InsetLayout Flex:PI_TOCAppendix
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCAppendix
+End
+
+InsetLayout Flex:DocName
+    LyXType Custom
+    HTMLTag div
+    LabelString DocName
+End
+
+InsetLayout Flex:IntendedStatus
+    LyXType Custom
+    HTMLTag div
+    LabelString IntendedStatus
+End
+
+InsetLayout Flex:Updates
+    LyXType Custom
+    HTMLTag div
+    LabelString Updates
+End
+
+InsetLayout Flex:Obsoletes
+    LyXType Custom
+    HTMLTag div
+    LabelString Obsoletes
+End
+
+InsetLayout Flex:SeriesNo
+    LyXType Custom
+    HTMLTag div
+    LabelString SeriesNo
+End
+
+InsetLayout Flex:RFCNumber
+    LyXType Custom
+    HTMLTag div
+    LabelString RFCNumber
+End
+
+InsetLayout Flex:IPR
+    LyXType Custom
+    HTMLTag div
+    LabelString IPR
+End
+
+InsetLayout Flex:IETFArea
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFArea
+End
+
+InsetLayout Flex:IETFWorkingGroup
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFWorkingGroup
+End
+
+InsetLayout Flex:XML2RFCKeyword
+    LyXType Custom
+    HTMLTag div
+    LabelString XML2RFCKeyword
+End
+
+InsetLayout Flex:TitleAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString TitleAbbrev
+End
+
+InsetLayout Flex:AuthorRole
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthRole
+End
+
+InsetLayout Flex:AuthorInitials
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthInitials
+End
+
+InsetLayout Flex:AuthorSurname
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthSurname
+End
+
+InsetLayout Flex:AuthorOrg
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrg
+End
+
+InsetLayout Flex:AuthorOrgAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrgAbbrev
+End
+
+InsetLayout Flex:AuthorEmailAddr
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthEmailAddr
+End
+
+InsetLayout Flex:AuthorAddrStreet
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrStreet
+End
+
+InsetLayout Flex:AuthorAddrCity
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCity
+End
+
+InsetLayout Flex:AuthorAddrRegion
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrRegion
+End
+
+InsetLayout Flex:AuthorAddrCode
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCode
+End
+
+InsetLayout Flex:AuthorAddrCountry
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCountry
+End
+
+InsetLayout Flex:EntityXRef
+    LyXType Custom
+    HTMLTag div
+    LabelString EntityXRef
+End
+
+InsetLayout Flex:BibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString BibXML
+End
+
+InsetLayout Flex:EmbeddedBibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString EmbeddedBibXML
+End
+\end_local_layout
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman cmr
+\font_sans cmss
+\font_typewriter cmtt
+\font_default_family ttdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Public Key-Based Kerberos Cross Realm Path Traversal Protocol
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex DocName
+status open
+
+\begin_layout Plain Layout
+draft-williams-kitten-krb5-pkcross-01
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IPR
+status open
+
+\begin_layout Plain Layout
+trust200902
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IntendedStatus
+status open
+
+\begin_layout Plain Layout
+std
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex TitleAbbrev
+status open
+
+\begin_layout Plain Layout
+PKCROSS
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IETFArea
+status open
+
+\begin_layout Plain Layout
+Security Area
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex XML2RFCKeyword
+status open
+
+\begin_layout Plain Layout
+Internet-Draft
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex PI TOC
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI SymRefs
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI TOCIndent
+status open
+
+\begin_layout Plain Layout
+no
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+comments="yes"
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+inline="yes"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Nicolas Williams
+\begin_inset Flex AuthorOrg
+status open
+
+\begin_layout Plain Layout
+Cryptonector, LLC
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorOrgAbbrev
+status open
+
+\begin_layout Plain Layout
+Cryptonector
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorEmailAddr
+status open
+
+\begin_layout Plain Layout
+nico@cryptonector.com
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+This document specifies a protocol for obtaining cross-realm Kerberos tickets
+ using existing, related protocols.
+ The resulting protocol has a number of desirable security properties, including
+ privacy protection for the user relative to their home realm's infrastructure,
+ as well a support for leap-of-faith trust establishment, and automated
+ cross-realm keying.
+ This protocol allows Kerberos to scale to large numbers of realms.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Kerberos 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4120
+\end_layout
+
+\end_inset
+
+ supports meshes of many realms.
+ The individual relationships between realms must be manually keyed, usually
+ with keys derived from passwords.
+ These keys are very difficult to rollover, and when they are changed the
+ result is often outages -- controlled outages where foreseen, but outages
+ nonetheless.
+ This method of cross-realm keying does not scale, and has very poor security
+ properties.
+ We seek to remediate this.
+\end_layout
+
+\begin_layout Standard
+Many years ago there was a proposal for exchanging cross-realm keys using
+ a public key infrastructure (PKI) 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC5280
+\end_layout
+
+\end_inset
+
+; that proposal went by the name 
+\begin_inset Quotes eld
+\end_inset
+
+PKCROSS
+\begin_inset Quotes erd
+\end_inset
+
+.
+ We appropriate that long-dead proposal's name, but the protocol specified
+ here is very different from the original proposal.
+\end_layout
+
+\begin_layout Subsection
+Conventions used in this document
+\end_layout
+
+\begin_layout Standard
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+ "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are
+ to be interpreted as described in 
+\begin_inset Flex EntityXRef
+status open
+
+\begin_layout Plain Layout
+RFC2119
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+The Protocol
+\end_layout
+
+\begin_layout Standard
+A Kerberos client in with a ticket-granting ticket (TGT) for any one source
+ realm (usually but not necessarily the client's own realm) wishing to acquire
+ a TGT for a destination realm may use this protocol instead of the traditional
+ cross-realm ticket-granting service (TGS) exchanges as follows:
+\end_layout
+
+\begin_layout Enumerate
+Generate private key to a public key cryptosystem;
+\end_layout
+
+\begin_layout Enumerate
+Generate a certificate signing request (CSR) 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2986
+\end_layout
+
+\end_inset
+
+, such that the resulting certificate has an id-pkinit-san subject alternative
+ name (SAN) corresponding to the client's principal name and realm;
+\end_layout
+
+\begin_layout Enumerate
+Request a certificate from the kx509 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+I-D.hotz-kx509
+\end_layout
+
+\end_inset
+
+ service run by the source realm;
+\end_layout
+
+\begin_layout Enumerate
+Request a TGT from the destination realm using PKINIT 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4556
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If the destination realm issues the requested Ticket then it SHOULD include
+ the client's certificate in an AD-CLIENT-CERTIFICATE authorization-data
+ element, and it MUST do so if it does not validate the client's certificate
+ to an acceptable trust anchor.
+\end_layout
+
+\begin_layout Standard
+The destination realm MUST NOT set the TRANSIT-POLICY-CHECKED flag on the
+ tickets they issue to clients whose foreign realm certificates are not
+ validated by the KDC.
+ Destination realm administrators may configure their realms to know specific
+ foreign realm clients' certificates.
+\end_layout
+
+\begin_layout Standard
+The destination MUST include the trust path of the client's certificate,
+ if validated, in the 'transited' field of the issued Ticket, using a mapping
+ of the issuer names to the X.500 realm naming style [XXX must specify this
+ mapping; hopefully it can be the identity function or close enough].
+\end_layout
+
+\begin_layout Subsection
+Exchange of Long-Term Cross-Realm Symmetric Keys
+\end_layout
+
+\begin_layout Standard
+When the client principal is a TGS principal and its PKINIT AS-REQ protocol
+ data unit (PDU) has the USE-SESSION-KEY-AS-REALM-KEY KDCOptions flag set
+ then the client is requesting that the session key of the ticket issued
+ by the destination realm become the long-term key for the corresponding
+ krbtgt/DESTINATION@SOURCE principal.
+ The destination realm MUST validate the client principal's certificate,
+ building a trust path if need be, and validating it to a trust anchor.
+ The source and destination realm MAY have previously exchange fingerprints
+ of their respective key distribution service (KDC) public keys and/or certifica
+tes and/or the source realm's kx509 root or intermediate certification authority
+ (CA), and such previously exchanged material, if any, MUST be used for
+ certificate trust validation.
+\end_layout
+
+\begin_layout Standard
+Realm administrators should use the procedure to setup symmetric cross-realm
+ keys as necessary to save clients from having to frequently use kx509 and
+ PKINIT as described in the preceding section.
+\end_layout
+
+\begin_layout Standard
+Where public key infrastructure (PKI) exists allowing this to happen automatical
+ly, realms' KDCs MAY be configured to automatically key cross-realm principals
+ for any realms that their source realms' clients request cross-realm TGTs
+ for, but note that this presents a denial of service (DoS) opportunity
+ to the source realm's clients.
+ Source realm KDCs SHOULD only do this when a) they are configured to do
+ so, b) the requesting client principal is in the same realm, c) the KDC
+ has not spent too much effort recently providing this service (i.e., KDCs
+ should throttle attempts to establish symmetric cross-realm keys in this
+ manner), and d) up to some maximum number of cross-realm principals.
+\end_layout
+
+\begin_layout Section
+Privacy Protection
+\end_layout
+
+\begin_layout Standard
+This protocol protects the privacy of client principals vis-a-vis their
+ home realms: client principals' home realms need not know what destination
+ realms the clients are speaking to because client principals need not ask
+ their home realms.
+\end_layout
+
+\begin_layout Section
+Leap-of-Faith / TOFU
+\end_layout
+
+\begin_layout Standard
+Clients need not validate the certificate trust path of destination realms.
+ When they do not, the services used through those destination realms are
+ as good as anonymous authentication.
+ If the client saves the root or intermediate or end entity certificates
+ of the destination realms that it cannot or does not validate, then the
+ client can check that on future occasions the destination realm's certificate
+ has not changed, and it may warn the user if it has.
+ This quite similar to how clients using the secure shell (SSH) protocol
+ 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4251
+\end_layout
+
+\end_inset
+
+ handle server authentication, and is commonly known as 
+\begin_inset Quotes eld
+\end_inset
+
+leap-of-faith
+\begin_inset Quotes erd
+\end_inset
+
+ (LoF) or trust-on-first-use (TOFU).
+ The result is as good as pseudonymous authentication.
+\end_layout
+
+\begin_layout Standard
+Destination services too may apply apply LoF/TOFU: by not validating the
+ transit path of the client (e.g., if it's not in a white-list of realms whose
+ clients must have valid transit paths) and accepting tickets without the
+ TRANSITED-POLICY-CHECKED ticket flag set.
+ The destination service can save the client's certificate, if found in
+ an AD-CLIENT-CERTIFICATE authorization-data element in the client's Ticket,
+ and may use it later to ensure that it is talking to the same client.
+\end_layout
+
+\begin_layout Section
+Using DNSSEC for Realm Certificate Validation
+\end_layout
+
+\begin_layout Standard
+[Specify how to use DNS-Based Authentication of Named Entities (DANE) 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC6698
+\end_layout
+
+\end_inset
+
+ to authenticate the KDC certificates of realms with domain-style names.
+ Roughly: format the realm's name as a domainname, then format the DANE
+ TLSA resource record set's (RRset) domainname per-DANE, using the KDC's
+ port number.
+ Note that the KDCs will usually not speak TLS, though there is an extension
+ for using TLS in the KDC over TCP protocol.
+ For example, the TLSA RRset for any KDC for the DESTINATION.EXAMPLE realm
+ might be named _88._tcp.destination.example.]
+\end_layout
+
+\begin_layout Section
+Security Considerations
+\end_layout
+
+\begin_layout RevisionRemark
+...
+\end_layout
+
+\begin_layout Section
+IANA Considerations
+\end_layout
+
+\begin_layout RevisionRemark
+Allocate the new KDCOptions flag (USE-SESSION-KEY-AS-REALM-KEY) and authorizatio
+n-data element (AD-CLIENT-CERTIFICATE).
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:References"
+
+\end_inset
+
+Normative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2119"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2986"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2986.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4120"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4556"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4556.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc5280"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc6698"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6698.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "I-D.hotz-kx509"
+target "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.hotz-kx509.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Informative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4251"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4251.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

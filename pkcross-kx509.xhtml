@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "file:///home/nico/I-Ds/kitten/../test/src/../data/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="GENERATOR" content="LyX 2.0.2" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>Public Key-Based Kerberos Cross Realm Path Traversal Protocol</title>
+
+<!-- Text Class Preamble -->
+<style type="text/css">
+div.toc {
+margin: 2em 0em;
+border-style: solid;
+border-width: 2px 0px;
+padding: 1em 0em;
+}
+div.tochead { font-size: x-large; font-weight: bold; }
+div.lyxtoc-0 {
+margin: 2em 0em 0em 0em;
+font-size: xx-large;
+font-weight: bold;
+}
+div.lyxtoc-1 {
+margin: 1em 0em 0em 0em;
+font-size: x-large;
+font-weight: bold;
+}
+div.lyxtoc-2 {
+margin: 0em 0em 0em 1em;
+font-size: large;
+font-weight: normal;
+}
+div.lyxtoc-3 { margin: 0em 0em 0em 0.5em; font-size: medium; }
+div.lyxtoc-4 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-5 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-6 { margin: 0em 0em 0em 0.5em; }
+a.tocentry {
+text-decoration: none;
+color: black;
+}
+a.tocentry:visited { color: black; }
+a.tocarrow {
+font-weight: bold;
+text-decoration: none;
+color: #909090;
+}
+a.tocarrow:visited { color: #C0C0C0; }
+</style>
+
+<!-- Preamble Snippets -->
+
+<!-- Layout-provided Styles -->
+<style type='text/css'>
+h1.title {
+font-size: x-large;
+margin-bottom: 1ex;
+text-align: center;
+
+}
+div.standard {
+text-align: left;
+
+}
+div.plain_layout {
+text-align: left;
+
+}
+div.author {
+font-size: large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: center;
+
+}
+div.abstract {
+font-size: small;
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+margin-right: 3ex;
+text-align: left;
+
+}
+div.abstract_label {
+font-weight: bold;
+font-size: large;
+text-align: center;
+
+}
+
+div.abstract {
+margin: 4ex;
+}
+div.abstract_item {
+font-size: small;
+padding-top: 1ex;
+}
+div.abstract_label {
+font-weight: bold;
+}
+h2.section {
+font-weight: bold;
+font-size: x-large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: left;
+
+}
+h3.subsection {
+font-weight: bold;
+font-size: large;
+margin-top: 0.9ex;
+margin-bottom: 0.5ex;
+text-align: left;
+
+}
+ol.enumerate {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+div.revisionremark {
+text-align: left;
+
+}
+div.flex_docname {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ipr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_intendedstatus {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_titleabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ietfarea {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_xml_rfckeyword {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_toc {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_symrefs {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_tocindent {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororg {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororgabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authoremailaddr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_entityxref {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_bibxml {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+</style>
+</head>
+<body>
+<h1 class="title"><a id='magicparlabel-1' />
+Public Key-Based Kerberos Cross Realm Path Traversal Protocol</h1>
+<div class="standard"><a id='magicparlabel-2' />
+<div class="flex_docname"><div class="plain_layout"><a id='magicparlabel-6' />
+draft-williams-kitten-krb5-pkcross-01</div>
+</div><div class="flex_ipr"><div class="plain_layout"><a id='magicparlabel-10' />
+trust200902</div>
+</div><div class="flex_intendedstatus"><div class="plain_layout"><a id='magicparlabel-14' />
+std</div>
+</div><div class="flex_titleabbrev"><div class="plain_layout"><a id='magicparlabel-18' />
+PKCROSS</div>
+</div><div class="flex_ietfarea"><div class="plain_layout"><a id='magicparlabel-22' />
+Security Area</div>
+</div><div class="flex_xml_rfckeyword"><div class="plain_layout"><a id='magicparlabel-26' />
+Internet-Draft</div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-27' />
+<div class="flex_pi_toc"><div class="plain_layout"><a id='magicparlabel-31' />
+yes</div>
+</div><div class="flex_pi_symrefs"><div class="plain_layout"><a id='magicparlabel-35' />
+yes</div>
+</div><div class="flex_pi_tocindent"><div class="plain_layout"><a id='magicparlabel-39' />
+no</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-43' />
+comments="yes"</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-47' />
+inline="yes"</div>
+</div></div>
+
+<div class="author"><div class="author_item"><a id='magicparlabel-48' />
+Nicolas Williams<div class="flex_authororg"><div class="plain_layout"><a id='magicparlabel-52' />
+Cryptonector, LLC</div>
+</div><div class="flex_authororgabbrev"><div class="plain_layout"><a id='magicparlabel-56' />
+Cryptonector</div>
+</div><div class="flex_authoremailaddr"><div class="plain_layout"><a id='magicparlabel-60' />
+nico@cryptonector.com</div>
+</div></div>
+</div>
+
+<div class="abstract"><div class="abstract_label">Abstract</div>
+<div class="abstract_item"><a id='magicparlabel-61' />
+This document specifies a protocol for obtaining cross-realm Kerberos tickets using existing, related protocols. The resulting protocol has a number of desirable security properties, including privacy protection for the user relative to their home realm's infrastructure, as well a support for leap-of-faith trust establishment, and automated cross-realm keying. This protocol allows Kerberos to scale to large numbers of realms.</div>
+</div>
+<div class="standard"><a id='magicparlabel-62' />
+</div>
+<div class='toc'><div class='tochead part_'>Table of Contents</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-63' class='tocentry'>1 Introduction</a> <a href='#magicparlabel-63' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-74' class='tocentry'>1.1 Conventions used in this document</a> <a href='#magicparlabel-74' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-80' class='tocentry'>2 The Protocol</a> <a href='#magicparlabel-80' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-101' class='tocentry'>2.1 Exchange of Long-Term Cross-Realm Symmetric Keys</a> <a href='#magicparlabel-101' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-105' class='tocentry'>3 Privacy Protection</a> <a href='#magicparlabel-105' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-107' class='tocentry'>4 Leap-of-Faith / TOFU</a> <a href='#magicparlabel-107' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-114' class='tocentry'>5 Using DNSSEC for Realm Certificate Validation</a> <a href='#magicparlabel-114' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-120' class='tocentry'>6 Security Considerations</a> <a href='#magicparlabel-120' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-122' class='tocentry'>7 IANA Considerations</a> <a href='#magicparlabel-122' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-124' class='tocentry'>8 Normative References</a> <a href='#magicparlabel-124' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-160' class='tocentry'>9 Informative References</a> <a href='#magicparlabel-160' class='tocarrow'>&gt;</a></div>
+</div>
+
+<h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-63' />
+Introduction</h2>
+<div class="standard"><a id='magicparlabel-64' />
+Kerberos <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-68' />
+RFC4120</div>
+</div> supports meshes of many realms. The individual relationships between realms must be manually keyed, usually with keys derived from passwords. These keys are very difficult to rollover, and when they are changed the result is often outages &ndash; controlled outages where foreseen, but outages nonetheless. This method of cross-realm keying does not scale, and has very poor security properties. We seek to remediate this.</div>
+
+<div class="standard"><a id='magicparlabel-69' />
+Many years ago there was a proposal for exchanging cross-realm keys using a public key infrastructure (PKI) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-73' />
+RFC5280</div>
+</div>; that proposal went by the name &ldquo;PKCROSS&rdquo;. We appropriate that long-dead proposal's name, but the protocol specified here is very different from the original proposal.</div>
+<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-74' />
+Conventions used in this document</h3>
+<div class="standard"><a id='magicparlabel-75' />
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-79' />
+RFC2119</div>
+</div>.</div>
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-80' />
+The Protocol</h2>
+<div class="standard"><a id='magicparlabel-81' />
+A Kerberos client in with a ticket-granting ticket (TGT) for any one source realm (usually but not necessarily the client's own realm) wishing to acquire a TGT for a destination realm may use this protocol instead of the traditional cross-realm ticket-granting service (TGS) exchanges as follows:</div>
+
+<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-82' />
+Generate private key to a public key cryptosystem;</li>
+<li class="enumerate_item"><a id='magicparlabel-83' />
+Generate a certificate signing request (CSR) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-87' />
+RFC2986</div>
+</div>, such that the resulting certificate has an id-pkinit-san subject alternative name (SAN) corresponding to the client's principal name and realm;</li>
+<li class="enumerate_item"><a id='magicparlabel-88' />
+Request a certificate from the kx509 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-92' />
+I-D.hotz-kx509</div>
+</div> service run by the source realm;</li>
+<li class="enumerate_item"><a id='magicparlabel-93' />
+Request a TGT from the destination realm using PKINIT <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-97' />
+RFC4556</div>
+</div>.</li>
+</ol>
+<div class="standard"><a id='magicparlabel-98' />
+If the destination realm issues the requested Ticket then it SHOULD include the client's certificate in an AD-CLIENT-CERTIFICATE authorization-data element, and it MUST do so if it does not validate the client's certificate to an acceptable trust anchor.</div>
+
+<div class="standard"><a id='magicparlabel-99' />
+The destination realm MUST NOT set the TRANSIT-POLICY-CHECKED flag on the tickets they issue to clients whose foreign realm certificates are not validated by the KDC. Destination realm administrators may configure their realms to know specific foreign realm clients' certificates.</div>
+
+<div class="standard"><a id='magicparlabel-100' />
+The destination MUST include the trust path of the client's certificate, if validated, in the 'transited' field of the issued Ticket, using a mapping of the issuer names to the X.500 realm naming style [XXX must specify this mapping; hopefully it can be the identity function or close enough].</div>
+<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-101' />
+Exchange of Long-Term Cross-Realm Symmetric Keys</h3>
+<div class="standard"><a id='magicparlabel-102' />
+When the client principal is a TGS principal and its PKINIT AS-REQ protocol data unit (PDU) has the USE-SESSION-KEY-AS-REALM-KEY KDCOptions flag set then the client is requesting that the session key of the ticket issued by the destination realm become the long-term key for the corresponding krbtgt/DESTINATION@SOURCE principal. The destination realm MUST validate the client principal's certificate, building a trust path if need be, and validating it to a trust anchor. The source and destination realm MAY have previously exchange fingerprints of their respective key distribution service (KDC) public keys and/or certificates and/or the source realm's kx509 root or intermediate certification authority (CA), and such previously exchanged material, if any, MUST be used for certificate trust validation.</div>
+
+<div class="standard"><a id='magicparlabel-103' />
+Realm administrators should use the procedure to setup symmetric cross-realm keys as necessary to save clients from having to frequently use kx509 and PKINIT as described in the preceding section.</div>
+
+<div class="standard"><a id='magicparlabel-104' />
+Where public key infrastructure (PKI) exists allowing this to happen automatically, realms' KDCs MAY be configured to automatically key cross-realm principals for any realms that their source realms' clients request cross-realm TGTs for, but note that this presents a denial of service (DoS) opportunity to the source realm's clients. Source realm KDCs SHOULD only do this when a) they are configured to do so, b) the requesting client principal is in the same realm, c) the KDC has not spent too much effort recently providing this service (i.e., KDCs should throttle attempts to establish symmetric cross-realm keys in this manner), and d) up to some maximum number of cross-realm principals.</div>
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-105' />
+Privacy Protection</h2>
+<div class="standard"><a id='magicparlabel-106' />
+This protocol protects the privacy of client principals vis-a-vis their home realms: client principals' home realms need not know what destination realms the clients are speaking to because client principals need not ask their home realms.</div>
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-107' />
+Leap-of-Faith / TOFU</h2>
+<div class="standard"><a id='magicparlabel-108' />
+Clients need not validate the certificate trust path of destination realms. When they do not, the services used through those destination realms are as good as anonymous authentication. If the client saves the root or intermediate or end entity certificates of the destination realms that it cannot or does not validate, then the client can check that on future occasions the destination realm's certificate has not changed, and it may warn the user if it has. This quite similar to how clients using the secure shell (SSH) protocol <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-112' />
+RFC4251</div>
+</div> handle server authentication, and is commonly known as &ldquo;leap-of-faith&rdquo; (LoF) or trust-on-first-use (TOFU). The result is as good as pseudonymous authentication.</div>
+
+<div class="standard"><a id='magicparlabel-113' />
+Destination services too may apply apply LoF/TOFU: by not validating the transit path of the client (e.g., if it's not in a white-list of realms whose clients must have valid transit paths) and accepting tickets without the TRANSITED-POLICY-CHECKED ticket flag set. The destination service can save the client's certificate, if found in an AD-CLIENT-CERTIFICATE authorization-data element in the client's Ticket, and may use it later to ensure that it is talking to the same client.</div>
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-114' />
+Using DNSSEC for Realm Certificate Validation</h2>
+<div class="standard"><a id='magicparlabel-115' />
+[Specify how to use DNS-Based Authentication of Named Entities (DANE) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-119' />
+RFC6698</div>
+</div> to authenticate the KDC certificates of realms with domain-style names. Roughly: format the realm's name as a domainname, then format the DANE TLSA resource record set's (RRset) domainname per-DANE, using the KDC's port number. Note that the KDCs will usually not speak TLS, though there is an extension for using TLS in the KDC over TCP protocol. For example, the TLSA RRset for any KDC for the DESTINATION.EXAMPLE realm might be named _88._tcp.destination.example.]</div>
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-120' />
+Security Considerations</h2>
+<div class="revisionremark"><a id='magicparlabel-121' />
+...</div>
+<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-122' />
+IANA Considerations</h2>
+<div class="revisionremark"><a id='magicparlabel-123' />
+Allocate the new KDCOptions flag (USE-SESSION-KEY-AS-REALM-KEY) and authorization-data element (AD-CLIENT-CERTIFICATE).</div>
+<h2 class="section"><span class="section_label">8</span> <a id='magicparlabel-124' />
+<a id="sec_References" />
+Normative References</h2>
+<div class="standard"><a id='magicparlabel-125' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-129' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-130' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-134' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2986.xml">rfc2986</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-135' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-139' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-140' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-144' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4556.xml">rfc4556</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-145' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-149' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml">rfc5280</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-150' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-154' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.6698.xml">rfc6698</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-155' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-159' />
+<a href="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.hotz-kx509.xml">I-D.hotz-kx509</a></div>
+</div></div>
+<h2 class="section"><span class="section_label">9</span> <a id='magicparlabel-160' />
+Informative References</h2>
+<div class="standard"><a id='magicparlabel-161' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-165' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4251.xml">rfc4251</a></div>
+</div></div>
+</body>
+</html>
