@@ -35,19 +35,19 @@ This Internet-Draft proposes extensions to the Generic Security Services Applica
     </abstract>
   </front>
   <middle>
-    <section title="Introduction" anchor="d1e352">
+    <section title="Introduction" anchor="d1e314">
       <t>
 We propose replacing the GSS_Init_sec_context() and GSS_Accept_sec_context() functions with a set of simpler functions: one to create an “empty” security context, a set of functions to set context parameters, a single function for “stepping” the security context token exchange, and additional security context inquiry functions. Support for non-blocking stepping of security context token exchange is also included.</t>
-      <section title="Channel Binding Semantics Improvements" anchor="d1e361">
+      <section title="Channel Binding Semantics Improvements" anchor="d1e323">
         <t>
 The extensions specified in this document are a further extension to <xref target="I-D.williams-kitten-channel-bound-flag"/>.</t>
       </section>
-      <section title="Conventions used in this document" anchor="d1e377">
+      <section title="Conventions used in this document" anchor="d1e339">
         <t>
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
       </section>
     </section>
-    <section title="Simplified API" anchor="d1e392">
+    <section title="Simplified API" anchor="d1e354">
       <t>
 We add a function for creating “empty” security contexts:</t>
       <t>
@@ -71,9 +71,9 @@ GSS_Set_context_channel_bindings()</t>
           <t>
 GSS_Set_context_lifetime()</t>
           <t>
-GSS_Set_async_IO_notification()</t>
+GSS_Indicate_context_events()</t>
           <t>
-GSS_Set_async_event_loop()</t>
+GSS_Report_context_events()</t>
         </list>
       </t>
       <t>
@@ -92,7 +92,7 @@ We add a function for retrieving delegated credentials from a security context t
 GSS_Get_context_deleg_cred()</t>
         </list>
       </t>
-      <section title="GSS_Create_sec_context()" anchor="d1e445">
+      <section title="GSS_Create_sec_context()" anchor="d1e407">
         <t>
 Inputs:</t>
         <t>
@@ -127,7 +127,7 @@ GSS_S_FAILURE indicates a general failure.</t>
         </t>
         <t>
 This function creates an “empty” security context handle that can be passed to GSS_Init_sec_context() or GSS_Accept_sec_context() where they expect a NULL context. The context can also be passed to the other new security context functions defined in this document.</t>
-        <section title="C-Bindings" anchor="d1e487">
+        <section title="C-Bindings" anchor="d1e449">
           <t>
 </t>
           <t>
@@ -139,7 +139,7 @@ This function creates an “empty” security context handle that can be passed 
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_flags()" anchor="d1e500">
+      <section title="GSS_Set_context_flags()" anchor="d1e462">
         <t>
 Inputs:</t>
         <t>
@@ -176,7 +176,7 @@ GSS_S_FAILURE indicates a general failure.</t>
 This function tells the mechanism (when one is eventually chosen and invoked) that the application requests the given req_flags and undestands the given ret_flags. Initiators can override the req_flags in their GSS_Init_sec_context() call, but if no flags are requested there then the req_flags set on the empty context will be used.</t>
         <t>
 NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements -one per-flag- instead of a “FLAGS” type. This is unwieldy, therefore we introduce an abstract type named “FLAGS” to act as a set of all the request/return flags defined for the abstract GSS-API.</t>
-        <section title="C-Bindings" anchor="d1e557">
+        <section title="C-Bindings" anchor="d1e519">
           <t>
 </t>
           <t>
@@ -190,7 +190,7 @@ NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements -on
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_credentials()" anchor="d1e570">
+      <section title="GSS_Set_context_credentials()" anchor="d1e532">
         <t>
 Inputs:</t>
         <t>
@@ -227,7 +227,7 @@ GSS_S_FAILURE indicates a general failure.</t>
 This function sets the application's credentials. If no credentials are set then the default credentials will be used.</t>
         <t>
 Multiple credentials may be set on a security context. The mechanism SHOULD allow accepting security contexts for any principals for which credentials had elements for the mechanism used. The mechanism SHOULD allow initiators to have multiple credentials, in which case the mechanism should select the credential most likely to succeed for the given target principal. Where a mechanism does not support multiple credentials it MUST use the first credential handle set by the application.</t>
-        <section title="C-Bindings" anchor="d1e619">
+        <section title="C-Bindings" anchor="d1e581">
           <t>
 </t>
           <t>
@@ -240,7 +240,7 @@ Multiple credentials may be set on a security context. The mechanism SHOULD allo
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_channel_bindings()" anchor="d1e632">
+      <section title="GSS_Set_context_channel_bindings()" anchor="d1e594">
         <t>
 Inputs:</t>
         <t>
@@ -273,7 +273,7 @@ GSS_S_COMPLETE indicates success.</t>
 GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
-        <section title="C-Bindings" anchor="d1e675">
+        <section title="C-Bindings" anchor="d1e637">
           <t>
 </t>
           <t>
@@ -286,7 +286,7 @@ GSS_S_FAILURE indicates a general failure.</t>
           </t>
         </section>
       </section>
-      <section title="GSS_Set_context_lifetime()" anchor="d1e688">
+      <section title="GSS_Set_context_lifetime()" anchor="d1e650">
         <t>
 Inputs:</t>
         <t>
@@ -319,7 +319,7 @@ GSS_S_COMPLETE indicates success.</t>
 GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
-        <section title="C-Bindings" anchor="d1e731">
+        <section title="C-Bindings" anchor="d1e693">
           <t>
 </t>
           <t>
@@ -332,15 +332,13 @@ GSS_S_FAILURE indicates a general failure.</t>
           </t>
         </section>
       </section>
-      <section title="GSS_Set_async_IO_notification()" anchor="d1e744">
+      <section title="GSS_Indicate_context_events()" anchor="sub_GSS_Indicate_context_events__">
         <t>
 Inputs:</t>
         <t>
           <list style="hanging">
             <t hangText="context CONTEXT HANDLE">
  Empty security context</t>
-            <t hangText="async_notification_method UNSPECIFIED">
-</t>
           </list>
         </t>
         <t>
@@ -351,6 +349,16 @@ Outputs:</t>
 major_status INTEGER</t>
             <t>
 minor_status INTEGER</t>
+            <t>
+read_handles SEQUENCE OF FILE HANDLE</t>
+            <t>
+write_handles SEQUENCE OF FILE HANDLE</t>
+            <t>
+processes SEQUENCE OF PROCESS ID</t>
+            <t>
+signals SEQUENCE OF SIGNAL</t>
+            <t>
+timeout INTEGER</t>
           </list>
         </t>
         <t>
@@ -366,83 +374,65 @@ GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
         <t>
-This function sets a method for informing the application that the given security context is ready to have GSS_Step_context() called on it. Whenever GSS_Step_context() returns GSS_S_CONTINUE_NEEDED and no output token the application must wait for the async I/O completion notification and then call GSS_Step_context() again (this time with no input token). GSS_Step_context() will only work asynchronously when this function has been used to set a completion notification method.</t>
+This function indicates the asynchronous events that the mechanism is waiting for, which can be: read and write events on various “files” (including TCP, UDP, SCTP, and any other transport), child processes to exit, signals to arrive, and/or a timeout timer to expire. Waiting for a TCP connection to establish can be done by waiting for it to be writable. Waiting for read or write should also be taken to include waiting for end-of-file events in either direction.</t>
         <t>
-The async I/O completion notification method is not specified for the abstract API. In the C bindings we allow for several different notification methods, including:</t>
-        <t>
-          <list style="symbols">
-            <t>
-callback function</t>
-            <t>
-file descriptor or file handle into which a single byte (of any value) will be written</t>
-            <t>
-a condition variable (and associated mutex) on which a signal will be sent</t>
-          </list>
-        </t>
-        <t>
-Other completion notification methods could be specified as well, but these seem likely to be sufficient and reasonably portable.</t>
-        <section title="C-Bindings" anchor="d1e807">
+The application should mutate its event loop to wait for these events, and it should report events as they happen using GSS_Report_context_events().</t>
+        <section title="C-Bindings" anchor="d1e767">
           <t>
 </t>
           <t>
             <figure suppress-title="true" align="center">
-              <artwork> typedef void (*gss_async_cb_t)(gss_ctx_id_t context, void *cb_data);
- 
- OM_uint32
- gss_set_context_async_io_cb(OM_uint32 *minor_status,
-                             gss_ctx_id_t context,
-                             gss_async_cb_t cb,
-                             void *cb_data);
- 
- #ifdef HAVE_POSIX
- OM_uint32
- gss_set_context_async_io_fd(OM_uint32 *minor_status,
-                             gss_ctx_id_t context,
-                             int fd);
- #endif /* HAVE_POSIX */
- 
- #ifdef HAVE_WIN32
- OM_uint32
- gss_set_context_async_io_handle(OM_uint32 *minor_status,
-                                 gss_ctx_id_t context,
-                                 HANDLE h);
- #endif /* HAVE_WIN32 */
- 
- #ifdef HAVE_PTHREADS
- #include &lt;pthread.h&gt;
- OM_uint32
- gss_set_context_async_io_condvar(OM_uint32 *minor_status,
-                                  gss_ctx_id_t context,
-                                  pthread_cond_t cv,
-                                  pthread_mutex_t lock);
- #endif /* HAVE_PTHREADS */
- 
- #ifdef HAVE_WIN32
+              <artwork> #ifdef WIN32
  #include &lt;windows.h&gt;
- #include &lt;stdlib.h&gt; #include &lt;stdio.h&gt;
+ #typedef HANDLE gss_pid_t;
+ #typedef DWORD gss_pid_status_t;
+ #define GSS_C_NO_FILE (-1)
+ #define GSS_C_NO_PROC ((gss_pid_t)-1)
+ #define GSS_C_NO_SIGNAL (-1)
+ #elif _POSIX_C_SOURCE
+ #include &lt;unistd.h&gt;
+ #typedef pid_t gss_pid_t;
+ #typedef int gss_pid_status_t;
+ #define GSS_C_NO_FILE (-1)
+ #define GSS_C_NO_PROC ((gss_pid_t)-1)
+ #define GSS_C_NO_SIGNAL (-1)
+ #else
+ /* TBD by the operating system */
+ #endif
+ 
  OM_uint32
- gss_set_context_async_io_condvar(OM_uint32 *minor_status,
-                                  gss_ctx_id_t context,
-                                  CONDITION_VARIABLE cv,
-                                  CRITICAL_SECTION lock);
- #endif /* HAVE_WIN32 */</artwork>
+ gss_indicate_context_events(OM_uint32 *minor_status,
+                             gss_ctx_id_t context,
+                             int * const *read_fds,
+                             int * const *write_fds,
+                             gss_pid_t * const *procs,
+                             int * const *signals,
+                             struct timeval **timeout);</artwork>
             </figure>
           </t>
+          <t>
+The events are described by outputting pointers to arrays of file descriptors, process IDs, and signals, terminated by an invalid value (GSS_C_NO_FILE for read_fds[] and write_fds[], GSS_C_NO_PROC for procs[], and GSS_C_NO_SIGNAL for signals[]). The timeout output is a pointer to a struct timeval, set to NULL by the mechanism if it wishes to wait without a timeout (but the application may always impose a timeout of its own).</t>
+          <t>
+If the application does not support waiting for any one event type then the application can pass NULL for that output pointer.</t>
         </section>
       </section>
-      <section title="GSS_Set_event_loop()" anchor="d1e819">
+      <section title="GSS_Report_context_events()" anchor="sub_GSS_Report_context_events__">
         <t>
 Inputs:</t>
         <t>
           <list style="hanging">
             <t hangText="context CONTEXT HANDLE">
  Empty security context</t>
-            <t hangText="event_loop_type INTEGER">
- Type of event loop</t>
-            <t hangText="event_loop EVENT LOOP HANDLE">
- An event loop</t>
-            <t hangText="event_loop_module MODULE">
- A module implementing the interface of the given event loop type</t>
+            <t hangText="read_handles">
+ SEQUENCE OF FILE HANDLE</t>
+            <t hangText="write_handles">
+ SEQUENCE OF FILE HANDLE</t>
+            <t hangText="processes">
+ SEQUENCE OF PROCESS ID</t>
+            <t hangText="signals">
+ SEQUENCE OF SIGNAL</t>
+            <t hangText="timedout">
+ BOOLEAN</t>
           </list>
         </t>
         <t>
@@ -468,165 +458,24 @@ GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
         <t>
-This function sets an event loop to use by the mechanism. We specify no event loop interfaces here. Instead we allow for the use of existing event loop APIs.</t>
-        <t>
-The following event loop types are defined (but not their interfaces):</t>
-        <t>
-          <list style="symbols">
-            <t>
-EV_NONE (the mechanism MAY run a private event loop in a background thread, but only if the application also set a completion notification method);</t>
-            <t>
-EV_STANDARD [a subset of EV_LIBVERTO];</t>
-            <t>
-EV_LIBVERTO <eref target="https://fedorahosted.org/libverto/"/>;</t>
-            <t>
-EV_LIBEVENT <eref target="http://libevent.org/"/>
-</t>
-            <t>
-EV_LIBEV <eref target="http://software.schmorp.de/pkg/libev.html"/>
-</t>
-            <t>
-EV_GLIB <eref target="http://developer.gnome.org/glib/stable/"/>
-</t>
-            <t>
-EV_TEVENT <eref target="http://tevent.samba.org/"/>
-</t>
-            <t>
-EV_GCD <eref target="https://libdispatch.macosforge.org/"/>
-</t>
-          </list>
-        </t>
-        <t>
-Asynchronous security context stepping is OPTIONAL. It is RECOMMENDED that mechanisms implement EV_STANDARD, a subset of EV_LIBVERTO. Note that if the application's choice of event loop is not supported by a mechanism then GSS_Step_context() will return GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE, in which case the application may try another event loop type, likely EV_NONE.</t>
-        <t>
-An event loop module is a handle to a library implementing the interfaces of the given event loop type; the mechanism can obtain those interfaces (e.g., as function pointers in the C bindings). Event loops and modules are unspecified in the abstract API, but the intention is that the application passes to the mechanism a handle to the module implementing the chosen event loop interfaces.</t>
-        <section title="MODULE" anchor="d1e928">
-          <t>
-A MODULE is a type that represents an implementation of an application programming interface. It might consist of an opaque value representing the implementation, and an accessor function for doing symbol lookups in that module. Alternatively a MODULE might consist of a discriminated union of tables of exported symbols. Either way, symbols might resolve to function and/or data values. Bindings to different languages might use radically different interpretations of a MODULE.</t>
-        </section>
-      </section>
-      <section title="EV_STANDARD" anchor="d1e937">
-        <t>
-The EV_STANDARD event loop is a subset of the EV_LIBVERTO event loop. It contains functions for adding events to a loop, with notifications delivered via callbacks, and it supports a number of event types:</t>
-        <t>
-          <list style="symbols">
-            <t>
-I/O events (input, output, exceptions available)</t>
-            <t>
-timer events</t>
-            <t>
-idle events</t>
-            <t>
-signal events</t>
-            <t>
-child process exit events</t>
-          </list>
-        </t>
-        <t>
-See the C-bindings for EV_STANDARD below.</t>
-        <section title="EV_STANDARD C-Bindings" anchor="d1e965">
-          <t>
-[TBD, everything in verto.h except:</t>
-          <t>
-            <list style="symbols">
-              <t>
-verto_new()</t>
-              <t>
-verto_default()</t>
-              <t>
-verto_set_default()</t>
-              <t>
-verto_set_allocator()</t>
-              <t>
-verto_free()</t>
-              <t>
-verto_run()</t>
-              <t>
-verto_run_once()</t>
-              <t>
-verto_break()</t>
-              <t>
-verto_reinitialize()</t>
-            </list>
-          </t>
-          <t>
-and all the remaining verto functions as typedef'ed function pointer types.]</t>
-          <t>
-The EV_STANDARD event loop module interface is simple enough to be defined by the application as an interface to any other event loop with relative ease. (Proof is in the pudding: libverto itself has such mappings onto several other event loops, all of which are simple.)</t>
-        </section>
-        <section title="C-Bindings" anchor="d1e1009">
-          <t>
-</t>
-          <t>
-            <figure suppress-title="true" align="center">
-              <artwork> typedef enum {
-     EV_NONE     = 1,
-     EV_LIBVERTO = 2,
-     EV_LIBEVENT = 4,
-     EV_LIBEV    = 8,
-     EV_GLIB     = 16,
-     EV_TEVENT   = 32,
-     EV_GCD      = 64
- } gss_event_loop_type_t;
- 
- typedef void *(*gss_dlsym_t)(void *, const char *);
- 
- OM_uint32
- gss_set_context_event_loop(OM_uint32 *minor_status,
-                            gss_ctx_id_t context,
-                            gss_event_loop_type_t event_loop_type,
-                            void *event_loop,
-                            gss_event_module_type_t event_module_type,
-                            void *event_module,
-                            gss_dlsym_t module_lookup);</artwork>
-            </figure>
-          </t>
-        </section>
-      </section>
-      <section title="GSS_Indicate_event_loop_types()" anchor="d1e1021">
-        <t>
-Inputs:</t>
-        <t>
-          <list style="hanging">
-            <t hangText="input_cred_handle CREDENTIAL HANDLE">
- May be GSS_C_NO_CREDENTIAL</t>
-          </list>
-        </t>
-        <t>
-Outputs:</t>
-        <t>
-          <list style="symbols">
-            <t>
-major_status INTEGER</t>
-            <t>
-minor_status INTEGER</t>
-            <t>
-event_loop_types SET OF INTEGER</t>
-          </list>
-        </t>
-        <t>
-Return major status codes:</t>
-        <t>
-          <list style="symbols">
-            <t>
-GSS_S_COMPLETE indicates success.</t>
-            <t>
-GSS_S_FAILURE indicates a general failure.</t>
-          </list>
-        </t>
-        <t>
-This function indicates what event loop types are supported the mechanisms for the given credentials handle.</t>
-        <section title="C-Bindings" anchor="d1e1063">
+This function is used by the application to report to the mechanism that some or all of the events requested have completed. Only the events that occurred should be reported.</t>
+        <section title="C-Bindings" anchor="d1e856">
           <t>
 </t>
           <t>
             <figure suppress-title="true" align="center">
               <artwork> OM_uint32
- gss_indicate_event_loop_types(OM_uint32 *minor_status,
-                               gss_cred_id_t input_cred_handle,
-                               gss_event_loop_type_t *ev_types);</artwork>
+ gss_indicate_context_events(OM_uint32 *minor_status,
+                             gss_ctx_id_t context,
+                             const int *read_fds,
+                             const int *write_fds,
+                             const gss_pid_t *procs,
+                             const int *signals,
+                             const struct timeval *timeleft);</artwork>
             </figure>
           </t>
+          <t>
+The inputs point to variable arrays of file descriptors or process IDs terminated by an invalid value (GSS_C_NO_FILE for read_fds[] and write_fds[], GSS_C_NO_PROC for procs[], and GSS_C_NO_SIGNAL for signals[]), except for timeleft, which is either a NULL pointer (if the application doesn't know how much time was left before timing out) or a pointer to a single struct timeval indicating how much time is left before the mechanism's timeout ({0, 0} to indicate the timeout fired).</t>
         </section>
       </section>
       <section title="GSS_Set_context_role_init()" anchor="sub_GSS_Set_context_role_init__">
@@ -650,8 +499,6 @@ Outputs:</t>
 major_status INTEGER</t>
             <t>
 minor_status INTEGER</t>
-            <t>
-event_loop_types SET OF INTEGER</t>
           </list>
         </t>
         <t>
@@ -668,7 +515,7 @@ GSS_S_FAILURE indicates a general failure.</t>
         </t>
         <t>
 This function sets the security context role to be that of an initiator, with the given mechanism OID (possibly GSS_C_NO_OID), and the given target name (possibly GSS_C_NO_NAME). The difference between an initiator and an acceptor application is that an initiator application calls this function and an acceptor does not; both call GSS_Step_context() (see Section 2.8). </t>
-        <section title="C-Bindings" anchor="d1e1132">
+        <section title="C-Bindings" anchor="d1e925">
           <t>
 </t>
           <t>
@@ -691,6 +538,8 @@ Inputs:</t>
  Empty security context</t>
             <t hangText="input_token OCTET STRING">
  Input security context token, if any</t>
+            <t hangText="callback CLOSURE">
+ Callback to invoke when mechanism is ready to be called</t>
           </list>
         </t>
         <t>
@@ -714,11 +563,13 @@ Return major status codes:</t>
             <t>
 GSS_S_COMPLETE indicates success.</t>
             <t>
-GSS_S_CONTINUE_NEEDED ...</t>
+GSS_S_CONTINUE_NEEDED indicates that an output security context token has been produced and an input security context token is needed.</t>
             <t>
-GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE indicates that the application's choice of event loop type is not supported. The mechanism will have done no work in this case, and the application must change the event loop and try again.</t>
+GSS_S_ASYNC_EVENTS_NEEDED indicates that the mechanism needs to wait for asynchronous events. The application should call GSS_Indicate_context_events() to find out what these events are, wait for them (and possibly other, unrelated events), then report the events that  by calling GSS_Report_context_events().</t>
             <t>
 All major status codes allowed for GSS_Init_sec_context() and GSS_Accept_sec_context().</t>
+            <t>
+GSS_S_CALLBACK_UNSUPPORTED indicates callbacks are not supported; the application must use GSS_Indicate_context_events().</t>
             <t>
 GSS_S_FAILURE indicates a general failure.</t>
           </list>
@@ -728,8 +579,8 @@ This function steps through one step of security context token exchange for the 
         <t>
 Acceptors call this without having called GSS_Set_context_role_init(); see  <xref target="sub_GSS_Set_context_role_init__"/>.</t>
         <t>
-Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is output, then the function must be called again upon async I/O completion notification.</t>
-        <section title="C-Bindings" anchor="d1e1214">
+If a null closure is passed as the callback then the application must call GSS_Indicate_context_events()  <xref target="sub_GSS_Indicate_context_events__"/> to get the set of events to wait for on behalf of the mechanism, wait for said events, then report the results with GSS_Report_context_events()  <xref target="sub_GSS_Report_context_events__"/>. Else the mechanism must return GSS_S_ASYNC_EVENTS_NEEDED when it needs to wait for asynchronous events, and must call the application back via its closure. The mechanism may not require the use of a callback closure -- the mechanism must support the use of application-managed event loops via GSS_Indicate/Report_context_events().</t>
+        <section title="C-Bindings" anchor="d1e1021">
           <t>
 </t>
           <t>
@@ -739,19 +590,21 @@ Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is output
                   gss_ctx_id_t context,
                   gss_const_buffer_t input_token,
                   gss_buffer_t output_token,
-                  gss_const_OID *actual_mech);</artwork>
+                  gss_const_OID *actual_mech
+                  void (*callback)(gss_ctx_id_t, void *),
+                  void *callback_data);</artwork>
             </figure>
           </t>
         </section>
       </section>
     </section>
-    <section title="Security Considerations" anchor="d1e1226">
+    <section title="Security Considerations" anchor="d1e1033">
       <t>
 The GSS-API is a security API, however, this document does not modify its semantics in any security-relevant way. There are no security considerations in this document.</t>
     </section>
-    <section title="IANA Considerations" anchor="d1e1236">
+    <section title="IANA Considerations" anchor="d1e1042">
       <t>
-[Add registrations for all the above functions.]</t>
+[Add registrations for all the above functions, types, and constants.]</t>
     </section>
   </middle>
   <back>

@@ -566,11 +566,11 @@ GSS_Set_context_lifetime()
 \end_layout
 
 \begin_layout Itemize
-GSS_Set_async_IO_notification()
+GSS_Indicate_context_events()
 \end_layout
 
 \begin_layout Itemize
-GSS_Set_async_event_loop()
+GSS_Report_context_events()
 \end_layout
 
 \begin_layout Standard
@@ -1114,7 +1114,13 @@ status open
 \end_layout
 
 \begin_layout Subsection
-GSS_Set_async_IO_notification()
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:GSS_Indicate_context_events()"
+
+\end_inset
+
+GSS_Indicate_context_events()
 \end_layout
 
 \begin_layout Standard
@@ -1133,14 +1139,6 @@ CONTEXT
 HANDLE Empty security context
 \end_layout
 
-\begin_layout Description
-async_notification_method
-\begin_inset space ~
-\end_inset
-
-UNSPECIFIED
-\end_layout
-
 \begin_layout Standard
 Outputs:
 \end_layout
@@ -1151,6 +1149,26 @@ major_status INTEGER
 
 \begin_layout Itemize
 minor_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+read_handles SEQUENCE OF FILE HANDLE
+\end_layout
+
+\begin_layout Itemize
+write_handles SEQUENCE OF FILE HANDLE
+\end_layout
+
+\begin_layout Itemize
+processes SEQUENCE OF PROCESS ID
+\end_layout
+
+\begin_layout Itemize
+signals SEQUENCE OF SIGNAL
+\end_layout
+
+\begin_layout Itemize
+timeout INTEGER
 \end_layout
 
 \begin_layout Standard
@@ -1170,38 +1188,26 @@ GSS_S_FAILURE indicates a general failure.
 \end_layout
 
 \begin_layout Standard
-This function sets a method for informing the application that the given
- security context is ready to have GSS_Step_context() called on it.
- Whenever GSS_Step_context() returns GSS_S_CONTINUE_NEEDED and no output
- token the application must wait for the async I/O completion notification
- and then call GSS_Step_context() again (this time with no input token).
- GSS_Step_context() will only work asynchronously when this function has
- been used to set a completion notification method.
+This function indicates the asynchronous events that the mechanism is waiting
+ for, which can be: read and write events on various 
+\begin_inset Quotes eld
+\end_inset
+
+files
+\begin_inset Quotes erd
+\end_inset
+
+ (including TCP, UDP, SCTP, and any other transport), child processes to
+ exit, signals to arrive, and/or a timeout timer to expire.
+ Waiting for a TCP connection to establish can be done by waiting for it
+ to be writable.
+ Waiting for read or write should also be taken to include waiting for end-of-fi
+le events in either direction.
 \end_layout
 
 \begin_layout Standard
-The async I/O completion notification method is not specified for the abstract
- API.
- In the C bindings we allow for several different notification methods,
- including:
-\end_layout
-
-\begin_layout Itemize
-callback function
-\end_layout
-
-\begin_layout Itemize
-file descriptor or file handle into which a single byte (of any value) will
- be written
-\end_layout
-
-\begin_layout Itemize
-a condition variable (and associated mutex) on which a signal will be sent
-\end_layout
-
-\begin_layout Standard
-Other completion notification methods could be specified as well, but these
- seem likely to be sufficient and reasonably portable.
+The application should mutate its event loop to wait for these events, and
+ it should report events as they happen using GSS_Report_context_events().
 \end_layout
 
 \begin_layout Subsubsection
@@ -1215,162 +1221,7 @@ status open
 
 \begin_layout Plain Layout
 
- typedef void (*gss_async_cb_t)(gss_ctx_id_t context, void *cb_data);
-\end_layout
-
-\begin_layout Plain Layout
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-
- OM_uint32
-\end_layout
-
-\begin_layout Plain Layout
-
- gss_set_context_async_io_cb(OM_uint32 *minor_status,
-\end_layout
-
-\begin_layout Plain Layout
-
-                             gss_ctx_id_t context,
-\end_layout
-
-\begin_layout Plain Layout
-
-                             gss_async_cb_t cb,
-\end_layout
-
-\begin_layout Plain Layout
-
-                             void *cb_data);
-\end_layout
-
-\begin_layout Plain Layout
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-
- #ifdef HAVE_POSIX
-\end_layout
-
-\begin_layout Plain Layout
-
- OM_uint32
-\end_layout
-
-\begin_layout Plain Layout
-
- gss_set_context_async_io_fd(OM_uint32 *minor_status,
-\end_layout
-
-\begin_layout Plain Layout
-
-                             gss_ctx_id_t context,
-\end_layout
-
-\begin_layout Plain Layout
-
-                             int fd);
-\end_layout
-
-\begin_layout Plain Layout
-
- #endif /* HAVE_POSIX */
-\end_layout
-
-\begin_layout Plain Layout
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-
- #ifdef HAVE_WIN32
-\end_layout
-
-\begin_layout Plain Layout
-
- OM_uint32
-\end_layout
-
-\begin_layout Plain Layout
-
- gss_set_context_async_io_handle(OM_uint32 *minor_status,
-\end_layout
-
-\begin_layout Plain Layout
-
-                                 gss_ctx_id_t context,
-\end_layout
-
-\begin_layout Plain Layout
-
-                                 HANDLE h);
-\end_layout
-
-\begin_layout Plain Layout
-
- #endif /* HAVE_WIN32 */
-\end_layout
-
-\begin_layout Plain Layout
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-
- #ifdef HAVE_PTHREADS
-\end_layout
-
-\begin_layout Plain Layout
-
- #include <pthread.h>
-\end_layout
-
-\begin_layout Plain Layout
-
- OM_uint32
-\end_layout
-
-\begin_layout Plain Layout
-
- gss_set_context_async_io_condvar(OM_uint32 *minor_status,
-\end_layout
-
-\begin_layout Plain Layout
-
-                                  gss_ctx_id_t context,
-\end_layout
-
-\begin_layout Plain Layout
-
-                                  pthread_cond_t cv,
-\end_layout
-
-\begin_layout Plain Layout
-
-                                  pthread_mutex_t lock);
-\end_layout
-
-\begin_layout Plain Layout
-
- #endif /* HAVE_PTHREADS */
-\end_layout
-
-\begin_layout Plain Layout
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-
- #ifdef HAVE_WIN32
+ #ifdef WIN32
 \end_layout
 
 \begin_layout Plain Layout
@@ -1380,7 +1231,82 @@ status open
 
 \begin_layout Plain Layout
 
- #include <stdlib.h> #include <stdio.h>
+ #typedef HANDLE gss_pid_t;
+\end_layout
+
+\begin_layout Plain Layout
+
+ #typedef DWORD gss_pid_status_t;
+\end_layout
+
+\begin_layout Plain Layout
+
+ #define GSS_C_NO_FILE (-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+ #define GSS_C_NO_PROC ((gss_pid_t)-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+ #define GSS_C_NO_SIGNAL (-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+ #elif _POSIX_C_SOURCE
+\end_layout
+
+\begin_layout Plain Layout
+
+ #include <unistd.h>
+\end_layout
+
+\begin_layout Plain Layout
+
+ #typedef pid_t gss_pid_t;
+\end_layout
+
+\begin_layout Plain Layout
+
+ #typedef int gss_pid_status_t;
+\end_layout
+
+\begin_layout Plain Layout
+
+ #define GSS_C_NO_FILE (-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+ #define GSS_C_NO_PROC ((gss_pid_t)-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+ #define GSS_C_NO_SIGNAL (-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+ #else
+\end_layout
+
+\begin_layout Plain Layout
+
+ /* TBD by the operating system */
+\end_layout
+
+\begin_layout Plain Layout
+
+ #endif
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
 \end_layout
 
 \begin_layout Plain Layout
@@ -1390,27 +1316,37 @@ status open
 
 \begin_layout Plain Layout
 
- gss_set_context_async_io_condvar(OM_uint32 *minor_status,
+ gss_indicate_context_events(OM_uint32 *minor_status,
 \end_layout
 
 \begin_layout Plain Layout
 
-                                  gss_ctx_id_t context,
+                             gss_ctx_id_t context,
 \end_layout
 
 \begin_layout Plain Layout
 
-                                  CONDITION_VARIABLE cv,
+                             int * const *read_fds,
 \end_layout
 
 \begin_layout Plain Layout
 
-                                  CRITICAL_SECTION lock);
+                             int * const *write_fds,
 \end_layout
 
 \begin_layout Plain Layout
 
- #endif /* HAVE_WIN32 */
+                             gss_pid_t * const *procs,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             int * const *signals,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             struct timeval **timeout);
 \end_layout
 
 \end_inset
@@ -1418,8 +1354,29 @@ status open
 
 \end_layout
 
+\begin_layout Standard
+The events are described by outputting pointers to arrays of file descriptors,
+ process IDs, and signals, terminated by an invalid value (GSS_C_NO_FILE
+ for read_fds[] and write_fds[], GSS_C_NO_PROC for procs[], and GSS_C_NO_SIGNAL
+ for signals[]).
+ The timeout output is a pointer to a struct timeval, set to NULL by the
+ mechanism if it wishes to wait without a timeout (but the application may
+ always impose a timeout of its own).
+\end_layout
+
+\begin_layout Standard
+If the application does not support waiting for any one event type then
+ the application can pass NULL for that output pointer.
+\end_layout
+
 \begin_layout Subsection
-GSS_Set_event_loop()
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:GSS_Report_context_events()"
+
+\end_inset
+
+GSS_Report_context_events()
 \end_layout
 
 \begin_layout Standard
@@ -1439,35 +1396,23 @@ HANDLE Empty security context
 \end_layout
 
 \begin_layout Description
-event_loop_type
-\begin_inset space ~
-\end_inset
-
-INTEGER Type of event loop
+read_handles SEQUENCE OF FILE HANDLE
 \end_layout
 
 \begin_layout Description
-event_loop
-\begin_inset space ~
-\end_inset
-
-EVENT
-\begin_inset space ~
-\end_inset
-
-LOOP
-\begin_inset space ~
-\end_inset
-
-HANDLE An event loop
+write_handles SEQUENCE OF FILE HANDLE
 \end_layout
 
 \begin_layout Description
-event_loop_module
-\begin_inset space ~
-\end_inset
+processes SEQUENCE OF PROCESS ID
+\end_layout
 
-MODULE A module implementing the interface of the given event loop type
+\begin_layout Description
+signals SEQUENCE OF SIGNAL
+\end_layout
+
+\begin_layout Description
+timedout BOOLEAN
 \end_layout
 
 \begin_layout Standard
@@ -1499,386 +1444,9 @@ GSS_S_FAILURE indicates a general failure.
 \end_layout
 
 \begin_layout Standard
-This function sets an event loop to use by the mechanism.
- We specify no event loop interfaces here.
- Instead we allow for the use of existing event loop APIs.
-\end_layout
-
-\begin_layout Standard
-The following event loop types are defined (but not their interfaces):
-\end_layout
-
-\begin_layout Itemize
-EV_NONE (the mechanism MAY run a private event loop in a background thread,
- but only if the application also set a completion notification method);
-\end_layout
-
-\begin_layout Itemize
-EV_STANDARD [a subset of EV_LIBVERTO];
-\end_layout
-
-\begin_layout Itemize
-EV_LIBVERTO [
-\begin_inset CommandInset href
-LatexCommand href
-name "libverto"
-target "https://fedorahosted.org/libverto/"
-
-\end_inset
-
-];
-\end_layout
-
-\begin_layout Itemize
-EV_LIBEVENT [
-\begin_inset CommandInset href
-LatexCommand href
-name "libevent"
-target "http://libevent.org/"
-
-\end_inset
-
-]
-\end_layout
-
-\begin_layout Itemize
-EV_LIBEV [
-\begin_inset CommandInset href
-LatexCommand href
-name "libev"
-target "http://software.schmorp.de/pkg/libev.html"
-
-\end_inset
-
-]
-\end_layout
-
-\begin_layout Itemize
-EV_GLIB [
-\begin_inset CommandInset href
-LatexCommand href
-name "glib"
-target "http://developer.gnome.org/glib/stable/"
-
-\end_inset
-
-]
-\end_layout
-
-\begin_layout Itemize
-EV_TEVENT [
-\begin_inset CommandInset href
-LatexCommand href
-name "tevent"
-target "http://tevent.samba.org/"
-
-\end_inset
-
-]
-\end_layout
-
-\begin_layout Itemize
-EV_GCD [
-\begin_inset CommandInset href
-LatexCommand href
-name "Grand Central Dispatch"
-target "https://libdispatch.macosforge.org/"
-
-\end_inset
-
-]
-\end_layout
-
-\begin_layout Standard
-Asynchronous security context stepping is OPTIONAL.
- It is RECOMMENDED that mechanisms implement EV_STANDARD, a subset of EV_LIBVERT
-O.
- Note that if the application's choice of event loop is not supported by
- a mechanism then GSS_Step_context() will return GSS_S_UNAVAILABLE_EVENT_LOOP_TY
-PE, in which case the application may try another event loop type, likely
- EV_NONE.
-\end_layout
-
-\begin_layout Standard
-An event loop module is a handle to a library implementing the interfaces
- of the given event loop type; the mechanism can obtain those interfaces
- (e.g., as function pointers in the C bindings).
- Event loops and modules are unspecified in the abstract API, but the intention
- is that the application passes to the mechanism a handle to the module
- implementing the chosen event loop interfaces.
-\end_layout
-
-\begin_layout Subsubsection
-MODULE
-\end_layout
-
-\begin_layout Standard
-A MODULE is a type that represents an implementation of an application programmi
-ng interface.
- It might consist of an opaque value representing the implementation, and
- an accessor function for doing symbol lookups in that module.
- Alternatively a MODULE might consist of a discriminated union of tables
- of exported symbols.
- Either way, symbols might resolve to function and/or data values.
- Bindings to different languages might use radically different interpretations
- of a MODULE.
-\end_layout
-
-\begin_layout Subsection
-EV_STANDARD
-\end_layout
-
-\begin_layout Standard
-The EV_STANDARD event loop is a subset of the EV_LIBVERTO event loop.
- It contains functions for adding events to a loop, with notifications delivered
- via callbacks, and it supports a number of event types:
-\end_layout
-
-\begin_layout Itemize
-I/O events (input, output, exceptions available)
-\end_layout
-
-\begin_layout Itemize
-timer events
-\end_layout
-
-\begin_layout Itemize
-idle events
-\end_layout
-
-\begin_layout Itemize
-signal events
-\end_layout
-
-\begin_layout Itemize
-child process exit events
-\end_layout
-
-\begin_layout Standard
-See the C-bindings for EV_STANDARD below.
-\end_layout
-
-\begin_layout Subsubsection
-EV_STANDARD C-Bindings
-\end_layout
-
-\begin_layout Standard
-[TBD, everything in verto.h except:
-\end_layout
-
-\begin_layout Itemize
-verto_new()
-\end_layout
-
-\begin_layout Itemize
-verto_default()
-\end_layout
-
-\begin_layout Itemize
-verto_set_default()
-\end_layout
-
-\begin_layout Itemize
-verto_set_allocator()
-\end_layout
-
-\begin_layout Itemize
-verto_free()
-\end_layout
-
-\begin_layout Itemize
-verto_run()
-\end_layout
-
-\begin_layout Itemize
-verto_run_once()
-\end_layout
-
-\begin_layout Itemize
-verto_break()
-\end_layout
-
-\begin_layout Itemize
-verto_reinitialize()
-\end_layout
-
-\begin_layout Standard
-and all the remaining verto functions as typedef'ed function pointer types.]
-\end_layout
-
-\begin_layout Standard
-The EV_STANDARD event loop module interface is simple enough to be defined
- by the application as an interface to any other event loop with relative
- ease.
- (Proof is in the pudding: libverto itself has such mappings onto several
- other event loops, all of which are simple.)
-\end_layout
-
-\begin_layout Subsubsection
-C-Bindings
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
- typedef enum {
-\end_layout
-
-\begin_layout Plain Layout
-
-     EV_NONE     = 1,
-\end_layout
-
-\begin_layout Plain Layout
-
-     EV_LIBVERTO = 2,
-\end_layout
-
-\begin_layout Plain Layout
-
-     EV_LIBEVENT = 4,
-\end_layout
-
-\begin_layout Plain Layout
-
-     EV_LIBEV    = 8,
-\end_layout
-
-\begin_layout Plain Layout
-
-     EV_GLIB     = 16,
-\end_layout
-
-\begin_layout Plain Layout
-
-     EV_TEVENT   = 32,
-\end_layout
-
-\begin_layout Plain Layout
-
-     EV_GCD      = 64
-\end_layout
-
-\begin_layout Plain Layout
-
- } gss_event_loop_type_t;
-\end_layout
-
-\begin_layout Plain Layout
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-
- typedef void *(*gss_dlsym_t)(void *, const char *);
-\end_layout
-
-\begin_layout Plain Layout
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-
- OM_uint32
-\end_layout
-
-\begin_layout Plain Layout
-
- gss_set_context_event_loop(OM_uint32 *minor_status,
-\end_layout
-
-\begin_layout Plain Layout
-
-                            gss_ctx_id_t context,
-\end_layout
-
-\begin_layout Plain Layout
-
-                            gss_event_loop_type_t event_loop_type,
-\end_layout
-
-\begin_layout Plain Layout
-
-                            void *event_loop,
-\end_layout
-
-\begin_layout Plain Layout
-
-                            gss_event_module_type_t event_module_type,
-\end_layout
-
-\begin_layout Plain Layout
-
-                            void *event_module,
-\end_layout
-
-\begin_layout Plain Layout
-
-                            gss_dlsym_t module_lookup);
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-GSS_Indicate_event_loop_types()
-\end_layout
-
-\begin_layout Standard
-Inputs:
-\end_layout
-
-\begin_layout Description
-input_cred_handle
-\begin_inset space ~
-\end_inset
-
-CREDENTIAL
-\begin_inset space ~
-\end_inset
-
-HANDLE May be GSS_C_NO_CREDENTIAL
-\end_layout
-
-\begin_layout Standard
-Outputs:
-\end_layout
-
-\begin_layout Itemize
-major_status INTEGER
-\end_layout
-
-\begin_layout Itemize
-minor_status INTEGER
-\end_layout
-
-\begin_layout Itemize
-event_loop_types SET OF INTEGER
-\end_layout
-
-\begin_layout Standard
-Return major status codes:
-\end_layout
-
-\begin_layout Itemize
-GSS_S_COMPLETE indicates success.
-\end_layout
-
-\begin_layout Itemize
-GSS_S_FAILURE indicates a general failure.
-\end_layout
-
-\begin_layout Standard
-This function indicates what event loop types are supported the mechanisms
- for the given credentials handle.
+This function is used by the application to report to the mechanism that
+ some or all of the events requested have completed.
+ Only the events that occurred should be reported.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1897,22 +1465,52 @@ status open
 
 \begin_layout Plain Layout
 
- gss_indicate_event_loop_types(OM_uint32 *minor_status,
+ gss_indicate_context_events(OM_uint32 *minor_status,
 \end_layout
 
 \begin_layout Plain Layout
 
-                               gss_cred_id_t input_cred_handle,
+                             gss_ctx_id_t context,
 \end_layout
 
 \begin_layout Plain Layout
 
-                               gss_event_loop_type_t *ev_types);
+                             const int *read_fds,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             const int *write_fds,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             const gss_pid_t *procs,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             const int *signals,
+\end_layout
+
+\begin_layout Plain Layout
+
+                             const struct timeval *timeleft);
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The inputs point to variable arrays of file descriptors or process IDs terminate
+d by an invalid value (GSS_C_NO_FILE for read_fds[] and write_fds[], GSS_C_NO_PR
+OC for procs[], and GSS_C_NO_SIGNAL for signals[]), except for timeleft,
+ which is either a NULL pointer (if the application doesn't know how much
+ time was left before timing out) or a pointer to a single struct timeval
+ indicating how much time is left before the mechanism's timeout ({0, 0}
+ to indicate the timeout fired).
 \end_layout
 
 \begin_layout Subsection
@@ -1967,10 +1565,6 @@ major_status INTEGER
 
 \begin_layout Itemize
 minor_status INTEGER
-\end_layout
-
-\begin_layout Itemize
-event_loop_types SET OF INTEGER
 \end_layout
 
 \begin_layout Standard
@@ -2076,6 +1670,14 @@ OCTET
 STRING Input security context token, if any
 \end_layout
 
+\begin_layout Description
+callback
+\begin_inset space ~
+\end_inset
+
+CLOSURE Callback to invoke when mechanism is ready to be called
+\end_layout
+
 \begin_layout Standard
 Outputs:
 \end_layout
@@ -2105,19 +1707,26 @@ GSS_S_COMPLETE indicates success.
 \end_layout
 
 \begin_layout Itemize
-GSS_S_CONTINUE_NEEDED ...
+GSS_S_CONTINUE_NEEDED indicates that an output security context token has
+ been produced and an input security context token is needed.
 \end_layout
 
 \begin_layout Itemize
-GSS_S_UNAVAILABLE_EVENT_LOOP_TYPE indicates that the application's choice
- of event loop type is not supported.
- The mechanism will have done no work in this case, and the application
- must change the event loop and try again.
+GSS_S_ASYNC_EVENTS_NEEDED indicates that the mechanism needs to wait for
+ asynchronous events.
+ The application should call GSS_Indicate_context_events() to find out what
+ these events are, wait for them (and possibly other, unrelated events),
+ then report the events that  by calling GSS_Report_context_events().
 \end_layout
 
 \begin_layout Itemize
 All major status codes allowed for GSS_Init_sec_context() and GSS_Accept_sec_con
 text().
+\end_layout
+
+\begin_layout Itemize
+GSS_S_CALLBACK_UNSUPPORTED indicates callbacks are not supported; the applicatio
+n must use GSS_Indicate_context_events().
 \end_layout
 
 \begin_layout Itemize
@@ -2142,9 +1751,29 @@ reference "sub:GSS_Set_context_role_init()"
 \end_layout
 
 \begin_layout Standard
-Note that if GSS_S_CONTINUE_NEEDED is returned but no security context is
- output, then the function must be called again upon async I/O completion
- notification.
+If a null closure is passed as the callback then the application must call
+ GSS_Indicate_context_events() 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:GSS_Indicate_context_events()"
+
+\end_inset
+
+ to get the set of events to wait for on behalf of the mechanism, wait for
+ said events, then report the results with GSS_Report_context_events() 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:GSS_Report_context_events()"
+
+\end_inset
+
+.
+ Else the mechanism must return GSS_S_ASYNC_EVENTS_NEEDED when it needs
+ to wait for asynchronous events, and must call the application back via
+ its closure.
+ The mechanism may not require the use of a callback closure -- the mechanism
+ must support the use of application-managed event loops via GSS_Indicate/Report
+_context_events().
 \end_layout
 
 \begin_layout Subsubsection
@@ -2183,7 +1812,17 @@ status open
 
 \begin_layout Plain Layout
 
-                  gss_const_OID *actual_mech);
+                  gss_const_OID *actual_mech
+\end_layout
+
+\begin_layout Plain Layout
+
+                  void (*callback)(gss_ctx_id_t, void *),
+\end_layout
+
+\begin_layout Plain Layout
+
+                  void *callback_data);
 \end_layout
 
 \end_inset
@@ -2206,7 +1845,7 @@ IANA Considerations
 \end_layout
 
 \begin_layout Standard
-[Add registrations for all the above functions.]
+[Add registrations for all the above functions, types, and constants.]
 \end_layout
 
 \begin_layout Section
