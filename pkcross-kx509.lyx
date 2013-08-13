@@ -656,7 +656,7 @@ No more manual keying of cross-realm principals via exchanging passwords
 \end_layout
 
 \begin_layout Subsection
-Privacy Protection
+Privacy Protection relative to home realm
 \end_layout
 
 \begin_layout Standard
@@ -666,8 +666,14 @@ This protocol protects the privacy of client principals vis-a-vis their
  their home realms.
 \end_layout
 
+\begin_layout Standard
+This feature is generally and naturally available in PKI, and as this protocol
+ is based on a kerberized certification authority, this protocol inherits
+ this privacy feature from PKI.
+\end_layout
+
 \begin_layout Subsection
-Leap-of-Faith / TOFU
+Leap-of-Faith (LoF) / Trust-On-First-Use (TOFU)
 \end_layout
 
 \begin_layout Standard
@@ -698,7 +704,7 @@ leap-of-faith
 \end_inset
 
  (LoF) or trust-on-first-use (TOFU).
- The result is as good as pseudonymous authentication.
+ The result is pseudonymous authentication.
 \end_layout
 
 \begin_layout Standard
@@ -709,6 +715,36 @@ Destination services too may apply apply LoF/TOFU: by not validating the
  The destination service can save the client's certificate, if found in
  an AD-CLIENT-CERTIFICATE authorization-data element in the client's Ticket,
  and may use it later to ensure that it is talking to the same client.
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Requirements-for-LoF/TOFU"
+
+\end_inset
+
+Requirements and Recommendations for LoF/TOFU Authentication
+\end_layout
+
+\begin_layout Itemize
+Implementations MUST NOT use LoF/TOFU to authenticate a target service's
+ realm without the approval of the user or without making it clear that
+ the realm is not fully authenticated (perhaps by replacing the realm's
+ name with a fingerprint of its public key / certificate).
+\end_layout
+
+\begin_layout Itemize
+Implementations MAY allow service administrators to establish user-friendly
+ aliases for client principal names that include public key fingerprint
+ material.
+\end_layout
+
+\begin_layout Itemize
+Implementations MAY provide a way to automatically learn realm name <->
+ public key / certificate bindings.
+ Pinning [add reference to HSTS] SHOULD be supported in that case.
+ The user MUST approve of each such mapping.
 \end_layout
 
 \begin_layout Section
@@ -737,11 +773,182 @@ RFC6698
 \end_layout
 
 \begin_layout Section
+Application Programming Interface Considerations
+\end_layout
+
+\begin_layout Standard
+For non-LoF/TOFU uses the main security consideration for applications is
+ that improved scalability for Kerberos realm traversal implies larger Kerberos
+ universes, and the larger a universe of trust the more important it is
+ to have useful and expressive local policy for evaluating the trustworthiness
+ of any given transit path.
+ Because in most applications local policy should be a component external
+ to the application, there is little impact on APIs here.
+ However, an implementation may wish to provide applications with interfaces
+ for specifying policies, either named or by value.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:API-Considerations-for"
+
+\end_inset
+
+API Considerations for LoF/TOFU Authentication
+\end_layout
+
+\begin_layout Standard
+For LoF/TOFU uses there is a critical requirement that APIs not permit accidenta
+l aliasing of principal names as a result of LoF/TOFU being used.
+ The simplest way to do this is to use a fingerprint of the peer principal's
+ public key as their principal, and/or a fingerprint of the peer principal's
+ realm's public key as their realm.
+\end_layout
+
+\begin_layout RevisionRemark
+For interoperability and compatibility we ought to specify what fingerprint
+ algorithm to use, perhaps one of the SSHv2 fingerprint algorithms, such
+ as in RFC4255, but those use weaker hashes...
+\end_layout
+
+\begin_layout Subsection
+GSS-API Naming Considerations
+\end_layout
+
+\begin_layout Standard
+There are no GSS-API-specific considerations.
+ The naming considerations described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:API-Considerations-for"
+
+\end_inset
+
+ and the naming attributes defined in 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+I-D.williams-kitten-generic-naming-attributes
+\end_layout
+
+\end_inset
+
+ are sufficient.
+ Note however that information about how PKCROSS was used to establish symmetric
+ally-keyed cross-realm principals is lost and will not appear in the transit
+ path in tickets issued by KDCs reached via such cross-realm principals.
+\end_layout
+
+\begin_layout RevisionRemark
+Actually, we may need to specify some interfaces by which to indicate that
+ the user wishes to alias a pseudonymous name.
+ Perhaps we can do so by applying GSS_Set_name_attribute() to a peer MN
+ obtained from GSS_Inquire_context()?
+\end_layout
+
+\begin_layout Section
 Security Considerations
 \end_layout
 
 \begin_layout RevisionRemark
-...
+All the security considerations of Kerberos and PKI apply.
+ Security considerations are discussed throughout this document.
+\end_layout
+
+\begin_layout Standard
+Scaling up the universe of realms reachable via any trust path necessarily
+ dilutes trust overall, but not for specific paths.
+ On the other hand, by shortening transit path lengths trust can be improved,
+ though some short transit paths will have been symmetrically keyed using
+ this PKCROSS protocol and therefore will be longer than they appear to
+ be.
+ These are subjective notions of trust, of course.
+\end_layout
+
+\begin_layout Subsection
+Loss of Cross-Realm Principal Trust Establishment Information
+\end_layout
+
+\begin_layout Standard
+Note that once a cross-realm principal is symmetrically keyed no information
+ about how that keying operation took place will appear in tickets issued
+ by that TGS principal.
+\end_layout
+
+\begin_layout Standard
+Note also that the Kebreros transit path encodes only realm names (including
+ X.500-style names, thus PKIX certificate subject and issuer names), and
+ lacks any public key information that might be useful for pinning.
+ However, the certificate validation path for each realm in a transit path
+ SHOULD be included in the transit path.
+\end_layout
+
+\begin_layout Subsection
+Security Considerations for LoF/TOFU
+\end_layout
+
+\begin_layout Standard
+LoF/TOFU has additional security considerations.
+ To start there is the obvious susceptibility to peer impersonation / man-in-the
+-middle (MITM) attacks on initial contact, which is mitigated by the attacker's
+ need to always remain in the middle in order to avoid detection.
+\end_layout
+
+\begin_layout Standard
+LoF/TOFU require the ability to remember peers' pseudonymous identities
+ -- their public keys (or certificates), otherwise one remains vulnerable
+ to peer impersonation / MITM attacks at all times.
+ This requires synchronization of peer pseudonym databases across multiple
+ devices (where users have multiple devices), which may not always be possible
+ or performed.
+\end_layout
+
+\begin_layout Standard
+It is critical that existing applications not be broken by the ability to
+ use LoF/TOFU in new Kerberos implementations when those applications are
+ re-linked with newer Kerberos implementations.
+ To ensure this we require the use of public key fingerprints as principal
+ and/or realm names; local mappings of learned pseudonym mappings onto semantica
+lly meaningful names are permitted where the user can validate the mapping.
+ But keep in mind that most users never actually do much to verify peers'
+ public keys in any application/protocol that provides LoF/TOFU [references
+ for this would be nice -Nico].
+\end_layout
+
+\begin_layout Standard
+See 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Requirements-for-LoF/TOFU"
+
+\end_inset
+
+ for additional requirements for LoF/TOFU authentication.
+\end_layout
+
+\begin_layout Subsection
+On the Need for a Common Transit Path Policy Language
+\end_layout
+
+\begin_layout Standard
+There are no standard ways to express authorization policies for trust transit
+ paths for either Kerberos nor PKI.
+ A standard language for this would be extremely useful.
+ Such a language should allow for the expression of policies for both, clients
+ and services.
+ Such a language should allow for the expression of complex realm/domain/other
+ naming, and should allow for HSTS-style pinning [add references -Nico].
+ Such a language should allow for multiple paths where desired, and should
+ allow for more than path rejection: it should also allow for reducing the
+ entitlements assigned to a peer/realm for authorization purposes.
+\end_layout
+
+\begin_layout Standard
+The need for a standard transit path policy expression language is not new,
+ and such a language is broadly and generally needed.
+ Therefore such a language is outside this document's scope.
 \end_layout
 
 \begin_layout Section
@@ -892,6 +1099,26 @@ status open
 LatexCommand href
 name "rfc6717"
 target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6717.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "I-D.williams-kitten-generic-naming-attributes"
+target "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml"
 
 \end_inset
 
