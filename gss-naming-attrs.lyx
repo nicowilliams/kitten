@@ -283,7 +283,7 @@ Generic Naming Attributes for the Generic Security Services Application
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-generic-naming-attributes-00
+draft-williams-kitten-generic-naming-attributes-01
 \end_layout
 
 \end_inset
@@ -469,11 +469,26 @@ LatexCommand tableofcontents
 \end_layout
 
 \begin_layout Section
-Introduction
+Introduction and Motivation
 \end_layout
 
 \begin_layout Standard
-In RFC6680 
+The Generic Security Services Application Programming Interface (GSS-API)
+ 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2743
+\end_layout
+
+\end_inset
+
+ allows applications -and application protocol specifications- to use various
+ security mechanisms in a generic way.
+ There are some shortcomings of this API that preclude a fully-generic treatment
+ of security mechanisms.
+ This document builds on the naming extensions to the GSS-API 
 \begin_inset Flex EntityXRef
 status collapsed
 
@@ -483,7 +498,11 @@ RFC6680
 
 \end_inset
 
- we introduced an interface by which to access 
+ to correct some of those shortcomings.
+\end_layout
+
+\begin_layout Standard
+In RFC6680 we introduced an interface by which to access 
 \begin_inset Quotes eld
 \end_inset
 
@@ -491,8 +510,140 @@ attributes
 \begin_inset Quotes erd
 \end_inset
 
- of names.
+ of names, but we did not specify any attributes.
  This document specifies some such attributes.
+ Some of the new attributes are specifically intended to make it possible
+ to use the GSS-API in a mechanism-generic way in common use cases where
+ it is otherwise not possible to do so.
+\end_layout
+
+\begin_layout Standard
+For example, some applications need to be able to observe the discrete elements
+ of a peer principal's host-based service name, but they generally could
+ only do so by parsing mechanism-specific display syntaxes or exported name
+ token formats.
+ Such applications are inherently not generic: they can only function correctly
+ when used with security mechanism whose principal naming conventions/formats
+ the applications understand.
+\end_layout
+
+\begin_layout Standard
+More generally, we use the the extended naming interface to introduce an
+ attribute model of principal naming.
+\end_layout
+
+\begin_layout Subsection
+Naming Constraints
+\end_layout
+
+\begin_layout Standard
+This document also introduces a notion of naming constraints, not unlike
+ PKIX's 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC5280
+\end_layout
+
+\end_inset
+
+.
+ Naming constraints apply to 
+\begin_inset Quotes eld
+\end_inset
+
+issuers
+\begin_inset Quotes erd
+\end_inset
+
+ of principal names and/or their attributes.
+ For example, to Kerberos 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4120
+\end_layout
+
+\end_inset
+
+ realms, to PKIX certification authorities, to identity providers (IdPs),
+ and so on.
+ The goal is allow specification of policies which constrain the set of
+ principal names that a given issuer can issue credentials for.
+\end_layout
+
+\begin_layout Standard
+For example, the Kerberos realm FOO.EXAMPLE would generally not be expected
+ to issue credentials to host-based principals in domains other than 
+\begin_inset Quotes eld
+\end_inset
+
+foo.example
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+For each concrete attribute specified below there are several ways to inquire
+ a NAME's value for that attribute:
+\end_layout
+
+\begin_layout Enumerate
+with naming constraint checking, providing no output if naming constraints
+ are violated;
+\end_layout
+
+\begin_layout Enumerate
+with naming constraint checking, providing an output indicator of naming
+ constraint violations;
+\end_layout
+
+\begin_layout Enumerate
+without naming constraint checking;
+\end_layout
+
+\begin_layout Enumerate
+any of the above with 
+\begin_inset Quotes eld
+\end_inset
+
+fast
+\begin_inset Quotes erd
+\end_inset
+
+ (no slow I/O involved) naming constraint checking.
+\end_layout
+
+\begin_layout Standard
+(1) is the default behavior.
+ The others are obtained by adding an appropriate prefix to the attribute
+ name.
+\end_layout
+
+\begin_layout Standard
+Existing security mechanisms may not have any formal notion of naming constraint
+s, but it is common to have some naming constraint conventions nonetheless.
+ For example, Kerberos realm naming conventions are that realm names should
+ mirror Domain Name System (DNS) 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC1035
+\end_layout
+
+\end_inset
+
+ domain names, and that hostnames embedded in Kerberos principal names should
+ a) be fully-qualified, b) within the domain corresponding to the DNS domain
+ name derived from the realm's name.
+ Or a Kerberos implementation might lookup a host's realm and check that
+ it matches the principal's realm.
+ Naming constraints should be formalized for all GSS-API security mechanisms.
 \end_layout
 
 \begin_layout Subsection
@@ -520,8 +671,26 @@ Generic Attributes
 \end_layout
 
 \begin_layout Standard
-We add a number of generic attributes.
- Some of these attributes can be used as prefixes of other attributes.
+We add a number of generic name attributes, to be used via the GSS-API extended
+ naming facility 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC6680
+\end_layout
+
+\end_inset
+
+.
+ Some of these attributes can be used as prefixes of other attributes, that
+ is, they can be used to modify the semantics of other attributes (see section
+ 6 of RFC6680).
+\end_layout
+
+\begin_layout Standard
+Note: in all cases the display form of each attribute SHALL consist of text
+ using the character set, codeset, and encoding from the caller's locale.
 \end_layout
 
 \begin_layout Subsection
@@ -529,7 +698,7 @@ Concrete Attributes
 \end_layout
 
 \begin_layout Standard
-These attributes generally have a single value.
+These attributes generally have a single value each.
  Only one of these attributes can also be used a prefix: the issuer name
  attribute.
 \end_layout
@@ -558,8 +727,8 @@ The display form of issuer names is mechanism-specific.
 \end_layout
 
 \begin_layout Standard
-The [non-display] form of issuer names SHALL be the exported name token
- form of the issuer's name.
+The non-display form of issuer names SHALL be the exported name token form
+ of the issuer's name.
  Not all mechanisms will support issuer names as MNs, therefore implementations
  MAY output a null non-display value.
 \end_layout
@@ -576,8 +745,9 @@ RFC4121
 \end_inset
 
  an issuer name would generally (but not always!) be a Kerberos realm name,
- probably display as just the realm name.
- (But note that there is not yet a Kerberos realm name as MN specification.)
+ probably displayed as just the realm name.
+ (But note that there is not yet a Kerberos realm name as MN specification.
+ We will specify one separately.)
 \end_layout
 
 \begin_layout Standard
@@ -632,9 +802,8 @@ urn:ietf:id:ietf-kitten-name-attrs-00-servicename
 \end_layout
 
 \begin_layout Standard
-The display and non-display forms of service names are the same: a character
- string corresponding to the service names used, for example, in calls to
- GSS_Import_name() with the GSS_C_NT_HOSTBASED_SERVICE name-type.
+The non-display form of the service name SHALL be the UTF-8 encoding of
+ the service name.
 \end_layout
 
 \begin_layout Subsubsection
@@ -657,7 +826,7 @@ urn:ietf:id:ietf-kitten-name-attrs-00-hostname
 \end_layout
 
 \begin_layout Standard
-The display form of a host name MAY be stylized and SHOULD use U-labels
+The display form of a host name MAY be stylized and SHOULD NOT be A-labels.
  
 \begin_inset Flex EntityXRef
 status collapsed
@@ -683,7 +852,7 @@ RFC1123
 
 \end_inset
 
-, and SHOULD use A-labels 
+, and SHOULD NOT be U-labels 
 \begin_inset Flex EntityXRef
 status collapsed
 
@@ -716,7 +885,7 @@ urn:ietf:id:ietf-kitten-name-attrs-00-domainname
 \end_layout
 
 \begin_layout Standard
-The display form of a domain name MAY be stylized and SHOULD use U-labels
+The display form of a domain name MAY be stylized and SHOULD NOT be A-labels.
  
 \begin_inset Flex EntityXRef
 status collapsed
@@ -737,12 +906,12 @@ The non-display form of domain names SHOULD be a character string as described
 status collapsed
 
 \begin_layout Plain Layout
-RFC1035
+RFC1123
 \end_layout
 
 \end_inset
 
-, and SHOULD use A-labels 
+, and SHOULD NOT be U-labels 
 \begin_inset Flex EntityXRef
 status collapsed
 
@@ -876,8 +1045,8 @@ GSS_C_ATTR_LOCAL_LOGIN_USER
 \end_layout
 
 \begin_layout Standard
-This attribute, with suggested API name GSS_C_ATTR_LOCAL_LOGIN_USER, and
- suggested actual name 
+This attribute, with suggested API symbolic name GSS_C_ATTR_LOCAL_LOGIN_USER,
+ and suggested actual name 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1176,8 +1345,48 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset CommandInset href
 LatexCommand href
+name "rfc4120"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
 name "rfc4121"
 target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc5280"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml"
 
 \end_inset
 
