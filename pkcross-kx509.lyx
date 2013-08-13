@@ -283,7 +283,7 @@ Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using Kerberized
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-krb5-pkcross-02
+draft-williams-kitten-krb5-pkcross-03
 \end_layout
 
 \end_inset
@@ -636,6 +636,32 @@ ly, realms' KDCs MAY be configured to automatically key cross-realm principals
  has not spent too much effort recently providing this service (i.e., KDCs
  should throttle attempts to establish symmetric cross-realm keys in this
  manner), and d) up to some maximum number of cross-realm principals.
+\end_layout
+
+\begin_layout Subsection
+Indication of Preference for/ Required Use of Symmetrically-Keyed Cross-Realm
+ Principals
+\end_layout
+
+\begin_layout Standard
+A KDC MAY reject a PKINIT/PKCROSS request with a KRB-ERROR indicating that
+ the use of a symmetrically-keyed cross-realm relation is required.
+ This is done using the following error code: <TBD>.
+ The following e-data TD type is used to hold a SEQUENCE OF Realm: <TBD>.
+\end_layout
+
+\begin_layout Standard
+A KDC MAY accept a PKINIT/PKCROSS request but indicate to the client that
+ a symmetrically-keyed cross-realm relation is preferred.
+ The KDC does this by including a PA-DATA containing a SEQUENCE OF Realm,
+ with the following pa-type: <TBD>.
+\end_layout
+
+\begin_layout RevisionRemark
+Add an ASN.1 module, even though it will contain only one untagged type consistin
+g of a SEQUENCE OF Realm, and the IANA-assigned values for error code, e-data
+ TD type, and pa-type, plus the import of the RFC4120 module (to get the
+ Realm type).
 \end_layout
 
 \begin_layout Section

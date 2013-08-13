@@ -9,7 +9,7 @@ Expires: February 14, 2014
 
   Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using
         Kerberized Certification Authorities (kx509) and PKINIT
-                 draft-williams-kitten-krb5-pkcross-02
+                 draft-williams-kitten-krb5-pkcross-03
 
 Abstract
 
@@ -70,6 +70,8 @@ Table of Contents
    1.1.    Conventions used in this document  . . . . . . . . . . . .  3
    2.      The Protocol . . . . . . . . . . . . . . . . . . . . . . .  4
    2.1.    Exchange of Long-Term Cross-Realm Symmetric Keys . . . . .  4
+   2.2.    Indication of Preference for/ Required Use of
+           Symmetrically-Keyed Cross-Realm Principals . . . . . . . .  5
    3.      Security Properties  . . . . . . . . . . . . . . . . . . .  6
    3.1.    Automated Cross-Realm Keying . . . . . . . . . . . . . . .  6
    3.2.    Privacy Protection relative to home realm  . . . . . . . .  6
@@ -90,8 +92,6 @@ Table of Contents
    8.1.    Normative References . . . . . . . . . . . . . . . . . . . 13
    8.2.    Informative References . . . . . . . . . . . . . . . . . . 13
            Author's Address . . . . . . . . . . . . . . . . . . . . . 14
-
-
 
 
 
@@ -247,23 +247,23 @@ Internet-Draft                   PKCROSS                     August 2013
    realm keys in this manner), and d) up to some maximum number of
    cross-realm principals.
 
+2.2.  Indication of Preference for/ Required Use of Symmetrically-Keyed
+      Cross-Realm Principals
 
+   A KDC MAY reject a PKINIT/PKCROSS request with a KRB-ERROR indicating
+   that the use of a symmetrically-keyed cross-realm relation is
+   required.  This is done using the following error code: <TBD>.  The
+   following e-data TD type is used to hold a SEQUENCE OF Realm: <TBD>.
 
+   A KDC MAY accept a PKINIT/PKCROSS request but indicate to the client
+   that a symmetrically-keyed cross-realm relation is preferred.  The
+   KDC does this by including a PA-DATA containing a SEQUENCE OF Realm,
+   with the following pa-type: <TBD>.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   [[anchor1: Add an ASN.1 module, even though it will contain only one
+   untagged type consisting of a SEQUENCE OF Realm, and the IANA-
+   assigned values for error code, e-data TD type, and pa-type, plus the
+   import of the RFC4120 module (to get the Realm type).]]
 
 
 
@@ -471,7 +471,7 @@ Internet-Draft                   PKCROSS                     August 2013
    fingerprint of the peer principal's realm's public key as their
    realm.
 
-   [[anchor1: For interoperability and compatibility we ought to specify
+   [[anchor2: For interoperability and compatibility we ought to specify
    what fingerprint algorithm to use, perhaps one of the SSHv2
    fingerprint algorithms, such as in RFC4255, but those use weaker
    hashes...]]
@@ -486,7 +486,7 @@ Internet-Draft                   PKCROSS                     August 2013
    will not appear in the transit path in tickets issued by KDCs reached
    via such cross-realm principals.
 
-   [[anchor2: Actually, we may need to specify some interfaces by which
+   [[anchor3: Actually, we may need to specify some interfaces by which
    to indicate that the user wishes to alias a pseudonymous name.
    Perhaps we can do so by applying GSS_Set_name_attribute() to a peer
    MN obtained from GSS_Inquire_context()?]]
@@ -507,7 +507,7 @@ Internet-Draft                   PKCROSS                     August 2013
 
 6.  Security Considerations
 
-   [[anchor3: All the security considerations of Kerberos and PKI apply.
+   [[anchor4: All the security considerations of Kerberos and PKI apply.
    Security considerations are discussed throughout this document.]]
 
    Scaling up the universe of realms reachable via any trust path
@@ -619,7 +619,7 @@ Internet-Draft                   PKCROSS                     August 2013
 
 7.  IANA Considerations
 
-   [[anchor4: Allocate the new KDCOptions flag (USE-SESSION-KEY-AS-
+   [[anchor5: Allocate the new KDCOptions flag (USE-SESSION-KEY-AS-
    REALM-KEY) and authorization-data element (AD-CLIENT-CERTIFICATE).]]
 
 
