@@ -1,0 +1,1285 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass docbook
+\use_default_options true
+\maintain_unincluded_children false
+\begin_local_layout
+Format 31
+
+InsetLayout Flex:PI_Strict
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_Strict
+End
+
+InsetLayout Flex:PI
+    LyXType Custom
+    HTMLTag div
+    LabelString PI
+End
+
+InsetLayout Flex:PI_SymRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SymRefs
+End
+
+InsetLayout Flex:PI_SortRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SortRefs
+End
+
+InsetLayout Flex:PI_TOC
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOC
+End
+
+InsetLayout Flex:PI_TOCIndent
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCIndent
+End
+
+InsetLayout Flex:PI_TOCDepth
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCDepth
+End
+
+InsetLayout Flex:PI_TOCNarrow
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCNarrow
+End
+
+InsetLayout Flex:PI_TOCCompact
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCCompact
+End
+
+InsetLayout Flex:PI_TOCAppendix
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCAppendix
+End
+
+InsetLayout Flex:DocName
+    LyXType Custom
+    HTMLTag div
+    LabelString DocName
+End
+
+InsetLayout Flex:IntendedStatus
+    LyXType Custom
+    HTMLTag div
+    LabelString IntendedStatus
+End
+
+InsetLayout Flex:Updates
+    LyXType Custom
+    HTMLTag div
+    LabelString Updates
+End
+
+InsetLayout Flex:Obsoletes
+    LyXType Custom
+    HTMLTag div
+    LabelString Obsoletes
+End
+
+InsetLayout Flex:SeriesNo
+    LyXType Custom
+    HTMLTag div
+    LabelString SeriesNo
+End
+
+InsetLayout Flex:RFCNumber
+    LyXType Custom
+    HTMLTag div
+    LabelString RFCNumber
+End
+
+InsetLayout Flex:IPR
+    LyXType Custom
+    HTMLTag div
+    LabelString IPR
+End
+
+InsetLayout Flex:IETFArea
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFArea
+End
+
+InsetLayout Flex:IETFWorkingGroup
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFWorkingGroup
+End
+
+InsetLayout Flex:XML2RFCKeyword
+    LyXType Custom
+    HTMLTag div
+    LabelString XML2RFCKeyword
+End
+
+InsetLayout Flex:TitleAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString TitleAbbrev
+End
+
+InsetLayout Flex:AuthorRole
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthRole
+End
+
+InsetLayout Flex:AuthorInitials
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthInitials
+End
+
+InsetLayout Flex:AuthorSurname
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthSurname
+End
+
+InsetLayout Flex:AuthorOrg
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrg
+End
+
+InsetLayout Flex:AuthorOrgAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrgAbbrev
+End
+
+InsetLayout Flex:AuthorEmailAddr
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthEmailAddr
+End
+
+InsetLayout Flex:AuthorAddrStreet
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrStreet
+End
+
+InsetLayout Flex:AuthorAddrCity
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCity
+End
+
+InsetLayout Flex:AuthorAddrRegion
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrRegion
+End
+
+InsetLayout Flex:AuthorAddrCode
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCode
+End
+
+InsetLayout Flex:AuthorAddrCountry
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCountry
+End
+
+InsetLayout Flex:EntityXRef
+    LyXType Custom
+    HTMLTag div
+    LabelString EntityXRef
+End
+
+InsetLayout Flex:BibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString BibXML
+End
+
+InsetLayout Flex:EmbeddedBibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString EmbeddedBibXML
+End
+\end_local_layout
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman cmr
+\font_sans cmss
+\font_typewriter cmtt
+\font_default_family ttdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Boundary Analysis for Internationalization and Localization
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex DocName
+status open
+
+\begin_layout Plain Layout
+draft-williams-i18n-boundary-analysis-00
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IPR
+status open
+
+\begin_layout Plain Layout
+trust200902
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IntendedStatus
+status open
+
+\begin_layout Plain Layout
+info
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex TitleAbbrev
+status open
+
+\begin_layout Plain Layout
+I18N Boundary Analysis
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IETFArea
+status open
+
+\begin_layout Plain Layout
+General
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex XML2RFCKeyword
+status open
+
+\begin_layout Plain Layout
+Internet-Draft
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Updates
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex PI TOC
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI SymRefs
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI TOCIndent
+status open
+
+\begin_layout Plain Layout
+no
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+comments="yes"
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+inline="yes"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Nicolas Williams
+\begin_inset Flex AuthorOrg
+status open
+
+\begin_layout Plain Layout
+Cryptonector, LLC
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorOrgAbbrev
+status open
+
+\begin_layout Plain Layout
+Cryptonector
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorEmailAddr
+status open
+
+\begin_layout Plain Layout
+nico@cryptonector.com
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+Internationalization of protocols and programs often requires determining
+ where to use one or another character repertoire, codeset, encoding, where
+ to perform localization, and so on.
+ This document aims to serve as a guide to Internet protocol designers in
+ determining what they may or should recommend or require of protocol implemento
+rs.
+ Of particular interest are filesystem protocols.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction and Motivation
+\end_layout
+
+\begin_layout Standard
+As the IETF has attempted to internationalize Internet protocols we have
+ learned some valuable lessons.
+ It is time to write these down.
+ The author is primarily aware of lessons from internationalization of NFSv4
+ 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC3530
+\end_layout
+
+\end_inset
+
+ and filesystems in general, as well as Kerberos RFC4120, Simple Authentication
+ and Security Layers (SASL) 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4422
+\end_layout
+
+\end_inset
+
+, and the Generic Security Services Application Programming Interface (GSS-API)
+ 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2743
+\end_layout
+
+\end_inset
+
+, therefore that will be the point of departure for this document.
+\end_layout
+
+\begin_layout Standard
+This document is INFORMATIVE.
+\end_layout
+
+\begin_layout Subsection
+Conventions used in this document
+\end_layout
+
+\begin_layout Standard
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+ "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are
+ to be interpreted as described in 
+\begin_inset Flex EntityXRef
+status open
+
+\begin_layout Plain Layout
+RFC2119
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Internationalization
+\end_layout
+
+\begin_layout Standard
+Internationalizing a protocol roughly requires the following tasks:
+\end_layout
+
+\begin_layout Enumerate
+decide where to use Unicode [XXX add reference] and what encoding of Unicode
+\end_layout
+
+\begin_layout Enumerate
+decide where any conversions to other codesets should be done, if any
+\end_layout
+
+\begin_layout Enumerate
+decide what Unicode characters (and non-characters) to permit or forbid
+\end_layout
+
+\begin_layout Enumerate
+decide what Unicode character mappings are appropriate
+\end_layout
+
+\begin_layout Enumerate
+decide how to handle string equality, including case-sensitive and case-insensit
+ive behavior, and whether and how to handle Unicode equivalence (normalization)
+\end_layout
+
+\begin_layout Standard
+In practice, because historically most protocols and data formats do not
+ tag strings with any language nor codeset information, and because codesets
+ and their encodings often overlap, and other legacy problems, there's no
+ simple way to decide where to perform any conversions, mappings, or checks.
+\end_layout
+
+\begin_layout Standard
+We describe here our experience with NFSv4 and Kerberos.
+\end_layout
+
+\begin_layout Subsection
+Terminology
+\end_layout
+
+\begin_layout Standard
+[...]
+\end_layout
+
+\begin_layout Standard
+Some terms used in this document:
+\end_layout
+
+\begin_layout Description
+just-use-8 Where a program or protocol component accepts character strings,
+ treating them as arbitrary octet strings, often assuming that byte values
+ less than 0x80 are US-ASCII, or that specific byte values are specific
+ US-ASCII characters (e.g., filesystem path component separators).
+\end_layout
+
+\begin_layout Description
+just-send-8 Where a program or protocol component sends character strings
+ without regard as to whether the string's codeset/encoding are the expected
+ on-the-wire codeset/encoding.
+\end_layout
+
+\begin_layout Description
+just-use-UTF-8 Where a program or protocol component accepts character strings
+ that are valid UTF-8 strings withour regard to normalization.
+\end_layout
+
+\begin_layout Description
+just-send-UTF-8 Where a program or protocol component sends UTF-8 character
+ strings without attempting to normalize or perform any similar steps (e.g.,
+ applying character mappings and/or prohibitions).
+\end_layout
+
+\begin_layout Section
+NFSv4 and Filesystems
+\end_layout
+
+\begin_layout Standard
+Filesystems and filesystem protocols may be the most difficult application
+ to internationalize that we in the IETF have seen to date.
+ Initially, for NFSv4 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC3530
+\end_layout
+
+\end_inset
+
+ we believed that we could simply mandate the use of UTF-8 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC3629
+\end_layout
+
+\end_inset
+
+, forbid some characters, require a choice of normalization forms, and we'd
+ be done.
+ In practice it was not so simple.
+\end_layout
+
+\begin_layout Subsection
+Filesystem Client and Server Architecture
+\end_layout
+
+\begin_layout Standard
+To understand the difficulties faced in internationalizing NFSv4 we need
+ to understand the typical architecture of NFSv4 clients and servers.
+ We say 
+\begin_inset Quotes eld
+\end_inset
+
+typical
+\begin_inset Quotes erd
+\end_inset
+
+, but it really is typical: the vast majority, if not all of the major general-p
+urpose operating systems in use at this time and over the entire history
+ of NFSv4 share the architecture that we describe here, differing only in
+ minor details.
+\end_layout
+
+\begin_layout Standard
+Normally the architecture and design of clients and servers would be of
+ no interest to the IETF: we certainly don't want to dictate such things.
+ In this case architecture and legacy combine to create unusual problems
+ for filesystem protocols.
+\end_layout
+
+\begin_layout Standard
+Both, clients and servers, typically have a 
+\begin_inset Quotes eld
+\end_inset
+
+kernel
+\begin_inset Quotes erd
+\end_inset
+
+ that executes privileged mode object code and which has a pluggable 
+\begin_inset Quotes eld
+\end_inset
+
+virtual filesystem switch
+\begin_inset Quotes erd
+\end_inset
+
+ (VFS) -- an interface that abstracts filesystems so as to permit support
+ for many different types of filesystems.
+ Clients, and usually servers, also run user-mode object code -less privileged
+ than kernel-mode object code- that interfaces with filesystems by invoking
+ privileged kernel-mode code through well-defined interfaces (
+\begin_inset Quotes eld
+\end_inset
+
+system calls
+\begin_inset Quotes erd
+\end_inset
+
+) that allow the kernel to maintain privilege separation and isolation.
+ These system calls too present a common, standard, abstract interface to
+ all filesystems that can be plugged into the kernel's VFS.
+ Some servers run no user-mode object code to speak of, running all fileserver
+ protocol implementations in kernel mode, nonetheless, the architecture
+ is roughly the same for servers as for clients.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Obvious-Boundaries"
+
+\end_inset
+
+Obvious Boundaries
+\end_layout
+
+\begin_layout Standard
+Some boundaries are immediately evident:
+\end_layout
+
+\begin_layout Itemize
+the system call layer, between user-mode and kernel mode
+\end_layout
+
+\begin_layout Itemize
+the VFS boundary, between generic kernel object code and specific filesystem
+ implementations
+\end_layout
+
+\begin_layout Itemize
+the network, between the client implementation and the server implementation
+\end_layout
+
+\begin_layout Itemize
+the VFS again, between the server and the filesystems beneath it
+\end_layout
+
+\begin_layout Itemize
+persistent storage network, between specific filesystem implementations
+ and persistent storage
+\end_layout
+
+\begin_layout Standard
+Their relevance to I18N will be discussed further below.
+\end_layout
+
+\begin_layout Subsection
+Legacy
+\end_layout
+
+\begin_layout Standard
+Many, perhaps all commonly used general-purpose operating systems, predate
+ modern internationalization efforts.
+ Most such operating systems simply treated character strings as mostly
+ opaque at many if not all of the boundaries described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Obvious-Boundaries"
+
+\end_inset
+
+, at most interpreting path component separator characters, in the process
+ assuming US-ASCII [XXX add reference] as the lowest common denominator
+ for the purpose of finding path component separators.
+\end_layout
+
+\begin_layout Standard
+Because these operating systems, filesystem on-disk formats, and actual
+ on-disk filesystems, predate modern internationalization efforts, there
+ exist many filesystems with object name strings of unknown or mixed codesets.
+ Strings, such as object names, in filesystems are never tagged with codeset
+ information because the codeset information was and still is usually lost
+ at the system call boundary.
+ The actual codesets (and encodings) used typically varies along with user
+ (and system administrator) locale preferences.
+\end_layout
+
+\begin_layout Subsubsection
+Legacy Problem #1: Loss of Metadata at the System Call Boundary
+\end_layout
+
+\begin_layout Standard
+The first and foremost problem, then, is the loss of locale metadata at
+ the system call boundary.
+ Without fixing this we cannot move to an all-Unicode world in filesystems
+ protocols.all
+\end_layout
+
+\begin_layout Subsubsection
+Legacy Problem #2: Unknown Character String Metadata in Existing Filesystem
+ Content
+\end_layout
+
+\begin_layout Standard
+The second most important problem in filesystem internationalization is
+ the lack of locale (codeset, encoding) metadata for existing (legacy) filesyste
+m content, specifically file and directory names.
+\end_layout
+
+\begin_layout Subsubsection
+Legacy Problem #3: Non-Normalization
+\end_layout
+
+\begin_layout Standard
+Historically Unicode input methods tend to produce pre-composed codepoints
+ -- something close to Normalization Form Composed (NFC).
+ But this is not always so.
+\end_layout
+
+\begin_layout Standard
+Historically most filesystems treat file (and directory) names as opaque,
+ but at least one filesystem (Apple's HFS+ [XXX add reference]) assumes
+ UTF-8 and normalizes to Normalization Form Decomposed (NFD) at object-create
+ and object-lookup time.
+\end_layout
+
+\begin_layout Standard
+This can result in subtle interoperability problems, as two objects with
+ equivalent names may exist in namespaces (directories) where names are
+ expected to be unique, or users may fail to input names that match those
+ that exist in a filesystem.
+\end_layout
+
+\begin_layout Subsubsection
+Legacy Problem #4: Ignored Requirements
+\end_layout
+
+\begin_layout Standard
+The original NFSv4 specification 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC3530
+\end_layout
+
+\end_inset
+
+ requires some character mappings and prohibitions.
+ Most implementations have ignored this requirement.
+\end_layout
+
+\begin_layout Subsubsection
+Legacy Problem #5: Constraints Imposed by Non-Internet Standards
+\end_layout
+
+\begin_layout Standard
+POSIX [XXX add reference] is one common standard for system call interfaces
+ to filesystems.
+ Arguably it requires that:
+\end_layout
+
+\begin_layout Enumerate
+applications observe the same file/directory names -when listing a directory-
+ as they created;
+\end_layout
+
+\begin_layout Enumerate
+no aliases may exist for files/directories that are not 
+\begin_inset Quotes eld
+\end_inset
+
+symlinks
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+hardlinks
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+This makes it very difficult to deploy Unicode normalization anywhere other
+ than the application.
+ But it is not possible to fix every POSIX application to normalize on create
+ or lookup!
+\end_layout
+
+\begin_layout Subsection
+A World Without Legacy
+\end_layout
+
+\begin_layout Standard
+If we didn't have the legacy problems described above we could simply mandate
+ the use of Unicode in one specific encoding (e.g., UTF-8) 
+\begin_inset Quotes eld
+\end_inset
+
+in the middle
+\begin_inset Quotes erd
+\end_inset
+
+, with the middle being: from the system call boundary, to the VFS boundary,
+ as well 
+\begin_inset Quotes eld
+\end_inset
+
+on the wire
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Any codeset conversions and Unicode normalization would be performed at
+ the system call boundary (i.e., on the client) and at the VFS boundary (if,
+ for example, a filesystem on-disk format requires different codfeset/encoding
+ than the protocol does on the wire).
+\end_layout
+
+\begin_layout Standard
+In an ideal world there would be no Unicode normalization problems because
+ either there would be just one normal form for Unicode or because all implement
+ations of filesystem clients, servers, filesystems, and filesystem-using
+ applications, would use a single, common normal form.
+\end_layout
+
+\begin_layout Subsection
+Coping with Legacy: Accept it
+\end_layout
+
+\begin_layout Standard
+Legacy abounds.
+ We must cope with it.
+\end_layout
+
+\begin_layout Standard
+First, the IETF can't cause the system call boundary metadata loss problem
+ to be fixed.
+ The architectures of the relevant operating systems is such that the simplest
+ fix for that problem is to convert between the user-mode locale's codeset/encod
+ing and the codeset/encoding expected by the kernel.
+ But getting such a fix to be implemented and deployed is difficult for
+ a number of reasons, not the least of which is its impact on performance
+ (for users using locales that require conversions), but also complexity:
+ the user-mode side of system calls can sometimes be in a bootstrapping
+ state during which I18N object code may not have been loaded yet.
+ The simplest fix for this problem is to recommend that users use only locales
+ that use Unicode as the charater repertoire and codeset, preferably with
+ the encoding expected on the kernel-side of the system call boundary.
+\end_layout
+
+\begin_layout Standard
+The second legacy problem -legacy filesystem content- could be addressed
+ by requiring manual inspection and repair of legacy content, but there
+ exist such vast amounts of legacy contents that this is not a realistic
+ option.
+ There is no fix for the legacy filesystem content problem.
+\end_layout
+
+\begin_layout Subsubsection
+Implications of Accepting Legacy
+\end_layout
+
+\begin_layout Standard
+Some implications of accepting legacy:
+\end_layout
+
+\begin_layout Itemize
+we may want Unicode in the middle, but sometimes we'll have non-Unicode
+ content
+\end_layout
+
+\begin_layout Itemize
+we can stop the creation of new non-Unicode content on disk, but we can't
+ really preclude access to it
+\end_layout
+
+\begin_layout Itemize
+normalization-on-create is problematic
+\end_layout
+
+\begin_layout Itemize
+normalization-on-lookup is problematic
+\end_layout
+
+\begin_layout Itemize
+normalization-insensitive lookups are problematic
+\end_layout
+
+\begin_layout Itemize
+ignoring normalization is problematic
+\end_layout
+
+\begin_layout Subsection
+Recommendations for Filesystem Protocols, Filesystems, and Operating Systems
+\end_layout
+
+\begin_layout Itemize
+Filesystems SHOULD be configurable to reject object names which are not
+ valid in the filesystem's chosen Unicode encoding.
+\end_layout
+
+\begin_layout Itemize
+Filesystem servers SHOULD accept object names -from clients- which are not
+ valid Unicode in the protocol's chosen Unicode encoding.
+\end_layout
+
+\begin_layout Itemize
+Filesystem servers SHOULD accept object names -from filesystems- which are
+ not valid in the host operating system's chosen codeset and encoding for
+ use above the VFS.
+\end_layout
+
+\begin_layout Itemize
+Filesystems SHOULD be configurable as to Unicode normalization, allowing
+ at least the following two options:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Normalization-insensitive lookups.
+\end_layout
+
+\begin_layout Itemize
+No normalization at all.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Filesystems MAY be configurable as to Unicode normalization, allowing these
+ additional options:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Normalize on create and lookup
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Operating systems SHOULD be configurable as to codeset/encoding conversions
+ at the system call boundary, allowing these options:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+convert to/from non-Unicode locales' codesets
+\end_layout
+
+\begin_layout Itemize
+no conversion
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Interoperability Considerations for Filesystem Protocols
+\end_layout
+
+\begin_layout Standard
+...
+\end_layout
+
+\begin_layout Section
+Kerberos
+\end_layout
+
+\begin_layout Standard
+Kerberos V5 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4120
+\end_layout
+
+\end_inset
+
+ names two things: principals and realms.
+ Historically only US-ASCII has interoperated well.
+ In practice most implementations just-use-8 and just-send-8, and some just-send
+-UTF-8 and just-use-UTF-8.
+\end_layout
+
+\begin_layout Standard
+We considered adding negotiation of the use of non-US-ASCII UTF-8 principal
+ and realm names, but the resulting protocol was quite complex.
+\end_layout
+
+\begin_layout Standard
+It may soon be time to revisit Kerberos V5 internationalization.
+ Problems to address include:
+\end_layout
+
+\begin_layout Itemize
+how to deal with Kerberos' use of IA5String, which effectively precludes
+ use of Unicode [this is a long story, and we should tell it in detail]:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+just treat earstwhile IA5String SEQUENCE fields as a CHOICE of IA5String
+ or UTF8String?
+\end_layout
+
+\begin_layout Itemize
+just send UTF-8 as IA5String?
+\end_layout
+
+\begin_layout Itemize
+negotiate support for treating IA5String SEQUENCE fields as CHOICEs of IA5Strign
+ and UTF8String?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+How to deal with normalization?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+should KDCs treat principal names as normalization-insensitive?
+\end_layout
+
+\begin_layout Itemize
+should principal names used as cryptographic salts be normalized to any
+ particular form?
+\end_layout
+
+\begin_layout Itemize
+should clients and services normalize or treat in a nomalization-form-insensitiv
+e manner any principal component and realm names seen in sname/srealm/cname/crea
+lm/transited/and other fields of Ticket, Authenticator, and other Kerberos
+ ASN.1 types?
+\end_layout
+
+\end_deeper
+\begin_layout Section
+SASL
+\end_layout
+
+\begin_layout Standard
+[Talk about the difference between authentication ID and authorization ID,
+ and the different boundaries for each.]
+\end_layout
+
+\begin_layout Section
+Security Considerations
+\end_layout
+
+\begin_layout Standard
+[Lots to talk about here.]
+\end_layout
+
+\begin_layout Section
+IANA Considerations
+\end_layout
+
+\begin_layout Standard
+There are no IANA considerations in this document.
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:References"
+
+\end_inset
+
+Normative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2119"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Informative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc3530"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3530.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc3629"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3629.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4120"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2743"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4422"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4422.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

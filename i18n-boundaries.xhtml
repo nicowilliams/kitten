@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "file:///home/nico/I-Ds/kitten/../test/src/../data/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="GENERATOR" content="LyX 2.0.2" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>Boundary Analysis for Internationalization and Localization</title>
+
+<!-- Text Class Preamble -->
+<style type="text/css">
+div.toc {
+margin: 2em 0em;
+border-style: solid;
+border-width: 2px 0px;
+padding: 1em 0em;
+}
+div.tochead { font-size: x-large; font-weight: bold; }
+div.lyxtoc-0 {
+margin: 2em 0em 0em 0em;
+font-size: xx-large;
+font-weight: bold;
+}
+div.lyxtoc-1 {
+margin: 1em 0em 0em 0em;
+font-size: x-large;
+font-weight: bold;
+}
+div.lyxtoc-2 {
+margin: 0em 0em 0em 1em;
+font-size: large;
+font-weight: normal;
+}
+div.lyxtoc-3 { margin: 0em 0em 0em 0.5em; font-size: medium; }
+div.lyxtoc-4 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-5 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-6 { margin: 0em 0em 0em 0.5em; }
+a.tocentry {
+text-decoration: none;
+color: black;
+}
+a.tocentry:visited { color: black; }
+a.tocarrow {
+font-weight: bold;
+text-decoration: none;
+color: #909090;
+}
+a.tocarrow:visited { color: #C0C0C0; }
+</style>
+
+<!-- Preamble Snippets -->
+
+<!-- Layout-provided Styles -->
+<style type='text/css'>
+h1.title {
+font-size: x-large;
+margin-bottom: 1ex;
+text-align: center;
+
+}
+div.standard {
+text-align: left;
+
+}
+div.plain_layout {
+text-align: left;
+
+}
+div.author {
+font-size: large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: center;
+
+}
+div.abstract {
+font-size: small;
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+margin-right: 3ex;
+text-align: left;
+
+}
+div.abstract_label {
+font-weight: bold;
+font-size: large;
+text-align: center;
+
+}
+
+div.abstract {
+margin: 4ex;
+}
+div.abstract_item {
+font-size: small;
+padding-top: 1ex;
+}
+div.abstract_label {
+font-weight: bold;
+}
+h2.section {
+font-weight: bold;
+font-size: x-large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: left;
+
+}
+h3.subsection {
+font-weight: bold;
+font-size: large;
+margin-top: 0.9ex;
+margin-bottom: 0.5ex;
+text-align: left;
+
+}
+ol.enumerate {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+dl.description dt { font-weight: bold; }
+ul.itemize {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+h4.subsubsection {
+font-weight: bold;
+font-size: medium;
+margin-top: 0.7ex;
+margin-bottom: 0.4ex;
+text-align: left;
+
+}
+div.flex_docname {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ipr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_intendedstatus {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_titleabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ietfarea {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_xml_rfckeyword {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_updates {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_toc {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_symrefs {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_tocindent {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororg {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororgabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authoremailaddr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_entityxref {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_bibxml {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+</style>
+</head>
+<body>
+<h1 class="title"><a id='magicparlabel-1' />
+Boundary Analysis for Internationalization and Localization</h1>
+<div class="standard"><a id='magicparlabel-2' />
+<div class="flex_docname"><div class="plain_layout"><a id='magicparlabel-6' />
+draft-williams-i18n-boundary-analysis-00</div>
+</div><div class="flex_ipr"><div class="plain_layout"><a id='magicparlabel-10' />
+trust200902</div>
+</div><div class="flex_intendedstatus"><div class="plain_layout"><a id='magicparlabel-14' />
+info</div>
+</div><div class="flex_titleabbrev"><div class="plain_layout"><a id='magicparlabel-18' />
+I18N Boundary Analysis</div>
+</div><div class="flex_ietfarea"><div class="plain_layout"><a id='magicparlabel-22' />
+General</div>
+</div><div class="flex_xml_rfckeyword"><div class="plain_layout"><a id='magicparlabel-26' />
+Internet-Draft</div>
+</div><div class="flex_updates"><div class="plain_layout"><a id='magicparlabel-30' />
+</div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-31' />
+<div class="flex_pi_toc"><div class="plain_layout"><a id='magicparlabel-35' />
+yes</div>
+</div><div class="flex_pi_symrefs"><div class="plain_layout"><a id='magicparlabel-39' />
+yes</div>
+</div><div class="flex_pi_tocindent"><div class="plain_layout"><a id='magicparlabel-43' />
+no</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-47' />
+comments="yes"</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-51' />
+inline="yes"</div>
+</div></div>
+
+<div class="author"><div class="author_item"><a id='magicparlabel-52' />
+Nicolas Williams<div class="flex_authororg"><div class="plain_layout"><a id='magicparlabel-56' />
+Cryptonector, LLC</div>
+</div><div class="flex_authororgabbrev"><div class="plain_layout"><a id='magicparlabel-60' />
+Cryptonector</div>
+</div><div class="flex_authoremailaddr"><div class="plain_layout"><a id='magicparlabel-64' />
+nico@cryptonector.com</div>
+</div></div>
+</div>
+
+<div class="abstract"><div class="abstract_label">Abstract</div>
+<div class="abstract_item"><a id='magicparlabel-65' />
+Internationalization of protocols and programs often requires determining where to use one or another character repertoire, codeset, encoding, where to perform localization, and so on. This document aims to serve as a guide to Internet protocol designers in determining what they may or should recommend or require of protocol implementors. Of particular interest are filesystem protocols.</div>
+</div>
+<div class="standard"><a id='magicparlabel-66' />
+</div>
+<div class='toc'><div class='tochead part_'>Table of Contents</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-67' class='tocentry'>1 Introduction and Motivation</a> <a href='#magicparlabel-67' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-82' class='tocentry'>1.1 Conventions used in this document</a> <a href='#magicparlabel-82' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-88' class='tocentry'>2 Internationalization</a> <a href='#magicparlabel-88' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-97' class='tocentry'>2.1 Terminology</a> <a href='#magicparlabel-97' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-104' class='tocentry'>3 NFSv4 and Filesystems</a> <a href='#magicparlabel-104' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-114' class='tocentry'>3.1 Filesystem Client and Server Architecture</a> <a href='#magicparlabel-114' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-118' class='tocentry'>3.2 Obvious Boundaries</a> <a href='#magicparlabel-118' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-126' class='tocentry'>3.3 Legacy</a> <a href='#magicparlabel-126' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-129' class='tocentry'>3.3.1 Legacy Problem #1: Loss of Metadata at the System Call Boundary</a> <a href='#magicparlabel-129' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-131' class='tocentry'>3.3.2 Legacy Problem #2: Unknown Character String Metadata in Existing Filesystem Content</a> <a href='#magicparlabel-131' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-133' class='tocentry'>3.3.3 Legacy Problem #3: Non-Normalization</a> <a href='#magicparlabel-133' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-137' class='tocentry'>3.3.4 Legacy Problem #4: Ignored Requirements</a> <a href='#magicparlabel-137' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-143' class='tocentry'>3.3.5 Legacy Problem #5: Constraints Imposed by Non-Internet Standards</a> <a href='#magicparlabel-143' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-148' class='tocentry'>3.4 A World Without Legacy</a> <a href='#magicparlabel-148' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-151' class='tocentry'>3.5 Coping with Legacy: Accept it</a> <a href='#magicparlabel-151' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-155' class='tocentry'>3.5.1 Implications of Accepting Legacy</a> <a href='#magicparlabel-155' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-163' class='tocentry'>3.6 Recommendations for Filesystem Protocols, Filesystems, and Operating Systems</a> <a href='#magicparlabel-163' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-175' class='tocentry'>3.7 Interoperability Considerations for Filesystem Protocols</a> <a href='#magicparlabel-175' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-177' class='tocentry'>4 Kerberos</a> <a href='#magicparlabel-177' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-193' class='tocentry'>5 SASL</a> <a href='#magicparlabel-193' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-195' class='tocentry'>6 Security Considerations</a> <a href='#magicparlabel-195' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-197' class='tocentry'>7 IANA Considerations</a> <a href='#magicparlabel-197' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-199' class='tocentry'>8 Normative References</a> <a href='#magicparlabel-199' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-205' class='tocentry'>9 Informative References</a> <a href='#magicparlabel-205' class='tocarrow'>&gt;</a></div>
+</div>
+
+<h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-67' />
+Introduction and Motivation</h2>
+<div class="standard"><a id='magicparlabel-68' />
+As the IETF has attempted to internationalize Internet protocols we have learned some valuable lessons. It is time to write these down. The author is primarily aware of lessons from internationalization of NFSv4 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-72' />
+RFC3530</div>
+</div> and filesystems in general, as well as Kerberos RFC4120, Simple Authentication and Security Layers (SASL) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-76' />
+RFC4422</div>
+</div>, and the Generic Security Services Application Programming Interface (GSS-API) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-80' />
+RFC2743</div>
+</div>, therefore that will be the point of departure for this document.</div>
+
+<div class="standard"><a id='magicparlabel-81' />
+This document is INFORMATIVE.</div>
+<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-82' />
+Conventions used in this document</h3>
+<div class="standard"><a id='magicparlabel-83' />
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-87' />
+RFC2119</div>
+</div>.</div>
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-88' />
+Internationalization</h2>
+<div class="standard"><a id='magicparlabel-89' />
+Internationalizing a protocol roughly requires the following tasks:</div>
+
+<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-90' />
+decide where to use Unicode [XXX add reference] and what encoding of Unicode</li>
+<li class="enumerate_item"><a id='magicparlabel-91' />
+decide where any conversions to other codesets should be done, if any</li>
+<li class="enumerate_item"><a id='magicparlabel-92' />
+decide what Unicode characters (and non-characters) to permit or forbid</li>
+<li class="enumerate_item"><a id='magicparlabel-93' />
+decide what Unicode character mappings are appropriate</li>
+<li class="enumerate_item"><a id='magicparlabel-94' />
+decide how to handle string equality, including case-sensitive and case-insensitive behavior, and whether and how to handle Unicode equivalence (normalization)</li>
+</ol>
+<div class="standard"><a id='magicparlabel-95' />
+In practice, because historically most protocols and data formats do not tag strings with any language nor codeset information, and because codesets and their encodings often overlap, and other legacy problems, there's no simple way to decide where to perform any conversions, mappings, or checks.</div>
+
+<div class="standard"><a id='magicparlabel-96' />
+We describe here our experience with NFSv4 and Kerberos.</div>
+<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-97' />
+Terminology</h3>
+<div class="standard"><a id='magicparlabel-98' />
+[...]</div>
+
+<div class="standard"><a id='magicparlabel-99' />
+Some terms used in this document:</div>
+
+<dl class='description'><dt class="description_label">just-use-8</dt>
+<dd class="description_item"><a id='magicparlabel-100' />
+ Where a program or protocol component accepts character strings, treating them as arbitrary octet strings, often assuming that byte values less than 0x80 are US-ASCII, or that specific byte values are specific US-ASCII characters (e.g., filesystem path component separators).</dd>
+<dt class="description_label">just-send-8</dt>
+<dd class="description_item"><a id='magicparlabel-101' />
+ Where a program or protocol component sends character strings without regard as to whether the string's codeset/encoding are the expected on-the-wire codeset/encoding.</dd>
+<dt class="description_label">just-use-UTF-8</dt>
+<dd class="description_item"><a id='magicparlabel-102' />
+ Where a program or protocol component accepts character strings that are valid UTF-8 strings withour regard to normalization.</dd>
+<dt class="description_label">just-send-UTF-8</dt>
+<dd class="description_item"><a id='magicparlabel-103' />
+ Where a program or protocol component sends UTF-8 character strings without attempting to normalize or perform any similar steps (e.g., applying character mappings and/or prohibitions).</dd>
+</dl>
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-104' />
+NFSv4 and Filesystems</h2>
+<div class="standard"><a id='magicparlabel-105' />
+Filesystems and filesystem protocols may be the most difficult application to internationalize that we in the IETF have seen to date. Initially, for NFSv4 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-109' />
+RFC3530</div>
+</div> we believed that we could simply mandate the use of UTF-8 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-113' />
+RFC3629</div>
+</div>, forbid some characters, require a choice of normalization forms, and we'd be done. In practice it was not so simple.</div>
+<h3 class="subsection"><span class="subsection_label">3.1</span> <a id='magicparlabel-114' />
+Filesystem Client and Server Architecture</h3>
+<div class="standard"><a id='magicparlabel-115' />
+To understand the difficulties faced in internationalizing NFSv4 we need to understand the typical architecture of NFSv4 clients and servers. We say &ldquo;typical&rdquo;, but it really is typical: the vast majority, if not all of the major general-purpose operating systems in use at this time and over the entire history of NFSv4 share the architecture that we describe here, differing only in minor details.</div>
+
+<div class="standard"><a id='magicparlabel-116' />
+Normally the architecture and design of clients and servers would be of no interest to the IETF: we certainly don't want to dictate such things. In this case architecture and legacy combine to create unusual problems for filesystem protocols.</div>
+
+<div class="standard"><a id='magicparlabel-117' />
+Both, clients and servers, typically have a &ldquo;kernel&rdquo; that executes privileged mode object code and which has a pluggable &ldquo;virtual filesystem switch&rdquo; (VFS) &ndash; an interface that abstracts filesystems so as to permit support for many different types of filesystems. Clients, and usually servers, also run user-mode object code -less privileged than kernel-mode object code- that interfaces with filesystems by invoking privileged kernel-mode code through well-defined interfaces (&ldquo;system calls&rdquo;) that allow the kernel to maintain privilege separation and isolation. These system calls too present a common, standard, abstract interface to all filesystems that can be plugged into the kernel's VFS. Some servers run no user-mode object code to speak of, running all fileserver protocol implementations in kernel mode, nonetheless, the architecture is roughly the same for servers as for clients.</div>
+<h3 class="subsection"><span class="subsection_label">3.2</span> <a id='magicparlabel-118' />
+<a id="sub_Obvious_Boundaries" />
+Obvious Boundaries</h3>
+<div class="standard"><a id='magicparlabel-119' />
+Some boundaries are immediately evident:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-120' />
+the system call layer, between user-mode and kernel mode</li>
+<li class="itemize_item"><a id='magicparlabel-121' />
+the VFS boundary, between generic kernel object code and specific filesystem implementations</li>
+<li class="itemize_item"><a id='magicparlabel-122' />
+the network, between the client implementation and the server implementation</li>
+<li class="itemize_item"><a id='magicparlabel-123' />
+the VFS again, between the server and the filesystems beneath it</li>
+<li class="itemize_item"><a id='magicparlabel-124' />
+persistent storage network, between specific filesystem implementations and persistent storage</li>
+</ul>
+<div class="standard"><a id='magicparlabel-125' />
+Their relevance to I18N will be discussed further below.</div>
+<h3 class="subsection"><span class="subsection_label">3.3</span> <a id='magicparlabel-126' />
+Legacy</h3>
+<div class="standard"><a id='magicparlabel-127' />
+Many, perhaps all commonly used general-purpose operating systems, predate modern internationalization efforts. Most such operating systems simply treated character strings as mostly opaque at many if not all of the boundaries described in <a href="#sub_Obvious_Boundaries">3.2</a>, at most interpreting path component separator characters, in the process assuming US-ASCII [XXX add reference] as the lowest common denominator for the purpose of finding path component separators.</div>
+
+<div class="standard"><a id='magicparlabel-128' />
+Because these operating systems, filesystem on-disk formats, and actual on-disk filesystems, predate modern internationalization efforts, there exist many filesystems with object name strings of unknown or mixed codesets. Strings, such as object names, in filesystems are never tagged with codeset information because the codeset information was and still is usually lost at the system call boundary. The actual codesets (and encodings) used typically varies along with user (and system administrator) locale preferences.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.3.1</span> <a id='magicparlabel-129' />
+Legacy Problem #1: Loss of Metadata at the System Call Boundary</h4>
+<div class="standard"><a id='magicparlabel-130' />
+The first and foremost problem, then, is the loss of locale metadata at the system call boundary. Without fixing this we cannot move to an all-Unicode world in filesystems protocols.all</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.3.2</span> <a id='magicparlabel-131' />
+Legacy Problem #2: Unknown Character String Metadata in Existing Filesystem Content</h4>
+<div class="standard"><a id='magicparlabel-132' />
+The second most important problem in filesystem internationalization is the lack of locale (codeset, encoding) metadata for existing (legacy) filesystem content, specifically file and directory names.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.3.3</span> <a id='magicparlabel-133' />
+Legacy Problem #3: Non-Normalization</h4>
+<div class="standard"><a id='magicparlabel-134' />
+Historically Unicode input methods tend to produce pre-composed codepoints &ndash; something close to Normalization Form Composed (NFC). But this is not always so.</div>
+
+<div class="standard"><a id='magicparlabel-135' />
+Historically most filesystems treat file (and directory) names as opaque, but at least one filesystem (Apple's HFS+ [XXX add reference]) assumes UTF-8 and normalizes to Normalization Form Decomposed (NFD) at object-create and object-lookup time.</div>
+
+<div class="standard"><a id='magicparlabel-136' />
+This can result in subtle interoperability problems, as two objects with equivalent names may exist in namespaces (directories) where names are expected to be unique, or users may fail to input names that match those that exist in a filesystem.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.3.4</span> <a id='magicparlabel-137' />
+Legacy Problem #4: Ignored Requirements</h4>
+<div class="standard"><a id='magicparlabel-138' />
+The original NFSv4 specification <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-142' />
+RFC3530</div>
+</div> requires some character mappings and prohibitions. Most implementations have ignored this requirement.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.3.5</span> <a id='magicparlabel-143' />
+Legacy Problem #5: Constraints Imposed by Non-Internet Standards</h4>
+<div class="standard"><a id='magicparlabel-144' />
+POSIX [XXX add reference] is one common standard for system call interfaces to filesystems. Arguably it requires that:</div>
+
+<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-145' />
+applications observe the same file/directory names -when listing a directory- as they created;</li>
+<li class="enumerate_item"><a id='magicparlabel-146' />
+no aliases may exist for files/directories that are not &ldquo;symlinks&rdquo; or &ldquo;hardlinks&rdquo;.</li>
+</ol>
+<div class="standard"><a id='magicparlabel-147' />
+This makes it very difficult to deploy Unicode normalization anywhere other than the application. But it is not possible to fix every POSIX application to normalize on create or lookup!</div>
+<h3 class="subsection"><span class="subsection_label">3.4</span> <a id='magicparlabel-148' />
+A World Without Legacy</h3>
+<div class="standard"><a id='magicparlabel-149' />
+If we didn't have the legacy problems described above we could simply mandate the use of Unicode in one specific encoding (e.g., UTF-8) &ldquo;in the middle&rdquo;, with the middle being: from the system call boundary, to the VFS boundary, as well &ldquo;on the wire&rdquo;. Any codeset conversions and Unicode normalization would be performed at the system call boundary (i.e., on the client) and at the VFS boundary (if, for example, a filesystem on-disk format requires different codfeset/encoding than the protocol does on the wire).</div>
+
+<div class="standard"><a id='magicparlabel-150' />
+In an ideal world there would be no Unicode normalization problems because either there would be just one normal form for Unicode or because all implementations of filesystem clients, servers, filesystems, and filesystem-using applications, would use a single, common normal form.</div>
+<h3 class="subsection"><span class="subsection_label">3.5</span> <a id='magicparlabel-151' />
+Coping with Legacy: Accept it</h3>
+<div class="standard"><a id='magicparlabel-152' />
+Legacy abounds. We must cope with it.</div>
+
+<div class="standard"><a id='magicparlabel-153' />
+First, the IETF can't cause the system call boundary metadata loss problem to be fixed. The architectures of the relevant operating systems is such that the simplest fix for that problem is to convert between the user-mode locale's codeset/encoding and the codeset/encoding expected by the kernel. But getting such a fix to be implemented and deployed is difficult for a number of reasons, not the least of which is its impact on performance (for users using locales that require conversions), but also complexity: the user-mode side of system calls can sometimes be in a bootstrapping state during which I18N object code may not have been loaded yet. The simplest fix for this problem is to recommend that users use only locales that use Unicode as the charater repertoire and codeset, preferably with the encoding expected on the kernel-side of the system call boundary.</div>
+
+<div class="standard"><a id='magicparlabel-154' />
+The second legacy problem -legacy filesystem content- could be addressed by requiring manual inspection and repair of legacy content, but there exist such vast amounts of legacy contents that this is not a realistic option. There is no fix for the legacy filesystem content problem.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.5.1</span> <a id='magicparlabel-155' />
+Implications of Accepting Legacy</h4>
+<div class="standard"><a id='magicparlabel-156' />
+Some implications of accepting legacy:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-157' />
+we may want Unicode in the middle, but sometimes we'll have non-Unicode content</li>
+<li class="itemize_item"><a id='magicparlabel-158' />
+we can stop the creation of new non-Unicode content on disk, but we can't really preclude access to it</li>
+<li class="itemize_item"><a id='magicparlabel-159' />
+normalization-on-create is problematic</li>
+<li class="itemize_item"><a id='magicparlabel-160' />
+normalization-on-lookup is problematic</li>
+<li class="itemize_item"><a id='magicparlabel-161' />
+normalization-insensitive lookups are problematic</li>
+<li class="itemize_item"><a id='magicparlabel-162' />
+ignoring normalization is problematic</li>
+</ul>
+<h3 class="subsection"><span class="subsection_label">3.6</span> <a id='magicparlabel-163' />
+Recommendations for Filesystem Protocols, Filesystems, and Operating Systems</h3>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-164' />
+Filesystems SHOULD be configurable to reject object names which are not valid in the filesystem's chosen Unicode encoding.</li>
+<li class="itemize_item"><a id='magicparlabel-165' />
+Filesystem servers SHOULD accept object names -from clients- which are not valid Unicode in the protocol's chosen Unicode encoding.</li>
+<li class="itemize_item"><a id='magicparlabel-166' />
+Filesystem servers SHOULD accept object names -from filesystems- which are not valid in the host operating system's chosen codeset and encoding for use above the VFS.</li>
+<li class="itemize_item"><a id='magicparlabel-167' />
+Filesystems SHOULD be configurable as to Unicode normalization, allowing at least the following two options:
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-168' />
+Normalization-insensitive lookups.</li>
+<li class="itemize_item"><a id='magicparlabel-169' />
+No normalization at all.</li>
+</ul>
+</li><li class="itemize_item"><a id='magicparlabel-170' />
+Filesystems MAY be configurable as to Unicode normalization, allowing these additional options:
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-171' />
+Normalize on create and lookup</li>
+</ul>
+</li><li class="itemize_item"><a id='magicparlabel-172' />
+Operating systems SHOULD be configurable as to codeset/encoding conversions at the system call boundary, allowing these options:
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-173' />
+convert to/from non-Unicode locales' codesets</li>
+<li class="itemize_item"><a id='magicparlabel-174' />
+no conversion</li>
+</ul>
+</li></ul>
+<h3 class="subsection"><span class="subsection_label">3.7</span> <a id='magicparlabel-175' />
+Interoperability Considerations for Filesystem Protocols</h3>
+<div class="standard"><a id='magicparlabel-176' />
+...</div>
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-177' />
+Kerberos</h2>
+<div class="standard"><a id='magicparlabel-178' />
+Kerberos V5 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-182' />
+RFC4120</div>
+</div> names two things: principals and realms. Historically only US-ASCII has interoperated well. In practice most implementations just-use-8 and just-send-8, and some just-send-UTF-8 and just-use-UTF-8.</div>
+
+<div class="standard"><a id='magicparlabel-183' />
+We considered adding negotiation of the use of non-US-ASCII UTF-8 principal and realm names, but the resulting protocol was quite complex.</div>
+
+<div class="standard"><a id='magicparlabel-184' />
+It may soon be time to revisit Kerberos V5 internationalization. Problems to address include:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-185' />
+how to deal with Kerberos' use of IA5String, which effectively precludes use of Unicode [this is a long story, and we should tell it in detail]:
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-186' />
+just treat earstwhile IA5String SEQUENCE fields as a CHOICE of IA5String or UTF8String?</li>
+<li class="itemize_item"><a id='magicparlabel-187' />
+just send UTF-8 as IA5String?</li>
+<li class="itemize_item"><a id='magicparlabel-188' />
+negotiate support for treating IA5String SEQUENCE fields as CHOICEs of IA5Strign and UTF8String?</li>
+</ul>
+</li><li class="itemize_item"><a id='magicparlabel-189' />
+How to deal with normalization?
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-190' />
+should KDCs treat principal names as normalization-insensitive?</li>
+<li class="itemize_item"><a id='magicparlabel-191' />
+should principal names used as cryptographic salts be normalized to any particular form?</li>
+<li class="itemize_item"><a id='magicparlabel-192' />
+should clients and services normalize or treat in a nomalization-form-insensitive manner any principal component and realm names seen in sname/srealm/cname/crealm/transited/and other fields of Ticket, Authenticator, and other Kerberos ASN.1 types?</li>
+</ul>
+</li></ul>
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-193' />
+SASL</h2>
+<div class="standard"><a id='magicparlabel-194' />
+[Talk about the difference between authentication ID and authorization ID, and the different boundaries for each.]</div>
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-195' />
+Security Considerations</h2>
+<div class="standard"><a id='magicparlabel-196' />
+[Lots to talk about here.]</div>
+<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-197' />
+IANA Considerations</h2>
+<div class="standard"><a id='magicparlabel-198' />
+There are no IANA considerations in this document.</div>
+<h2 class="section"><span class="section_label">8</span> <a id='magicparlabel-199' />
+<a id="sec_References" />
+Normative References</h2>
+<div class="standard"><a id='magicparlabel-200' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-204' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
+</div></div>
+<h2 class="section"><span class="section_label">9</span> <a id='magicparlabel-205' />
+Informative References</h2>
+<div class="standard"><a id='magicparlabel-206' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-210' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3530.xml">rfc3530</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-211' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-215' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3629.xml">rfc3629</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-216' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-220' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-221' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-225' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">rfc2743</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-226' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-230' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4422.xml">rfc4422</a></div>
+</div></div>
+</body>
+</html>
