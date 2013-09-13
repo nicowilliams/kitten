@@ -12,11 +12,16 @@
 <!ENTITY rfc2986 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2986.xml">
 <!ENTITY rfc4120 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">
 <!ENTITY rfc4556 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4556.xml">
+<!ENTITY rfc4557 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4557.xml">
+<!ENTITY rfc4648 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4648.xml">
 <!ENTITY rfc5280 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml">
 <!ENTITY rfc6698 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6698.xml">
 <!ENTITY rfc6717 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6717.xml">
 <!ENTITY I-D.williams-kitten-generic-naming-attributes PUBLIC "" "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml">
+<!ENTITY rfc4033 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4033.xml">
 <!ENTITY rfc4251 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4251.xml">
+<!ENTITY rfc6251 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6251.xml">
+<!ENTITY rfc6960 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6960.xml">
 ]>
 <rfc docName="draft-williams-kitten-krb5-pkcross-03" ipr="trust200902" category="std">
   <front>
@@ -38,17 +43,17 @@ This document specifies a protocol for obtaining cross-realm Kerberos tickets us
     </abstract>
   </front>
   <middle>
-    <section title="Introduction" anchor="d1e268">
+    <section title="Introduction" anchor="d1e312">
       <t>
 Kerberos <xref target="RFC4120"/> supports meshes of many realms. The individual relationships between realms must be manually keyed, usually with keys derived from passwords. These keys are very difficult to rollover, and when they are changed the result is often outages -- controlled outages where foreseen, but outages nonetheless. This method of cross-realm keying does not scale, and has very poor security properties. We seek to remediate this.</t>
       <t>
 Many years ago there was a proposal for exchanging cross-realm keys using a public key infrastructure (PKI) <xref target="RFC5280"/>; that proposal went by the name “PKCROSS”. We appropriate that long-dead proposal's name, but the protocol specified here is very different from the original proposal.</t>
-      <section title="Conventions used in this document" anchor="d1e292">
+      <section title="Conventions used in this document" anchor="d1e336">
         <t>
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
       </section>
     </section>
-    <section title="The Protocol" anchor="d1e308">
+    <section title="The Protocol" anchor="d1e352">
       <t>
 A Kerberos client in with a ticket-granting ticket (TGT) for any one source realm (usually but not necessarily the client's own realm) wishing to acquire a TGT for a destination realm may use this protocol instead of the traditional cross-realm ticket-granting service (TGS) exchanges as follows:</t>
       <t>
@@ -68,16 +73,20 @@ If the destination realm issues the requested Ticket then it SHOULD include the 
       <t>
 The destination realm MUST NOT set the TRANSIT-POLICY-CHECKED flag on the tickets they issue to clients whose foreign realm certificates are not validated by the KDC. Destination realm administrators may configure their realms to know specific foreign realm clients' certificates.</t>
       <t>
-The destination MUST include the trust path of the client's certificate, if validated, in the 'transited' field of the issued Ticket, using a mapping of the issuer names to the X.500 realm naming style [XXX must specify this mapping; hopefully it can be the identity function or close enough].</t>
-      <section title="Exchange of Long-Term Cross-Realm Symmetric Keys" anchor="d1e357">
+The destination MUST include the trust path of the client's certificate, if validated, in the 'transited' field of the issued Ticket, using a mapping of the issuer names to the X.500 realm naming style.</t>
+      <section title="Exchange of Long-Term Cross-Realm Symmetric Keys" anchor="d1e401">
         <t>
 When the client principal is a TGS principal and its PKINIT AS-REQ protocol data unit (PDU) has the USE-SESSION-KEY-AS-REALM-KEY KDCOptions flag set then the client is requesting that the session key of the ticket issued by the destination realm become the long-term key for the corresponding krbtgt/DESTINATION@SOURCE principal. The destination realm MUST validate the client principal's certificate, building a trust path if need be, and validating it to a trust anchor. The source and destination realm MAY have previously exchange fingerprints of their respective key distribution service (KDC) public keys and/or certificates and/or the source realm's kx509 root or intermediate certification authority (CA), and such previously exchanged material, if any, MUST be used for certificate trust validation.</t>
         <t>
 Realm administrators should use the procedure to setup symmetric cross-realm keys as necessary to save clients from having to frequently use kx509 and PKINIT as described in the preceding section.</t>
         <t>
-Where public key infrastructure (PKI) exists allowing this to happen automatically, realms' KDCs MAY be configured to automatically key cross-realm principals for any realms that their source realms' clients request cross-realm TGTs for, but note that this presents a denial of service (DoS) opportunity to the source realm's clients. Source realm KDCs SHOULD only do this when a) they are configured to do so, b) the requesting client principal is in the same realm, c) the KDC has not spent too much effort recently providing this service (i.e., KDCs should throttle attempts to establish symmetric cross-realm keys in this manner), and d) up to some maximum number of cross-realm principals.</t>
+Where public key infrastructure (PKI) exists allowing this to happen automatically, realms' KDCs MAY be configured to automatically key cross-realm principals for any realms that their source realms' clients request cross-realm TGTs for, but note that this presents a denial of service (DoS) opportunity to the source realm's clients. Source realm KDCs SHOULD only do this when a) they are configured to do so, b) the requesting client principal is in the same realm, and c) the KDC has not spent too much effort recently providing this service (i.e., KDCs should throttle attempts to establish symmetric cross-realm keys in this manner). See also the next section.</t>
+        <section title="Caching of PKCROSS Symmetrically-Keyed Cross-Realm Principals" anchor="d1e417">
+          <t>
+Realms whose KDCs automatically setup symmetrically-keyed cross-realm principals SHOULD treat these principals as a cache, and SHOULD implement a cache eviction policy. For example, a least-recently-used (LRU) or least-frequently-used (LFU) policy. Otherwise a resource exhaustion DoS attack may be possible. See also the preceding section.</t>
+        </section>
       </section>
-      <section title="Indication of Preference for/ Required Use of Symmetrically-Keyed Cross-Realm Principals" anchor="d1e373">
+      <section title="Indication of Preference for/ Required Use of Symmetrically-Keyed Cross-Realm Principals" anchor="d1e426">
         <t>
 A KDC MAY reject a PKINIT/PKCROSS request with a KRB-ERROR indicating that the use of a symmetrically-keyed cross-realm relation is required. This is done using the following error code: &lt;TBD&gt;. The following e-data TD type is used to hold a SEQUENCE OF Realm: &lt;TBD&gt;.</t>
         <t>
@@ -88,20 +97,26 @@ Add an ASN.1 module, even though it will contain only one untagged type consisti
         </t>
       </section>
     </section>
-    <section title="Security Properties" anchor="d1e388">
+    <section title="Security Properties" anchor="d1e441">
       <t>
 The proposed PKCROSS protocol has several useful properties described below.</t>
-      <section title="Automated Cross-Realm Keying" anchor="d1e397">
+      <section title="Automated Cross-Realm Keying" anchor="d1e450">
         <t>
 No more manual keying of cross-realm principals via exchanging passwords on a telephone call (or similar).</t>
       </section>
-      <section title="Privacy Protection relative to home realm" anchor="d1e406">
+      <section title="Scalability and Vulnerability to Trusted Third Parties (TTPs)" anchor="d1e459">
+        <t>
+Kerberos with commonplace symmetrically-keyed hierarchical cross-real trusts can scale to a large universe of realms, but only if there are top-level realms that are willing to pair-wise trust and “child” realms. Such top-level realms do not exist in practice, leading to an O(N^2) scaling problem for most two-label realms. Leveraging a PKI, such as a PKIX PKI <xref target="RFC5280"/> or a DNSSEC PKI <xref target="RFC4033"/> removes the need for either top-level realms (which are not likely to ever be operated as commercial or even non-profit entities) or O(N^2) pair-wise cross-realm symmetric keying. The cost of this is having to add PKI trust paths to Kerberos trust paths (though the resulting trust path length need not be much different than before). Another cost is that having one (or many) top-level / root trusted third party (TTP), makes Kerberos susceptible to attack by those TTPs -- this was, and is, always a problem with any TTP protocol -such as Kerberos and PKI- anyways.</t>
+      </section>
+      <section title="Privacy Protection relative to home realm" anchor="d1e481">
         <t>
 This protocol protects the privacy of client principals vis-a-vis their home realms: client principals' home realms need not know what destination realms the clients are speaking to because client principals need not ask their home realms.</t>
         <t>
 This feature is generally and naturally available in PKI, and as this protocol is based on a kerberized certification authority, this protocol inherits this privacy feature from PKI.</t>
+        <t>
+The realms visited by the client may, of course, inform the client's home realm, but in the event that they don't, the client does gain this small measure of privacy. Of course, the client SHOULD attach an OCSP Response <xref target="RFC6960"/> to its PKINIT request, per <xref target="RFC4557"/>.</t>
       </section>
-      <section title="Leap-of-Faith (LoF) / Trust-On-First-Use (TOFU)" anchor="d1e419">
+      <section title="Leap-of-Faith (LoF) / Trust-On-First-Use (TOFU)" anchor="d1e508">
         <t>
 Clients need not validate the certificate trust path of destination realms. When they do not, the services used through those destination realms are as good as anonymous authentication. If the client saves the root or intermediate or end entity certificates of the destination realms that it cannot or does not validate, then the client can check that on future occasions the destination realm's certificate has not changed, and it may warn the user if it has. This quite similar to how clients using the secure shell (SSH) protocol <xref target="RFC4251"/> handle server authentication, and is commonly known as “leap-of-faith” (LoF) or trust-on-first-use (TOFU). The result is pseudonymous authentication.</t>
         <t>
@@ -112,7 +127,7 @@ Destination services too may apply apply LoF/TOFU: by not validating the transit
               <t>
 Implementations MUST NOT use LoF/TOFU to authenticate a target service's realm without the approval of the user or without making it clear that the realm is not fully authenticated (perhaps by replacing the realm's name with a fingerprint of its public key / certificate).</t>
               <t>
-Implementations MAY allow service administrators to establish user-friendly aliases for client principal names that include public key fingerprint material.</t>
+Implementations MAY allow users and/or service administrators to establish user-friendly aliases for peer principal names that include public key fingerprint material.</t>
               <t>
 Implementations MAY provide a way to automatically learn realm name &lt;-&gt; public key / certificate bindings. Pinning [add reference to HSTS] SHOULD be supported in that case. The user MUST approve of each such mapping.</t>
             </list>
@@ -120,11 +135,13 @@ Implementations MAY provide a way to automatically learn realm name &lt;-&gt; pu
         </section>
       </section>
     </section>
-    <section title="Using DANE (DNSSEC) for Realm Certificate Validation" anchor="d1e455">
+    <section title="Using DANE (DNSSEC) for Realm Certificate Validation" anchor="d1e544">
       <t>
-[Specify how to use DNS-Based Authentication of Named Entities (DANE) <xref target="RFC6698"/> to authenticate the KDC certificates of realms with domain-style names. Roughly: format the realm's name as a domainname, then format the DANE TLSA resource record set's (RRset) domainname per-DANE, using the KDC's port number. Note that the KDCs will usually not speak TLS, though there is an extension for using TLS in the KDC over TCP protocol. For example, the TLSA RRset for any KDC for the DESTINATION.EXAMPLE realm might be named _88._tcp.destination.example.]</t>
+It is possible to use DNS-Based Authentication of Named Entities (DANE) <xref target="RFC6698"/> to authenticate the KDC certificates of realms with domain-style names. To do this simply format the realm's DOMAIN-style name as a DNS domainname (no case folding is necessary), then format the DANE TLSA resource record set's (RRset) domainname per-DANE, using the KDC's port number. Note that the KDCs will usually not speak TLS, though there is an extension for using TLS in the KDC over TCP protocol <xref target="RFC6251"/>. For example, the TLSA RRset for any KDC for the DESTINATION.EXAMPLE realm might be named _88._tcp.destination.example. Follow DANE TLSA certificate validation procedures to validate the KDC's certificate regardless of whether the certificate was obtained by using PKINIT or TLS.</t>
+      <t>
+Normal PKINIT KDC certificate validation rules MAY also be used in addition to DANE rules.</t>
     </section>
-    <section title="Application Programming Interface Considerations" anchor="d1e470">
+    <section title="Application Programming Interface Considerations" anchor="d1e569">
       <t>
 For non-LoF/TOFU uses the main security consideration for applications is that improved scalability for Kerberos realm traversal implies larger Kerberos universes, and the larger a universe of trust the more important it is to have useful and expressive local policy for evaluating the trustworthiness of any given transit path. Because in most applications local policy should be a component external to the application, there is little impact on APIs here. However, an implementation may wish to provide applications with interfaces for specifying policies, either named or by value.</t>
       <section title="API Considerations for LoF/TOFU Authentication" anchor="sub_API_Considerations_for">
@@ -132,10 +149,10 @@ For non-LoF/TOFU uses the main security consideration for applications is that i
 For LoF/TOFU uses there is a critical requirement that APIs not permit accidental aliasing of principal names as a result of LoF/TOFU being used. The simplest way to do this is to use a fingerprint of the peer principal's public key as their principal, and/or a fingerprint of the peer principal's realm's public key as their realm.</t>
         <t>
           <cref>
-For interoperability and compatibility we ought to specify what fingerprint algorithm to use, perhaps one of the SSHv2 fingerprint algorithms, such as in RFC4255, but those use weaker hashes...</cref>
+For interoperability and compatibility we might want to specify what fingerprint algorithm to use, perhaps one of the SSHv2 fingerprint algorithms, such as in RFC4255, but those use weaker hashes...</cref>
         </t>
       </section>
-      <section title="GSS-API Naming Considerations" anchor="d1e494">
+      <section title="GSS-API Naming Considerations" anchor="d1e592">
         <t>
 There are no GSS-API-specific considerations. The naming considerations described in  <xref target="sub_API_Considerations_for"/> and the naming attributes defined in <xref target="I-D.williams-kitten-generic-naming-attributes"/> are sufficient. Note however that information about how PKCROSS was used to establish symmetrically-keyed cross-realm principals is lost and will not appear in the transit path in tickets issued by KDCs reached via such cross-realm principals.</t>
         <t>
@@ -143,21 +160,62 @@ There are no GSS-API-specific considerations. The naming considerations describe
 Actually, we may need to specify some interfaces by which to indicate that the user wishes to alias a pseudonymous name. Perhaps we can do so by applying GSS_Set_name_attribute() to a peer MN obtained from GSS_Inquire_context()?</cref>
         </t>
       </section>
+      <section title="Representation of LoF/TOFU Principal and Realm Names" anchor="d1e613">
+        <t>
+If there is no acceptable or verifiable trust path for validating a peer's principal's and/or realm's certificate, then the local end-point MUST locally output the peer's principal (or realm) name as a fingerprint of one of:</t>
+        <t>
+          <list style="numbers">
+            <t>
+peer's EE certificate's subject public key;</t>
+            <t>
+a subject Name or GeneralName from the peer's EE certificate and the peer's certificate issuer's subjectPublicKey.</t>
+          </list>
+        </t>
+        <t>
+The choice of which of the above to fingerprint is a local choice. The default SHOULD be (1). (2) allows for key rollover.</t>
+        <t>
+The fingerprints MUST be computed as follows:</t>
+        <t>
+          <list style="symbols">
+            <t>
+First format a byte string as follows:
+
+<list style="symbols"><t>
+for (1) take the subjectPublicKey's DER [add ref to x.690] encoding (this is a BIT STRING), with no additional tagging</t><t>
+for (2) take the DER encoding of the ASN.1 type “nameAndIssuerFPInput ::= SEQUENCE { subjectName GeneralName, issuerPublicKey BIT STRING}”</t></list>
+</t>
+            <t>
+Then apply SHA-256 to the octet string from the first step, then take the most significant 192 bits of that hash and base64-encode using the “URL- and filename-safe alphabet” <xref target="RFC4648"/>.</t>
+            <t>
+Prefix “:spk:” if using (1) or “:nai:” if using (2). This is the fingerprint to use as either the principal name's single component, or as the principal's realm name. If the name is a realm name then the colons (':') in the prefix are to be removed so as to produce valid Kerberos realm names.</t>
+          </list>
+        </t>
+        <t>
+For example, “:spk:MjNhNjM0YTM4NDFiZDdhNjVkODQ5YTdi”@FOO.EXAMPLE or “HTTP/someserver.foo.example@spkMmE1M2RiMjc1Nzk5ODFjNWQwYjk0OTAw”. Note that all such realm names have no period character ('.') in them and will too long to match top-level domainnames in use in the DNS, and no such principal names have a forward slash ('/') character in them. Note also that interpretation of such principal names as usernames on POSIX systems will either produce an empty string (due to implementation issues regarding the use of colons (':' as separators in POSIX user databases) or the full string, either way not likely ti collide with valid usernames.</t>
+      </section>
+      <section title="GSS-API Name-Type for Pseudonymous Principals" anchor="d1e663">
+        <t>
+We add a new GSS-API name-type: GSS_C_NT_PSEUDONYMOUS. This represents principals whose names are pseudonymous.</t>
+        <section title="Kerberos Name-Type for Pseudonymous Principals" anchor="d1e672">
+          <t>
+At this time pseudonymous principal names should not appear in Kerberos PDUs, thus no name-type need be assigned. If a pseudonymous name must be appear in a Kerberos PDU for any reason then the NT-UNKNOWN name-type should be used.</t>
+        </section>
+      </section>
     </section>
-    <section title="Security Considerations" anchor="d1e515">
+    <section title="Security Considerations" anchor="d1e681">
       <t>
         <cref>
 All the security considerations of Kerberos and PKI apply. Security considerations are discussed throughout this document.</cref>
       </t>
       <t>
 Scaling up the universe of realms reachable via any trust path necessarily dilutes trust overall, but not for specific paths. On the other hand, by shortening transit path lengths trust can be improved, though some short transit paths will have been symmetrically keyed using this PKCROSS protocol and therefore will be longer than they appear to be. These are subjective notions of trust, of course.</t>
-      <section title="Loss of Cross-Realm Principal Trust Establishment Information" anchor="d1e527">
+      <section title="Loss of Cross-Realm Principal Trust Establishment Information" anchor="d1e694">
         <t>
 Note that once a cross-realm principal is symmetrically keyed no information about how that keying operation took place will appear in tickets issued by that TGS principal.</t>
         <t>
 Note also that the Kebreros transit path encodes only realm names (including X.500-style names, thus PKIX certificate subject and issuer names), and lacks any public key information that might be useful for pinning. However, the certificate validation path for each realm in a transit path SHOULD be included in the transit path.</t>
       </section>
-      <section title="Security Considerations for LoF/TOFU" anchor="d1e539">
+      <section title="Security Considerations for LoF/TOFU" anchor="d1e706">
         <t>
 LoF/TOFU has additional security considerations. To start there is the obvious susceptibility to peer impersonation / man-in-the-middle (MITM) attacks on initial contact, which is mitigated by the attacker's need to always remain in the middle in order to avoid detection.</t>
         <t>
@@ -167,18 +225,22 @@ It is critical that existing applications not be broken by the ability to use Lo
         <t>
 See  <xref target="sub_Requirements_for_LoF_TOFU"/> for additional requirements for LoF/TOFU authentication.</t>
       </section>
-      <section title="On the Need for a Common Transit Path Policy Language" anchor="d1e561">
+      <section title="On the Need for a Common Transit Path Policy Language" anchor="d1e727">
         <t>
 There are no standard ways to express authorization policies for trust transit paths for either Kerberos nor PKI. A standard language for this would be extremely useful. Such a language should allow for the expression of policies for both, clients and services. Such a language should allow for the expression of complex realm/domain/other naming, and should allow for HSTS-style pinning [add references -Nico]. Such a language should allow for multiple paths where desired, and should allow for more than path rejection: it should also allow for reducing the entitlements assigned to a peer/realm for authorization purposes.</t>
         <t>
 The need for a standard transit path policy expression language is not new, and such a language is broadly and generally needed. Therefore such a language is outside this document's scope.</t>
       </section>
     </section>
-    <section title="IANA Considerations" anchor="d1e573">
+    <section title="IANA Considerations" anchor="d1e740">
       <t>
         <cref>
 Allocate the new KDCOptions flag (USE-SESSION-KEY-AS-REALM-KEY) and authorization-data element (AD-CLIENT-CERTIFICATE).</cref>
       </t>
+    </section>
+    <section title="Acknowledgements" anchor="d1e749">
+      <t>
+Although the author arrived at this “kx509 + PKINIT == PKCROSS” idea independently, it is not an original idea. Henry Hotz and Jeffrey Altman each conceived the same idea years earlier. It is a relatively obvious idea when taking into account efforts to bridge disparate security mechanisms and credentials infrastructures.</t>
     </section>
   </middle>
   <back>
@@ -186,11 +248,17 @@ Allocate the new KDCOptions flag (USE-SESSION-KEY-AS-REALM-KEY) and authorizatio
 &rfc2986;
 &rfc4120;
 &rfc4556;
+&rfc4557;
+&rfc4648;
 &rfc5280;
 &rfc6698;
 &rfc6717;
 &I-D.williams-kitten-generic-naming-attributes;
 </references>
-    <references title="Informative References">&rfc4251;</references>
+    <references title="Informative References">&rfc4033;
+&rfc4251;
+&rfc6251;
+&rfc6960;
+</references>
   </back>
 </rfc>

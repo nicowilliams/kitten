@@ -3,8 +3,8 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Intended status: Standards Track                         August 13, 2013
-Expires: February 14, 2014
+Intended status: Standards Track                         August 23, 2013
+Expires: February 24, 2014
 
 
   Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using
@@ -38,7 +38,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 14, 2014.
+   This Internet-Draft will expire on February 24, 2014.
 
 Copyright Notice
 
@@ -62,27 +62,35 @@ Table of Contents
    1.1.    Conventions used in this document
    2.      The Protocol
    2.1.    Exchange of Long-Term Cross-Realm Symmetric Keys
+   2.1.1.  Caching of PKCROSS Symmetrically-Keyed Cross-Realm
+           Principals
    2.2.    Indication of Preference for/ Required Use of
            Symmetrically-Keyed Cross-Realm Principals
    3.      Security Properties
    3.1.    Automated Cross-Realm Keying
-   3.2.    Privacy Protection relative to home realm
-   3.3.    Leap-of-Faith (LoF) / Trust-On-First-Use (TOFU)
-   3.3.1.  Requirements and Recommendations for LoF/TOFU
+   3.2.    Scalability and Vulnerability to Trusted Third Parties
+           (TTPs)
+   3.3.    Privacy Protection relative to home realm
+   3.4.    Leap-of-Faith (LoF) / Trust-On-First-Use (TOFU)
+   3.4.1.  Requirements and Recommendations for LoF/TOFU
            Authentication
    4.      Using DANE (DNSSEC) for Realm Certificate Validation
    5.      Application Programming Interface Considerations
    5.1.    API Considerations for LoF/TOFU Authentication
    5.2.    GSS-API Naming Considerations
+   5.3.    Representation of LoF/TOFU Principal and Realm Names
+   5.4.    GSS-API Name-Type for Pseudonymous Principals
+   5.4.1.  Kerberos Name-Type for Pseudonymous Principals
    6.      Security Considerations
    6.1.    Loss of Cross-Realm Principal Trust Establishment
            Information
    6.2.    Security Considerations for LoF/TOFU
    6.3.    On the Need for a Common Transit Path Policy Language
    7.      IANA Considerations
-   8.      References
-   8.1.    Normative References
-   8.2.    Informative References
+   8.      Acknowledgements
+   9.      References
+   9.1.    Normative References
+   9.2.    Informative References
            Author's Address
 
 
@@ -143,8 +151,7 @@ Table of Contents
    The destination MUST include the trust path of the client's
    certificate, if validated, in the 'transited' field of the issued
    Ticket, using a mapping of the issuer names to the X.500 realm naming
-   style [XXX must specify this mapping; hopefully it can be the
-   identity function or close enough].
+   style.
 
 2.1.  Exchange of Long-Term Cross-Realm Symmetric Keys
 
@@ -173,11 +180,19 @@ Table of Contents
    clients request cross-realm TGTs for, but note that this presents a
    denial of service (DoS) opportunity to the source realm's clients.
    Source realm KDCs SHOULD only do this when a) they are configured to
-   do so, b) the requesting client principal is in the same realm, c)
-   the KDC has not spent too much effort recently providing this service
-   (i.e., KDCs should throttle attempts to establish symmetric cross-
-   realm keys in this manner), and d) up to some maximum number of
-   cross-realm principals.
+   do so, b) the requesting client principal is in the same realm, and
+   c) the KDC has not spent too much effort recently providing this
+   service (i.e., KDCs should throttle attempts to establish symmetric
+   cross-realm keys in this manner).  See also the next section.
+
+2.1.1.  Caching of PKCROSS Symmetrically-Keyed Cross-Realm Principals
+
+   Realms whose KDCs automatically setup symmetrically-keyed cross-realm
+   principals SHOULD treat these principals as a cache, and SHOULD
+   implement a cache eviction policy.  For example, a least-recently-
+   used (LRU) or least-frequently-used (LFU) policy.  Otherwise a
+   resource exhaustion DoS attack may be possible.  See also the
+   preceding section.
 
 2.2.  Indication of Preference for/ Required Use of Symmetrically-Keyed
       Cross-Realm Principals
@@ -208,7 +223,25 @@ Table of Contents
    No more manual keying of cross-realm principals via exchanging
    passwords on a telephone call (or similar).
 
-3.2.  Privacy Protection relative to home realm
+3.2.  Scalability and Vulnerability to Trusted Third Parties (TTPs)
+
+   Kerberos with commonplace symmetrically-keyed hierarchical cross-real
+   trusts can scale to a large universe of realms, but only if there are
+   top-level realms that are willing to pair-wise trust and "child"
+   realms.  Such top-level realms do not exist in practice, leading to
+   an O(N^2) scaling problem for most two-label realms.  Leveraging a
+   PKI, such as a PKIX PKI [RFC5280] or a DNSSEC PKI [RFC4033] removes
+   the need for either top-level realms (which are not likely to ever be
+   operated as commercial or even non-profit entities) or O(N^2) pair-
+   wise cross-realm symmetric keying.  The cost of this is having to add
+   PKI trust paths to Kerberos trust paths (though the resulting trust
+   path length need not be much different than before).  Another cost is
+   that having one (or many) top-level / root trusted third party (TTP),
+   makes Kerberos susceptible to attack by those TTPs -- this was, and
+   is, always a problem with any TTP protocol -such as Kerberos and PKI-
+   anyways.
+
+3.3.  Privacy Protection relative to home realm
 
    This protocol protects the privacy of client principals vis-a-vis
    their home realms: client principals' home realms need not know what
@@ -219,7 +252,12 @@ Table of Contents
    protocol is based on a kerberized certification authority, this
    protocol inherits this privacy feature from PKI.
 
-3.3.  Leap-of-Faith (LoF) / Trust-On-First-Use (TOFU)
+   The realms visited by the client may, of course, inform the client's
+   home realm, but in the event that they don't, the client does gain
+   this small measure of privacy.  Of course, the client SHOULD attach
+   an OCSP Response [RFC6960] to its PKINIT request, per [RFC4557].
+
+3.4.  Leap-of-Faith (LoF) / Trust-On-First-Use (TOFU)
 
    Clients need not validate the certificate trust path of destination
    realms.  When they do not, the services used through those
@@ -242,7 +280,7 @@ Table of Contents
    Ticket, and may use it later to ensure that it is talking to the same
    client.
 
-3.3.1.  Requirements and Recommendations for LoF/TOFU Authentication
+3.4.1.  Requirements and Recommendations for LoF/TOFU Authentication
 
    o  Implementations MUST NOT use LoF/TOFU to authenticate a target
       service's realm without the approval of the user or without making
@@ -250,9 +288,9 @@ Table of Contents
       replacing the realm's name with a fingerprint of its public key /
       certificate).
 
-   o  Implementations MAY allow service administrators to establish
-      user-friendly aliases for client principal names that include
-      public key fingerprint material.
+   o  Implementations MAY allow users and/or service administrators to
+      establish user-friendly aliases for peer principal names that
+      include public key fingerprint material.
 
    o  Implementations MAY provide a way to automatically learn realm
       name <-> public key / certificate bindings.  Pinning [add
@@ -262,15 +300,21 @@ Table of Contents
 
 4.  Using DANE (DNSSEC) for Realm Certificate Validation
 
-   [Specify how to use DNS-Based Authentication of Named Entities (DANE)
-   [RFC6698] to authenticate the KDC certificates of realms with domain-
-   style names.  Roughly: format the realm's name as a domainname, then
+   It is possible to use DNS-Based Authentication of Named Entities
+   (DANE) [RFC6698] to authenticate the KDC certificates of realms with
+   domain-style names.  To do this simply format the realm's DOMAIN-
+   style name as a DNS domainname (no case folding is necessary), then
    format the DANE TLSA resource record set's (RRset) domainname per-
    DANE, using the KDC's port number.  Note that the KDCs will usually
    not speak TLS, though there is an extension for using TLS in the KDC
-   over TCP protocol.  For example, the TLSA RRset for any KDC for the
-   DESTINATION.EXAMPLE realm might be named
-   _88._tcp.destination.example.]
+   over TCP protocol [RFC6251].  For example, the TLSA RRset for any KDC
+   for the DESTINATION.EXAMPLE realm might be named
+   _88._tcp.destination.example.  Follow DANE TLSA certificate
+   validation procedures to validate the KDC's certificate regardless of
+   whether the certificate was obtained by using PKINIT or TLS.
+
+   Normal PKINIT KDC certificate validation rules MAY also be used in
+   addition to DANE rules.
 
 
 5.  Application Programming Interface Considerations
@@ -295,8 +339,8 @@ Table of Contents
    fingerprint of the peer principal's realm's public key as their
    realm.
 
-   [[anchor2: For interoperability and compatibility we ought to specify
-   what fingerprint algorithm to use, perhaps one of the SSHv2
+   [[anchor2: For interoperability and compatibility we might want to
+   specify what fingerprint algorithm to use, perhaps one of the SSHv2
    fingerprint algorithms, such as in RFC4255, but those use weaker
    hashes...]]
 
@@ -314,6 +358,65 @@ Table of Contents
    to indicate that the user wishes to alias a pseudonymous name.
    Perhaps we can do so by applying GSS_Set_name_attribute() to a peer
    MN obtained from GSS_Inquire_context()?]]
+
+5.3.  Representation of LoF/TOFU Principal and Realm Names
+
+   If there is no acceptable or verifiable trust path for validating a
+   peer's principal's and/or realm's certificate, then the local end-
+   point MUST locally output the peer's principal (or realm) name as a
+   fingerprint of one of:
+
+   1.  peer's EE certificate's subject public key;
+
+   2.  a subject Name or GeneralName from the peer's EE certificate and
+       the peer's certificate issuer's subjectPublicKey.
+
+   The choice of which of the above to fingerprint is a local choice.
+   The default SHOULD be (1). (2) allows for key rollover.
+
+   The fingerprints MUST be computed as follows:
+
+   o  First format a byte string as follows:
+
+      *  for (1) take the subjectPublicKey's DER [add ref to x.690]
+         encoding (this is a BIT STRING), with no additional tagging
+
+      *  for (2) take the DER encoding of the ASN.1 type
+         "nameAndIssuerFPInput ::= SEQUENCE { subjectName GeneralName,
+         issuerPublicKey BIT STRING}"
+
+   o  Then apply SHA-256 to the octet string from the first step, then
+      take the most significant 192 bits of that hash and base64-encode
+      using the "URL- and filename-safe alphabet" [RFC4648].
+
+   o  Prefix ":spk:" if using (1) or ":nai:" if using (2).  This is the
+      fingerprint to use as either the principal name's single
+      component, or as the principal's realm name.  If the name is a
+      realm name then the colons (':') in the prefix are to be removed
+      so as to produce valid Kerberos realm names.
+
+   For example, ":spk:MjNhNjM0YTM4NDFiZDdhNjVkODQ5YTdi"@FOO.EXAMPLE or
+   "HTTP/someserver.foo.example@spkMmE1M2RiMjc1Nzk5ODFjNWQwYjk0OTAw".
+   Note that all such realm names have no period character ('.') in them
+   and will too long to match top-level domainnames in use in the DNS,
+   and no such principal names have a forward slash ('/') character in
+   them.  Note also that interpretation of such principal names as
+   usernames on POSIX systems will either produce an empty string (due
+   to implementation issues regarding the use of colons (':' as
+   separators in POSIX user databases) or the full string, either way
+   not likely ti collide with valid usernames.
+
+5.4.  GSS-API Name-Type for Pseudonymous Principals
+
+   We add a new GSS-API name-type: GSS_C_NT_PSEUDONYMOUS.  This
+   represents principals whose names are pseudonymous.
+
+5.4.1.  Kerberos Name-Type for Pseudonymous Principals
+
+   At this time pseudonymous principal names should not appear in
+   Kerberos PDUs, thus no name-type need be assigned.  If a pseudonymous
+   name must be appear in a Kerberos PDU for any reason then the NT-
+   UNKNOWN name-type should be used.
 
 
 6.  Security Considerations
@@ -367,7 +470,7 @@ Table of Contents
    application/protocol that provides LoF/TOFU [references for this
    would be nice -Nico].
 
-   See Section 3.3.1 for additional requirements for LoF/TOFU
+   See Section 3.4.1 for additional requirements for LoF/TOFU
    authentication.
 
 6.3.  On the Need for a Common Transit Path Policy Language
@@ -394,9 +497,18 @@ Table of Contents
    REALM-KEY) and authorization-data element (AD-CLIENT-CERTIFICATE).]]
 
 
-8.  References
+8.  Acknowledgements
 
-8.1.  Normative References
+   Although the author arrived at this "kx509 + PKINIT == PKCROSS" idea
+   independently, it is not an original idea.  Henry Hotz and Jeffrey
+   Altman each conceived the same idea years earlier.  It is a
+   relatively obvious idea when taking into account efforts to bridge
+   disparate security mechanisms and credentials infrastructures.
+
+
+9.  References
+
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -411,6 +523,14 @@ Table of Contents
 
    [RFC4556]  Zhu, L. and B. Tung, "Public Key Cryptography for Initial
               Authentication in Kerberos (PKINIT)", RFC 4556, June 2006.
+
+   [RFC4557]  Zhu, L., Jaganathan, K., and N. Williams, "Online
+              Certificate Status Protocol (OCSP) Support for Public Key
+              Cryptography for Initial Authentication in Kerberos
+              (PKINIT)", RFC 4557, June 2006.
+
+   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, October 2006.
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
@@ -427,13 +547,26 @@ Table of Contents
    [I-D.williams-kitten-generic-naming-attributes]
               Williams, N., "Generic Naming Attributes for the Generic
               Security Services Application Programming Interface (GSS-
-              API)", draft-williams-kitten-generic-naming-attributes-00
-              (work in progress), July 2013.
+              API)", draft-williams-kitten-generic-naming-attributes-01
+              (work in progress), August 2013.
 
-8.2.  Informative References
+9.2.  Informative References
+
+   [RFC4033]  Arends, R., Austein, R., Larson, M., Massey, D., and S.
+              Rose, "DNS Security Introduction and Requirements",
+              RFC 4033, March 2005.
 
    [RFC4251]  Ylonen, T. and C. Lonvick, "The Secure Shell (SSH)
               Protocol Architecture", RFC 4251, January 2006.
+
+   [RFC6251]  Josefsson, S., "Using Kerberos Version 5 over the
+              Transport Layer Security (TLS) Protocol", RFC 6251,
+              May 2011.
+
+   [RFC6960]  Santesson, S., Myers, M., Ankney, R., Malpani, A.,
+              Galperin, S., and C. Adams, "X.509 Internet Public Key
+              Infrastructure Online Certificate Status Protocol - OCSP",
+              RFC 6960, June 2013.
 
 
 Author's Address
