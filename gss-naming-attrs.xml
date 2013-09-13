@@ -11,6 +11,7 @@
 <!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY rfc1035 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1035.xml">
 <!ENTITY rfc1123 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1123.xml">
+<!ENTITY rfc1964 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1964.xml">
 <!ENTITY rfc2743 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">
 <!ENTITY rfc2744 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">
 <!ENTITY rfc5890 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
@@ -19,7 +20,7 @@
 <!ENTITY rfc4121 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">
 <!ENTITY rfc5280 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml">
 ]>
-<rfc docName="draft-williams-kitten-generic-naming-attributes-01" ipr="trust200902" category="std" updates="2743, 2744">
+<rfc docName="draft-williams-kitten-generic-naming-attributes-01" ipr="trust200902" category="std" updates="1964, 2743, 2744">
   <front>
     <title abbrev="Simple GSS">Generic Naming Attributes for the Generic Security Services Application Programming Interface (GSS-API)</title>
     <author initials="N." surname="Williams" fullname="Nicolas Williams">
@@ -41,7 +42,7 @@ These attributes allow applications to extract discrete components of a GSS-API 
     </abstract>
   </front>
   <middle>
-    <section title="Introduction and Motivation" anchor="d1e292">
+    <section title="Introduction and Motivation" anchor="d1e307">
       <t>
 The Generic Security Services Application Programming Interface (GSS-API) <xref target="RFC2743"/> allows applications -and application protocol specifications- to use various security mechanisms in a generic way. There are some shortcomings of this API that preclude a fully-generic treatment of security mechanisms. This document builds on the naming extensions to the GSS-API <xref target="RFC6680"/> to correct some of those shortcomings.</t>
       <t>
@@ -50,7 +51,7 @@ In RFC6680 we introduced an interface by which to access “attributes” of nam
 For example, some applications need to be able to observe the discrete elements of a peer principal's host-based service name, but they generally could only do so by parsing mechanism-specific display syntaxes or exported name token formats. Such applications are inherently not generic: they can only function correctly when used with security mechanism whose principal naming conventions/formats the applications understand.</t>
       <t>
 More generally, we use the the extended naming interface to introduce an attribute model of principal naming.</t>
-      <section title="Naming Constraints" anchor="d1e323">
+      <section title="Naming Constraints" anchor="d1e338">
         <t>
 This document also introduces a notion of naming constraints, not unlike PKIX's <xref target="RFC5280"/>. Naming constraints apply to “issuers” of principal names and/or their attributes. For example, to Kerberos <xref target="RFC4120"/> realms, to PKIX certification authorities, to identity providers (IdPs), and so on. The goal is allow specification of policies which constrain the set of principal names that a given issuer can issue credentials for.</t>
         <t>
@@ -74,20 +75,20 @@ any of the above with “fast” (no slow I/O involved) naming constraint checki
         <t>
 Existing security mechanisms may not have any formal notion of naming constraints, but it is common to have some naming constraint conventions nonetheless. For example, Kerberos realm naming conventions are that realm names should mirror Domain Name System (DNS) <xref target="RFC1035"/> domain names, and that hostnames embedded in Kerberos principal names should a) be fully-qualified, b) within the domain corresponding to the DNS domain name derived from the realm's name. Or a Kerberos implementation might lookup a host's realm and check that it matches the principal's realm. Naming constraints should be formalized for all GSS-API security mechanisms.</t>
       </section>
-      <section title="Conventions used in this document" anchor="d1e375">
+      <section title="Conventions used in this document" anchor="d1e390">
         <t>
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
       </section>
     </section>
-    <section title="Generic Attributes" anchor="d1e390">
+    <section title="Generic Attributes" anchor="d1e405">
       <t>
 We add a number of generic name attributes, to be used via the GSS-API extended naming facility <xref target="RFC6680"/>. Some of these attributes can be used as prefixes of other attributes, that is, they can be used to modify the semantics of other attributes (see section 6 of RFC6680).</t>
       <t>
 Note: in all cases the display form of each attribute SHALL consist of text using the character set, codeset, and encoding from the caller's locale.</t>
-      <section title="Concrete Attributes" anchor="d1e409">
+      <section title="Concrete Attributes" anchor="d1e424">
         <t>
 These attributes generally have a single value each. Only one of these attributes can also be used a prefix: the issuer name attribute.</t>
-        <section title="Issuer Name" anchor="d1e418">
+        <section title="Issuer Name" anchor="sub_Issuer_Name">
           <t>
 We add an attribute by which to obtain a name of an issuer of a mechanism name (MN) or of an attribute of an MN. The API name for this attribute is GSS_C_ATTR_GENERIC_ISSUERNAME, and it's actual attribute name is “urn:ietf:id:ietf-kitten-name-attrs-00-issuername”.</t>
           <t>
@@ -99,7 +100,7 @@ For example, for the Kerberos mechanism <xref target="RFC4121"/> an issuer name 
           <t>
 This attribute can be used as prefix of other attributes. When used as a prefix, this attribute indicates that the application wishes to know the name of the issuer of the prefixed attribute of the given MN.</t>
         </section>
-        <section title="User Name" anchor="d1e445">
+        <section title="User Name" anchor="d1e462">
           <t>
 We add an attribute by which to obtain the component of an MN naming a user. The API name for this attribute is GSS_C_ATTR_GENERIC_USERNAME, and it's actual attribute name is “urn:ietf:id:ietf-kitten-name-attrs-00-username”.</t>
           <t>
@@ -107,13 +108,13 @@ The display form of user names is mechanism-specific.</t>
           <t>
 The non-display form of user names is mechanism-specific.</t>
         </section>
-        <section title="Service Name" anchor="d1e461">
+        <section title="Service Name" anchor="d1e478">
           <t>
 We add an attribute by which to obtain the component of an MN naming a service as part of a host- or domain-based service name. The API name for this attribute is GSS_C_ATTR_GENERIC_SERVICENAME, and it's actual attribute name is “urn:ietf:id:ietf-kitten-name-attrs-00-servicename”.</t>
           <t>
 The non-display form of the service name SHALL be the UTF-8 encoding of the service name.</t>
         </section>
-        <section title="Host Name" anchor="d1e473">
+        <section title="Host Name" anchor="d1e490">
           <t>
 We add an attribute by which to obtain the component of an MN naming a host as part of a host- or domain-based service name. The API name for this attribute is GSS_C_ATTR_GENERIC_HOSTNAME, and it's actual attribute name is “urn:ietf:id:ietf-kitten-name-attrs-00-hostname”.</t>
           <t>
@@ -121,7 +122,7 @@ The display form of a host name MAY be stylized and SHOULD NOT be A-labels. <xre
           <t>
 The non-display form of host names SHOULD be a character string as described in <xref target="RFC1123"/>, and SHOULD NOT be U-labels <xref target="RFC5890"/>.</t>
         </section>
-        <section title="Domain Name" anchor="d1e506">
+        <section title="Domain Name" anchor="d1e523">
           <t>
 We add an attribute by which to obtain the component of an MN naming a domain as part of a domain-based service name. The API name for this attribute is GSS_C_ATTR_GENERIC_DOMAINNAME, and it's actual attribute name is “urn:ietf:id:ietf-kitten-name-attrs-00-domainname”.</t>
           <t>
@@ -130,43 +131,47 @@ The display form of a domain name MAY be stylized and SHOULD NOT be A-labels. <x
 The non-display form of domain names SHOULD be a character string as described in <xref target="RFC1123"/>, and SHOULD NOT be U-labels <xref target="RFC5890"/>.</t>
         </section>
       </section>
-      <section title="Prefix Attributes" anchor="d1e540">
+      <section title="Prefix Attributes" anchor="d1e557">
         <t>
 GSS_Get_name_attribute() using attributes described in the preceding section SHALL fail if there are any name constraints that can be applied to the issuers of those names and, in applying those constraints, it is discovered that the issuer was not permitted to issue credentials for the MN.</t>
         <t>
 For example, a Kerberos realm named “FOO.EXAMPLE” might not be expected to issue credentials (tickets, keys) to host-based service names for hosts not ending in “.foo.example” or which are not “foo.example”.</t>
         <t>
 Several generic attribute prefixes are described below for overriding this behavior.</t>
-        <section title="GSS_C_ATTR_GENERIC_UNCONSTRAINED" anchor="d1e555">
+        <section title="GSS_C_ATTR_GENERIC_UNCONSTRAINED" anchor="d1e572">
           <t>
 This attribute prefix, named GSS_C_ATTR_GENERIC_UNCONSTRAINED in the API, and with an actual name of “urn:ietf:id:ietf-kitten-name-attrs-00-gen-unconstrained”, indicates that the application wants the value of the prefixed attribute without any name constraint checking.</t>
         </section>
-        <section title="GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK" anchor="d1e564">
+        <section title="GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK" anchor="d1e581">
           <t>
 This attribute prefix, named GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK in the API, and with an actual name of “urn:ietf:id:ietf-kitten-name-attrs-00-gen-unconstrained-ok”, indicates that the application wants the value of the prefixed attribute regardless of any applicable naming constraints, but to indicate the name constraint status via the 'authenticated' output parameter of the GSS_Get_name_attribute() interface.</t>
         </section>
-        <section title="GSS_C_ATTR_GENERIC_FAST" anchor="d1e574">
+        <section title="GSS_C_ATTR_GENERIC_FAST" anchor="d1e591">
           <t>
 This attribute prefix, named GSS_C_ATTR_GENERIC_FAST in the API, and with an actual name of “urn:ietf:id:ietf-kitten-name-attrs-00-gen-fast”, indicates that the application requires that the mechanism not perform any slow operations (e.g., connecting to a directory for the purposes of name constraint validation) in obtaining the prefixed attribute of the given MN.</t>
         </section>
       </section>
     </section>
-    <section title="Local Name Attributes" anchor="d1e583">
+    <section title="Local Name Attributes" anchor="d1e600">
       <t>
 Normally an Internet specification would not be expected to specify any local name attributes of GSS names. However, there is one common and very useful local name attribute, which we specify below. Implementations are free to use different names for this attribute or exclude it altogether -- it is a local name attribute, after all.</t>
-      <section title="GSS_C_ATTR_LOCAL_LOGIN_USER" anchor="d1e592">
+      <section title="GSS_C_ATTR_LOCAL_LOGIN_USER" anchor="d1e609">
         <t>
 This attribute, with suggested API symbolic name GSS_C_ATTR_LOCAL_LOGIN_USER, and suggested actual name “local-login-user”, requests a local user name corresponding to the given MN, if any.</t>
         <t>
 Obtaining the local user name corresponding to an MN may require complex name mapping or lookup operations that are completely implementation-defined.</t>
       </section>
     </section>
-    <section title="Suggested Mechanism-Specific Name Attributes (INFORMATIONAL)" anchor="d1e604">
+    <section title="Suggested Mechanism-Specific Name Attributes (INFORMATIONAL)" anchor="d1e621">
       <t>
         <cref>
 This section should really be split out into separate Internet-Drafts. It is here only because the author lacks the time at the moment of writing to create such separate I-Ds.</cref>
       </t>
-      <section title="Suggested Kerberos-Specific Name Attributes" anchor="d1e613">
+      <t>
+        <cref>
+Actually, we should probably make this section normative. It's easier than publishing a larger number of RFCs...</cref>
+      </t>
+      <section title="Suggested Kerberos-Specific Name Attributes" anchor="d1e633">
         <t>
           <list style="symbols">
             <t>
@@ -182,7 +187,7 @@ component 9 (10th component of a principal name)</t>
             <t>
 components (ordered set of components of a principal name)</t>
             <t>
-transit path (ordered set of realm and CA names)</t>
+transit path (ordered set of realm and CA names); this should be a multi-valued attribute, with each value being an issuer name in the order in which they were transited [for convenience we should include the start and end realms, no? -Nico]</t>
             <t>
 specific authorization data elements</t>
             <t>
@@ -194,7 +199,7 @@ enctypes involved in transit path (this would only be available to initiators)</
           </list>
         </t>
       </section>
-      <section title="Suggested PKU2U-Specific Name Attributes" anchor="d1e654">
+      <section title="Suggested PKU2U-Specific Name Attributes" anchor="d1e674">
         <t>
           <cref>
 Add reference to PKU2U.</cref>
@@ -204,11 +209,13 @@ Add reference to PKU2U.</cref>
             <t>
 issuer CA name</t>
             <t>
-trust path to a trust anchor</t>
+certificate trust validation path to a trust anchor</t>
             <t>
 certificate</t>
             <t>
 certificate subject public key</t>
+            <t>
+certificate subject public key algorithm</t>
             <t>
 certificate subject name</t>
             <t>
@@ -223,11 +230,25 @@ session key enctype</t>
         </t>
       </section>
     </section>
-    <section title="Security Considerations" anchor="d1e691">
+    <section title="Issuer Name Type" anchor="d1e714">
+      <t>
+We add a GSS name-type for use in representing issuer names, designated symbolically as GSS_C_NT_ISSUER. Its query syntax is unspecified and mechanism-specific.</t>
+      <t>
+At least initially the common use of this name-type will be for representation of issuer names using the GSS_C_ATTR_GENERIC_ISSUERNAME GSS name attribute (see  <xref target="sub_Issuer_Name"/>).</t>
+      <section title="Kerberos Realm Name Type" anchor="d1e729">
+        <t>
+No name-type is needed in the Kerberos protocol for realm names. Because all three forms of Kerberos realm-names (DOMAIN, X.500, and OTHER) and unambiguously distinguishable from each other, we also do not add a Kerberos-specific GSS name-type.</t>
+        <t>
+The query and display syntax of GSS_C_NT_ISSUER names for Kerberos is just a realm name prefixed with an '@'. We prefix the realm name with '@' to take advantage of an otherwise useless ambiguity in the query and display form of Kerberos mechanism principal names <xref target="RFC1964"/>, namely that zero-component, and one-zero-length component principal names display identically, therefore those are useless name forms in Kerberos (they would be useless anyways); we appropriate this otherwise useless name form as the query and display syntax of Kerberos realm names. For example, “@FOO.EXAMPLE”.</t>
+        <t>
+In the unlikely event that a name of GSS_C_NT_ISSUER type is used as a GSS initiator or acceptor principal, the actual Kerberos principal name should be an appropriate TGS principal name. More specific information for such use-cases will be provided by any future application protocol specifications that use them.</t>
+      </section>
+    </section>
+    <section title="Security Considerations" anchor="d1e751">
       <t>
 [Add text regarding name constraint checking and explaining the default-to-safe design of the generic name attributes defined in section 2.]</t>
     </section>
-    <section title="IANA Considerations" anchor="d1e700">
+    <section title="IANA Considerations" anchor="d1e760">
       <t>
 [Add text regarding the registration and assignment of the name attributes described in the preceding sections. In particular we should want these attributes' names to not reflect an Internet-Draft name, but an RFC number.]</t>
     </section>
@@ -236,6 +257,7 @@ session key enctype</t>
     <references title="Normative References">&rfc2119;
 &rfc1035;
 &rfc1123;
+&rfc1964;
 &rfc2743;
 &rfc2744;
 &rfc5890;

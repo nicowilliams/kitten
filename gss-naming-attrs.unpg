@@ -3,9 +3,10 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: 2743, 2744 (if approved)                        August 12, 2013
+Updates: 1964, 2743, 2744                                August 23, 2013
+(if approved)
 Intended status: Standards Track
-Expires: February 13, 2014
+Expires: February 24, 2014
 
 
 Generic Naming Attributes for the Generic Security Services Application
@@ -38,7 +39,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 13, 2014.
+   This Internet-Draft will expire on February 24, 2014.
 
 Copyright Notice
 
@@ -78,11 +79,13 @@ Table of Contents
            (INFORMATIONAL)
    4.1.    Suggested Kerberos-Specific Name Attributes
    4.2.    Suggested PKU2U-Specific Name Attributes
-   5.      Security Considerations
-   6.      IANA Considerations
-   7.      References
-   7.1.    Normative References
-   7.2.    Informative References
+   5.      Issuer Name Type
+   5.1.    Kerberos Realm Name Type
+   6.      Security Considerations
+   7.      IANA Considerations
+   8.      References
+   8.1.    Normative References
+   8.2.    Informative References
            Author's Address
 
 
@@ -324,6 +327,9 @@ Table of Contents
    Internet-Drafts.  It is here only because the author lacks the time
    at the moment of writing to create such separate I-Ds.]]
 
+   [[anchor2: Actually, we should probably make this section normative.
+   It's easier than publishing a larger number of RFCs...]]
+
 4.1.  Suggested Kerberos-Specific Name Attributes
 
    o  realm (corresponding to issuer name)
@@ -338,7 +344,10 @@ Table of Contents
 
    o  components (ordered set of components of a principal name)
 
-   o  transit path (ordered set of realm and CA names)
+   o  transit path (ordered set of realm and CA names); this should be a
+      multi-valued attribute, with each value being an issuer name in
+      the order in which they were transited [for convenience we should
+      include the start and end realms, no? -Nico]
 
    o  specific authorization data elements
 
@@ -351,15 +360,17 @@ Table of Contents
 
 4.2.  Suggested PKU2U-Specific Name Attributes
 
-   [[anchor2: Add reference to PKU2U.]]
+   [[anchor3: Add reference to PKU2U.]]
 
    o  issuer CA name
 
-   o  trust path to a trust anchor
+   o  certificate trust validation path to a trust anchor
 
    o  certificate
 
    o  certificate subject public key
+
+   o  certificate subject public key algorithm
 
    o  certificate subject name
 
@@ -372,14 +383,48 @@ Table of Contents
    o  session key enctype
 
 
-5.  Security Considerations
+5.  Issuer Name Type
+
+   We add a GSS name-type for use in representing issuer names,
+   designated symbolically as GSS_C_NT_ISSUER.  Its query syntax is
+   unspecified and mechanism-specific.
+
+   At least initially the common use of this name-type will be for
+   representation of issuer names using the
+   GSS_C_ATTR_GENERIC_ISSUERNAME GSS name attribute (see Section 2.1.1).
+
+5.1.  Kerberos Realm Name Type
+
+   No name-type is needed in the Kerberos protocol for realm names.
+   Because all three forms of Kerberos realm-names (DOMAIN, X.500, and
+   OTHER) and unambiguously distinguishable from each other, we also do
+   not add a Kerberos-specific GSS name-type.
+
+   The query and display syntax of GSS_C_NT_ISSUER names for Kerberos is
+   just a realm name prefixed with an '@'.  We prefix the realm name
+   with '@' to take advantage of an otherwise useless ambiguity in the
+   query and display form of Kerberos mechanism principal names
+   [RFC1964], namely that zero-component, and one-zero-length component
+   principal names display identically, therefore those are useless name
+   forms in Kerberos (they would be useless anyways); we appropriate
+   this otherwise useless name form as the query and display syntax of
+   Kerberos realm names.  For example, "@FOO.EXAMPLE".
+
+   In the unlikely event that a name of GSS_C_NT_ISSUER type is used as
+   a GSS initiator or acceptor principal, the actual Kerberos principal
+   name should be an appropriate TGS principal name.  More specific
+   information for such use-cases will be provided by any future
+   application protocol specifications that use them.
+
+
+6.  Security Considerations
 
    [Add text regarding name constraint checking and explaining the
    default-to-safe design of the generic name attributes defined in
    section 2.]
 
 
-6.  IANA Considerations
+7.  IANA Considerations
 
    [Add text regarding the registration and assignment of the name
    attributes described in the preceding sections.  In particular we
@@ -387,9 +432,9 @@ Table of Contents
    name, but an RFC number.]
 
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -399,6 +444,9 @@ Table of Contents
 
    [RFC1123]  Braden, R., "Requirements for Internet Hosts - Application
               and Support", STD 3, RFC 1123, October 1989.
+
+   [RFC1964]  Linn, J., "The Kerberos Version 5 GSS-API Mechanism",
+              RFC 1964, June 1996.
 
    [RFC2743]  Linn, J., "Generic Security Service Application Program
               Interface Version 2, Update 1", RFC 2743, January 2000.
@@ -415,7 +463,7 @@ Table of Contents
               Programming Interface (GSS-API) Naming Extensions",
               RFC 6680, August 2012.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [RFC4120]  Neuman, C., Yu, T., Hartman, S., and K. Raeburn, "The
               Kerberos Network Authentication Service (V5)", RFC 4120,

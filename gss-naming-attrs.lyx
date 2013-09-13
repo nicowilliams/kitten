@@ -343,7 +343,7 @@ Internet-Draft
 status open
 
 \begin_layout Plain Layout
-2743, 2744
+1964, 2743, 2744
 \end_layout
 
 \end_inset
@@ -704,6 +704,12 @@ These attributes generally have a single value each.
 \end_layout
 
 \begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Issuer-Name"
+
+\end_inset
+
 Issuer Name
 \end_layout
 
@@ -1072,6 +1078,11 @@ This section should really be split out into separate Internet-Drafts.
  to create such separate I-Ds.
 \end_layout
 
+\begin_layout RevisionRemark
+Actually, we should probably make this section normative.
+ It's easier than publishing a larger number of RFCs...
+\end_layout
+
 \begin_layout Subsection
 Suggested Kerberos-Specific Name Attributes
 \end_layout
@@ -1101,7 +1112,10 @@ components (ordered set of components of a principal name)
 \end_layout
 
 \begin_layout Itemize
-transit path (ordered set of realm and CA names)
+transit path (ordered set of realm and CA names); this should be a multi-valued
+ attribute, with each value being an issuer name in the order in which they
+ were transited [for convenience we should include the start and end realms,
+ no? -Nico]
 \end_layout
 
 \begin_layout Itemize
@@ -1133,7 +1147,7 @@ issuer CA name
 \end_layout
 
 \begin_layout Itemize
-trust path to a trust anchor
+certificate trust validation path to a trust anchor
 \end_layout
 
 \begin_layout Itemize
@@ -1142,6 +1156,10 @@ certificate
 
 \begin_layout Itemize
 certificate subject public key
+\end_layout
+
+\begin_layout Itemize
+certificate subject public key algorithm
 \end_layout
 
 \begin_layout Itemize
@@ -1162,6 +1180,78 @@ certificate algorithm names
 
 \begin_layout Itemize
 session key enctype
+\end_layout
+
+\begin_layout Section
+Issuer Name Type
+\end_layout
+
+\begin_layout Standard
+We add a GSS name-type for use in representing issuer names, designated
+ symbolically as GSS_C_NT_ISSUER.
+ Its query syntax is unspecified and mechanism-specific.
+\end_layout
+
+\begin_layout Standard
+At least initially the common use of this name-type will be for representation
+ of issuer names using the GSS_C_ATTR_GENERIC_ISSUERNAME GSS name attribute
+ (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Issuer-Name"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsection
+Kerberos Realm Name Type
+\end_layout
+
+\begin_layout Standard
+No name-type is needed in the Kerberos protocol for realm names.
+ Because all three forms of Kerberos realm-names (DOMAIN, X.500, and OTHER)
+ and unambiguously distinguishable from each other, we also do not add a
+ Kerberos-specific GSS name-type.
+\end_layout
+
+\begin_layout Standard
+The query and display syntax of GSS_C_NT_ISSUER names for Kerberos is just
+ a realm name prefixed with an '@'.
+ We prefix the realm name with '@' to take advantage of an otherwise useless
+ ambiguity in the query and display form of Kerberos mechanism principal
+ names 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC1964
+\end_layout
+
+\end_inset
+
+, namely that zero-component, and one-zero-length component principal names
+ display identically, therefore those are useless name forms in Kerberos
+ (they would be useless anyways); we appropriate this otherwise useless
+ name form as the query and display syntax of Kerberos realm names.
+ For example, 
+\begin_inset Quotes eld
+\end_inset
+
+@FOO.EXAMPLE
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In the unlikely event that a name of GSS_C_NT_ISSUER type is used as a GSS
+ initiator or acceptor principal, the actual Kerberos principal name should
+ be an appropriate TGS principal name.
+ More specific information for such use-cases will be provided by any future
+ application protocol specifications that use them.
 \end_layout
 
 \begin_layout Section
@@ -1243,6 +1333,26 @@ status collapsed
 LatexCommand href
 name "rfc1123"
 target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1123.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc1964"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1964.xml"
 
 \end_inset
 

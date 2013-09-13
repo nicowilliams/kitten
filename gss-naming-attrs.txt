@@ -3,9 +3,10 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: 2743, 2744 (if approved)                        August 12, 2013
+Updates: 1964, 2743, 2744                                August 23, 2013
+(if approved)
 Intended status: Standards Track
-Expires: February 13, 2014
+Expires: February 24, 2014
 
 
 Generic Naming Attributes for the Generic Security Services Application
@@ -38,7 +39,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 13, 2014.
+   This Internet-Draft will expire on February 24, 2014.
 
 Copyright Notice
 
@@ -48,15 +49,15 @@ Copyright Notice
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
    (http://trustee.ietf.org/license-info) in effect on the date of
-   publication of this document.  Please review these documents
 
 
 
-Williams                Expires February 13, 2014               [Page 1]
+Williams                Expires February 24, 2014               [Page 1]
 
 Internet-Draft                 Simple GSS                    August 2013
 
 
+   publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
@@ -86,12 +87,14 @@ Table of Contents
            (INFORMATIONAL)  . . . . . . . . . . . . . . . . . . . . .  9
    4.1.    Suggested Kerberos-Specific Name Attributes  . . . . . . .  9
    4.2.    Suggested PKU2U-Specific Name Attributes . . . . . . . . .  9
-   5.      Security Considerations  . . . . . . . . . . . . . . . . . 11
-   6.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 12
-   7.      References . . . . . . . . . . . . . . . . . . . . . . . . 13
-   7.1.    Normative References . . . . . . . . . . . . . . . . . . . 13
-   7.2.    Informative References . . . . . . . . . . . . . . . . . . 13
-           Author's Address . . . . . . . . . . . . . . . . . . . . . 14
+   5.      Issuer Name Type . . . . . . . . . . . . . . . . . . . . . 11
+   5.1.    Kerberos Realm Name Type . . . . . . . . . . . . . . . . . 11
+   6.      Security Considerations  . . . . . . . . . . . . . . . . . 12
+   7.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 13
+   8.      References . . . . . . . . . . . . . . . . . . . . . . . . 14
+   8.1.    Normative References . . . . . . . . . . . . . . . . . . . 14
+   8.2.    Informative References . . . . . . . . . . . . . . . . . . 14
+           Author's Address . . . . . . . . . . . . . . . . . . . . . 15
 
 
 
@@ -105,10 +108,7 @@ Table of Contents
 
 
 
-
-
-
-Williams                Expires February 13, 2014               [Page 2]
+Williams                Expires February 24, 2014               [Page 2]
 
 Internet-Draft                 Simple GSS                    August 2013
 
@@ -164,7 +164,7 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 13, 2014               [Page 3]
+Williams                Expires February 24, 2014               [Page 3]
 
 Internet-Draft                 Simple GSS                    August 2013
 
@@ -220,7 +220,7 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 13, 2014               [Page 4]
+Williams                Expires February 24, 2014               [Page 4]
 
 Internet-Draft                 Simple GSS                    August 2013
 
@@ -276,7 +276,7 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 13, 2014               [Page 5]
+Williams                Expires February 24, 2014               [Page 5]
 
 Internet-Draft                 Simple GSS                    August 2013
 
@@ -332,7 +332,7 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 13, 2014               [Page 6]
+Williams                Expires February 24, 2014               [Page 6]
 
 Internet-Draft                 Simple GSS                    August 2013
 
@@ -388,7 +388,7 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 13, 2014               [Page 7]
+Williams                Expires February 24, 2014               [Page 7]
 
 Internet-Draft                 Simple GSS                    August 2013
 
@@ -444,7 +444,7 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 13, 2014               [Page 8]
+Williams                Expires February 24, 2014               [Page 8]
 
 Internet-Draft                 Simple GSS                    August 2013
 
@@ -454,6 +454,9 @@ Internet-Draft                 Simple GSS                    August 2013
    [[anchor1: This section should really be split out into separate
    Internet-Drafts.  It is here only because the author lacks the time
    at the moment of writing to create such separate I-Ds.]]
+
+   [[anchor2: Actually, we should probably make this section normative.
+   It's easier than publishing a larger number of RFCs...]]
 
 4.1.  Suggested Kerberos-Specific Name Attributes
 
@@ -469,7 +472,10 @@ Internet-Draft                 Simple GSS                    August 2013
 
    o  components (ordered set of components of a principal name)
 
-   o  transit path (ordered set of realm and CA names)
+   o  transit path (ordered set of realm and CA names); this should be a
+      multi-valued attribute, with each value being an issuer name in
+      the order in which they were transited [for convenience we should
+      include the start and end realms, no? -Nico]
 
    o  specific authorization data elements
 
@@ -482,28 +488,30 @@ Internet-Draft                 Simple GSS                    August 2013
 
 4.2.  Suggested PKU2U-Specific Name Attributes
 
-   [[anchor2: Add reference to PKU2U.]]
+   [[anchor3: Add reference to PKU2U.]]
 
    o  issuer CA name
 
-   o  trust path to a trust anchor
+   o  certificate trust validation path to a trust anchor
 
    o  certificate
 
+
+
+
+
+Williams                Expires February 24, 2014               [Page 9]
+
+Internet-Draft                 Simple GSS                    August 2013
+
+
    o  certificate subject public key
+
+   o  certificate subject public key algorithm
 
    o  certificate subject name
 
    o  certificate subject alternate names
-
-
-
-
-
-Williams                Expires February 13, 2014               [Page 9]
-
-Internet-Draft                 Simple GSS                    August 2013
-
 
    o  specific certificate extensions
 
@@ -548,20 +556,68 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-
-
-
-
-
-
-
-
-Williams                Expires February 13, 2014              [Page 10]
+Williams                Expires February 24, 2014              [Page 10]
 
 Internet-Draft                 Simple GSS                    August 2013
 
 
-5.  Security Considerations
+5.  Issuer Name Type
+
+   We add a GSS name-type for use in representing issuer names,
+   designated symbolically as GSS_C_NT_ISSUER.  Its query syntax is
+   unspecified and mechanism-specific.
+
+   At least initially the common use of this name-type will be for
+   representation of issuer names using the
+   GSS_C_ATTR_GENERIC_ISSUERNAME GSS name attribute (see Section 2.1.1).
+
+5.1.  Kerberos Realm Name Type
+
+   No name-type is needed in the Kerberos protocol for realm names.
+   Because all three forms of Kerberos realm-names (DOMAIN, X.500, and
+   OTHER) and unambiguously distinguishable from each other, we also do
+   not add a Kerberos-specific GSS name-type.
+
+   The query and display syntax of GSS_C_NT_ISSUER names for Kerberos is
+   just a realm name prefixed with an '@'.  We prefix the realm name
+   with '@' to take advantage of an otherwise useless ambiguity in the
+   query and display form of Kerberos mechanism principal names
+   [RFC1964], namely that zero-component, and one-zero-length component
+   principal names display identically, therefore those are useless name
+   forms in Kerberos (they would be useless anyways); we appropriate
+   this otherwise useless name form as the query and display syntax of
+   Kerberos realm names.  For example, "@FOO.EXAMPLE".
+
+   In the unlikely event that a name of GSS_C_NT_ISSUER type is used as
+   a GSS initiator or acceptor principal, the actual Kerberos principal
+   name should be an appropriate TGS principal name.  More specific
+   information for such use-cases will be provided by any future
+   application protocol specifications that use them.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                Expires February 24, 2014              [Page 11]
+
+Internet-Draft                 Simple GSS                    August 2013
+
+
+6.  Security Considerations
 
    [Add text regarding name constraint checking and explaining the
    default-to-safe design of the generic name attributes defined in
@@ -612,12 +668,12 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 13, 2014              [Page 11]
+Williams                Expires February 24, 2014              [Page 12]
 
 Internet-Draft                 Simple GSS                    August 2013
 
 
-6.  IANA Considerations
+7.  IANA Considerations
 
    [Add text regarding the registration and assignment of the name
    attributes described in the preceding sections.  In particular we
@@ -668,14 +724,14 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 13, 2014              [Page 12]
+Williams                Expires February 24, 2014              [Page 13]
 
 Internet-Draft                 Simple GSS                    August 2013
 
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -685,6 +741,9 @@ Internet-Draft                 Simple GSS                    August 2013
 
    [RFC1123]  Braden, R., "Requirements for Internet Hosts - Application
               and Support", STD 3, RFC 1123, October 1989.
+
+   [RFC1964]  Linn, J., "The Kerberos Version 5 GSS-API Mechanism",
+              RFC 1964, June 1996.
 
    [RFC2743]  Linn, J., "Generic Security Service Application Program
               Interface Version 2, Update 1", RFC 2743, January 2000.
@@ -701,7 +760,7 @@ Internet-Draft                 Simple GSS                    August 2013
               Programming Interface (GSS-API) Naming Extensions",
               RFC 6680, August 2012.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [RFC4120]  Neuman, C., Yu, T., Hartman, S., and K. Raeburn, "The
               Kerberos Network Authentication Service (V5)", RFC 4120,
@@ -721,10 +780,7 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-
-
-
-Williams                Expires February 13, 2014              [Page 13]
+Williams                Expires February 24, 2014              [Page 14]
 
 Internet-Draft                 Simple GSS                    August 2013
 
@@ -780,5 +836,5 @@ Author's Address
 
 
 
-Williams                Expires February 13, 2014              [Page 14]
+Williams                Expires February 24, 2014              [Page 15]
 
