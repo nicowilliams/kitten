@@ -524,6 +524,13 @@ RFC2119
 .
 \end_layout
 
+\begin_layout Standard
+Where RFC2119 key words are used herein for stating requirements or recommendati
+ons, they are used to as part of suggested normative language to be used
+ by normative Internet protocol specifications that accept the internationalizat
+ion advice given in this document.
+\end_layout
+
 \begin_layout Section
 Internationalization
 \end_layout
@@ -600,8 +607,13 @@ just-send-UTF-8 Where a program or protocol component sends UTF-8 character
  applying character mappings and/or prohibitions).
 \end_layout
 
+\begin_layout Description
+...
+ Define lots more and reference other RFCs...
+\end_layout
+
 \begin_layout Section
-NFSv4 and Filesystems
+Filesystems and Remote/Distributed Filesystem Protocols
 \end_layout
 
 \begin_layout Standard
@@ -633,7 +645,7 @@ RFC3629
 \end_layout
 
 \begin_layout Subsection
-Filesystem Client and Server Architecture
+On Filesystem Client and Server Implementation Architectures and their Relevance
 \end_layout
 
 \begin_layout Standard
@@ -655,9 +667,11 @@ urpose operating systems in use at this time and over the entire history
 
 \begin_layout Standard
 Normally the architecture and design of clients and servers would be of
- no interest to the IETF: we certainly don't want to dictate such things.
+ no interest to the IETF: we want neiter to dictate nor be unduly constrained
+ by such things.
  In this case architecture and legacy combine to create unusual problems
  for filesystem protocols.
+ In this case we must take implementation architecture into account!
 \end_layout
 
 \begin_layout Standard
@@ -744,8 +758,13 @@ Legacy
 \begin_layout Standard
 Many, perhaps all commonly used general-purpose operating systems, predate
  modern internationalization efforts.
- Most such operating systems simply treated character strings as mostly
- opaque at many if not all of the boundaries described in 
+ (Some operating systems, such as those for mobile devices, are new enough
+ that they might well pose no legacy I18N issues for filesystems.)
+\end_layout
+
+\begin_layout Standard
+Most such operating systems simply treated character strings as mostly opaque
+ at many if not all of the boundaries described in 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:Obvious-Boundaries"
@@ -791,7 +810,7 @@ m content, specifically file and directory names.
 \end_layout
 
 \begin_layout Subsubsection
-Legacy Problem #3: Non-Normalization
+Legacy Problem #3: Poor Handling of Unicode Equivalence (Normalization)
 \end_layout
 
 \begin_layout Standard
@@ -872,7 +891,7 @@ hardlinks
 This makes it very difficult to deploy Unicode normalization anywhere other
  than the application.
  But it is not possible to fix every POSIX application to normalize on create
- or lookup!
+ or lookup either!
 \end_layout
 
 \begin_layout Subsection
@@ -901,8 +920,17 @@ on the wire
 .
  Any codeset conversions and Unicode normalization would be performed at
  the system call boundary (i.e., on the client) and at the VFS boundary (if,
- for example, a filesystem on-disk format requires different codfeset/encoding
+ for example, a filesystem on-disk format requires different codeset/encoding
  than the protocol does on the wire).
+\end_layout
+
+\begin_layout Standard
+Or perhaps in an ideal world all user applications may run only in Unicode
+ locales, and must perform explicit codeset conversions when handling legacy
+ (non-Unicode) data.
+ This ideal is one we will likely obtain in time, as legacy non-Unicode
+ locales are abandoned, legacy filesystems cleaned up, and new operating
+ systems (or new versions of them) take over older ones.
 \end_layout
 
 \begin_layout Standard
@@ -910,10 +938,11 @@ In an ideal world there would be no Unicode normalization problems because
  either there would be just one normal form for Unicode or because all implement
 ations of filesystem clients, servers, filesystems, and filesystem-using
  applications, would use a single, common normal form.
+ In practice this is almost certainly an impossible ideal.
 \end_layout
 
 \begin_layout Subsection
-Coping with Legacy: Accept it
+Coping with / Accepting Legacy
 \end_layout
 
 \begin_layout Standard
@@ -938,15 +967,14 @@ ing and the codeset/encoding expected by the kernel.
 \end_layout
 
 \begin_layout Standard
-The second legacy problem -legacy filesystem content- could be addressed
- by requiring manual inspection and repair of legacy content, but there
- exist such vast amounts of legacy contents that this is not a realistic
- option.
+The second legacy problem -legacy filesystem content- can be addressed by
+ requiring manual inspection and repair of legacy content, but there exist
+ such vast amounts of legacy contents that this is not a realistic option.
  There is no fix for the legacy filesystem content problem.
 \end_layout
 
 \begin_layout Subsubsection
-Implications of Accepting Legacy
+Implications
 \end_layout
 
 \begin_layout Standard
@@ -979,6 +1007,11 @@ normalization-insensitive lookups are problematic
 ignoring normalization is problematic
 \end_layout
 
+\begin_layout Standard
+With respect to normalization there's no one solution appropriate to all
+ use cases.
+\end_layout
+
 \begin_layout Subsection
 Recommendations for Filesystem Protocols, Filesystems, and Operating Systems
 \end_layout
@@ -988,13 +1021,71 @@ Filesystems SHOULD be configurable to reject object names which are not
  valid in the filesystem's chosen Unicode encoding.
 \end_layout
 
-\begin_layout Itemize
-Filesystem servers SHOULD accept object names -from clients- which are not
- valid Unicode in the protocol's chosen Unicode encoding.
+\begin_deeper
+\begin_layout Standard
+This allows filesystems (and their servers) to put a stop to the rot, except,
+ of course, for non-Unicode strings that happen to appear as valid Unicode
+ strings due to codeset/encoding aliasing.
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
-Filesystem servers SHOULD accept object names -from filesystems- which are
+Remote / distributed filesystem protocols 
+\emph on
+should
+\emph default
+ specify the use of Unicode on the wire, but they should also allow the
+ use of non-Unicode names, leaving it to the filesystem to decide whether
+ to accept or reject such names.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For example, this means that NFSv4 
+\emph on
+servers
+\emph default
+ SHOULD accept object names -from clients- which are not valid UTF-8, contrary
+ to the original NFSv4 specification 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC3530
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Remote / distributed filesystem protocols should permit servers to return
+ non-Unicode object names to clients.
+ This allows servers to serve legacy non-Unicode content.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+For example, this means that NFSv4 clients SHOULD be prepared to accept
+ non-UTF-8 names from NFSv4 servers, contrary to the original NFSv4 specificatio
+n 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC3530
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Filesystem servers should accept object names -from filesystems- which are
  not valid in the host operating system's chosen codeset and encoding for
  use above the VFS.
 \end_layout
@@ -1040,15 +1131,56 @@ no conversion
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+Operating systems that do not support codeset/encoding conversions at the
+ system call boundary SHOULD at least encourage users to use or switch to
+ using Unicode locales.
+\end_layout
+
 \begin_layout Subsection
 Interoperability Considerations for Filesystem Protocols
 \end_layout
 
-\begin_layout Standard
-...
+\begin_layout RevisionRemark
+Intent: describe interoperability problems that arise given current NFSv4
+ deployments and legacy filesystem contents.
 \end_layout
 
 \begin_layout Section
+Negotiation Problems
+\end_layout
+
+\begin_layout RevisionRemark
+Intent: describe the sorts of problems we've had in introducing UTF-8 (or
+ other encodings of Unicode) in protocols where only US-ASCII could be sent
+ initially.
+ For example, in Kerberos we use the ASN.1 type 
+\begin_inset Quotes eld
+\end_inset
+
+IA5-String
+\begin_inset Quotes erd
+\end_inset
+
+, which can't easily (or at all) be made to carry Unicode content.
+ Other similar problematic cases we could describe include, for example,
+ DNS.
+\end_layout
+
+\begin_layout Section
+Remote / Distributed Authentication Protocols and APIs
+\end_layout
+
+\begin_layout RevisionRemark
+Intent: describe the problems that arise with security entity identifiers
+ (e.g., user names) that for various reasons need canonicalization (normalization)
+ in protocol components where authoritative canonical naming information
+ is not available (e.g., when usernames are used as salts for cryptographic
+ algorithms without having access to a database or directory that could
+ be used to canonicalize an input username).
+\end_layout
+
+\begin_layout Subsection
 Kerberos
 \end_layout
 
@@ -1122,21 +1254,24 @@ lm/transited/and other fields of Ticket, Authenticator, and other Kerberos
 \end_layout
 
 \end_deeper
-\begin_layout Section
+\begin_layout Subsection
 SASL
 \end_layout
 
-\begin_layout Standard
-[Talk about the difference between authentication ID and authorization ID,
- and the different boundaries for each.]
+\begin_layout RevisionRemark
+Talk about the difference between authentication ID and authorization ID,
+ and the different boundaries for each.
 \end_layout
 
 \begin_layout Section
 Security Considerations
 \end_layout
 
-\begin_layout Standard
-[Lots to talk about here.]
+\begin_layout RevisionRemark
+Lots to talk about here.
+ For example, aliasing issues w.r.t.
+ multiple equivalent Unicode forms, and the resulting potential for confusion.
+ Also: confusability in general.
 \end_layout
 
 \begin_layout Section

@@ -35,17 +35,19 @@ Internationalization of protocols and programs often requires determining where 
     </abstract>
   </front>
   <middle>
-    <section title="Introduction and Motivation" anchor="d1e295">
+    <section title="Introduction and Motivation" anchor="d1e310">
       <t>
 As the IETF has attempted to internationalize Internet protocols we have learned some valuable lessons. It is time to write these down. The author is primarily aware of lessons from internationalization of NFSv4 <xref target="RFC3530"/> and filesystems in general, as well as Kerberos RFC4120, Simple Authentication and Security Layers (SASL) <xref target="RFC4422"/>, and the Generic Security Services Application Programming Interface (GSS-API) <xref target="RFC2743"/>, therefore that will be the point of departure for this document.</t>
       <t>
 This document is INFORMATIVE.</t>
-      <section title="Conventions used in this document" anchor="d1e325">
+      <section title="Conventions used in this document" anchor="d1e340">
         <t>
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
+        <t>
+Where RFC2119 key words are used herein for stating requirements or recommendations, they are used to as part of suggested normative language to be used by normative Internet protocol specifications that accept the internationalization advice given in this document.</t>
       </section>
     </section>
-    <section title="Internationalization" anchor="d1e341">
+    <section title="Internationalization" anchor="d1e359">
       <t>
 Internationalizing a protocol roughly requires the following tasks:</t>
       <t>
@@ -66,7 +68,7 @@ decide how to handle string equality, including case-sensitive and case-insensit
 In practice, because historically most protocols and data formats do not tag strings with any language nor codeset information, and because codesets and their encodings often overlap, and other legacy problems, there's no simple way to decide where to perform any conversions, mappings, or checks.</t>
       <t>
 We describe here our experience with NFSv4 and Kerberos.</t>
-      <section title="Terminology" anchor="d1e372">
+      <section title="Terminology" anchor="d1e390">
         <t>
 [...]</t>
         <t>
@@ -81,18 +83,20 @@ Some terms used in this document:</t>
  Where a program or protocol component accepts character strings that are valid UTF-8 strings withour regard to normalization.</t>
             <t hangText="just-send-UTF-8">
  Where a program or protocol component sends UTF-8 character strings without attempting to normalize or perform any similar steps (e.g., applying character mappings and/or prohibitions).</t>
+            <t hangText="...">
+ Define lots more and reference other RFCs...</t>
           </list>
         </t>
       </section>
     </section>
-    <section title="NFSv4 and Filesystems" anchor="d1e405">
+    <section title="Filesystems and Remote/Distributed Filesystem Protocols" anchor="d1e429">
       <t>
 Filesystems and filesystem protocols may be the most difficult application to internationalize that we in the IETF have seen to date. Initially, for NFSv4 <xref target="RFC3530"/> we believed that we could simply mandate the use of UTF-8 <xref target="RFC3629"/>, forbid some characters, require a choice of normalization forms, and we'd be done. In practice it was not so simple.</t>
-      <section title="Filesystem Client and Server Architecture" anchor="d1e427">
+      <section title="On Filesystem Client and Server Implementation Architectures and their Relevance" anchor="d1e450">
         <t>
 To understand the difficulties faced in internationalizing NFSv4 we need to understand the typical architecture of NFSv4 clients and servers. We say “typical”, but it really is typical: the vast majority, if not all of the major general-purpose operating systems in use at this time and over the entire history of NFSv4 share the architecture that we describe here, differing only in minor details.</t>
         <t>
-Normally the architecture and design of clients and servers would be of no interest to the IETF: we certainly don't want to dictate such things. In this case architecture and legacy combine to create unusual problems for filesystem protocols.</t>
+Normally the architecture and design of clients and servers would be of no interest to the IETF: we want neiter to dictate nor be unduly constrained by such things. In this case architecture and legacy combine to create unusual problems for filesystem protocols. In this case we must take implementation architecture into account!</t>
         <t>
 Both, clients and servers, typically have a “kernel” that executes privileged mode object code and which has a pluggable “virtual filesystem switch” (VFS) -- an interface that abstracts filesystems so as to permit support for many different types of filesystems. Clients, and usually servers, also run user-mode object code -less privileged than kernel-mode object code- that interfaces with filesystems by invoking privileged kernel-mode code through well-defined interfaces (“system calls”) that allow the kernel to maintain privilege separation and isolation. These system calls too present a common, standard, abstract interface to all filesystems that can be plugged into the kernel's VFS. Some servers run no user-mode object code to speak of, running all fileserver protocol implementations in kernel mode, nonetheless, the architecture is roughly the same for servers as for clients.</t>
       </section>
@@ -116,20 +120,22 @@ persistent storage network, between specific filesystem implementations and pers
         <t>
 Their relevance to I18N will be discussed further below.</t>
       </section>
-      <section title="Legacy" anchor="d1e472">
+      <section title="Legacy" anchor="d1e495">
         <t>
-Many, perhaps all commonly used general-purpose operating systems, predate modern internationalization efforts. Most such operating systems simply treated character strings as mostly opaque at many if not all of the boundaries described in  <xref target="sub_Obvious_Boundaries"/>, at most interpreting path component separator characters, in the process assuming US-ASCII [XXX add reference] as the lowest common denominator for the purpose of finding path component separators.</t>
+Many, perhaps all commonly used general-purpose operating systems, predate modern internationalization efforts. (Some operating systems, such as those for mobile devices, are new enough that they might well pose no legacy I18N issues for filesystems.)</t>
+        <t>
+Most such operating systems simply treated character strings as mostly opaque at many if not all of the boundaries described in  <xref target="sub_Obvious_Boundaries"/>, at most interpreting path component separator characters, in the process assuming US-ASCII [XXX add reference] as the lowest common denominator for the purpose of finding path component separators.</t>
         <t>
 Because these operating systems, filesystem on-disk formats, and actual on-disk filesystems, predate modern internationalization efforts, there exist many filesystems with object name strings of unknown or mixed codesets. Strings, such as object names, in filesystems are never tagged with codeset information because the codeset information was and still is usually lost at the system call boundary. The actual codesets (and encodings) used typically varies along with user (and system administrator) locale preferences.</t>
-        <section title="Legacy Problem #1: Loss of Metadata at the System Call Boundary" anchor="d1e488">
+        <section title="Legacy Problem #1: Loss of Metadata at the System Call Boundary" anchor="d1e514">
           <t>
 The first and foremost problem, then, is the loss of locale metadata at the system call boundary. Without fixing this we cannot move to an all-Unicode world in filesystems protocols.all</t>
         </section>
-        <section title="Legacy Problem #2: Unknown Character String Metadata in Existing Filesystem Content" anchor="d1e497">
+        <section title="Legacy Problem #2: Unknown Character String Metadata in Existing Filesystem Content" anchor="d1e523">
           <t>
 The second most important problem in filesystem internationalization is the lack of locale (codeset, encoding) metadata for existing (legacy) filesystem content, specifically file and directory names.</t>
         </section>
-        <section title="Legacy Problem #3: Non-Normalization" anchor="d1e506">
+        <section title="Legacy Problem #3: Poor Handling of Unicode Equivalence (Normalization)" anchor="d1e532">
           <t>
 Historically Unicode input methods tend to produce pre-composed codepoints -- something close to Normalization Form Composed (NFC). But this is not always so.</t>
           <t>
@@ -137,11 +143,11 @@ Historically most filesystems treat file (and directory) names as opaque, but at
           <t>
 This can result in subtle interoperability problems, as two objects with equivalent names may exist in namespaces (directories) where names are expected to be unique, or users may fail to input names that match those that exist in a filesystem.</t>
         </section>
-        <section title="Legacy Problem #4: Ignored Requirements" anchor="d1e521">
+        <section title="Legacy Problem #4: Ignored Requirements" anchor="d1e548">
           <t>
 The original NFSv4 specification <xref target="RFC3530"/> requires some character mappings and prohibitions. Most implementations have ignored this requirement.</t>
         </section>
-        <section title="Legacy Problem #5: Constraints Imposed by Non-Internet Standards" anchor="d1e537">
+        <section title="Legacy Problem #5: Constraints Imposed by Non-Internet Standards" anchor="d1e563">
           <t>
 POSIX [XXX add reference] is one common standard for system call interfaces to filesystems. Arguably it requires that:</t>
           <t>
@@ -153,23 +159,25 @@ no aliases may exist for files/directories that are not “symlinks” or “har
             </list>
           </t>
           <t>
-This makes it very difficult to deploy Unicode normalization anywhere other than the application. But it is not possible to fix every POSIX application to normalize on create or lookup!</t>
+This makes it very difficult to deploy Unicode normalization anywhere other than the application. But it is not possible to fix every POSIX application to normalize on create or lookup either!</t>
         </section>
       </section>
-      <section title="A World Without Legacy" anchor="d1e556">
+      <section title="A World Without Legacy" anchor="d1e582">
         <t>
-If we didn't have the legacy problems described above we could simply mandate the use of Unicode in one specific encoding (e.g., UTF-8) “in the middle”, with the middle being: from the system call boundary, to the VFS boundary, as well “on the wire”. Any codeset conversions and Unicode normalization would be performed at the system call boundary (i.e., on the client) and at the VFS boundary (if, for example, a filesystem on-disk format requires different codfeset/encoding than the protocol does on the wire).</t>
+If we didn't have the legacy problems described above we could simply mandate the use of Unicode in one specific encoding (e.g., UTF-8) “in the middle”, with the middle being: from the system call boundary, to the VFS boundary, as well “on the wire”. Any codeset conversions and Unicode normalization would be performed at the system call boundary (i.e., on the client) and at the VFS boundary (if, for example, a filesystem on-disk format requires different codeset/encoding than the protocol does on the wire).</t>
         <t>
-In an ideal world there would be no Unicode normalization problems because either there would be just one normal form for Unicode or because all implementations of filesystem clients, servers, filesystems, and filesystem-using applications, would use a single, common normal form.</t>
+Or perhaps in an ideal world all user applications may run only in Unicode locales, and must perform explicit codeset conversions when handling legacy (non-Unicode) data. This ideal is one we will likely obtain in time, as legacy non-Unicode locales are abandoned, legacy filesystems cleaned up, and new operating systems (or new versions of them) take over older ones.</t>
+        <t>
+In an ideal world there would be no Unicode normalization problems because either there would be just one normal form for Unicode or because all implementations of filesystem clients, servers, filesystems, and filesystem-using applications, would use a single, common normal form. In practice this is almost certainly an impossible ideal.</t>
       </section>
-      <section title="Coping with Legacy: Accept it" anchor="d1e568">
+      <section title="Coping with / Accepting Legacy" anchor="d1e597">
         <t>
 Legacy abounds. We must cope with it.</t>
         <t>
 First, the IETF can't cause the system call boundary metadata loss problem to be fixed. The architectures of the relevant operating systems is such that the simplest fix for that problem is to convert between the user-mode locale's codeset/encoding and the codeset/encoding expected by the kernel. But getting such a fix to be implemented and deployed is difficult for a number of reasons, not the least of which is its impact on performance (for users using locales that require conversions), but also complexity: the user-mode side of system calls can sometimes be in a bootstrapping state during which I18N object code may not have been loaded yet. The simplest fix for this problem is to recommend that users use only locales that use Unicode as the charater repertoire and codeset, preferably with the encoding expected on the kernel-side of the system call boundary.</t>
         <t>
-The second legacy problem -legacy filesystem content- could be addressed by requiring manual inspection and repair of legacy content, but there exist such vast amounts of legacy contents that this is not a realistic option. There is no fix for the legacy filesystem content problem.</t>
-        <section title="Implications of Accepting Legacy" anchor="d1e584">
+The second legacy problem -legacy filesystem content- can be addressed by requiring manual inspection and repair of legacy content, but there exist such vast amounts of legacy contents that this is not a realistic option. There is no fix for the legacy filesystem content problem.</t>
+        <section title="Implications" anchor="d1e613">
           <t>
 Some implications of accepting legacy:</t>
           <t>
@@ -188,17 +196,32 @@ normalization-insensitive lookups are problematic</t>
 ignoring normalization is problematic</t>
             </list>
           </t>
+          <t>
+With respect to normalization there's no one solution appropriate to all use cases.</t>
         </section>
       </section>
-      <section title="Recommendations for Filesystem Protocols, Filesystems, and Operating Systems" anchor="d1e612">
+      <section title="Recommendations for Filesystem Protocols, Filesystems, and Operating Systems" anchor="d1e644">
         <t>
           <list style="symbols">
             <t>
-Filesystems SHOULD be configurable to reject object names which are not valid in the filesystem's chosen Unicode encoding.</t>
+Filesystems SHOULD be configurable to reject object names which are not valid in the filesystem's chosen Unicode encoding.
+<vspace blankLines="1"/>
+This allows filesystems (and their servers) to put a stop to the rot, except, of course, for non-Unicode strings that happen to appear as valid Unicode strings due to codeset/encoding aliasing.
+</t>
             <t>
-Filesystem servers SHOULD accept object names -from clients- which are not valid Unicode in the protocol's chosen Unicode encoding.</t>
+Remote / distributed filesystem protocols <spanx>should</spanx>  specify the use of Unicode on the wire, but they should also allow the use of non-Unicode names, leaving it to the filesystem to decide whether to accept or reject such names.
+
+<list style="symbols"><t>
+For example, this means that NFSv4 <spanx>servers</spanx>  SHOULD accept object names -from clients- which are not valid UTF-8, contrary to the original NFSv4 specification <xref target="RFC3530"/>.</t></list>
+</t>
             <t>
-Filesystem servers SHOULD accept object names -from filesystems- which are not valid in the host operating system's chosen codeset and encoding for use above the VFS.</t>
+Remote / distributed filesystem protocols should permit servers to return non-Unicode object names to clients. This allows servers to serve legacy non-Unicode content.
+
+<list style="symbols"><t>
+For example, this means that NFSv4 clients SHOULD be prepared to accept non-UTF-8 names from NFSv4 servers, contrary to the original NFSv4 specification <xref target="RFC3530"/>.</t></list>
+</t>
+            <t>
+Filesystem servers should accept object names -from filesystems- which are not valid in the host operating system's chosen codeset and encoding for use above the VFS.</t>
             <t>
 Filesystems SHOULD be configurable as to Unicode normalization, allowing at least the following two options:
 
@@ -219,24 +242,39 @@ Operating systems SHOULD be configurable as to codeset/encoding conversions at t
 convert to/from non-Unicode locales' codesets</t><t>
 no conversion</t></list>
 </t>
+            <t>
+Operating systems that do not support codeset/encoding conversions at the system call boundary SHOULD at least encourage users to use or switch to using Unicode locales.</t>
           </list>
         </t>
       </section>
-      <section title="Interoperability Considerations for Filesystem Protocols" anchor="d1e658">
+      <section title="Interoperability Considerations for Filesystem Protocols" anchor="d1e728">
         <t>
-...</t>
+          <cref>
+Intent: describe interoperability problems that arise given current NFSv4 deployments and legacy filesystem contents.</cref>
+        </t>
       </section>
     </section>
-    <section title="Kerberos" anchor="d1e667">
+    <section title="Negotiation Problems" anchor="d1e738">
       <t>
+        <cref>
+Intent: describe the sorts of problems we've had in introducing UTF-8 (or other encodings of Unicode) in protocols where only US-ASCII could be sent initially. For example, in Kerberos we use the ASN.1 type “IA5-String”, which can't easily (or at all) be made to carry Unicode content. Other similar problematic cases we could describe include, for example, DNS.</cref>
+      </t>
+    </section>
+    <section title="Remote / Distributed Authentication Protocols and APIs" anchor="d1e747">
+      <t>
+        <cref>
+Intent: describe the problems that arise with security entity identifiers (e.g., user names) that for various reasons need canonicalization (normalization) in protocol components where authoritative canonical naming information is not available (e.g., when usernames are used as salts for cryptographic algorithms without having access to a database or directory that could be used to canonicalize an input username).</cref>
+      </t>
+      <section title="Kerberos" anchor="d1e756">
+        <t>
 Kerberos V5 <xref target="RFC4120"/> names two things: principals and realms. Historically only US-ASCII has interoperated well. In practice most implementations just-use-8 and just-send-8, and some just-send-UTF-8 and just-use-UTF-8.</t>
-      <t>
+        <t>
 We considered adding negotiation of the use of non-US-ASCII UTF-8 principal and realm names, but the resulting protocol was quite complex.</t>
-      <t>
+        <t>
 It may soon be time to revisit Kerberos V5 internationalization. Problems to address include:</t>
-      <t>
-        <list style="symbols">
-          <t>
+        <t>
+          <list style="symbols">
+            <t>
 how to deal with Kerberos' use of IA5String, which effectively precludes use of Unicode [this is a long story, and we should tell it in detail]:
 
 <list style="symbols"><t>
@@ -244,7 +282,7 @@ just treat earstwhile IA5String SEQUENCE fields as a CHOICE of IA5String or UTF8
 just send UTF-8 as IA5String?</t><t>
 negotiate support for treating IA5String SEQUENCE fields as CHOICEs of IA5Strign and UTF8String?</t></list>
 </t>
-          <t>
+            <t>
 How to deal with normalization?
 
 <list style="symbols"><t>
@@ -252,18 +290,23 @@ should KDCs treat principal names as normalization-insensitive?</t><t>
 should principal names used as cryptographic salts be normalized to any particular form?</t><t>
 should clients and services normalize or treat in a nomalization-form-insensitive manner any principal component and realm names seen in sname/srealm/cname/crealm/transited/and other fields of Ticket, Authenticator, and other Kerberos ASN.1 types?</t></list>
 </t>
-        </list>
+          </list>
+        </t>
+      </section>
+      <section title="SASL" anchor="d1e806">
+        <t>
+          <cref>
+Talk about the difference between authentication ID and authorization ID, and the different boundaries for each.</cref>
+        </t>
+      </section>
+    </section>
+    <section title="Security Considerations" anchor="d1e816">
+      <t>
+        <cref>
+Lots to talk about here. For example, aliasing issues w.r.t. multiple equivalent Unicode forms, and the resulting potential for confusion. Also: confusability in general.</cref>
       </t>
     </section>
-    <section title="SASL" anchor="d1e718">
-      <t>
-[Talk about the difference between authentication ID and authorization ID, and the different boundaries for each.]</t>
-    </section>
-    <section title="Security Considerations" anchor="d1e727">
-      <t>
-[Lots to talk about here.]</t>
-    </section>
-    <section title="IANA Considerations" anchor="d1e736">
+    <section title="IANA Considerations" anchor="d1e825">
       <t>
 There are no IANA considerations in this document.</t>
     </section>

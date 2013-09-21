@@ -3,8 +3,8 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Intended status: Informational                        September 13, 2013
-Expires: March 17, 2014
+Intended status: Informational                        September 20, 2013
+Expires: March 24, 2014
 
 
       Boundary Analysis for Internationalization and Localization
@@ -34,7 +34,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 17, 2014.
+   This Internet-Draft will expire on March 24, 2014.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Williams                 Expires March 17, 2014                 [Page 1]
+Williams                 Expires March 24, 2014                 [Page 1]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
@@ -66,33 +66,37 @@ Table of Contents
    1.1.    Conventions used in this document  . . . . . . . . . . . .  3
    2.      Internationalization . . . . . . . . . . . . . . . . . . .  4
    2.1.    Terminology  . . . . . . . . . . . . . . . . . . . . . . .  4
-   3.      NFSv4 and Filesystems  . . . . . . . . . . . . . . . . . .  6
-   3.1.    Filesystem Client and Server Architecture  . . . . . . . .  6
+   3.      Filesystems and Remote/Distributed Filesystem Protocols  .  6
+   3.1.    On Filesystem Client and Server Implementation
+           Architectures and their Relevance  . . . . . . . . . . . .  6
    3.2.    Obvious Boundaries . . . . . . . . . . . . . . . . . . . .  6
    3.3.    Legacy . . . . . . . . . . . . . . . . . . . . . . . . . .  7
    3.3.1.  Legacy Problem #1: Loss of Metadata at the System Call
            Boundary . . . . . . . . . . . . . . . . . . . . . . . . .  7
    3.3.2.  Legacy Problem #2: Unknown Character String Metadata
            in Existing Filesystem Content . . . . . . . . . . . . . .  7
-   3.3.3.  Legacy Problem #3: Non-Normalization . . . . . . . . . . .  7
+   3.3.3.  Legacy Problem #3: Poor Handling of Unicode
+           Equivalence (Normalization)  . . . . . . . . . . . . . . .  8
    3.3.4.  Legacy Problem #4: Ignored Requirements  . . . . . . . . .  8
    3.3.5.  Legacy Problem #5: Constraints Imposed by Non-Internet
            Standards  . . . . . . . . . . . . . . . . . . . . . . . .  8
    3.4.    A World Without Legacy . . . . . . . . . . . . . . . . . .  8
-   3.5.    Coping with Legacy: Accept it  . . . . . . . . . . . . . .  9
-   3.5.1.  Implications of Accepting Legacy . . . . . . . . . . . . .  9
+   3.5.    Coping with / Accepting Legacy . . . . . . . . . . . . . .  9
+   3.5.1.  Implications . . . . . . . . . . . . . . . . . . . . . . .  9
    3.6.    Recommendations for Filesystem Protocols, Filesystems,
-           and Operating Systems  . . . . . . . . . . . . . . . . . .  9
+           and Operating Systems  . . . . . . . . . . . . . . . . . . 10
    3.7.    Interoperability Considerations for Filesystem
-           Protocols  . . . . . . . . . . . . . . . . . . . . . . . . 10
-   4.      Kerberos . . . . . . . . . . . . . . . . . . . . . . . . . 11
-   5.      SASL . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
-   6.      Security Considerations  . . . . . . . . . . . . . . . . . 13
-   7.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 14
-   8.      References . . . . . . . . . . . . . . . . . . . . . . . . 15
-   8.1.    Normative References . . . . . . . . . . . . . . . . . . . 15
-   8.2.    Informative References . . . . . . . . . . . . . . . . . . 15
-           Author's Address . . . . . . . . . . . . . . . . . . . . . 16
+           Protocols  . . . . . . . . . . . . . . . . . . . . . . . . 11
+   4.      Negotiation Problems . . . . . . . . . . . . . . . . . . . 12
+   5.      Remote / Distributed Authentication Protocols and APIs . . 13
+   5.1.    Kerberos . . . . . . . . . . . . . . . . . . . . . . . . . 13
+   5.2.    SASL . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   6.      Security Considerations  . . . . . . . . . . . . . . . . . 15
+   7.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 16
+   8.      References . . . . . . . . . . . . . . . . . . . . . . . . 17
+   8.1.    Normative References . . . . . . . . . . . . . . . . . . . 17
+   8.2.    Informative References . . . . . . . . . . . . . . . . . . 17
+           Author's Address . . . . . . . . . . . . . . . . . . . . . 18
 
 
 
@@ -104,11 +108,7 @@ Table of Contents
 
 
 
-
-
-
-
-Williams                 Expires March 17, 2014                 [Page 2]
+Williams                 Expires March 24, 2014                 [Page 2]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
@@ -132,6 +132,10 @@ Internet-Draft           I18N Boundary Analysis           September 2013
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
 
+   Where RFC2119 key words are used herein for stating requirements or
+   recommendations, they are used to as part of suggested normative
+   language to be used by normative Internet protocol specifications
+   that accept the internationalization advice given in this document.
 
 
 
@@ -160,11 +164,7 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-
-
-
-
-Williams                 Expires March 17, 2014                 [Page 3]
+Williams                 Expires March 24, 2014                 [Page 3]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
@@ -220,7 +220,7 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-Williams                 Expires March 17, 2014                 [Page 4]
+Williams                 Expires March 24, 2014                 [Page 4]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
@@ -230,6 +230,7 @@ Internet-Draft           I18N Boundary Analysis           September 2013
       similar steps (e.g., applying character mappings and/or
       prohibitions).
 
+   ...  Define lots more and reference other RFCs...
 
 
 
@@ -275,13 +276,12 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-
-Williams                 Expires March 17, 2014                 [Page 5]
+Williams                 Expires March 24, 2014                 [Page 5]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
 
-3.  NFSv4 and Filesystems
+3.  Filesystems and Remote/Distributed Filesystem Protocols
 
    Filesystems and filesystem protocols may be the most difficult
    application to internationalize that we in the IETF have seen to
@@ -290,7 +290,8 @@ Internet-Draft           I18N Boundary Analysis           September 2013
    require a choice of normalization forms, and we'd be done.  In
    practice it was not so simple.
 
-3.1.  Filesystem Client and Server Architecture
+3.1.  On Filesystem Client and Server Implementation Architectures and
+      their Relevance
 
    To understand the difficulties faced in internationalizing NFSv4 we
    need to understand the typical architecture of NFSv4 clients and
@@ -300,9 +301,10 @@ Internet-Draft           I18N Boundary Analysis           September 2013
    architecture that we describe here, differing only in minor details.
 
    Normally the architecture and design of clients and servers would be
-   of no interest to the IETF: we certainly don't want to dictate such
-   things.  In this case architecture and legacy combine to create
-   unusual problems for filesystem protocols.
+   of no interest to the IETF: we want neiter to dictate nor be unduly
+   constrained by such things.  In this case architecture and legacy
+   combine to create unusual problems for filesystem protocols.  In this
+   case we must take implementation architecture into account!
 
    Both, clients and servers, typically have a "kernel" that executes
    privileged mode object code and which has a pluggable "virtual
@@ -330,9 +332,7 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-
-
-Williams                 Expires March 17, 2014                 [Page 6]
+Williams                 Expires March 24, 2014                 [Page 6]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
@@ -350,12 +350,16 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 3.3.  Legacy
 
    Many, perhaps all commonly used general-purpose operating systems,
-   predate modern internationalization efforts.  Most such operating
-   systems simply treated character strings as mostly opaque at many if
-   not all of the boundaries described in Section 3.2, at most
-   interpreting path component separator characters, in the process
-   assuming US-ASCII [XXX add reference] as the lowest common
-   denominator for the purpose of finding path component separators.
+   predate modern internationalization efforts.  (Some operating
+   systems, such as those for mobile devices, are new enough that they
+   might well pose no legacy I18N issues for filesystems.)
+
+   Most such operating systems simply treated character strings as
+   mostly opaque at many if not all of the boundaries described in
+   Section 3.2, at most interpreting path component separator
+   characters, in the process assuming US-ASCII [XXX add reference] as
+   the lowest common denominator for the purpose of finding path
+   component separators.
 
    Because these operating systems, filesystem on-disk formats, and
    actual on-disk filesystems, predate modern internationalization
@@ -379,19 +383,22 @@ Internet-Draft           I18N Boundary Analysis           September 2013
    is the lack of locale (codeset, encoding) metadata for existing
    (legacy) filesystem content, specifically file and directory names.
 
-3.3.3.  Legacy Problem #3: Non-Normalization
+
+
+
+
+
+Williams                 Expires March 24, 2014                 [Page 7]
+
+Internet-Draft           I18N Boundary Analysis           September 2013
+
+
+3.3.3.  Legacy Problem #3: Poor Handling of Unicode Equivalence
+        (Normalization)
 
    Historically Unicode input methods tend to produce pre-composed
    codepoints -- something close to Normalization Form Composed (NFC).
    But this is not always so.
-
-
-
-
-Williams                 Expires March 17, 2014                 [Page 7]
-
-Internet-Draft           I18N Boundary Analysis           September 2013
-
 
    Historically most filesystems treat file (and directory) names as
    opaque, but at least one filesystem (Apple's HFS+ [XXX add
@@ -422,7 +429,7 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
    This makes it very difficult to deploy Unicode normalization anywhere
    other than the application.  But it is not possible to fix every
-   POSIX application to normalize on create or lookup!
+   POSIX application to normalize on create or lookup either!
 
 3.4.  A World Without Legacy
 
@@ -432,24 +439,31 @@ Internet-Draft           I18N Boundary Analysis           September 2013
    the VFS boundary, as well "on the wire".  Any codeset conversions and
    Unicode normalization would be performed at the system call boundary
    (i.e., on the client) and at the VFS boundary (if, for example, a
-   filesystem on-disk format requires different codfeset/encoding than
+   filesystem on-disk format requires different codeset/encoding than
    the protocol does on the wire).
+
+
+
+Williams                 Expires March 24, 2014                 [Page 8]
+
+Internet-Draft           I18N Boundary Analysis           September 2013
+
+
+   Or perhaps in an ideal world all user applications may run only in
+   Unicode locales, and must perform explicit codeset conversions when
+   handling legacy (non-Unicode) data.  This ideal is one we will likely
+   obtain in time, as legacy non-Unicode locales are abandoned, legacy
+   filesystems cleaned up, and new operating systems (or new versions of
+   them) take over older ones.
 
    In an ideal world there would be no Unicode normalization problems
    because either there would be just one normal form for Unicode or
    because all implementations of filesystem clients, servers,
    filesystems, and filesystem-using applications, would use a single,
-   common normal form.
+   common normal form.  In practice this is almost certainly an
+   impossible ideal.
 
-
-
-
-Williams                 Expires March 17, 2014                 [Page 8]
-
-Internet-Draft           I18N Boundary Analysis           September 2013
-
-
-3.5.  Coping with Legacy: Accept it
+3.5.  Coping with / Accepting Legacy
 
    Legacy abounds.  We must cope with it.
 
@@ -467,13 +481,13 @@ Internet-Draft           I18N Boundary Analysis           September 2013
    use Unicode as the charater repertoire and codeset, preferably with
    the encoding expected on the kernel-side of the system call boundary.
 
-   The second legacy problem -legacy filesystem content- could be
+   The second legacy problem -legacy filesystem content- can be
    addressed by requiring manual inspection and repair of legacy
    content, but there exist such vast amounts of legacy contents that
    this is not a realistic option.  There is no fix for the legacy
    filesystem content problem.
 
-3.5.1.  Implications of Accepting Legacy
+3.5.1.  Implications
 
    Some implications of accepting legacy:
 
@@ -483,6 +497,14 @@ Internet-Draft           I18N Boundary Analysis           September 2013
    o  we can stop the creation of new non-Unicode content on disk, but
       we can't really preclude access to it
 
+
+
+
+Williams                 Expires March 24, 2014                 [Page 9]
+
+Internet-Draft           I18N Boundary Analysis           September 2013
+
+
    o  normalization-on-create is problematic
 
    o  normalization-on-lookup is problematic
@@ -491,24 +513,37 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
    o  ignoring normalization is problematic
 
+   With respect to normalization there's no one solution appropriate to
+   all use cases.
+
 3.6.  Recommendations for Filesystem Protocols, Filesystems, and
       Operating Systems
 
    o  Filesystems SHOULD be configurable to reject object names which
       are not valid in the filesystem's chosen Unicode encoding.
 
+      This allows filesystems (and their servers) to put a stop to the
+      rot, except, of course, for non-Unicode strings that happen to
+      appear as valid Unicode strings due to codeset/encoding aliasing.
 
+   o  Remote / distributed filesystem protocols _should_ specify the use
+      of Unicode on the wire, but they should also allow the use of non-
+      Unicode names, leaving it to the filesystem to decide whether to
+      accept or reject such names.
 
+      *  For example, this means that NFSv4 _servers_ SHOULD accept
+         object names -from clients- which are not valid UTF-8, contrary
+         to the original NFSv4 specification [RFC3530].
 
-Williams                 Expires March 17, 2014                 [Page 9]
-
-Internet-Draft           I18N Boundary Analysis           September 2013
+   o  Remote / distributed filesystem protocols should permit servers to
+      return non-Unicode object names to clients.  This allows servers
+      to serve legacy non-Unicode content.
 
+      *  For example, this means that NFSv4 clients SHOULD be prepared
+         to accept non-UTF-8 names from NFSv4 servers, contrary to the
+         original NFSv4 specification [RFC3530].
 
-   o  Filesystem servers SHOULD accept object names -from clients- which
-      are not valid Unicode in the protocol's chosen Unicode encoding.
-
-   o  Filesystem servers SHOULD accept object names -from filesystems-
+   o  Filesystem servers should accept object names -from filesystems-
       which are not valid in the host operating system's chosen codeset
       and encoding for use above the VFS.
 
@@ -516,6 +551,15 @@ Internet-Draft           I18N Boundary Analysis           September 2013
       allowing at least the following two options:
 
       *  Normalization-insensitive lookups.
+
+
+
+
+
+Williams                 Expires March 24, 2014                [Page 10]
+
+Internet-Draft           I18N Boundary Analysis           September 2013
+
 
       *  No normalization at all.
 
@@ -531,9 +575,14 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
       *  no conversion
 
+   o  Operating systems that do not support codeset/encoding conversions
+      at the system call boundary SHOULD at least encourage users to use
+      or switch to using Unicode locales.
+
 3.7.  Interoperability Considerations for Filesystem Protocols
 
-   ...
+   [[anchor1: Intent: describe interoperability problems that arise
+   given current NFSv4 deployments and legacy filesystem contents.]]
 
 
 
@@ -556,12 +605,85 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-Williams                 Expires March 17, 2014                [Page 10]
+
+
+
+
+
+
+
+Williams                 Expires March 24, 2014                [Page 11]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
 
-4.  Kerberos
+4.  Negotiation Problems
+
+   [[anchor2: Intent: describe the sorts of problems we've had in
+   introducing UTF-8 (or other encodings of Unicode) in protocols where
+   only US-ASCII could be sent initially.  For example, in Kerberos we
+   use the ASN.1 type "IA5-String", which can't easily (or at all) be
+   made to carry Unicode content.  Other similar problematic cases we
+   could describe include, for example, DNS.]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires March 24, 2014                [Page 12]
+
+Internet-Draft           I18N Boundary Analysis           September 2013
+
+
+5.  Remote / Distributed Authentication Protocols and APIs
+
+   [[anchor3: Intent: describe the problems that arise with security
+   entity identifiers (e.g., user names) that for various reasons need
+   canonicalization (normalization) in protocol components where
+   authoritative canonical naming information is not available (e.g.,
+   when usernames are used as salts for cryptographic algorithms without
+   having access to a database or directory that could be used to
+   canonicalize an input username).]]
+
+5.1.  Kerberos
 
    Kerberos V5 [RFC4120] names two things: principals and realms.
    Historically only US-ASCII has interoperated well.  In practice most
@@ -602,27 +724,15 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-Williams                 Expires March 17, 2014                [Page 11]
+Williams                 Expires March 24, 2014                [Page 13]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
 
-5.  SASL
+5.2.  SASL
 
-   [Talk about the difference between authentication ID and
-   authorization ID, and the different boundaries for each.]
-
-
+   [[anchor4: Talk about the difference between authentication ID and
+   authorization ID, and the different boundaries for each.]]
 
 
 
@@ -668,14 +778,18 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-Williams                 Expires March 17, 2014                [Page 12]
+
+
+Williams                 Expires March 24, 2014                [Page 14]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 6.  Security Considerations
 
-   [Lots to talk about here.]
+   [[anchor5: Lots to talk about here.  For example, aliasing issues
+   w.r.t. multiple equivalent Unicode forms, and the resulting potential
+   for confusion.  Also: confusability in general.]]
 
 
 
@@ -722,9 +836,7 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-
-
-Williams                 Expires March 17, 2014                [Page 13]
+Williams                 Expires March 24, 2014                [Page 15]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
@@ -780,7 +892,7 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-Williams                 Expires March 17, 2014                [Page 14]
+Williams                 Expires March 24, 2014                [Page 16]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
@@ -836,7 +948,7 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-Williams                 Expires March 17, 2014                [Page 15]
+Williams                 Expires March 24, 2014                [Page 17]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
@@ -892,5 +1004,5 @@ Author's Address
 
 
 
-Williams                 Expires March 17, 2014                [Page 16]
+Williams                 Expires March 24, 2014                [Page 18]
 

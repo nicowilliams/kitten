@@ -3,8 +3,8 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Intended status: Informational                        September 13, 2013
-Expires: March 17, 2014
+Intended status: Informational                        September 20, 2013
+Expires: March 24, 2014
 
 
       Boundary Analysis for Internationalization and Localization
@@ -34,7 +34,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 17, 2014.
+   This Internet-Draft will expire on March 24, 2014.
 
 Copyright Notice
 
@@ -58,27 +58,31 @@ Table of Contents
    1.1.    Conventions used in this document
    2.      Internationalization
    2.1.    Terminology
-   3.      NFSv4 and Filesystems
-   3.1.    Filesystem Client and Server Architecture
+   3.      Filesystems and Remote/Distributed Filesystem Protocols
+   3.1.    On Filesystem Client and Server Implementation
+           Architectures and their Relevance
    3.2.    Obvious Boundaries
    3.3.    Legacy
    3.3.1.  Legacy Problem #1: Loss of Metadata at the System Call
            Boundary
    3.3.2.  Legacy Problem #2: Unknown Character String Metadata
            in Existing Filesystem Content
-   3.3.3.  Legacy Problem #3: Non-Normalization
+   3.3.3.  Legacy Problem #3: Poor Handling of Unicode
+           Equivalence (Normalization)
    3.3.4.  Legacy Problem #4: Ignored Requirements
    3.3.5.  Legacy Problem #5: Constraints Imposed by Non-Internet
            Standards
    3.4.    A World Without Legacy
-   3.5.    Coping with Legacy: Accept it
-   3.5.1.  Implications of Accepting Legacy
+   3.5.    Coping with / Accepting Legacy
+   3.5.1.  Implications
    3.6.    Recommendations for Filesystem Protocols, Filesystems,
            and Operating Systems
    3.7.    Interoperability Considerations for Filesystem
            Protocols
-   4.      Kerberos
-   5.      SASL
+   4.      Negotiation Problems
+   5.      Remote / Distributed Authentication Protocols and APIs
+   5.1.    Kerberos
+   5.2.    SASL
    6.      Security Considerations
    7.      IANA Considerations
    8.      References
@@ -105,6 +109,11 @@ Table of Contents
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
+
+   Where RFC2119 key words are used herein for stating requirements or
+   recommendations, they are used to as part of suggested normative
+   language to be used by normative Internet protocol specifications
+   that accept the internationalization advice given in this document.
 
 
 2.  Internationalization
@@ -159,8 +168,10 @@ Table of Contents
       similar steps (e.g., applying character mappings and/or
       prohibitions).
 
+   ...  Define lots more and reference other RFCs...
 
-3.  NFSv4 and Filesystems
+
+3.  Filesystems and Remote/Distributed Filesystem Protocols
 
    Filesystems and filesystem protocols may be the most difficult
    application to internationalize that we in the IETF have seen to
@@ -169,7 +180,8 @@ Table of Contents
    require a choice of normalization forms, and we'd be done.  In
    practice it was not so simple.
 
-3.1.  Filesystem Client and Server Architecture
+3.1.  On Filesystem Client and Server Implementation Architectures and
+      their Relevance
 
    To understand the difficulties faced in internationalizing NFSv4 we
    need to understand the typical architecture of NFSv4 clients and
@@ -179,9 +191,10 @@ Table of Contents
    architecture that we describe here, differing only in minor details.
 
    Normally the architecture and design of clients and servers would be
-   of no interest to the IETF: we certainly don't want to dictate such
-   things.  In this case architecture and legacy combine to create
-   unusual problems for filesystem protocols.
+   of no interest to the IETF: we want neiter to dictate nor be unduly
+   constrained by such things.  In this case architecture and legacy
+   combine to create unusual problems for filesystem protocols.  In this
+   case we must take implementation architecture into account!
 
    Both, clients and servers, typically have a "kernel" that executes
    privileged mode object code and which has a pluggable "virtual
@@ -220,12 +233,16 @@ Table of Contents
 3.3.  Legacy
 
    Many, perhaps all commonly used general-purpose operating systems,
-   predate modern internationalization efforts.  Most such operating
-   systems simply treated character strings as mostly opaque at many if
-   not all of the boundaries described in Section 3.2, at most
-   interpreting path component separator characters, in the process
-   assuming US-ASCII [XXX add reference] as the lowest common
-   denominator for the purpose of finding path component separators.
+   predate modern internationalization efforts.  (Some operating
+   systems, such as those for mobile devices, are new enough that they
+   might well pose no legacy I18N issues for filesystems.)
+
+   Most such operating systems simply treated character strings as
+   mostly opaque at many if not all of the boundaries described in
+   Section 3.2, at most interpreting path component separator
+   characters, in the process assuming US-ASCII [XXX add reference] as
+   the lowest common denominator for the purpose of finding path
+   component separators.
 
    Because these operating systems, filesystem on-disk formats, and
    actual on-disk filesystems, predate modern internationalization
@@ -249,7 +266,8 @@ Table of Contents
    is the lack of locale (codeset, encoding) metadata for existing
    (legacy) filesystem content, specifically file and directory names.
 
-3.3.3.  Legacy Problem #3: Non-Normalization
+3.3.3.  Legacy Problem #3: Poor Handling of Unicode Equivalence
+        (Normalization)
 
    Historically Unicode input methods tend to produce pre-composed
    codepoints -- something close to Normalization Form Composed (NFC).
@@ -284,7 +302,7 @@ Table of Contents
 
    This makes it very difficult to deploy Unicode normalization anywhere
    other than the application.  But it is not possible to fix every
-   POSIX application to normalize on create or lookup!
+   POSIX application to normalize on create or lookup either!
 
 3.4.  A World Without Legacy
 
@@ -294,16 +312,24 @@ Table of Contents
    the VFS boundary, as well "on the wire".  Any codeset conversions and
    Unicode normalization would be performed at the system call boundary
    (i.e., on the client) and at the VFS boundary (if, for example, a
-   filesystem on-disk format requires different codfeset/encoding than
+   filesystem on-disk format requires different codeset/encoding than
    the protocol does on the wire).
+
+   Or perhaps in an ideal world all user applications may run only in
+   Unicode locales, and must perform explicit codeset conversions when
+   handling legacy (non-Unicode) data.  This ideal is one we will likely
+   obtain in time, as legacy non-Unicode locales are abandoned, legacy
+   filesystems cleaned up, and new operating systems (or new versions of
+   them) take over older ones.
 
    In an ideal world there would be no Unicode normalization problems
    because either there would be just one normal form for Unicode or
    because all implementations of filesystem clients, servers,
    filesystems, and filesystem-using applications, would use a single,
-   common normal form.
+   common normal form.  In practice this is almost certainly an
+   impossible ideal.
 
-3.5.  Coping with Legacy: Accept it
+3.5.  Coping with / Accepting Legacy
 
    Legacy abounds.  We must cope with it.
 
@@ -321,13 +347,13 @@ Table of Contents
    use Unicode as the charater repertoire and codeset, preferably with
    the encoding expected on the kernel-side of the system call boundary.
 
-   The second legacy problem -legacy filesystem content- could be
+   The second legacy problem -legacy filesystem content- can be
    addressed by requiring manual inspection and repair of legacy
    content, but there exist such vast amounts of legacy contents that
    this is not a realistic option.  There is no fix for the legacy
    filesystem content problem.
 
-3.5.1.  Implications of Accepting Legacy
+3.5.1.  Implications
 
    Some implications of accepting legacy:
 
@@ -345,16 +371,37 @@ Table of Contents
 
    o  ignoring normalization is problematic
 
+   With respect to normalization there's no one solution appropriate to
+   all use cases.
+
 3.6.  Recommendations for Filesystem Protocols, Filesystems, and
       Operating Systems
 
    o  Filesystems SHOULD be configurable to reject object names which
       are not valid in the filesystem's chosen Unicode encoding.
 
-   o  Filesystem servers SHOULD accept object names -from clients- which
-      are not valid Unicode in the protocol's chosen Unicode encoding.
+      This allows filesystems (and their servers) to put a stop to the
+      rot, except, of course, for non-Unicode strings that happen to
+      appear as valid Unicode strings due to codeset/encoding aliasing.
 
-   o  Filesystem servers SHOULD accept object names -from filesystems-
+   o  Remote / distributed filesystem protocols _should_ specify the use
+      of Unicode on the wire, but they should also allow the use of non-
+      Unicode names, leaving it to the filesystem to decide whether to
+      accept or reject such names.
+
+      *  For example, this means that NFSv4 _servers_ SHOULD accept
+         object names -from clients- which are not valid UTF-8, contrary
+         to the original NFSv4 specification [RFC3530].
+
+   o  Remote / distributed filesystem protocols should permit servers to
+      return non-Unicode object names to clients.  This allows servers
+      to serve legacy non-Unicode content.
+
+      *  For example, this means that NFSv4 clients SHOULD be prepared
+         to accept non-UTF-8 names from NFSv4 servers, contrary to the
+         original NFSv4 specification [RFC3530].
+
+   o  Filesystem servers should accept object names -from filesystems-
       which are not valid in the host operating system's chosen codeset
       and encoding for use above the VFS.
 
@@ -377,12 +424,37 @@ Table of Contents
 
       *  no conversion
 
+   o  Operating systems that do not support codeset/encoding conversions
+      at the system call boundary SHOULD at least encourage users to use
+      or switch to using Unicode locales.
+
 3.7.  Interoperability Considerations for Filesystem Protocols
 
-   ...
+   [[anchor1: Intent: describe interoperability problems that arise
+   given current NFSv4 deployments and legacy filesystem contents.]]
 
 
-4.  Kerberos
+4.  Negotiation Problems
+
+   [[anchor2: Intent: describe the sorts of problems we've had in
+   introducing UTF-8 (or other encodings of Unicode) in protocols where
+   only US-ASCII could be sent initially.  For example, in Kerberos we
+   use the ASN.1 type "IA5-String", which can't easily (or at all) be
+   made to carry Unicode content.  Other similar problematic cases we
+   could describe include, for example, DNS.]]
+
+
+5.  Remote / Distributed Authentication Protocols and APIs
+
+   [[anchor3: Intent: describe the problems that arise with security
+   entity identifiers (e.g., user names) that for various reasons need
+   canonicalization (normalization) in protocol components where
+   authoritative canonical naming information is not available (e.g.,
+   when usernames are used as salts for cryptographic algorithms without
+   having access to a database or directory that could be used to
+   canonicalize an input username).]]
+
+5.1.  Kerberos
 
    Kerberos V5 [RFC4120] names two things: principals and realms.
    Historically only US-ASCII has interoperated well.  In practice most
@@ -421,16 +493,17 @@ Table of Contents
          other fields of Ticket, Authenticator, and other Kerberos ASN.1
          types?
 
+5.2.  SASL
 
-5.  SASL
-
-   [Talk about the difference between authentication ID and
-   authorization ID, and the different boundaries for each.]
+   [[anchor4: Talk about the difference between authentication ID and
+   authorization ID, and the different boundaries for each.]]
 
 
 6.  Security Considerations
 
-   [Lots to talk about here.]
+   [[anchor5: Lots to talk about here.  For example, aliasing issues
+   w.r.t. multiple equivalent Unicode forms, and the resulting potential
+   for confusion.  Also: confusability in general.]]
 
 
 7.  IANA Considerations
