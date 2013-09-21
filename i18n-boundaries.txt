@@ -17,7 +17,8 @@ Abstract
    codeset, encoding, where to perform localization, and so on.  This
    document aims to serve as a guide to Internet protocol designers in
    determining what they may or should recommend or require of protocol
-   implementors.  Of particular interest are filesystem protocols.
+   implementors.  Of particular interest in this document are filesystem
+   protocols.
 
 Status of this Memo
 
@@ -48,7 +49,6 @@ Copyright Notice
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
-   the Trust Legal Provisions and are provided without warranty as
 
 
 
@@ -57,6 +57,7 @@ Williams                 Expires March 24, 2014                 [Page 1]
 Internet-Draft           I18N Boundary Analysis           September 2013
 
 
+   the Trust Legal Provisions and are provided without warranty as
    described in the Simplified BSD License.
 
 
@@ -87,16 +88,15 @@ Table of Contents
            and Operating Systems  . . . . . . . . . . . . . . . . . . 10
    3.7.    Interoperability Considerations for Filesystem
            Protocols  . . . . . . . . . . . . . . . . . . . . . . . . 11
-   4.      Negotiation Problems . . . . . . . . . . . . . . . . . . . 12
-   5.      Remote / Distributed Authentication Protocols and APIs . . 13
-   5.1.    Kerberos . . . . . . . . . . . . . . . . . . . . . . . . . 13
-   5.2.    SASL . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
-   6.      Security Considerations  . . . . . . . . . . . . . . . . . 15
-   7.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 16
-   8.      References . . . . . . . . . . . . . . . . . . . . . . . . 17
-   8.1.    Normative References . . . . . . . . . . . . . . . . . . . 17
-   8.2.    Informative References . . . . . . . . . . . . . . . . . . 17
-           Author's Address . . . . . . . . . . . . . . . . . . . . . 18
+   4.      Security Considerations  . . . . . . . . . . . . . . . . . 12
+   5.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 13
+   6.      References . . . . . . . . . . . . . . . . . . . . . . . . 14
+   6.1.    Normative References . . . . . . . . . . . . . . . . . . . 14
+   6.2.    Informative References . . . . . . . . . . . . . . . . . . 14
+           Author's Address . . . . . . . . . . . . . . . . . . . . . 15
+
+
+
 
 
 
@@ -117,12 +117,8 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
    As the IETF has attempted to internationalize Internet protocols we
    have learned some valuable lessons.  It is time to write these down.
-   The author is primarily aware of lessons from internationalization of
-   NFSv4 [RFC3530] and filesystems in general, as well as Kerberos
-   RFC4120, Simple Authentication and Security Layers (SASL) [RFC4422],
-   and the Generic Security Services Application Programming Interface
-   (GSS-API) [RFC2743], therefore that will be the point of departure
-   for this document.
+   This document focuses on internationalization problems in the
+   filesystem and remote / distributed filesystem protocols space.
 
    This document is INFORMATIVE.
 
@@ -136,6 +132,10 @@ Internet-Draft           I18N Boundary Analysis           September 2013
    recommendations, they are used to as part of suggested normative
    language to be used by normative Internet protocol specifications
    that accept the internationalization advice given in this document.
+
+
+
+
 
 
 
@@ -194,7 +194,8 @@ Internet-Draft           I18N Boundary Analysis           September 2013
    problems, there's no simple way to decide where to perform any
    conversions, mappings, or checks.
 
-   We describe here our experience with NFSv4 and Kerberos.
+   We describe here our experience with NFSv4 in particular and
+   filesystems in general.
 
 2.1.  Terminology
 
@@ -215,7 +216,6 @@ Internet-Draft           I18N Boundary Analysis           September 2013
    just-use-UTF-8  Where a program or protocol component accepts
       character strings that are valid UTF-8 strings withour regard to
       normalization.
-
 
 
 
@@ -617,14 +617,14 @@ Williams                 Expires March 24, 2014                [Page 11]
 Internet-Draft           I18N Boundary Analysis           September 2013
 
 
-4.  Negotiation Problems
+4.  Security Considerations
 
-   [[anchor2: Intent: describe the sorts of problems we've had in
-   introducing UTF-8 (or other encodings of Unicode) in protocols where
-   only US-ASCII could be sent initially.  For example, in Kerberos we
-   use the ASN.1 type "IA5-String", which can't easily (or at all) be
-   made to carry Unicode content.  Other similar problematic cases we
-   could describe include, for example, DNS.]]
+   [[anchor2: Lots to talk about here.  For example, aliasing issues
+   w.r.t. multiple equivalent Unicode forms, and the resulting potential
+   for confusion.]]
+
+
+
 
 
 
@@ -673,175 +673,7 @@ Williams                 Expires March 24, 2014                [Page 12]
 Internet-Draft           I18N Boundary Analysis           September 2013
 
 
-5.  Remote / Distributed Authentication Protocols and APIs
-
-   [[anchor3: Intent: describe the problems that arise with security
-   entity identifiers (e.g., user names) that for various reasons need
-   canonicalization (normalization) in protocol components where
-   authoritative canonical naming information is not available (e.g.,
-   when usernames are used as salts for cryptographic algorithms without
-   having access to a database or directory that could be used to
-   canonicalize an input username).]]
-
-5.1.  Kerberos
-
-   Kerberos V5 [RFC4120] names two things: principals and realms.
-   Historically only US-ASCII has interoperated well.  In practice most
-   implementations just-use-8 and just-send-8, and some just-send-UTF-8
-   and just-use-UTF-8.
-
-   We considered adding negotiation of the use of non-US-ASCII UTF-8
-   principal and realm names, but the resulting protocol was quite
-   complex.
-
-   It may soon be time to revisit Kerberos V5 internationalization.
-   Problems to address include:
-
-   o  how to deal with Kerberos' use of IA5String, which effectively
-      precludes use of Unicode [this is a long story, and we should tell
-      it in detail]:
-
-      *  just treat earstwhile IA5String SEQUENCE fields as a CHOICE of
-         IA5String or UTF8String?
-
-      *  just send UTF-8 as IA5String?
-
-      *  negotiate support for treating IA5String SEQUENCE fields as
-         CHOICEs of IA5Strign and UTF8String?
-
-   o  How to deal with normalization?
-
-      *  should KDCs treat principal names as normalization-insensitive?
-
-      *  should principal names used as cryptographic salts be
-         normalized to any particular form?
-
-      *  should clients and services normalize or treat in a
-         nomalization-form-insensitive manner any principal component
-         and realm names seen in sname/srealm/cname/crealm/transited/and
-         other fields of Ticket, Authenticator, and other Kerberos ASN.1
-         types?
-
-
-
-Williams                 Expires March 24, 2014                [Page 13]
-
-Internet-Draft           I18N Boundary Analysis           September 2013
-
-
-5.2.  SASL
-
-   [[anchor4: Talk about the difference between authentication ID and
-   authorization ID, and the different boundaries for each.]]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                 Expires March 24, 2014                [Page 14]
-
-Internet-Draft           I18N Boundary Analysis           September 2013
-
-
-6.  Security Considerations
-
-   [[anchor5: Lots to talk about here.  For example, aliasing issues
-   w.r.t. multiple equivalent Unicode forms, and the resulting potential
-   for confusion.  Also: confusability in general.]]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                 Expires March 24, 2014                [Page 15]
-
-Internet-Draft           I18N Boundary Analysis           September 2013
-
-
-7.  IANA Considerations
+5.  IANA Considerations
 
    There are no IANA considerations in this document.
 
@@ -892,19 +724,19 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-Williams                 Expires March 24, 2014                [Page 16]
+Williams                 Expires March 24, 2014                [Page 13]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
 
-8.  References
+6.  References
 
-8.1.  Normative References
+6.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
 
-8.2.  Informative References
+6.2.  Informative References
 
    [RFC3530]  Shepler, S., Callaghan, B., Robinson, D., Thurlow, R.,
               Beame, C., Eisler, M., and D. Noveck, "Network File System
@@ -913,15 +745,6 @@ Internet-Draft           I18N Boundary Analysis           September 2013
    [RFC3629]  Yergeau, F., "UTF-8, a transformation format of ISO
               10646", STD 63, RFC 3629, November 2003.
 
-   [RFC4120]  Neuman, C., Yu, T., Hartman, S., and K. Raeburn, "The
-              Kerberos Network Authentication Service (V5)", RFC 4120,
-              July 2005.
-
-   [RFC2743]  Linn, J., "Generic Security Service Application Program
-              Interface Version 2, Update 1", RFC 2743, January 2000.
-
-   [RFC4422]  Melnikov, A. and K. Zeilenga, "Simple Authentication and
-              Security Layer (SASL)", RFC 4422, June 2006.
 
 
 
@@ -948,7 +771,16 @@ Internet-Draft           I18N Boundary Analysis           September 2013
 
 
 
-Williams                 Expires March 24, 2014                [Page 17]
+
+
+
+
+
+
+
+
+
+Williams                 Expires March 24, 2014                [Page 14]
 
 Internet-Draft           I18N Boundary Analysis           September 2013
 
@@ -1004,5 +836,5 @@ Author's Address
 
 
 
-Williams                 Expires March 24, 2014                [Page 18]
+Williams                 Expires March 24, 2014                [Page 15]
 

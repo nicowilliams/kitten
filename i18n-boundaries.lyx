@@ -444,7 +444,7 @@ Internationalization of protocols and programs often requires determining
  This document aims to serve as a guide to Internet protocol designers in
  determining what they may or should recommend or require of protocol implemento
 rs.
- Of particular interest are filesystem protocols.
+ Of particular interest in this document are filesystem protocols.
 \end_layout
 
 \begin_layout Standard
@@ -464,40 +464,8 @@ Introduction and Motivation
 As the IETF has attempted to internationalize Internet protocols we have
  learned some valuable lessons.
  It is time to write these down.
- The author is primarily aware of lessons from internationalization of NFSv4
- 
-\begin_inset Flex EntityXRef
-status collapsed
-
-\begin_layout Plain Layout
-RFC3530
-\end_layout
-
-\end_inset
-
- and filesystems in general, as well as Kerberos RFC4120, Simple Authentication
- and Security Layers (SASL) 
-\begin_inset Flex EntityXRef
-status collapsed
-
-\begin_layout Plain Layout
-RFC4422
-\end_layout
-
-\end_inset
-
-, and the Generic Security Services Application Programming Interface (GSS-API)
- 
-\begin_inset Flex EntityXRef
-status collapsed
-
-\begin_layout Plain Layout
-RFC2743
-\end_layout
-
-\end_inset
-
-, therefore that will be the point of departure for this document.
+ This document focuses on internationalization problems in the filesystem
+ and remote / distributed filesystem protocols space.
 \end_layout
 
 \begin_layout Standard
@@ -568,7 +536,8 @@ In practice, because historically most protocols and data formats do not
 \end_layout
 
 \begin_layout Standard
-We describe here our experience with NFSv4 and Kerberos.
+We describe here our experience with NFSv4 in particular and filesystems
+ in general.
 \end_layout
 
 \begin_layout Subsection
@@ -1147,123 +1116,6 @@ Intent: describe interoperability problems that arise given current NFSv4
 \end_layout
 
 \begin_layout Section
-Negotiation Problems
-\end_layout
-
-\begin_layout RevisionRemark
-Intent: describe the sorts of problems we've had in introducing UTF-8 (or
- other encodings of Unicode) in protocols where only US-ASCII could be sent
- initially.
- For example, in Kerberos we use the ASN.1 type 
-\begin_inset Quotes eld
-\end_inset
-
-IA5-String
-\begin_inset Quotes erd
-\end_inset
-
-, which can't easily (or at all) be made to carry Unicode content.
- Other similar problematic cases we could describe include, for example,
- DNS.
-\end_layout
-
-\begin_layout Section
-Remote / Distributed Authentication Protocols and APIs
-\end_layout
-
-\begin_layout RevisionRemark
-Intent: describe the problems that arise with security entity identifiers
- (e.g., user names) that for various reasons need canonicalization (normalization)
- in protocol components where authoritative canonical naming information
- is not available (e.g., when usernames are used as salts for cryptographic
- algorithms without having access to a database or directory that could
- be used to canonicalize an input username).
-\end_layout
-
-\begin_layout Subsection
-Kerberos
-\end_layout
-
-\begin_layout Standard
-Kerberos V5 
-\begin_inset Flex EntityXRef
-status collapsed
-
-\begin_layout Plain Layout
-RFC4120
-\end_layout
-
-\end_inset
-
- names two things: principals and realms.
- Historically only US-ASCII has interoperated well.
- In practice most implementations just-use-8 and just-send-8, and some just-send
--UTF-8 and just-use-UTF-8.
-\end_layout
-
-\begin_layout Standard
-We considered adding negotiation of the use of non-US-ASCII UTF-8 principal
- and realm names, but the resulting protocol was quite complex.
-\end_layout
-
-\begin_layout Standard
-It may soon be time to revisit Kerberos V5 internationalization.
- Problems to address include:
-\end_layout
-
-\begin_layout Itemize
-how to deal with Kerberos' use of IA5String, which effectively precludes
- use of Unicode [this is a long story, and we should tell it in detail]:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-just treat earstwhile IA5String SEQUENCE fields as a CHOICE of IA5String
- or UTF8String?
-\end_layout
-
-\begin_layout Itemize
-just send UTF-8 as IA5String?
-\end_layout
-
-\begin_layout Itemize
-negotiate support for treating IA5String SEQUENCE fields as CHOICEs of IA5Strign
- and UTF8String?
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-How to deal with normalization?
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-should KDCs treat principal names as normalization-insensitive?
-\end_layout
-
-\begin_layout Itemize
-should principal names used as cryptographic salts be normalized to any
- particular form?
-\end_layout
-
-\begin_layout Itemize
-should clients and services normalize or treat in a nomalization-form-insensitiv
-e manner any principal component and realm names seen in sname/srealm/cname/crea
-lm/transited/and other fields of Ticket, Authenticator, and other Kerberos
- ASN.1 types?
-\end_layout
-
-\end_deeper
-\begin_layout Subsection
-SASL
-\end_layout
-
-\begin_layout RevisionRemark
-Talk about the difference between authentication ID and authorization ID,
- and the different boundaries for each.
-\end_layout
-
-\begin_layout Section
 Security Considerations
 \end_layout
 
@@ -1271,7 +1123,6 @@ Security Considerations
 Lots to talk about here.
  For example, aliasing issues w.r.t.
  multiple equivalent Unicode forms, and the resulting potential for confusion.
- Also: confusability in general.
 \end_layout
 
 \begin_layout Section
@@ -1345,66 +1196,6 @@ status collapsed
 LatexCommand href
 name "rfc3629"
 target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3629.xml"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Flex BibXML
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset CommandInset href
-LatexCommand href
-name "rfc4120"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Flex BibXML
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset CommandInset href
-LatexCommand href
-name "rfc2743"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Flex BibXML
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset CommandInset href
-LatexCommand href
-name "rfc4422"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4422.xml"
 
 \end_inset
 
