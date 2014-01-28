@@ -1,0 +1,1146 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass docbook
+\use_default_options true
+\maintain_unincluded_children false
+\begin_local_layout
+Format 31
+
+InsetLayout Flex:PI_Strict
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_Strict
+End
+
+InsetLayout Flex:PI
+    LyXType Custom
+    HTMLTag div
+    LabelString PI
+End
+
+InsetLayout Flex:PI_SymRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SymRefs
+End
+
+InsetLayout Flex:PI_SortRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SortRefs
+End
+
+InsetLayout Flex:PI_TOC
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOC
+End
+
+InsetLayout Flex:PI_TOCIndent
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCIndent
+End
+
+InsetLayout Flex:PI_TOCDepth
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCDepth
+End
+
+InsetLayout Flex:PI_TOCNarrow
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCNarrow
+End
+
+InsetLayout Flex:PI_TOCCompact
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCCompact
+End
+
+InsetLayout Flex:PI_TOCAppendix
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCAppendix
+End
+
+InsetLayout Flex:DocName
+    LyXType Custom
+    HTMLTag div
+    LabelString DocName
+End
+
+InsetLayout Flex:IntendedStatus
+    LyXType Custom
+    HTMLTag div
+    LabelString IntendedStatus
+End
+
+InsetLayout Flex:Updates
+    LyXType Custom
+    HTMLTag div
+    LabelString Updates
+End
+
+InsetLayout Flex:Obsoletes
+    LyXType Custom
+    HTMLTag div
+    LabelString Obsoletes
+End
+
+InsetLayout Flex:SeriesNo
+    LyXType Custom
+    HTMLTag div
+    LabelString SeriesNo
+End
+
+InsetLayout Flex:RFCNumber
+    LyXType Custom
+    HTMLTag div
+    LabelString RFCNumber
+End
+
+InsetLayout Flex:IPR
+    LyXType Custom
+    HTMLTag div
+    LabelString IPR
+End
+
+InsetLayout Flex:IETFArea
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFArea
+End
+
+InsetLayout Flex:IETFWorkingGroup
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFWorkingGroup
+End
+
+InsetLayout Flex:XML2RFCKeyword
+    LyXType Custom
+    HTMLTag div
+    LabelString XML2RFCKeyword
+End
+
+InsetLayout Flex:TitleAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString TitleAbbrev
+End
+
+InsetLayout Flex:AuthorRole
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthRole
+End
+
+InsetLayout Flex:AuthorInitials
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthInitials
+End
+
+InsetLayout Flex:AuthorSurname
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthSurname
+End
+
+InsetLayout Flex:AuthorOrg
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrg
+End
+
+InsetLayout Flex:AuthorOrgAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrgAbbrev
+End
+
+InsetLayout Flex:AuthorEmailAddr
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthEmailAddr
+End
+
+InsetLayout Flex:AuthorAddrStreet
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrStreet
+End
+
+InsetLayout Flex:AuthorAddrCity
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCity
+End
+
+InsetLayout Flex:AuthorAddrRegion
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrRegion
+End
+
+InsetLayout Flex:AuthorAddrCode
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCode
+End
+
+InsetLayout Flex:AuthorAddrCountry
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCountry
+End
+
+InsetLayout Flex:EntityXRef
+    LyXType Custom
+    HTMLTag div
+    LabelString EntityXRef
+End
+
+InsetLayout Flex:BibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString BibXML
+End
+
+InsetLayout Flex:EmbeddedBibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString EmbeddedBibXML
+End
+\end_local_layout
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman cmr
+\font_sans cmss
+\font_typewriter cmtt
+\font_default_family ttdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Impersonation Naming Attribute for the Generic Security Services Application
+ Programming Interface (GSS-API)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex DocName
+status open
+
+\begin_layout Plain Layout
+draft-williams-kitten-impersonation-naming-attribute-00
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IPR
+status open
+
+\begin_layout Plain Layout
+trust200902
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IntendedStatus
+status open
+
+\begin_layout Plain Layout
+std
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex TitleAbbrev
+status open
+
+\begin_layout Plain Layout
+GSS Impersonation
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IETFArea
+status open
+
+\begin_layout Plain Layout
+Security Area
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex XML2RFCKeyword
+status open
+
+\begin_layout Plain Layout
+Internet-Draft
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Updates
+status open
+
+\begin_layout Plain Layout
+1964, 2743, 2744
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex PI TOC
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI SymRefs
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI TOCIndent
+status open
+
+\begin_layout Plain Layout
+no
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+comments="yes"
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+inline="yes"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Nicolas Williams
+\begin_inset Flex AuthorOrg
+status open
+
+\begin_layout Plain Layout
+Cryptonector, LLC
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorOrgAbbrev
+status open
+
+\begin_layout Plain Layout
+Cryptonector
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorEmailAddr
+status open
+
+\begin_layout Plain Layout
+nico@cryptonector.com
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+This document describes a method for impersonation of one principal by another.
+ Relying parties are expected to apply policy to decide which impersonation
+ attempts they accept.
+ Trusted third parties may provide assistance in evaluating policy.
+ The proposed system fails safe: applications that do not support it see
+ their peers as the impersonators, not the impersonated principals.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction and Motivation
+\end_layout
+
+\begin_layout Standard
+A very common application design involves services that must impersonate
+ their clients to other services.
+ There are two common designs for enabling this:
+\end_layout
+
+\begin_layout Description
+credential
+\begin_inset space ~
+\end_inset
+
+delegation where clients delegate credentials to the impersonators,
+\end_layout
+
+\begin_layout Description
+explicit
+\begin_inset space ~
+\end_inset
+
+impersonation where impersonators explicitly state that they are impersonating
+ others.
+\end_layout
+
+\begin_layout Standard
+There exist protocols where the explicit impersonation concept is difficult
+ to retrofit.
+ And there exist protocols where credential delegation is the commonly-deployed
+ -and therefore expected- method for impersonation.
+ Therefore explicit impersonation is not universally available.
+\end_layout
+
+\begin_layout Standard
+On the other hand, unconstrained credential delegation is dangerous (for
+ obvious reasons).
+ What to do?
+\end_layout
+
+\begin_layout Standard
+One answer has been 
+\series bold
+constrained delegation
+\series default
+.
+ In this design the credential issuer creates a credential for impersonating
+ the client, but in a constrained way (e.g., to only a small set of downstream
+ services).
+ But constrained credential delegation is difficult to manage: the constraints
+ must be expressed by parties that aren't best-placed to know the desired
+ policy.
+\end_layout
+
+\begin_layout Standard
+We propose a simple solution for GSS-API applications: have the impersonator
+ use their own credential (or one specifically for this purpose) and assert
+ the name of the principal to be impersonated as a name attribute.
+ This is very similar to the concept of 
+\begin_inset Quotes eld
+\end_inset
+
+authz-id
+\begin_inset Quotes erd
+\end_inset
+
+ in Simple Authentication and Security Layers (SASL) 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4422
+\end_layout
+
+\end_inset
+
+, but with some subtle differences as described below.
+\end_layout
+
+\begin_layout Subsection
+Conventions used in this document
+\end_layout
+
+\begin_layout Standard
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+ "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are
+ to be interpreted as described in 
+\begin_inset Flex EntityXRef
+status open
+
+\begin_layout Plain Layout
+RFC2119
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Generic Impersonation Attributes
+\end_layout
+
+\begin_layout Standard
+We define two generic GSS-API naming attributes for impersonation:
+\end_layout
+
+\begin_layout Itemize
+GSS_C_ATTR_IMPERSONATED_PRINCIPAL
+\end_layout
+
+\begin_layout Itemize
+GSS_C_ATTR_AUTHZ_ID
+\end_layout
+
+\begin_layout Standard
+The first attribute notionally carries an exported name token (though not
+ necessarily in that form in the mechanism's implementation) stating the
+ name of the principal to be impersonated (by the principal whose CREDENTIAL
+ HANDLE's desired NAME has this attribute).
+ This is subtly different from SASL's authz-id concept in that the latter
+ carries an application-specific name form while this one carries a mechanism-sp
+ecific name form (though not necessarily the same mechanism as is used to
+ authenticate the impersonator!).
+\end_layout
+
+\begin_layout Standard
+The second attribute carries an application-specific name form corresponding
+ to an identity that is to be impersonated (by the principal whose CREDENTIAL
+ HANDLE's desired NAME has this attribute).
+ This attribute's semantics are exactly like SASL's.
+\end_layout
+
+\begin_layout Subsection
+Intended Usage
+\end_layout
+
+\begin_layout Standard
+Impersonator applications are expected to create a NAME object for their
+ impersonator principal name, set one, the other, or even both of the impersonat
+ion attributes, acquire a credential for this NAME as the desired_name,
+ then use this credential handle with GSS_Init_sec_context() to authenticate
+ to other services.
+\end_layout
+
+\begin_layout Subsection
+Local Policy
+\end_layout
+
+\begin_layout Standard
+Applications that are not aware of impersonation should observer their peers'
+ names as the impersonator name: impersonation fails safe.
+\end_layout
+
+\begin_layout Standard
+Applications that are impersonation-aware will obtain the name of the principal
+ to be impersonated and will apply local policy to determine if the impersonator
+ principal is permitted to impersonate the requested principal [to the applicati
+on].
+\end_layout
+
+\begin_layout Subsection
+Third-Party Policy Assistance
+\end_layout
+
+\begin_layout Standard
+Trusted third parties (e.g., Kerberos KDCs) may reject impersonation using
+ policy local to them.
+ Trusted third parties may also bless impersonation attempts, but application
+ local policy must still be applied (even if that policy is to accept a
+ trusted third party's blessing).
+\end_layout
+
+\begin_layout Standard
+Trusted third party policy is conveyed to application via their use (or
+ non-use) of the GSS_C_ATTR_GENERIC_UNCONSTRAINED or GSS_C_ATTR_GENERIC_UNCONSTR
+AINED_OK name attribute prefixes 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+I-D.williams-kitten-generic-naming-attributes
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout RevisionRemark
+Must expand on usage/non-usage of the generic unconstrained attributes,
+ both on the impersonator side and on the acceptor side.
+\end_layout
+
+\begin_layout Section
+Kerberos Bindings of Impersonation Attributes
+\end_layout
+
+\begin_layout Standard
+For Kerberos 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4120
+\end_layout
+
+\end_inset
+
+ we use authorization-data, which may be carried in either Tickets or Authentica
+tors, and may or may not be embedded in AD-KDC-ISSUED or similar.
+ KDC policy approval is expressed via embedding these authorization-data
+ in AD-KDC-ISSUED or similar.
+ KDC policy application is requested by placing the authorization-data in
+ the TGS-REQ for a Ticket.
+\end_layout
+
+\begin_layout Standard
+The authorization-data elements are:
+\end_layout
+
+\begin_layout Description
+AD-IMPERSONATE-ONLY Indicates that the Ticket may only be used to impersonate
+ the given principal.
+ This is intended only for constraining impersonator credentials to impersonatin
+g a single given principal.
+ The presence of this authorization-data element does not denote an impersonatio
+n attempt.
+ KDCs SHOULD willingly include this authorization-data element in any Ticket
+ at the request of the client, regardless of the element's contents, but
+ KDCs MUST NOT include this authorization-data element in an AD-KDC-ISSUED
+ or similar.
+\end_layout
+
+\begin_layout Description
+AD-IMPERSONATE Indicates that the Ticket or Authenticator is intended to
+ impersonate the given principal.
+ KDCs MUST NOT issue Tickets with this authorization-data element if its
+ contents do not match the client's Ticket's AD-IMPERSONATE-ONLY element
+ (if present).
+ KDCs MUST NOT issue Tickets with this element embedded in an AD-KDC-ISSUED
+ or similar unless the KDC blesses the impersonation; conversely, if the
+ KDC blesses the impersonation then the KDC MUST place this authorization-data
+ element in an AD-KDC-ISSUED or similar element.
+\end_layout
+
+\begin_layout Standard
+Clients that do not need or want KDC blessing SHOULD only assert AD-IMPERSONATE
+ in Authenticators.
+\end_layout
+
+\begin_layout Standard
+The ASN.1 description of these elements' contents is as follows:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ Authz-ID ::= SEQUENCE {
+\end_layout
+
+\begin_layout Plain Layout
+
+     application-type [0] OCTET STRING, -- URN?  XXX expand
+\end_layout
+
+\begin_layout Plain Layout
+
+     authz-id [1] OCTET STRING -- the actual authz-id
+\end_layout
+
+\begin_layout Plain Layout
+
+ }
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ AD-IMPERSONATE-ONLY ::= SEQUENCE {
+\end_layout
+
+\begin_layout Plain Layout
+
+     -- One of these two MUST be present; both MAY be present
+\end_layout
+
+\begin_layout Plain Layout
+
+     principal [0] OCTET STRING OPTIONAL, -- exported name token
+\end_layout
+
+\begin_layout Plain Layout
+
+     authz-ids [1] SEQUENCE OF Authz-ID OPTIONAL
+\end_layout
+
+\begin_layout Plain Layout
+
+ }
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+ AD-IMPERSONATE ::= SEQUENCE {
+\end_layout
+
+\begin_layout Plain Layout
+
+     -- One of these two MUST be present; both MAY be present
+\end_layout
+
+\begin_layout Plain Layout
+
+     principal [0] OCTET STRING OPTIONAL, -- exported name token
+\end_layout
+
+\begin_layout Plain Layout
+
+     authz-id [1] Authz-ID OPTIONAL
+\end_layout
+
+\begin_layout Plain Layout
+
+ }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+ASN.1 for impersonation AD elements
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+DER encoding with IMPLICIT tagging MUST be used to encode these authorization-da
+ta elements.
+\end_layout
+
+\begin_layout Section
+Sample Code
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ <TBD>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Impersonator-side code
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ <TBD>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Acceptor-side code
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Security Considerations
+\end_layout
+
+\begin_layout Standard
+Impersonator applications SHOULD use a credential that denotes no other
+ privileges.
+ Impersonator applications SHOULD use a credential that is constrained to
+ only impersonate a given principal.
+ Credential issuers SHOULD NOT permit credential delegation by known (to
+ the issuer) impersonator principals unless the credential to be delegated
+ is constrained to impersonating one principal.
+ These recommendations help limit any damage from accidentally delegating
+ an impersonator's credential.
+\end_layout
+
+\begin_layout Standard
+For Kerberos this means that KDCs SHOULD NOT issue Ticket Granting Tickets
+ (TGTs) with the FORWARDED or FORWARDABLE flags set if the Ticket's client
+ principal is known to be an impersonator and the AD-IMPERSONATE-ONLY authorizat
+ion-data element is not present in the client's Ticket or KDC-REQ.
+\end_layout
+
+\begin_layout Standard
+Aside from accidental delegation of unconstrained impersonator credentials,
+ this approach fails safe: applications that are not aware of impersonation
+ will not think that they are talking to the principal that an impersonator
+ wishes to impersonate.
+\end_layout
+
+\begin_layout Section
+IANA Considerations
+\end_layout
+
+\begin_layout Standard
+...
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:References"
+
+\end_inset
+
+Normative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2119"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc1964"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1964.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2743"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2744"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4120"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4121"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4422"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4422.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc6680"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6680.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "I-D.williams-kitten-generic-naming-attributes"
+target "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Informative References
+\end_layout
+
+\end_body
+\end_document

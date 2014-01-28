@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc tocindent="no"?>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc tocindent="no"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc1964 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1964.xml">
+<!ENTITY rfc2743 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">
+<!ENTITY rfc2744 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">
+<!ENTITY rfc4120 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">
+<!ENTITY rfc4121 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">
+<!ENTITY rfc4422 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4422.xml">
+<!ENTITY rfc6680 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6680.xml">
+<!ENTITY I-D.williams-kitten-generic-naming-attributes PUBLIC "" "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml">
+]>
+<rfc docName="draft-williams-kitten-impersonation-naming-attribute-00" ipr="trust200902" category="std" updates="1964, 2743, 2744">
+  <front>
+    <title abbrev="GSS Impersonation">Impersonation Naming Attribute for the Generic Security Services Application Programming Interface (GSS-API)</title>
+    <author initials="N." surname="Williams" fullname="Nicolas Williams">
+      <organization abbrev="Cryptonector">Cryptonector, LLC</organization>
+      <address>
+        <email>nico@cryptonector.com</email>
+      </address>
+    </author>
+    <date month="January" year="2014"/>
+    <area>
+Security Area
+</area>
+    <keyword>Internet-Draft</keyword>
+    <abstract>
+      <t>
+This document describes a method for impersonation of one principal by another. Relying parties are expected to apply policy to decide which impersonation attempts they accept. Trusted third parties may provide assistance in evaluating policy. The proposed system fails safe: applications that do not support it see their peers as the impersonators, not the impersonated principals.</t>
+    </abstract>
+  </front>
+  <middle>
+    <section title="Introduction and Motivation" anchor="d1e206">
+      <t>
+A very common application design involves services that must impersonate their clients to other services. There are two common designs for enabling this:</t>
+      <t>
+        <list style="hanging">
+          <t hangText="credential delegation">
+ where clients delegate credentials to the impersonators,</t>
+          <t hangText="explicit impersonation">
+ where impersonators explicitly state that they are impersonating others.</t>
+        </list>
+      </t>
+      <t>
+There exist protocols where the explicit impersonation concept is difficult to retrofit. And there exist protocols where credential delegation is the commonly-deployed -and therefore expected- method for impersonation. Therefore explicit impersonation is not universally available.</t>
+      <t>
+On the other hand, unconstrained credential delegation is dangerous (for obvious reasons). What to do?</t>
+      <t>
+One answer has been constrained delegation. In this design the credential issuer creates a credential for impersonating the client, but in a constrained way (e.g., to only a small set of downstream services). But constrained credential delegation is difficult to manage: the constraints must be expressed by parties that aren't best-placed to know the desired policy.</t>
+      <t>
+We propose a simple solution for GSS-API applications: have the impersonator use their own credential (or one specifically for this purpose) and assert the name of the principal to be impersonated as a name attribute. This is very similar to the concept of “authz-id” in Simple Authentication and Security Layers (SASL) <xref target="RFC4422"/>, but with some subtle differences as described below.</t>
+      <section title="Conventions used in this document" anchor="d1e248">
+        <t>
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
+      </section>
+    </section>
+    <section title="Generic Impersonation Attributes" anchor="d1e263">
+      <t>
+We define two generic GSS-API naming attributes for impersonation:</t>
+      <t>
+        <list style="symbols">
+          <t>
+GSS_C_ATTR_IMPERSONATED_PRINCIPAL</t>
+          <t>
+GSS_C_ATTR_AUTHZ_ID</t>
+        </list>
+      </t>
+      <t>
+The first attribute notionally carries an exported name token (though not necessarily in that form in the mechanism's implementation) stating the name of the principal to be impersonated (by the principal whose CREDENTIAL HANDLE's desired NAME has this attribute). This is subtly different from SASL's authz-id concept in that the latter carries an application-specific name form while this one carries a mechanism-specific name form (though not necessarily the same mechanism as is used to authenticate the impersonator!).</t>
+      <t>
+The second attribute carries an application-specific name form corresponding to an identity that is to be impersonated (by the principal whose CREDENTIAL HANDLE's desired NAME has this attribute). This attribute's semantics are exactly like SASL's.</t>
+      <section title="Intended Usage" anchor="d1e285">
+        <t>
+Impersonator applications are expected to create a NAME object for their impersonator principal name, set one, the other, or even both of the impersonation attributes, acquire a credential for this NAME as the desired_name, then use this credential handle with GSS_Init_sec_context() to authenticate to other services.</t>
+      </section>
+      <section title="Local Policy" anchor="d1e295">
+        <t>
+Applications that are not aware of impersonation should observer their peers' names as the impersonator name: impersonation fails safe.</t>
+        <t>
+Applications that are impersonation-aware will obtain the name of the principal to be impersonated and will apply local policy to determine if the impersonator principal is permitted to impersonate the requested principal [to the application].</t>
+      </section>
+      <section title="Third-Party Policy Assistance" anchor="d1e307">
+        <t>
+Trusted third parties (e.g., Kerberos KDCs) may reject impersonation using policy local to them. Trusted third parties may also bless impersonation attempts, but application local policy must still be applied (even if that policy is to accept a trusted third party's blessing).</t>
+        <t>
+Trusted third party policy is conveyed to application via their use (or non-use) of the GSS_C_ATTR_GENERIC_UNCONSTRAINED or GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK name attribute prefixes <xref target="I-D.williams-kitten-generic-naming-attributes"/>.</t>
+        <t>
+          <cref>
+Must expand on usage/non-usage of the generic unconstrained attributes, both on the impersonator side and on the acceptor side.</cref>
+        </t>
+      </section>
+    </section>
+    <section title="Kerberos Bindings of Impersonation Attributes" anchor="d1e328">
+      <t>
+For Kerberos <xref target="RFC4120"/> we use authorization-data, which may be carried in either Tickets or Authenticators, and may or may not be embedded in AD-KDC-ISSUED or similar. KDC policy approval is expressed via embedding these authorization-data in AD-KDC-ISSUED or similar. KDC policy application is requested by placing the authorization-data in the TGS-REQ for a Ticket.</t>
+      <t>
+The authorization-data elements are:</t>
+      <t>
+        <list style="hanging">
+          <t hangText="AD-IMPERSONATE-ONLY">
+ Indicates that the Ticket may only be used to impersonate the given principal. This is intended only for constraining impersonator credentials to impersonating a single given principal. The presence of this authorization-data element does not denote an impersonation attempt. KDCs SHOULD willingly include this authorization-data element in any Ticket at the request of the client, regardless of the element's contents, but KDCs MUST NOT include this authorization-data element in an AD-KDC-ISSUED or similar.</t>
+          <t hangText="AD-IMPERSONATE">
+ Indicates that the Ticket or Authenticator is intended to impersonate the given principal. KDCs MUST NOT issue Tickets with this authorization-data element if its contents do not match the client's Ticket's AD-IMPERSONATE-ONLY element (if present). KDCs MUST NOT issue Tickets with this element embedded in an AD-KDC-ISSUED or similar unless the KDC blesses the impersonation; conversely, if the KDC blesses the impersonation then the KDC MUST place this authorization-data element in an AD-KDC-ISSUED or similar element.</t>
+        </list>
+      </t>
+      <t>
+Clients that do not need or want KDC blessing SHOULD only assert AD-IMPERSONATE in Authenticators.</t>
+      <t>
+The ASN.1 description of these elements' contents is as follows:</t>
+      <t>
+</t>
+      <t>
+        <figure anchor="magicparlabel-143" title="ASN.1 for impersonation AD elements">
+          <artwork> Authz-ID ::= SEQUENCE {
+     application-type [0] OCTET STRING, -- URN?  XXX expand
+     authz-id [1] OCTET STRING -- the actual authz-id
+ }
+ 
+ AD-IMPERSONATE-ONLY ::= SEQUENCE {
+     -- One of these two MUST be present; both MAY be present
+     principal [0] OCTET STRING OPTIONAL, -- exported name token
+     authz-ids [1] SEQUENCE OF Authz-ID OPTIONAL
+ }
+ 
+ AD-IMPERSONATE ::= SEQUENCE {
+     -- One of these two MUST be present; both MAY be present
+     principal [0] OCTET STRING OPTIONAL, -- exported name token
+     authz-id [1] Authz-ID OPTIONAL
+ }</artwork>
+        </figure>
+      </t>
+      <t>
+DER encoding with IMPLICIT tagging MUST be used to encode these authorization-data elements.</t>
+    </section>
+    <section title="Sample Code" anchor="d1e389">
+      <t>
+</t>
+      <t>
+        <figure anchor="magicparlabel-159" title="Impersonator-side code">
+          <artwork> &lt;TBD&gt;</artwork>
+        </figure>
+      </t>
+      <t>
+</t>
+      <t>
+        <figure anchor="magicparlabel-173" title="Acceptor-side code">
+          <artwork> &lt;TBD&gt;</artwork>
+        </figure>
+      </t>
+    </section>
+    <section title="Security Considerations" anchor="d1e440">
+      <t>
+Impersonator applications SHOULD use a credential that denotes no other privileges. Impersonator applications SHOULD use a credential that is constrained to only impersonate a given principal. Credential issuers SHOULD NOT permit credential delegation by known (to the issuer) impersonator principals unless the credential to be delegated is constrained to impersonating one principal. These recommendations help limit any damage from accidentally delegating an impersonator's credential.</t>
+      <t>
+For Kerberos this means that KDCs SHOULD NOT issue Ticket Granting Tickets (TGTs) with the FORWARDED or FORWARDABLE flags set if the Ticket's client principal is known to be an impersonator and the AD-IMPERSONATE-ONLY authorization-data element is not present in the client's Ticket or KDC-REQ.</t>
+      <t>
+Aside from accidental delegation of unconstrained impersonator credentials, this approach fails safe: applications that are not aware of impersonation will not think that they are talking to the principal that an impersonator wishes to impersonate.</t>
+    </section>
+    <section title="IANA Considerations" anchor="d1e455">
+      <t>
+...</t>
+    </section>
+    <section title="Informative References" anchor="d1e563"/>
+  </middle>
+  <back>
+    <references title="Normative References">&rfc2119;
+&rfc1964;
+&rfc2743;
+&rfc2744;
+&rfc4120;
+&rfc4121;
+&rfc4422;
+&rfc6680;
+&I-D.williams-kitten-generic-naming-attributes;
+</references>
+  </back>
+</rfc>
