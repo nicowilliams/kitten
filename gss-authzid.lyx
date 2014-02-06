@@ -534,6 +534,8 @@ RFC4422
 \end_inset
 
 , but with some subtle differences as described below.
+ We also propose the addition of a name attribute with the same semantics
+ as the SASL authz-id.
 \end_layout
 
 \begin_layout Subsection
@@ -557,6 +559,12 @@ RFC2119
 \end_layout
 
 \begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Generic-Impersonation-Attributes"
+
+\end_inset
+
 Generic Impersonation Attributes
 \end_layout
 
@@ -564,30 +572,54 @@ Generic Impersonation Attributes
 We define two generic GSS-API naming attributes for impersonation:
 \end_layout
 
-\begin_layout Itemize
-GSS_C_ATTR_IMPERSONATED_PRINCIPAL
-\end_layout
-
-\begin_layout Itemize
-GSS_C_ATTR_AUTHZ_ID
-\end_layout
-
-\begin_layout Standard
-The first attribute notionally carries an exported name token (though not
- necessarily in that form in the mechanism's implementation) stating the
- name of the principal to be impersonated (by the principal whose CREDENTIAL
- HANDLE's desired NAME has this attribute).
+\begin_layout Description
+GSS_C_ATTR_IMPERSONATED_PRINCIPAL This attribute notionally carries an exported
+ name token representation of the name of the principal to be impersonated
+ by the principal whose CREDENTIAL HANDLE's desired NAME has this attribute.
  This is subtly different from SASL's authz-id concept in that the latter
  carries an application-specific name form while this one carries a mechanism-sp
 ecific name form (though not necessarily the same mechanism as is used to
  authenticate the impersonator!).
+ When obtained with GSS_Get_name_attribute() the display_value of this attribute
+ SHOULD be a display form of the impersonated name else it MUST be empty,
+ whereas the non-display form MUST be an octet string suitable for use as
+ an input to GSS_Import_name() with GSS_C_NT_EXPORTED_NAME or GSS_C_NT_COMPOSITE
+_EXPORT.
+\end_layout
+
+\begin_layout Description
+GSS_C_ATTR_AUTHZ_ID This attribute carries an application-specific name
+ form corresponding to an identity that is to be impersonated (by the principal
+ whose CREDENTIAL HANDLE's desired NAME has this attribute).
+ This attribute's semantics are exactly like SASL's.
+ Interpretation of this attribute's non-display value is application-specific;
+ the display value of this attribute is empty.
 \end_layout
 
 \begin_layout Standard
-The second attribute carries an application-specific name form corresponding
- to an identity that is to be impersonated (by the principal whose CREDENTIAL
- HANDLE's desired NAME has this attribute).
- This attribute's semantics are exactly like SASL's.
+Mechanisms MAY support credential delegation for credentials with these
+ attributes set, however, if they do they MUST constrain the delegated credentia
+ls such that they may only be used to impersonate the same principal or
+ assert the same authz-id as in the security context token exchange where
+ the credential was delegated.
+ Impersonator applications are encouraged to not delegate impersonation
+ credentials; instead their peers should should use impersonation if necessary.
+\end_layout
+
+\begin_layout RevisionRemark
+TBD: Should we specify a way to denote authz-id form, e.g., via a URN? Perhaps
+ by convention the authz-id should generally be prefixed with a URN denoting
+ its form, and perhaps there should be a URN for denoting 
+\begin_inset Quotes eld
+\end_inset
+
+private to the application using it
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Of course, that would be an optional convention, and anyways, it's not
+ necessary (SASL doesn't have it).
 \end_layout
 
 \begin_layout Subsection
@@ -597,9 +629,22 @@ Intended Usage
 \begin_layout Standard
 Impersonator applications are expected to create a NAME object for their
  impersonator principal name, set one, the other, or even both of the impersonat
-ion attributes, acquire a credential for this NAME as the desired_name,
- then use this credential handle with GSS_Init_sec_context() to authenticate
- to other services.
+ion attributes described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Generic-Impersonation-Attributes"
+
+\end_inset
+
+, acquire a credential for this NAME as the desired_name, then use this
+ credential handle with GSS_Init_sec_context() (or even GSS_Accept_sec_context()
+) to authenticate to other services (or initiators).
+\end_layout
+
+\begin_layout Standard
+Impersonator applications SHOULD take care to use an impersonator name that
+ does not denote any access or privilege beyond impersonation [to peers
+ that will trust it so].
 \end_layout
 
 \begin_layout Subsection
@@ -607,19 +652,38 @@ Local Policy
 \end_layout
 
 \begin_layout Standard
-Applications that are not aware of impersonation should observer their peers'
- names as the impersonator name: impersonation fails safe.
+Applications that are not aware of impersonation MUST observe a security
+ context's peer's name as the impersonator name: impersonation fails safe.
 \end_layout
 
 \begin_layout Standard
-Applications that are impersonation-aware will obtain the name of the principal
- to be impersonated and will apply local policy to determine if the impersonator
- principal is permitted to impersonate the requested principal [to the applicati
-on].
+Applications that are impersonation-aware SHOULD obtain the name of the
+ principal to be impersonated and if so, MUST apply local policy to determine
+ if the impersonator principal is permitted to impersonate the requested
+ principal to the application.
 \end_layout
 
 \begin_layout Subsection
-Third-Party Policy Assistance
+Apparent Credential Delegation
+\end_layout
+
+\begin_layout Standard
+When an initiator uses impersonation but does not request and perform credential
+ delegation, the acceptor mechanism SHOULD pretend that the initiator delegated
+ a credential to impersonate the same principal/authz-id as impersonated
+ to the acceptor if the acceptor has credentials for a principal suitable
+ for use as an impersonator.
+\end_layout
+
+\begin_layout Standard
+When an initiator uses impersonation and does request and successfully perform
+ credential delegation, the issuer of the delegated credentials SHOULD constrain
+ that credential to carry the same impersonation name attributes as the
+ initiator's.
+\end_layout
+
+\begin_layout Subsection
+Third-Party Impersonation Policy Assistance
 \end_layout
 
 \begin_layout Standard
@@ -633,7 +697,8 @@ Trusted third parties (e.g., Kerberos KDCs) may reject impersonation using
 \begin_layout Standard
 Trusted third party policy is conveyed to application via their use (or
  non-use) of the GSS_C_ATTR_GENERIC_UNCONSTRAINED or GSS_C_ATTR_GENERIC_UNCONSTR
-AINED_OK name attribute prefixes 
+AINED_OK name attribute prefixes together with the 'authenticated' output
+ of GSS_Get_name_attributes() 
 \begin_inset Flex EntityXRef
 status collapsed
 
@@ -646,9 +711,19 @@ I-D.williams-kitten-generic-naming-attributes
 .
 \end_layout
 
-\begin_layout RevisionRemark
-Must expand on usage/non-usage of the generic unconstrained attributes,
- both on the impersonator side and on the acceptor side.
+\begin_layout Standard
+See 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+I-D.williams-kitten-generic-naming-attributes
+\end_layout
+
+\end_inset
+
+ for more information on the semantics of the GSS_C_ATTR_GENERIC_UNCONSTRAINED
+ and GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK name attribute prefixes.
 \end_layout
 
 \begin_layout Section
@@ -667,36 +742,46 @@ RFC4120
 \end_inset
 
  we use authorization-data, which may be carried in either Tickets or Authentica
-tors, and may or may not be embedded in AD-KDC-ISSUED or similar.
+tors, and may or may not be embedded in AD-KDC-ISSUED or similar (when embedded
+ in a Ticket).
  KDC policy approval is expressed via embedding these authorization-data
- in AD-KDC-ISSUED or similar.
+ in AD-KDC-ISSUED or similar (in a Ticket).
  KDC policy application is requested by placing the authorization-data in
  the TGS-REQ for a Ticket.
 \end_layout
 
 \begin_layout Standard
-The authorization-data elements are:
+KDC support for all these authorization-data elements is OPTIONAL.
 \end_layout
 
-\begin_layout Description
-AD-IMPERSONATE-ONLY Indicates that the Ticket may only be used to impersonate
- the given principal.
- This is intended only for constraining impersonator credentials to impersonatin
-g a single given principal.
- The presence of this authorization-data element does not denote an impersonatio
-n attempt.
- KDCs SHOULD willingly include this authorization-data element in any Ticket
- at the request of the client, regardless of the element's contents, but
- KDCs MUST NOT include this authorization-data element in an AD-KDC-ISSUED
- or similar.
+\begin_layout Standard
+Use of these authorization-data elements entirely in the Authenticator is
+ sufficient for most uses.
+ Use in Tickets is only required for a) application of more general KDC-side
+ policy (otherwise the KDC doesn't see who is being impersonated), b) for
+ requesting FORWARDED impersonation Tickets (which, as described 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Generic-Impersonation-Attributes"
+
+\end_inset
+
+, is OPTIONAL.
+\end_layout
+
+\begin_layout Standard
+The authorization-data element is:
 \end_layout
 
 \begin_layout Description
 AD-IMPERSONATE Indicates that the Ticket or Authenticator is intended to
  impersonate the given principal.
- KDCs MUST NOT issue Tickets with this authorization-data element if its
- contents do not match the client's Ticket's AD-IMPERSONATE-ONLY element
- (if present).
+\end_layout
+
+\begin_layout Standard
+KDCs MUST NOT issue Tickets with this authorization-data element if its
+ contents do not match the client's Ticket's AD-IMPERSONATE element (if
+ present).
  KDCs MUST NOT issue Tickets with this element embedded in an AD-KDC-ISSUED
  or similar unless the KDC blesses the impersonation; conversely, if the
  KDC blesses the impersonation then the KDC MUST place this authorization-data
@@ -704,8 +789,20 @@ AD-IMPERSONATE Indicates that the Ticket or Authenticator is intended to
 \end_layout
 
 \begin_layout Standard
-Clients that do not need or want KDC blessing SHOULD only assert AD-IMPERSONATE
- in Authenticators.
+Clients MAY embed this in an AD-IF-RELEVANT authorization-data element in
+ TGS requests for new Tickets, except when requesting forwarded/forwardable
+ Tickets, in which case the element MUST be made critical (by not including
+ it in any authorization-data element that denotes non-criticality).
+\end_layout
+
+\begin_layout Standard
+Clients that do not need or do not want KDC blessing SHOULD only include
+ AD-IMPERSONATE in Authenticators.
+ When used in an Authenticator the client should include AD-IMPERSONATE
+ in an AD-IF-RELEVANT (on the theory that it's safe for the target service
+ to observe the impersonator's name instead of the impersonated name), but
+ the client MAY make AD-IMPERSONATE critical to ensure that the target service
+ rejects the AP-REQ if it does not understand AD-IMPERSONATE.
 \end_layout
 
 \begin_layout Standard
@@ -725,61 +822,6 @@ status open
 
 \begin_layout Plain Layout
 
- Authz-ID ::= SEQUENCE {
-\end_layout
-
-\begin_layout Plain Layout
-
-     application-type [0] OCTET STRING, -- URN?  XXX expand
-\end_layout
-
-\begin_layout Plain Layout
-
-     authz-id [1] OCTET STRING -- the actual authz-id
-\end_layout
-
-\begin_layout Plain Layout
-
- }
-\end_layout
-
-\begin_layout Plain Layout
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-
- AD-IMPERSONATE-ONLY ::= SEQUENCE {
-\end_layout
-
-\begin_layout Plain Layout
-
-     -- One of these two MUST be present; both MAY be present
-\end_layout
-
-\begin_layout Plain Layout
-
-     principal [0] OCTET STRING OPTIONAL, -- exported name token
-\end_layout
-
-\begin_layout Plain Layout
-
-     authz-ids [1] SEQUENCE OF Authz-ID OPTIONAL
-\end_layout
-
-\begin_layout Plain Layout
-
- }
-\end_layout
-
-\begin_layout Plain Layout
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-
  AD-IMPERSONATE ::= SEQUENCE {
 \end_layout
 
@@ -795,7 +837,7 @@ status open
 
 \begin_layout Plain Layout
 
-     authz-id [1] Authz-ID OPTIONAL
+     authz-id [1] SEQUENCE OF OCTET STRING OPTIONAL
 \end_layout
 
 \begin_layout Plain Layout
@@ -911,17 +953,19 @@ Acceptor-side code
 \end_layout
 
 \begin_layout Section
-Security Considerations
+Security Requirements and Recommendations
 \end_layout
 
 \begin_layout Standard
 Impersonator applications SHOULD use a credential that denotes no other
  privileges.
- Impersonator applications SHOULD use a credential that is constrained to
- only impersonate a given principal.
- Credential issuers SHOULD NOT permit credential delegation by known (to
- the issuer) impersonator principals unless the credential to be delegated
- is constrained to impersonating one principal.
+ Impersonator applications SHOULD either not delegate credentials or the
+ mechanism SHOULD delegate a credential that is constrained to only impersonate
+ the same principal as the initiator CREDENTIAL HANDLE used to delegate
+ the credential.
+ Credential issuers (e.g., Kerberos KDCs) SHOULD NOT permit credential delegation
+ by known (to the issuer) impersonator principals unless the credential
+ to be delegated is constrained to impersonating one principal.
  These recommendations help limit any damage from accidentally delegating
  an impersonator's credential.
 \end_layout
@@ -929,8 +973,23 @@ Impersonator applications SHOULD use a credential that denotes no other
 \begin_layout Standard
 For Kerberos this means that KDCs SHOULD NOT issue Ticket Granting Tickets
  (TGTs) with the FORWARDED or FORWARDABLE flags set if the Ticket's client
- principal is known to be an impersonator and the AD-IMPERSONATE-ONLY authorizat
-ion-data element is not present in the client's Ticket or KDC-REQ.
+ principal is known to be an impersonator and the AD-IMPERSONATE authorization-d
+ata element is not present in the client's Ticket and/or TGS-REQ as a critical
+ authorization-data element (if it's present in the Ticket but not the TGS-REQ
+ then the KDC MUST copy the AD-IMPERSONATE to the Ticket to be issued.
+\end_layout
+
+\begin_layout Standard
+Kerberos initiators should (as opposed to SHOULD) use impersonator names
+ that begin with a zeroth component with this value: 
+\begin_inset Quotes eld
+\end_inset
+
+IMPERSONATE
+\begin_inset Quotes erd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -941,11 +1000,77 @@ Aside from accidental delegation of unconstrained impersonator credentials,
 \end_layout
 
 \begin_layout Section
-IANA Considerations
+Comparison to S4U
+\end_layout
+
+\begin_layout RevisionRemark
+NOTE: This section is very rough.
+ References are needed.
 \end_layout
 
 \begin_layout Standard
-...
+Our method of impersonation has a number of advantages to S4U:
+\end_layout
+
+\begin_layout Itemize
+It is simpler (no need for evidence tickets and related cryptographic protocol,
+ no need for KDC-side policy);
+\end_layout
+
+\begin_layout Itemize
+It adheres strictly to the Kerberos model whereby application-local policy
+ has the last word;
+\end_layout
+
+\begin_layout Itemize
+Fails safe when used with peers that do not implement it (and therefore
+ do not apply local policy to impersonation attempts).
+\end_layout
+
+\begin_layout Section
+Security Considerations
+\end_layout
+
+\begin_layout Standard
+This entire document deals with security.
+ Specifically this document provides a method for denoting impersonation
+ while failing safe when peers do not support this method.
+ Failing safe means: peers observe the impersonator's name, not the impersonated
+ name.
+\end_layout
+
+\begin_layout Standard
+Local policy is to be used for deciding when impersonators may impersonate
+ any one entity to another.
+ Such policy must be local to the impersonators' peers.
+ Third parties may apply policy as well in some cases, but local policy
+ must always be able to reject impersonation.
+ Policy MUST be applied by applications.
+ Implementations MAY provide a method by which local policy may be indicated
+ in an indirect manner (e.g., via 
+\begin_inset Quotes eld
+\end_inset
+
+environment variables
+\begin_inset Quotes erd
+\end_inset
+
+) and evaluated by the GSS-API provider on behalf of the application; this
+ is strictly to avoid having to modify existing GSS-API applications, but
+ should not be encouraged beyond that purpose.
+\end_layout
+
+\begin_layout RevisionRemark
+Should add text about when and why one might need or use impersonation.
+\end_layout
+
+\begin_layout Section
+IANA Considerations
+\end_layout
+
+\begin_layout RevisionRemark
+Request addition of the new GSS name attributes and Kerberos authorization-data
+ to the relevant registries.
 \end_layout
 
 \begin_layout Section
@@ -1085,26 +1210,6 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset CommandInset href
 LatexCommand href
-name "rfc4422"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4422.xml"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Flex BibXML
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset CommandInset href
-LatexCommand href
 name "rfc6680"
 target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6680.xml"
 
@@ -1140,6 +1245,26 @@ target "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.williams-kitten
 
 \begin_layout Section
 Informative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4422"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4422.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

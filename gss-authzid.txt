@@ -3,10 +3,10 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: 1964, 2743, 2744                               January 27, 2014
+Updates: 1964, 2743, 2744                               February 5, 2014
 (if approved)
 Intended status: Standards Track
-Expires: July 31, 2014
+Expires: August 9, 2014
 
 
     Impersonation Naming Attribute for the Generic Security Services
@@ -37,7 +37,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 31, 2014.
+   This Internet-Draft will expire on August 9, 2014.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Williams                  Expires July 31, 2014                 [Page 1]
+Williams                 Expires August 9, 2014                 [Page 1]
 
-Internet-Draft              GSS Impersonation               January 2014
+Internet-Draft              GSS Impersonation              February 2014
 
 
    to this document.  Code Components extracted from this document must
@@ -69,15 +69,19 @@ Table of Contents
    1.1.  Conventions used in this document  . . . . . . . . . . . . .  3
    2.    Generic Impersonation Attributes . . . . . . . . . . . . . .  4
    2.1.  Intended Usage . . . . . . . . . . . . . . . . . . . . . . .  4
-   2.2.  Local Policy . . . . . . . . . . . . . . . . . . . . . . . .  4
-   2.3.  Third-Party Policy Assistance  . . . . . . . . . . . . . . .  4
-   3.    Kerberos Bindings of Impersonation Attributes  . . . . . . .  6
-   4.    Sample Code  . . . . . . . . . . . . . . . . . . . . . . . .  8
-   5.    Security Considerations  . . . . . . . . . . . . . . . . . .  9
-   6.    IANA Considerations  . . . . . . . . . . . . . . . . . . . . 10
-   7.    Informative References . . . . . . . . . . . . . . . . . . . 11
-   8.    Normative References . . . . . . . . . . . . . . . . . . . . 12
-         Author's Address . . . . . . . . . . . . . . . . . . . . . . 13
+   2.2.  Local Policy . . . . . . . . . . . . . . . . . . . . . . . .  5
+   2.3.  Apparent Credential Delegation . . . . . . . . . . . . . . .  5
+   2.4.  Third-Party Impersonation Policy Assistance  . . . . . . . .  5
+   3.    Kerberos Bindings of Impersonation Attributes  . . . . . . .  7
+   4.    Sample Code  . . . . . . . . . . . . . . . . . . . . . . . .  9
+   5.    Security Requirements and Recommendations  . . . . . . . . . 10
+   6.    Comparison to S4U  . . . . . . . . . . . . . . . . . . . . . 11
+   7.    Security Considerations  . . . . . . . . . . . . . . . . . . 12
+   8.    IANA Considerations  . . . . . . . . . . . . . . . . . . . . 13
+   9.    References . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   9.1.  Normative References . . . . . . . . . . . . . . . . . . . . 14
+   9.2.  Informative References . . . . . . . . . . . . . . . . . . . 14
+         Author's Address . . . . . . . . . . . . . . . . . . . . . . 15
 
 
 
@@ -104,13 +108,9 @@ Table of Contents
 
 
 
-
-
-
-
-Williams                  Expires July 31, 2014                 [Page 2]
+Williams                 Expires August 9, 2014                 [Page 2]
 
-Internet-Draft              GSS Impersonation               January 2014
+Internet-Draft              GSS Impersonation              February 2014
 
 
 1.  Introduction and Motivation
@@ -146,7 +146,9 @@ Internet-Draft              GSS Impersonation               January 2014
    purpose) and assert the name of the principal to be impersonated as a
    name attribute.  This is very similar to the concept of "authz-id" in
    Simple Authentication and Security Layers (SASL) [RFC4422], but with
-   some subtle differences as described below.
+   some subtle differences as described below.  We also propose the
+   addition of a name attribute with the same semantics as the SASL
+   authz-id.
 
 1.1.  Conventions used in this document
 
@@ -162,55 +164,100 @@ Internet-Draft              GSS Impersonation               January 2014
 
 
 
-
-
-Williams                  Expires July 31, 2014                 [Page 3]
+Williams                 Expires August 9, 2014                 [Page 3]
 
-Internet-Draft              GSS Impersonation               January 2014
+Internet-Draft              GSS Impersonation              February 2014
 
 
 2.  Generic Impersonation Attributes
 
    We define two generic GSS-API naming attributes for impersonation:
 
-   o  GSS_C_ATTR_IMPERSONATED_PRINCIPAL
+   GSS_C_ATTR_IMPERSONATED_PRINCIPAL  This attribute notionally carries
+      an exported name token representation of the name of the principal
+      to be impersonated by the principal whose CREDENTIAL HANDLE's
+      desired NAME has this attribute.  This is subtly different from
+      SASL's authz-id concept in that the latter carries an application-
+      specific name form while this one carries a mechanism-specific
+      name form (though not necessarily the same mechanism as is used to
+      authenticate the impersonator!).  When obtained with
+      GSS_Get_name_attribute() the display_value of this attribute
+      SHOULD be a display form of the impersonated name else it MUST be
+      empty, whereas the non-display form MUST be an octet string
+      suitable for use as an input to GSS_Import_name() with
+      GSS_C_NT_EXPORTED_NAME or GSS_C_NT_COMPOSITE_EXPORT.
 
-   o  GSS_C_ATTR_AUTHZ_ID
+   GSS_C_ATTR_AUTHZ_ID  This attribute carries an application-specific
+      name form corresponding to an identity that is to be impersonated
+      (by the principal whose CREDENTIAL HANDLE's desired NAME has this
+      attribute).  This attribute's semantics are exactly like SASL's.
+      Interpretation of this attribute's non-display value is
+      application-specific; the display value of this attribute is
+      empty.
 
-   The first attribute notionally carries an exported name token (though
-   not necessarily in that form in the mechanism's implementation)
-   stating the name of the principal to be impersonated (by the
-   principal whose CREDENTIAL HANDLE's desired NAME has this attribute).
-   This is subtly different from SASL's authz-id concept in that the
-   latter carries an application-specific name form while this one
-   carries a mechanism-specific name form (though not necessarily the
-   same mechanism as is used to authenticate the impersonator!).
+   Mechanisms MAY support credential delegation for credentials with
+   these attributes set, however, if they do they MUST constrain the
+   delegated credentials such that they may only be used to impersonate
+   the same principal or assert the same authz-id as in the security
+   context token exchange where the credential was delegated.
+   Impersonator applications are encouraged to not delegate
+   impersonation credentials; instead their peers should should use
+   impersonation if necessary.
 
-   The second attribute carries an application-specific name form
-   corresponding to an identity that is to be impersonated (by the
-   principal whose CREDENTIAL HANDLE's desired NAME has this attribute).
-   This attribute's semantics are exactly like SASL's.
+   [[anchor1: TBD: Should we specify a way to denote authz-id form,
+   e.g., via a URN?  Perhaps by convention the authz-id should generally
+   be prefixed with a URN denoting its form, and perhaps there should be
+   a URN for denoting "private to the application using it".  Of course,
+   that would be an optional convention, and anyways, it's not necessary
+   (SASL doesn't have it).]]
 
 2.1.  Intended Usage
 
    Impersonator applications are expected to create a NAME object for
    their impersonator principal name, set one, the other, or even both
-   of the impersonation attributes, acquire a credential for this NAME
-   as the desired_name, then use this credential handle with
-   GSS_Init_sec_context() to authenticate to other services.
+   of the impersonation attributes described in Section 2, acquire a
+   credential for this NAME as the desired_name, then use this
+
+
+
+Williams                 Expires August 9, 2014                 [Page 4]
+
+Internet-Draft              GSS Impersonation              February 2014
+
+
+   credential handle with GSS_Init_sec_context() (or even
+   GSS_Accept_sec_context()) to authenticate to other services (or
+   initiators).
+
+   Impersonator applications SHOULD take care to use an impersonator
+   name that does not denote any access or privilege beyond
+   impersonation [to peers that will trust it so].
 
 2.2.  Local Policy
 
-   Applications that are not aware of impersonation should observer
-   their peers' names as the impersonator name: impersonation fails
-   safe.
+   Applications that are not aware of impersonation MUST observe a
+   security context's peer's name as the impersonator name:
+   impersonation fails safe.
 
-   Applications that are impersonation-aware will obtain the name of the
-   principal to be impersonated and will apply local policy to determine
-   if the impersonator principal is permitted to impersonate the
-   requested principal [to the application].
+   Applications that are impersonation-aware SHOULD obtain the name of
+   the principal to be impersonated and if so, MUST apply local policy
+   to determine if the impersonator principal is permitted to
+   impersonate the requested principal to the application.
 
-2.3.  Third-Party Policy Assistance
+2.3.  Apparent Credential Delegation
+
+   When an initiator uses impersonation but does not request and perform
+   credential delegation, the acceptor mechanism SHOULD pretend that the
+   initiator delegated a credential to impersonate the same principal/
+   authz-id as impersonated to the acceptor if the acceptor has
+   credentials for a principal suitable for use as an impersonator.
+
+   When an initiator uses impersonation and does request and
+   successfully perform credential delegation, the issuer of the
+   delegated credentials SHOULD constrain that credential to carry the
+   same impersonation name attributes as the initiator's.
+
+2.4.  Third-Party Impersonation Policy Assistance
 
    Trusted third parties (e.g., Kerberos KDCs) may reject impersonation
    using policy local to them.  Trusted third parties may also bless
@@ -218,140 +265,138 @@ Internet-Draft              GSS Impersonation               January 2014
    applied (even if that policy is to accept a trusted third party's
    blessing).
 
-
-
-Williams                  Expires July 31, 2014                 [Page 4]
-
-Internet-Draft              GSS Impersonation               January 2014
-
-
    Trusted third party policy is conveyed to application via their use
    (or non-use) of the GSS_C_ATTR_GENERIC_UNCONSTRAINED or
-   GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK name attribute prefixes
+   GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK name attribute prefixes together
+   with the 'authenticated' output of GSS_Get_name_attributes()
    [I-D.williams-kitten-generic-naming-attributes].
 
-   [[anchor1: Must expand on usage/non-usage of the generic
-   unconstrained attributes, both on the impersonator side and on the
-   acceptor side.]]
+   See [I-D.williams-kitten-generic-naming-attributes] for more
+   information on the semantics of the GSS_C_ATTR_GENERIC_UNCONSTRAINED
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                  Expires July 31, 2014                 [Page 5]
+Williams                 Expires August 9, 2014                 [Page 5]
 
-Internet-Draft              GSS Impersonation               January 2014
+Internet-Draft              GSS Impersonation              February 2014
+
+
+   and GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK name attribute prefixes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 9, 2014                 [Page 6]
+
+Internet-Draft              GSS Impersonation              February 2014
 
 
 3.  Kerberos Bindings of Impersonation Attributes
 
    For Kerberos [RFC4120] we use authorization-data, which may be
    carried in either Tickets or Authenticators, and may or may not be
-   embedded in AD-KDC-ISSUED or similar.  KDC policy approval is
-   expressed via embedding these authorization-data in AD-KDC-ISSUED or
-   similar.  KDC policy application is requested by placing the
-   authorization-data in the TGS-REQ for a Ticket.
+   embedded in AD-KDC-ISSUED or similar (when embedded in a Ticket).
+   KDC policy approval is expressed via embedding these authorization-
+   data in AD-KDC-ISSUED or similar (in a Ticket).  KDC policy
+   application is requested by placing the authorization-data in the
+   TGS-REQ for a Ticket.
 
-   The authorization-data elements are:
+   KDC support for all these authorization-data elements is OPTIONAL.
 
-   AD-IMPERSONATE-ONLY  Indicates that the Ticket may only be used to
-      impersonate the given principal.  This is intended only for
-      constraining impersonator credentials to impersonating a single
-      given principal.  The presence of this authorization-data element
-      does not denote an impersonation attempt.  KDCs SHOULD willingly
-      include this authorization-data element in any Ticket at the
-      request of the client, regardless of the element's contents, but
-      KDCs MUST NOT include this authorization-data element in an AD-
-      KDC-ISSUED or similar.
+   Use of these authorization-data elements entirely in the
+   Authenticator is sufficient for most uses.  Use in Tickets is only
+   required for a) application of more general KDC-side policy
+   (otherwise the KDC doesn't see who is being impersonated), b) for
+   requesting FORWARDED impersonation Tickets (which, as described
+   Section 2, is OPTIONAL.
+
+   The authorization-data element is:
 
    AD-IMPERSONATE  Indicates that the Ticket or Authenticator is
-      intended to impersonate the given principal.  KDCs MUST NOT issue
-      Tickets with this authorization-data element if its contents do
-      not match the client's Ticket's AD-IMPERSONATE-ONLY element (if
-      present).  KDCs MUST NOT issue Tickets with this element embedded
-      in an AD-KDC-ISSUED or similar unless the KDC blesses the
-      impersonation; conversely, if the KDC blesses the impersonation
-      then the KDC MUST place this authorization-data element in an AD-
-      KDC-ISSUED or similar element.
+      intended to impersonate the given principal.
 
-   Clients that do not need or want KDC blessing SHOULD only assert AD-
-   IMPERSONATE in Authenticators.
+   KDCs MUST NOT issue Tickets with this authorization-data element if
+   its contents do not match the client's Ticket's AD-IMPERSONATE
+   element (if present).  KDCs MUST NOT issue Tickets with this element
+   embedded in an AD-KDC-ISSUED or similar unless the KDC blesses the
+   impersonation; conversely, if the KDC blesses the impersonation then
+   the KDC MUST place this authorization-data element in an AD-KDC-
+   ISSUED or similar element.
+
+   Clients MAY embed this in an AD-IF-RELEVANT authorization-data
+   element in TGS requests for new Tickets, except when requesting
+   forwarded/forwardable Tickets, in which case the element MUST be made
+   critical (by not including it in any authorization-data element that
+   denotes non-criticality).
+
+   Clients that do not need or do not want KDC blessing SHOULD only
+   include AD-IMPERSONATE in Authenticators.  When used in an
+   Authenticator the client should include AD-IMPERSONATE in an AD-IF-
+   RELEVANT (on the theory that it's safe for the target service to
+   observe the impersonator's name instead of the impersonated name),
+   but the client MAY make AD-IMPERSONATE critical to ensure that the
+   target service rejects the AP-REQ if it does not understand AD-
+   IMPERSONATE.
 
    The ASN.1 description of these elements' contents is as follows:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                  Expires July 31, 2014                 [Page 6]
+Williams                 Expires August 9, 2014                 [Page 7]
 
-Internet-Draft              GSS Impersonation               January 2014
+Internet-Draft              GSS Impersonation              February 2014
 
-
-    Authz-ID ::= SEQUENCE {
-        application-type [0] OCTET STRING, -- URN?  XXX expand
-        authz-id [1] OCTET STRING -- the actual authz-id
-    }
-
-    AD-IMPERSONATE-ONLY ::= SEQUENCE {
-        -- One of these two MUST be present; both MAY be present
-        principal [0] OCTET STRING OPTIONAL, -- exported name token
-        authz-ids [1] SEQUENCE OF Authz-ID OPTIONAL
-    }
 
     AD-IMPERSONATE ::= SEQUENCE {
         -- One of these two MUST be present; both MAY be present
         principal [0] OCTET STRING OPTIONAL, -- exported name token
-        authz-id [1] Authz-ID OPTIONAL
+        authz-id [1] SEQUENCE OF OCTET STRING OPTIONAL
     }
 
                Figure 1: ASN.1 for impersonation AD elements
@@ -388,9 +433,20 @@ Internet-Draft              GSS Impersonation               January 2014
 
 
 
-Williams                  Expires July 31, 2014                 [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 9, 2014                 [Page 8]
 
-Internet-Draft              GSS Impersonation               January 2014
+Internet-Draft              GSS Impersonation              February 2014
 
 
 4.  Sample Code
@@ -444,27 +500,35 @@ Internet-Draft              GSS Impersonation               January 2014
 
 
 
-Williams                  Expires July 31, 2014                 [Page 8]
+Williams                 Expires August 9, 2014                 [Page 9]
 
-Internet-Draft              GSS Impersonation               January 2014
+Internet-Draft              GSS Impersonation              February 2014
 
 
-5.  Security Considerations
+5.  Security Requirements and Recommendations
 
    Impersonator applications SHOULD use a credential that denotes no
-   other privileges.  Impersonator applications SHOULD use a credential
-   that is constrained to only impersonate a given principal.
-   Credential issuers SHOULD NOT permit credential delegation by known
-   (to the issuer) impersonator principals unless the credential to be
-   delegated is constrained to impersonating one principal.  These
-   recommendations help limit any damage from accidentally delegating an
-   impersonator's credential.
+   other privileges.  Impersonator applications SHOULD either not
+   delegate credentials or the mechanism SHOULD delegate a credential
+   that is constrained to only impersonate the same principal as the
+   initiator CREDENTIAL HANDLE used to delegate the credential.
+   Credential issuers (e.g., Kerberos KDCs) SHOULD NOT permit credential
+   delegation by known (to the issuer) impersonator principals unless
+   the credential to be delegated is constrained to impersonating one
+   principal.  These recommendations help limit any damage from
+   accidentally delegating an impersonator's credential.
 
    For Kerberos this means that KDCs SHOULD NOT issue Ticket Granting
    Tickets (TGTs) with the FORWARDED or FORWARDABLE flags set if the
    Ticket's client principal is known to be an impersonator and the AD-
-   IMPERSONATE-ONLY authorization-data element is not present in the
-   client's Ticket or KDC-REQ.
+   IMPERSONATE authorization-data element is not present in the client's
+   Ticket and/or TGS-REQ as a critical authorization-data element (if
+   it's present in the Ticket but not the TGS-REQ then the KDC MUST copy
+   the AD-IMPERSONATE to the Ticket to be issued.
+
+   Kerberos initiators should (as opposed to SHOULD) use impersonator
+   names that begin with a zeroth component with this value:
+   "IMPERSONATE".
 
    Aside from accidental delegation of unconstrained impersonator
    credentials, this approach fails safe: applications that are not
@@ -492,37 +556,26 @@ Internet-Draft              GSS Impersonation               January 2014
 
 
 
-
-
-
-
-
-
-
-
-Williams                  Expires July 31, 2014                 [Page 9]
+Williams                 Expires August 9, 2014                [Page 10]
 
-Internet-Draft              GSS Impersonation               January 2014
+Internet-Draft              GSS Impersonation              February 2014
 
 
-6.  IANA Considerations
+6.  Comparison to S4U
 
-   ...
+   [[anchor2: NOTE: This section is very rough.  References are
+   needed.]]
 
+   Our method of impersonation has a number of advantages to S4U:
 
+   o  It is simpler (no need for evidence tickets and related
+      cryptographic protocol, no need for KDC-side policy);
 
+   o  It adheres strictly to the Kerberos model whereby application-
+      local policy has the last word;
 
-
-
-
-
-
-
-
-
-
-
-
+   o  Fails safe when used with peers that do not implement it (and
+      therefore do not apply local policy to impersonation attempts).
 
 
 
@@ -556,34 +609,34 @@ Internet-Draft              GSS Impersonation               January 2014
 
 
 
-Williams                  Expires July 31, 2014                [Page 10]
+
+
+
+Williams                 Expires August 9, 2014                [Page 11]
 
-Internet-Draft              GSS Impersonation               January 2014
+Internet-Draft              GSS Impersonation              February 2014
 
 
-7.  Informative References
+7.  Security Considerations
 
+   This entire document deals with security.  Specifically this document
+   provides a method for denoting impersonation while failing safe when
+   peers do not support this method.  Failing safe means: peers observe
+   the impersonator's name, not the impersonated name.
 
+   Local policy is to be used for deciding when impersonators may
+   impersonate any one entity to another.  Such policy must be local to
+   the impersonators' peers.  Third parties may apply policy as well in
+   some cases, but local policy must always be able to reject
+   impersonation.  Policy MUST be applied by applications.
+   Implementations MAY provide a method by which local policy may be
+   indicated in an indirect manner (e.g., via "environment variables")
+   and evaluated by the GSS-API provider on behalf of the application;
+   this is strictly to avoid having to modify existing GSS-API
+   applications, but should not be encouraged beyond that purpose.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   [[anchor3: Should add text about when and why one might need or use
+   impersonation.]]
 
 
 
@@ -612,12 +665,73 @@ Internet-Draft              GSS Impersonation               January 2014
 
 
 
-Williams                  Expires July 31, 2014                [Page 11]
+
+
+
+Williams                 Expires August 9, 2014                [Page 12]
 
-Internet-Draft              GSS Impersonation               January 2014
+Internet-Draft              GSS Impersonation              February 2014
 
 
-8.  Normative References
+8.  IANA Considerations
+
+   [[anchor4: Request addition of the new GSS name attributes and
+   Kerberos authorization-data to the relevant registries.]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 9, 2014                [Page 13]
+
+Internet-Draft              GSS Impersonation              February 2014
+
+
+9.  References
+
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -640,9 +754,6 @@ Internet-Draft              GSS Impersonation               January 2014
               Interface (GSS-API) Mechanism: Version 2", RFC 4121,
               July 2005.
 
-   [RFC4422]  Melnikov, A. and K. Zeilenga, "Simple Authentication and
-              Security Layer (SASL)", RFC 4422, June 2006.
-
    [RFC6680]  Williams, N., Johansson, L., Hartman, S., and S.
               Josefsson, "Generic Security Service Application
               Programming Interface (GSS-API) Naming Extensions",
@@ -654,6 +765,10 @@ Internet-Draft              GSS Impersonation               January 2014
               API)", draft-williams-kitten-generic-naming-attributes-01
               (work in progress), August 2013.
 
+9.2.  Informative References
+
+   [RFC4422]  Melnikov, A. and K. Zeilenga, "Simple Authentication and
+              Security Layer (SASL)", RFC 4422, June 2006.
 
 
 
@@ -665,12 +780,9 @@ Internet-Draft              GSS Impersonation               January 2014
 
 
 
-
-
-
-Williams                  Expires July 31, 2014                [Page 12]
+Williams                 Expires August 9, 2014                [Page 14]
 
-Internet-Draft              GSS Impersonation               January 2014
+Internet-Draft              GSS Impersonation              February 2014
 
 
 Author's Address
@@ -724,5 +836,5 @@ Author's Address
 
 
 
-Williams                  Expires July 31, 2014                [Page 13]
+Williams                 Expires August 9, 2014                [Page 15]
 
