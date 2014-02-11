@@ -512,9 +512,20 @@ constrained delegation
 \end_layout
 
 \begin_layout Standard
-We propose a simple solution for GSS-API applications: have the impersonator
- use their own credential (or one specifically for this purpose) and assert
- the name of the principal to be impersonated as a name attribute.
+We propose a simple solution for Generic Security Services Application Programmi
+ng Interface (GSS-API) 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2743
+\end_layout
+
+\end_inset
+
+ applications: have the impersonator use their own credential (or one specifical
+ly for this purpose) and assert the name of the principal to be impersonated
+ as a name attribute.
  This is very similar to the concept of 
 \begin_inset Quotes eld
 \end_inset
@@ -539,6 +550,168 @@ RFC4422
 \end_layout
 
 \begin_layout Subsection
+Comparison to S4U
+\end_layout
+
+\begin_layout Standard
+There is an extension for Kerberos 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4120
+\end_layout
+
+\end_inset
+
+ known as Services for User (S4U) 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+S4U
+\end_layout
+
+\end_inset
+
+ which provides for impersonation.
+ S4FU is available to GSS-API applications via the Kerberos GSS-API mechanism
+ 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC1964
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4121
+\end_layout
+
+\end_inset
+
+, naturally.
+\end_layout
+
+\begin_layout Standard
+A complete treatment of S4U is out of scope for this document, however,
+ a brief summary is as follows.
+ S4U consists of two sub-protocols for impersonation:
+\end_layout
+
+\begin_layout Description
+S4U2Self Allows services to use their own credentials to obtain KDC-issued
+ authorization-data for principals to be impersonated.
+\end_layout
+
+\begin_layout Description
+S4U2Proxy Allows services to use clients' service tickets as 
+\begin_inset Quotes eld
+\end_inset
+
+evidence
+\begin_inset Quotes erd
+\end_inset
+
+ tickets with which (and together with the impersonator's credentials) to
+ obtain other tickets in the name of the client principals to be impersonated.
+\end_layout
+
+\begin_layout Standard
+This document concerns itself only with functionality like that of S4U2Proxy.
+\end_layout
+
+\begin_layout Standard
+There are several differences between this proposal and S4U2Proxy:
+\end_layout
+
+\begin_layout Enumerate
+At no point does a KDC issue a ticket to an impersonator with the impersonated
+ principal's name as the cname/crealm.
+ This permits access to services in the impersonated principal's home realm.
+\end_layout
+
+\begin_layout Enumerate
+No 
+\begin_inset Quotes eld
+\end_inset
+
+evidence
+\begin_inset Quotes erd
+\end_inset
+
+ tickets are required or used.
+\end_layout
+
+\begin_layout Enumerate
+No KDC support is required, but may be provided.
+\end_layout
+
+\begin_layout Enumerate
+No KDC-side policy is required, but may be provided.
+\end_layout
+
+\begin_layout Standard
+(1) is the initial motivation for this work: S4U does not permit services
+ not in the impersonated principal's realm to impersonate it to services
+ in that same realm.
+ This is because any service ticket issued for such access would appear
+ to transit a trust path back to the impersonated principal's realm, thus
+ triggering loop detection.
+ A better fix for this might be to permit exactly one full cycle precisely
+ so as to permit this and other similar use cases.
+ However, the other differences and advantages over S4U2Proxy are compelling.
+\end_layout
+
+\begin_layout Standard
+This proposal 
+\emph on
+does not
+\emph default
+ intend to entirely replace S4U.
+ In particular, in use cases where Kerberos tickets carry KDC-issued authorizati
+on-data, the services to which principals are successfully impersonated
+ may need to use S4U2Self in order to obtain that authorization-data if
+ they have no other method available by which to get it.
+\end_layout
+
+\begin_layout Subsubsection
+Comparison to S4U2Proxy
+\end_layout
+
+\begin_layout Standard
+Our method of impersonation has a number of advantages to S4U:
+\end_layout
+
+\begin_layout Itemize
+it is simpler (no need for evidence tickets and related cryptographic sub-protoc
+ols, no need for KDC-side policy, and even where KDCs apply additional policy,
+ this method imposes no new requirements for additional cryptographic operations
+ on either the impersonator's nor the KDC's part);
+\end_layout
+
+\begin_layout Itemize
+it adheres strictly to the Kerberos model whereby application-local policy
+ has the last word and KDCs need not apply any policy;
+\end_layout
+
+\begin_layout Itemize
+it fails safe when used with peers that do not implement it (and therefore
+ do not apply local policy to impersonation attempts);
+\end_layout
+
+\begin_layout Itemize
+it permits impersonation of principals whose names are not Kerberos principal
+ names.
+\end_layout
+
+\begin_layout Subsection
 Conventions used in this document
 \end_layout
 
@@ -559,17 +732,90 @@ RFC2119
 \end_layout
 
 \begin_layout Section
+Generic Interfaces for Impersonation
+\end_layout
+
+\begin_layout Standard
+We provide three interfaces for impersonation:
+\end_layout
+
+\begin_layout Itemize
+naming attributes 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC6680
+\end_layout
+
+\end_inset
+
+ (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Generic-Impersonation-Attributes"
+
+\end_inset
+
+);
+\end_layout
+
+\begin_layout Itemize
+a function, GSS_Acquire_cred_impersonate_name() and its C programming language
+ bindings patterned after the GSS-APIv2u1 C bindings 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2744
+\end_layout
+
+\end_inset
+
+ (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:GSS_Acquire_cred_impersonate_nam"
+
+\end_inset
+
+);
+\end_layout
+
+\begin_layout Itemize
+apparent credential delegation, even when credential delegation has not
+ taken place (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Apparent-Credential-Delegation"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsection
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Generic-Impersonation-Attributes"
 
 \end_inset
 
-Generic Impersonation Attributes
+Naming Attributes for Generic Impersonation
 \end_layout
 
 \begin_layout Standard
-We define two generic GSS-API naming attributes for impersonation:
+We define two generic GSS-API naming attributes 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC6680
+\end_layout
+
+\end_inset
+
+ for impersonation:
 \end_layout
 
 \begin_layout Description
@@ -622,6 +868,341 @@ private to the application using it
  necessary (SASL doesn't have it).
 \end_layout
 
+\begin_layout Subsubsection
+C Bindings
+\end_layout
+
+\begin_layout RevisionRemark
+TBD.
+ Obviously the bindings consist of the same symbols as shown above; their
+ values should be of type gss_buffer_desc, pointing to the URNs assigned
+ herein (still TBD).
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:GSS_Acquire_cred_impersonate_nam"
+
+\end_inset
+
+GSS_Acquire_cred_impersonate_name()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Description
+impersonator_cred_handle
+\begin_inset space ~
+\end_inset
+
+CREDENTIAL
+\begin_inset space ~
+\end_inset
+
+HANDLE A handle for the impersonator's credentials.
+\end_layout
+
+\begin_layout Description
+desired_name
+\begin_inset space ~
+\end_inset
+
+NAME The name of the principal to be impersonated.
+\end_layout
+
+\begin_layout Description
+time_req
+\begin_inset space ~
+\end_inset
+
+INTEGER Same as for GSS_Acquire_cred() 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2743
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+desired_mechs
+\begin_inset space ~
+\end_inset
+
+SET
+\begin_inset space ~
+\end_inset
+
+OF
+\begin_inset space ~
+\end_inset
+
+OBJECT
+\begin_inset space ~
+\end_inset
+
+IDENTIFIER Same as for GSS_Acquire_cred() 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2743
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+cred_usage
+\begin_inset space ~
+\end_inset
+
+INTEGER Same as for GSS_Acquire_cred() 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2743
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Description
+major
+\begin_inset space ~
+\end_inset
+
+status
+\begin_inset space ~
+\end_inset
+
+INTEGER
+\end_layout
+
+\begin_layout Description
+minor
+\begin_inset space ~
+\end_inset
+
+status
+\begin_inset space ~
+\end_inset
+
+INTEGER
+\end_layout
+
+\begin_layout Description
+output_cred_handle
+\begin_inset space ~
+\end_inset
+
+CREDENTIAL
+\begin_inset space ~
+\end_inset
+
+HANDLE If returned, these are the credentials for impersonating the desired_name.
+\end_layout
+
+\begin_layout Description
+actual_mechs
+\begin_inset space ~
+\end_inset
+
+SET
+\begin_inset space ~
+\end_inset
+
+OF
+\begin_inset space ~
+\end_inset
+
+OBJECT
+\begin_inset space ~
+\end_inset
+
+IDENTIFIER Same as for GSS_Acquire_cred() 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2743
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+time_rec
+\begin_inset space ~
+\end_inset
+
+INTEGER Same as for GSS_Acquire_cred() 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2743
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+This function is just like GSS_Acquire_cred(), from the base GSS-APIv2u1
+ RFC2743 specification, but with the addition of an input for the impersonator's
+ credentials.
+\end_layout
+
+\begin_layout Standard
+This function may be used with S4U2Self or it may be equivalent to acquiring
+ credentials for the impersonator's NAME but with one or both of the name
+ attributes described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Generic-Impersonation-Attributes"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout RevisionRemark
+TBD: Describe any differences from GSS_Acquire_name() as to major status
+ codes.
+\end_layout
+
+\begin_layout Subsubsection
+C Bindings of GSS_Acquire_cred_impersonate_name()
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ OM_uint32 gss_acquire_cred_impersonate_name(
+\end_layout
+
+\begin_layout Plain Layout
+
+         OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+         const gss_cred_id_t impersonator_cred_handle,
+\end_layout
+
+\begin_layout Plain Layout
+
+         const gss_name_t desired_name,
+\end_layout
+
+\begin_layout Plain Layout
+
+         OM_uint32 time_req,
+\end_layout
+
+\begin_layout Plain Layout
+
+         const gss_OID_set desired_mechs,
+\end_layout
+
+\begin_layout Plain Layout
+
+         gss_cred_usage_t cred_usage,
+\end_layout
+
+\begin_layout Plain Layout
+
+         gss_cred_id_t *output_cred_handle,
+\end_layout
+
+\begin_layout Plain Layout
+
+         gss_OID_set *actual_mechs,
+\end_layout
+
+\begin_layout Plain Layout
+
+         OM_uint32 *time_rec);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+gss_acquire_cred_impersonate_name()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Apparent-Credential-Delegation"
+
+\end_inset
+
+Apparent Credential Delegation
+\end_layout
+
+\begin_layout Standard
+When an initiator uses impersonation but does not request and perform credential
+ delegation, and the acceptor is so configured, the acceptor mechanism SHOULD
+ pretend that the initiator delegated a credential to impersonate the same
+ principal/authz-id as impersonated to the acceptor if the acceptor has
+ credentials for a principal suitable for use as an impersonator.
+\end_layout
+
+\begin_layout Standard
+When an initiator uses impersonation and does request and successfully perform
+ credential delegation, the issuer of the delegated credentials SHOULD constrain
+ that credential to carry the same impersonation name attributes as the
+ initiator's.
+\end_layout
+
 \begin_layout Subsection
 Intended Usage
 \end_layout
@@ -661,25 +1242,6 @@ Applications that are impersonation-aware SHOULD obtain the name of the
  principal to be impersonated and if so, MUST apply local policy to determine
  if the impersonator principal is permitted to impersonate the requested
  principal to the application.
-\end_layout
-
-\begin_layout Subsection
-Apparent Credential Delegation
-\end_layout
-
-\begin_layout Standard
-When an initiator uses impersonation but does not request and perform credential
- delegation, the acceptor mechanism SHOULD pretend that the initiator delegated
- a credential to impersonate the same principal/authz-id as impersonated
- to the acceptor if the acceptor has credentials for a principal suitable
- for use as an impersonator.
-\end_layout
-
-\begin_layout Standard
-When an initiator uses impersonation and does request and successfully perform
- credential delegation, the issuer of the delegated credentials SHOULD constrain
- that credential to carry the same impersonation name attributes as the
- initiator's.
 \end_layout
 
 \begin_layout Subsection
@@ -953,81 +1515,6 @@ Acceptor-side code
 \end_layout
 
 \begin_layout Section
-Security Requirements and Recommendations
-\end_layout
-
-\begin_layout Standard
-Impersonator applications SHOULD use a credential that denotes no other
- privileges.
- Impersonator applications SHOULD either not delegate credentials or the
- mechanism SHOULD delegate a credential that is constrained to only impersonate
- the same principal as the initiator CREDENTIAL HANDLE used to delegate
- the credential.
- Credential issuers (e.g., Kerberos KDCs) SHOULD NOT permit credential delegation
- by known (to the issuer) impersonator principals unless the credential
- to be delegated is constrained to impersonating one principal.
- These recommendations help limit any damage from accidentally delegating
- an impersonator's credential.
-\end_layout
-
-\begin_layout Standard
-For Kerberos this means that KDCs SHOULD NOT issue Ticket Granting Tickets
- (TGTs) with the FORWARDED or FORWARDABLE flags set if the Ticket's client
- principal is known to be an impersonator and the AD-IMPERSONATE authorization-d
-ata element is not present in the client's Ticket and/or TGS-REQ as a critical
- authorization-data element (if it's present in the Ticket but not the TGS-REQ
- then the KDC MUST copy the AD-IMPERSONATE to the Ticket to be issued.
-\end_layout
-
-\begin_layout Standard
-Kerberos initiators should (as opposed to SHOULD) use impersonator names
- that begin with a zeroth component with this value: 
-\begin_inset Quotes eld
-\end_inset
-
-IMPERSONATE
-\begin_inset Quotes erd
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Aside from accidental delegation of unconstrained impersonator credentials,
- this approach fails safe: applications that are not aware of impersonation
- will not think that they are talking to the principal that an impersonator
- wishes to impersonate.
-\end_layout
-
-\begin_layout Section
-Comparison to S4U
-\end_layout
-
-\begin_layout RevisionRemark
-NOTE: This section is very rough.
- References are needed.
-\end_layout
-
-\begin_layout Standard
-Our method of impersonation has a number of advantages to S4U:
-\end_layout
-
-\begin_layout Itemize
-It is simpler (no need for evidence tickets and related cryptographic protocol,
- no need for KDC-side policy);
-\end_layout
-
-\begin_layout Itemize
-It adheres strictly to the Kerberos model whereby application-local policy
- has the last word;
-\end_layout
-
-\begin_layout Itemize
-Fails safe when used with peers that do not implement it (and therefore
- do not apply local policy to impersonation attempts).
-\end_layout
-
-\begin_layout Section
 Security Considerations
 \end_layout
 
@@ -1036,7 +1523,8 @@ This entire document deals with security.
  Specifically this document provides a method for denoting impersonation
  while failing safe when peers do not support this method.
  Failing safe means: peers observe the impersonator's name, not the impersonated
- name.
+ name, and impersonator applications fail when their GSS-API implementation
+ is not impersonation-aware.
 \end_layout
 
 \begin_layout Standard
@@ -1062,6 +1550,58 @@ environment variables
 
 \begin_layout RevisionRemark
 Should add text about when and why one might need or use impersonation.
+\end_layout
+
+\begin_layout Subsection
+Security Requirements and Recommendations
+\end_layout
+
+\begin_layout Standard
+GSS_Set_name_attribute() is required to fail when used with attributes not
+ understood by the mechanism.
+ This ensures that impersonators applications that set these attributes
+ do not accidentally fail to actually use them when impersonating principals.
+ Some additional safe-guards MAY be applied:
+\end_layout
+
+\begin_layout Itemize
+impersonator applications SHOULD use a credential that denotes no other
+ privileges;
+\end_layout
+
+\begin_layout Itemize
+credential issuers (e.g., Kerberos KDCs) MAY constrain the use of credentials
+ for known impersonator principals to requesting credentials for impersonation.
+\end_layout
+
+\begin_layout Standard
+In particular, for Kerberos, KDCs SHOULD NOT issue Ticket Granting Tickets
+ (TGTs) with the FORWARDED or FORWARDABLE flags set if the Ticket's client
+ principal is a known impersonator and the AD-IMPERSONATE authorization-data
+ element is not present in the client's Ticket and/or TGS-REQ as a critical
+ authorization-data element (if it's present in the Ticket but not the TGS-REQ
+ then the KDC MUST copy the AD-IMPERSONATE to the Ticket to be issued.
+\end_layout
+
+\begin_layout Standard
+Kerberos initiators should (as opposed to SHOULD, but perhaps SHOULD) use
+ impersonator names that begin with a zeroth component with this value:
+ 
+\begin_inset Quotes eld
+\end_inset
+
+IMPERSONATE
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Our approach fails safe: service applications that are not aware of impersonatio
+n will not think that they are talking to the principal that an impersonator
+ wishes to impersonate, and impersonator applications should fail when their
+ GSS-API mechanism implementations do not support this feature.
 \end_layout
 
 \begin_layout Section
@@ -1260,6 +1800,27 @@ target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4422.xml"
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex EmbeddedBibXML
+status collapsed
+
+\begin_layout Plain Layout
+<reference anchor='S4U'> <front> <title>[MS-SFU]: Kerberos Protocol Extensions:
+ Service for User and Constrained Delegation Protocol</title> <author initials='
+U.' surname='Unspecified' fullname='Unspecified'> <organization abbrev='MSFT'>
+ Microsoft Corporation </organization> </author>
+\end_layout
+
+\begin_layout Plain Layout
+<date month='August' year='2013' /> </front> <format type='HTML' target='http://
+msdn.microsoft.com/en-us/library/cc246071.aspx' /> </reference> 
 \end_layout
 
 \end_inset
