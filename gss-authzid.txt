@@ -83,11 +83,11 @@ Table of Contents
    5.      Security Considerations  . . . . . . . . . . . . . . . . . 13
    5.1.    Security Requirements and Recommendations  . . . . . . . . 13
    6.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 15
-   7.      References . . . . . . . . . . . . . . . . . . . . . . . . 16
-   7.1.    Normative References . . . . . . . . . . . . . . . . . . . 16
-   7.2.    Informative References . . . . . . . . . . . . . . . . . . 16
-           Author's Address . . . . . . . . . . . . . . . . . . . . . 17
-
+   7.      Acknowledgements . . . . . . . . . . . . . . . . . . . . . 16
+   8.      References . . . . . . . . . . . . . . . . . . . . . . . . 17
+   8.1.    Normative References . . . . . . . . . . . . . . . . . . . 17
+   8.2.    Informative References . . . . . . . . . . . . . . . . . . 17
+           Author's Address . . . . . . . . . . . . . . . . . . . . . 18
 
 
 
@@ -841,9 +841,65 @@ Williams                 Expires August 23, 2014               [Page 15]
 Internet-Draft              GSS Impersonation              February 2014
 
 
-7.  References
+7.  Acknowledgements
 
-7.1.  Normative References
+   This document resulted from Viktor Dukhovni's notes on S4U2Proxy's
+   shortcomings and discussions between him and the author as to how
+   best to address this.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 23, 2014               [Page 16]
+
+Internet-Draft              GSS Impersonation              February 2014
+
+
+8.  References
+
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -877,7 +933,7 @@ Internet-Draft              GSS Impersonation              February 2014
               API)", draft-williams-kitten-generic-naming-attributes-01
               (work in progress), August 2013.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [RFC4422]  Melnikov, A. and K. Zeilenga, "Simple Authentication and
               Security Layer (SASL)", RFC 4422, June 2006.
@@ -892,7 +948,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 23, 2014               [Page 16]
+Williams                 Expires August 23, 2014               [Page 17]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -948,5 +1004,5 @@ Author's Address
 
 
 
-Williams                 Expires August 23, 2014               [Page 17]
+Williams                 Expires August 23, 2014               [Page 18]
 

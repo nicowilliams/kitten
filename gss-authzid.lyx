@@ -1992,5 +1992,14 @@ msdn.microsoft.com/en-us/library/cc246071.aspx' /> </reference>
 
 \end_layout
 
+\begin_layout Section
+Acknowledgements
+\end_layout
+
+\begin_layout Standard
+This document resulted from Viktor Dukhovni's notes on S4U2Proxy's shortcomings
+ and discussions between him and the author as to how best to address this.
+\end_layout
+
 \end_body
 \end_document

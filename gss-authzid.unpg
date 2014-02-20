@@ -75,9 +75,10 @@ Table of Contents
    5.      Security Considerations
    5.1.    Security Requirements and Recommendations
    6.      IANA Considerations
-   7.      References
-   7.1.    Normative References
-   7.2.    Informative References
+   7.      Acknowledgements
+   8.      References
+   8.1.    Normative References
+   8.2.    Informative References
            Author's Address
 
 
@@ -540,9 +541,16 @@ Table of Contents
    Kerberos authorization-data to the relevant registries.]]
 
 
-7.  References
+7.  Acknowledgements
 
-7.1.  Normative References
+   This document resulted from Viktor Dukhovni's notes on S4U2Proxy's
+   shortcomings and discussions between him and the author as to how
+   best to address this.
+
+
+8.  References
+
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -576,7 +584,7 @@ Table of Contents
               API)", draft-williams-kitten-generic-naming-attributes-01
               (work in progress), August 2013.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [RFC4422]  Melnikov, A. and K. Zeilenga, "Simple Authentication and
               Security Layer (SASL)", RFC 4422, June 2006.
