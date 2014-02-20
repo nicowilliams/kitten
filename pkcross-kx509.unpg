@@ -3,8 +3,8 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Intended status: Standards Track                         August 23, 2013
-Expires: February 24, 2014
+Intended status: Standards Track                       February 19, 2014
+Expires: August 23, 2014
 
 
   Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using
@@ -38,11 +38,11 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 24, 2014.
+   This Internet-Draft will expire on August 23, 2014.
 
 Copyright Notice
 
-   Copyright (c) 2013 IETF Trust and the persons identified as the
+   Copyright (c) 2014 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -61,10 +61,11 @@ Table of Contents
    1.      Introduction
    1.1.    Conventions used in this document
    2.      The Protocol
-   2.1.    Exchange of Long-Term Cross-Realm Symmetric Keys
-   2.1.1.  Caching of PKCROSS Symmetrically-Keyed Cross-Realm
+   2.1.    Transit Path and Transit Policy
+   2.2.    Exchange of Long-Term Cross-Realm Symmetric Keys
+   2.2.1.  Caching of PKCROSS Symmetrically-Keyed Cross-Realm
            Principals
-   2.2.    Indication of Preference for/ Required Use of
+   2.3.    Indication of Preference for/ Required Use of
            Symmetrically-Keyed Cross-Realm Principals
    3.      Security Properties
    3.1.    Automated Cross-Realm Keying
@@ -127,33 +128,54 @@ Table of Contents
 
    1.  Generate private key to a public key cryptosystem;
 
-   2.  Generate a certificate signing request (CSR) [RFC2986], such that
-       the resulting certificate has an id-pkinit-san subject
-       alternative name (SAN) corresponding to the client's principal
-       name and realm;
-
-   3.  Request a certificate from the kx509 [RFC6717] service run by the
+   2.  Request a certificate from the kx509 [RFC6717] service run by the
        source realm;
 
-   4.  Request a TGT from the destination realm using PKINIT [RFC4556].
+   3.  Request a TGT from the destination realm using PKINIT [RFC4556].
 
    If the destination realm issues the requested Ticket then it SHOULD
    include the client's certificate in an AD-CLIENT-CERTIFICATE
    authorization-data element, and it MUST do so if it does not validate
    the client's certificate to an acceptable trust anchor.
 
+2.1.  Transit Path and Transit Policy
+
    The destination realm MUST NOT set the TRANSIT-POLICY-CHECKED flag on
    the tickets they issue to clients whose foreign realm certificates
-   are not validated by the KDC.  Destination realm administrators may
-   configure their realms to know specific foreign realm clients'
-   certificates.
+   cannot be validated by the KDC.  KDCs SHOULD reject requests from
+   clients whose certificates cannot be validated, unless configured to
+   do otherwise, but KDCs that proceed in such cases MUST NOT set the
+   TRANSIT-POLICY-CHECKED flag on the resulting tickets.
 
-   The destination MUST include the trust path of the client's
-   certificate, if validated, in the 'transited' field of the issued
-   Ticket, using a mapping of the issuer names to the X.500 realm naming
-   style.
+   Note that destination realm administrators may configure their realms
+   to know specific foreign realm clients' certificates.
 
-2.1.  Exchange of Long-Term Cross-Realm Symmetric Keys
+   The trust validation path of the client's end-entity certificate will
+   be represented in the issued Ticket as follows:
+
+   o  If the client's certificate's validated trust path is sufficiently
+      trusted by the KDC then the destination realm's KDC MAY leave the
+      transit path of the resulting Ticket empty (i.e., as if the
+      client's realm and the service's realm had a direct cross-realm
+      relationship).  And the KDC SHOULD set the TRANSIT-POLICY-CHECKED
+      flag.
+
+      *  Alternatively the KDC MAY insert a suitable domain-style
+         representation of the certificate trust path as the transit
+         path.
+
+   o  Otherwise, and if the client certificate is valid to a trusted
+      trust anchor, then the destination realm's KDC MUST include the
+      trust path of the client's certificate in the 'transited' field of
+      the issued Ticket, using X.500-style realm naming.  And the KDC
+      SHOULD set the TRANSIT-POLICY-CHECKED flag.
+
+   o  Finally, if the client certificate cannot be validated fully but
+      the KDC wishes to continue, then the KDC MUST NOT set the TRANSIT-
+      POLICY-CHECKED flag unless it has prior knowledge of the client's
+      certificate as authorized to the requested name.
+
+2.2.  Exchange of Long-Term Cross-Realm Symmetric Keys
 
    When the client principal is a TGS principal and its PKINIT AS-REQ
    protocol data unit (PDU) has the USE-SESSION-KEY-AS-REALM-KEY
@@ -185,7 +207,7 @@ Table of Contents
    service (i.e., KDCs should throttle attempts to establish symmetric
    cross-realm keys in this manner).  See also the next section.
 
-2.1.1.  Caching of PKCROSS Symmetrically-Keyed Cross-Realm Principals
+2.2.1.  Caching of PKCROSS Symmetrically-Keyed Cross-Realm Principals
 
    Realms whose KDCs automatically setup symmetrically-keyed cross-realm
    principals SHOULD treat these principals as a cache, and SHOULD
@@ -194,7 +216,7 @@ Table of Contents
    resource exhaustion DoS attack may be possible.  See also the
    preceding section.
 
-2.2.  Indication of Preference for/ Required Use of Symmetrically-Keyed
+2.3.  Indication of Preference for/ Required Use of Symmetrically-Keyed
       Cross-Realm Principals
 
    A KDC MAY reject a PKINIT/PKCROSS request with a KRB-ERROR indicating
@@ -512,10 +534,6 @@ Table of Contents
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
-
-   [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
-              Request Syntax Specification Version 1.7", RFC 2986,
-              November 2000.
 
    [RFC4120]  Neuman, C., Yu, T., Hartman, S., and K. Raeburn, "The
               Kerberos Network Authentication Service (V5)", RFC 4120,

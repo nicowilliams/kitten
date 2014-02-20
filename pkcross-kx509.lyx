@@ -536,21 +536,6 @@ Generate private key to a public key cryptosystem;
 \end_layout
 
 \begin_layout Enumerate
-Generate a certificate signing request (CSR) 
-\begin_inset Flex EntityXRef
-status collapsed
-
-\begin_layout Plain Layout
-RFC2986
-\end_layout
-
-\end_inset
-
-, such that the resulting certificate has an id-pkinit-san subject alternative
- name (SAN) corresponding to the client's principal name and realm;
-\end_layout
-
-\begin_layout Enumerate
 Request a certificate from the kx509 
 \begin_inset Flex EntityXRef
 status collapsed
@@ -585,18 +570,57 @@ If the destination realm issues the requested Ticket then it SHOULD include
  to an acceptable trust anchor.
 \end_layout
 
-\begin_layout Standard
-The destination realm MUST NOT set the TRANSIT-POLICY-CHECKED flag on the
- tickets they issue to clients whose foreign realm certificates are not
- validated by the KDC.
- Destination realm administrators may configure their realms to know specific
- foreign realm clients' certificates.
+\begin_layout Subsection
+Transit Path and Transit Policy
 \end_layout
 
 \begin_layout Standard
-The destination MUST include the trust path of the client's certificate,
- if validated, in the 'transited' field of the issued Ticket, using a mapping
- of the issuer names to the X.500 realm naming style.
+The destination realm MUST NOT set the TRANSIT-POLICY-CHECKED flag on the
+ tickets they issue to clients whose foreign realm certificates cannot be
+ validated by the KDC.
+ KDCs SHOULD reject requests from clients whose certificates cannot be validated
+, unless configured to do otherwise, but KDCs that proceed in such cases
+ MUST NOT set the TRANSIT-POLICY-CHECKED flag on the resulting tickets.
+\end_layout
+
+\begin_layout Standard
+Note that destination realm administrators may configure their realms to
+ know specific foreign realm clients' certificates.
+\end_layout
+
+\begin_layout Standard
+The trust validation path of the client's end-entity certificate will be
+ represented in the issued Ticket as follows:
+\end_layout
+
+\begin_layout Itemize
+If the client's certificate's validated trust path is sufficiently trusted
+ by the KDC then the destination realm's KDC MAY leave the transit path
+ of the resulting Ticket empty (i.e., as if the client's realm and the service's
+ realm had a direct cross-realm relationship).
+ And the KDC SHOULD set the TRANSIT-POLICY-CHECKED flag.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Alternatively the KDC MAY insert a suitable domain-style representation
+ of the certificate trust path as the transit path.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Otherwise, and if the client certificate is valid to a trusted trust anchor,
+ then the destination realm's KDC MUST include the trust path of the client's
+ certificate in the 'transited' field of the issued Ticket, using X.500-style
+ realm naming.
+ And the KDC SHOULD set the TRANSIT-POLICY-CHECKED flag.
+\end_layout
+
+\begin_layout Itemize
+Finally, if the client certificate cannot be validated fully but the KDC
+ wishes to continue, then the KDC MUST NOT set the TRANSIT-POLICY-CHECKED
+ flag unless it has prior knowledge of the client's certificate as authorized
+ to the requested name.
 \end_layout
 
 \begin_layout Subsection
@@ -1281,26 +1305,6 @@ status open
 LatexCommand href
 name "rfc2119"
 target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Flex BibXML
-status open
-
-\begin_layout Plain Layout
-\begin_inset CommandInset href
-LatexCommand href
-name "rfc2986"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2986.xml"
 
 \end_inset
 

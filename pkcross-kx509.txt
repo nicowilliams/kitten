@@ -3,8 +3,8 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Intended status: Standards Track                         August 23, 2013
-Expires: February 24, 2014
+Intended status: Standards Track                       February 19, 2014
+Expires: August 23, 2014
 
 
   Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using
@@ -38,11 +38,11 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 24, 2014.
+   This Internet-Draft will expire on August 23, 2014.
 
 Copyright Notice
 
-   Copyright (c) 2013 IETF Trust and the persons identified as the
+   Copyright (c) 2014 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Williams                Expires February 24, 2014               [Page 1]
+Williams                 Expires August 23, 2014                [Page 1]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
    carefully, as they describe your rights and restrictions with respect
@@ -69,37 +69,38 @@ Table of Contents
    1.      Introduction . . . . . . . . . . . . . . . . . . . . . . .  3
    1.1.    Conventions used in this document  . . . . . . . . . . . .  3
    2.      The Protocol . . . . . . . . . . . . . . . . . . . . . . .  4
-   2.1.    Exchange of Long-Term Cross-Realm Symmetric Keys . . . . .  4
-   2.1.1.  Caching of PKCROSS Symmetrically-Keyed Cross-Realm
+   2.1.    Transit Path and Transit Policy  . . . . . . . . . . . . .  4
+   2.2.    Exchange of Long-Term Cross-Realm Symmetric Keys . . . . .  5
+   2.2.1.  Caching of PKCROSS Symmetrically-Keyed Cross-Realm
            Principals . . . . . . . . . . . . . . . . . . . . . . . .  5
-   2.2.    Indication of Preference for/ Required Use of
-           Symmetrically-Keyed Cross-Realm Principals . . . . . . . .  5
-   3.      Security Properties  . . . . . . . . . . . . . . . . . . .  6
-   3.1.    Automated Cross-Realm Keying . . . . . . . . . . . . . . .  6
+   2.3.    Indication of Preference for/ Required Use of
+           Symmetrically-Keyed Cross-Realm Principals . . . . . . . .  6
+   3.      Security Properties  . . . . . . . . . . . . . . . . . . .  7
+   3.1.    Automated Cross-Realm Keying . . . . . . . . . . . . . . .  7
    3.2.    Scalability and Vulnerability to Trusted Third Parties
-           (TTPs) . . . . . . . . . . . . . . . . . . . . . . . . . .  6
-   3.3.    Privacy Protection relative to home realm  . . . . . . . .  6
-   3.4.    Leap-of-Faith (LoF) / Trust-On-First-Use (TOFU)  . . . . .  6
+           (TTPs) . . . . . . . . . . . . . . . . . . . . . . . . . .  7
+   3.3.    Privacy Protection relative to home realm  . . . . . . . .  7
+   3.4.    Leap-of-Faith (LoF) / Trust-On-First-Use (TOFU)  . . . . .  7
    3.4.1.  Requirements and Recommendations for LoF/TOFU
-           Authentication . . . . . . . . . . . . . . . . . . . . . .  7
-   4.      Using DANE (DNSSEC) for Realm Certificate Validation . . .  8
-   5.      Application Programming Interface Considerations . . . . .  9
-   5.1.    API Considerations for LoF/TOFU Authentication . . . . . .  9
-   5.2.    GSS-API Naming Considerations  . . . . . . . . . . . . . .  9
-   5.3.    Representation of LoF/TOFU Principal and Realm Names . . .  9
-   5.4.    GSS-API Name-Type for Pseudonymous Principals  . . . . . . 10
-   5.4.1.  Kerberos Name-Type for Pseudonymous Principals . . . . . . 11
-   6.      Security Considerations  . . . . . . . . . . . . . . . . . 12
+           Authentication . . . . . . . . . . . . . . . . . . . . . .  8
+   4.      Using DANE (DNSSEC) for Realm Certificate Validation . . .  9
+   5.      Application Programming Interface Considerations . . . . . 10
+   5.1.    API Considerations for LoF/TOFU Authentication . . . . . . 10
+   5.2.    GSS-API Naming Considerations  . . . . . . . . . . . . . . 10
+   5.3.    Representation of LoF/TOFU Principal and Realm Names . . . 10
+   5.4.    GSS-API Name-Type for Pseudonymous Principals  . . . . . . 11
+   5.4.1.  Kerberos Name-Type for Pseudonymous Principals . . . . . . 12
+   6.      Security Considerations  . . . . . . . . . . . . . . . . . 13
    6.1.    Loss of Cross-Realm Principal Trust Establishment
-           Information  . . . . . . . . . . . . . . . . . . . . . . . 12
-   6.2.    Security Considerations for LoF/TOFU . . . . . . . . . . . 12
-   6.3.    On the Need for a Common Transit Path Policy Language  . . 13
-   7.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 14
-   8.      Acknowledgements . . . . . . . . . . . . . . . . . . . . . 15
-   9.      References . . . . . . . . . . . . . . . . . . . . . . . . 16
-   9.1.    Normative References . . . . . . . . . . . . . . . . . . . 16
-   9.2.    Informative References . . . . . . . . . . . . . . . . . . 16
-           Author's Address . . . . . . . . . . . . . . . . . . . . . 18
+           Information  . . . . . . . . . . . . . . . . . . . . . . . 13
+   6.2.    Security Considerations for LoF/TOFU . . . . . . . . . . . 13
+   6.3.    On the Need for a Common Transit Path Policy Language  . . 14
+   7.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 15
+   8.      Acknowledgements . . . . . . . . . . . . . . . . . . . . . 16
+   9.      References . . . . . . . . . . . . . . . . . . . . . . . . 17
+   9.1.    Normative References . . . . . . . . . . . . . . . . . . . 17
+   9.2.    Informative References . . . . . . . . . . . . . . . . . . 17
+           Author's Address . . . . . . . . . . . . . . . . . . . . . 19
 
 
 
@@ -107,10 +108,9 @@ Table of Contents
 
 
 
-
-Williams                Expires February 24, 2014               [Page 2]
+Williams                 Expires August 23, 2014                [Page 2]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
 1.  Introduction
@@ -164,9 +164,9 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014               [Page 3]
+Williams                 Expires August 23, 2014                [Page 3]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
 2.  The Protocol
@@ -179,33 +179,64 @@ Internet-Draft                   PKCROSS                     August 2013
 
    1.  Generate private key to a public key cryptosystem;
 
-   2.  Generate a certificate signing request (CSR) [RFC2986], such that
-       the resulting certificate has an id-pkinit-san subject
-       alternative name (SAN) corresponding to the client's principal
-       name and realm;
-
-   3.  Request a certificate from the kx509 [RFC6717] service run by the
+   2.  Request a certificate from the kx509 [RFC6717] service run by the
        source realm;
 
-   4.  Request a TGT from the destination realm using PKINIT [RFC4556].
+   3.  Request a TGT from the destination realm using PKINIT [RFC4556].
 
    If the destination realm issues the requested Ticket then it SHOULD
    include the client's certificate in an AD-CLIENT-CERTIFICATE
    authorization-data element, and it MUST do so if it does not validate
    the client's certificate to an acceptable trust anchor.
 
+2.1.  Transit Path and Transit Policy
+
    The destination realm MUST NOT set the TRANSIT-POLICY-CHECKED flag on
    the tickets they issue to clients whose foreign realm certificates
-   are not validated by the KDC.  Destination realm administrators may
-   configure their realms to know specific foreign realm clients'
-   certificates.
+   cannot be validated by the KDC.  KDCs SHOULD reject requests from
+   clients whose certificates cannot be validated, unless configured to
+   do otherwise, but KDCs that proceed in such cases MUST NOT set the
+   TRANSIT-POLICY-CHECKED flag on the resulting tickets.
 
-   The destination MUST include the trust path of the client's
-   certificate, if validated, in the 'transited' field of the issued
-   Ticket, using a mapping of the issuer names to the X.500 realm naming
-   style.
+   Note that destination realm administrators may configure their realms
+   to know specific foreign realm clients' certificates.
 
-2.1.  Exchange of Long-Term Cross-Realm Symmetric Keys
+   The trust validation path of the client's end-entity certificate will
+   be represented in the issued Ticket as follows:
+
+   o  If the client's certificate's validated trust path is sufficiently
+      trusted by the KDC then the destination realm's KDC MAY leave the
+      transit path of the resulting Ticket empty (i.e., as if the
+      client's realm and the service's realm had a direct cross-realm
+      relationship).  And the KDC SHOULD set the TRANSIT-POLICY-CHECKED
+      flag.
+
+      *  Alternatively the KDC MAY insert a suitable domain-style
+         representation of the certificate trust path as the transit
+         path.
+
+
+
+
+
+
+Williams                 Expires August 23, 2014                [Page 4]
+
+Internet-Draft                   PKCROSS                   February 2014
+
+
+   o  Otherwise, and if the client certificate is valid to a trusted
+      trust anchor, then the destination realm's KDC MUST include the
+      trust path of the client's certificate in the 'transited' field of
+      the issued Ticket, using X.500-style realm naming.  And the KDC
+      SHOULD set the TRANSIT-POLICY-CHECKED flag.
+
+   o  Finally, if the client certificate cannot be validated fully but
+      the KDC wishes to continue, then the KDC MUST NOT set the TRANSIT-
+      POLICY-CHECKED flag unless it has prior knowledge of the client's
+      certificate as authorized to the requested name.
+
+2.2.  Exchange of Long-Term Cross-Realm Symmetric Keys
 
    When the client principal is a TGS principal and its PKINIT AS-REQ
    protocol data unit (PDU) has the USE-SESSION-KEY-AS-REALM-KEY
@@ -217,14 +248,6 @@ Internet-Draft                   PKCROSS                     August 2013
    trust anchor.  The source and destination realm MAY have previously
    exchange fingerprints of their respective key distribution service
    (KDC) public keys and/or certificates and/or the source realm's kx509
-
-
-
-Williams                Expires February 24, 2014               [Page 4]
-
-Internet-Draft                   PKCROSS                     August 2013
-
-
    root or intermediate certification authority (CA), and such
    previously exchanged material, if any, MUST be used for certificate
    trust validation.
@@ -245,16 +268,24 @@ Internet-Draft                   PKCROSS                     August 2013
    service (i.e., KDCs should throttle attempts to establish symmetric
    cross-realm keys in this manner).  See also the next section.
 
-2.1.1.  Caching of PKCROSS Symmetrically-Keyed Cross-Realm Principals
+2.2.1.  Caching of PKCROSS Symmetrically-Keyed Cross-Realm Principals
 
    Realms whose KDCs automatically setup symmetrically-keyed cross-realm
    principals SHOULD treat these principals as a cache, and SHOULD
    implement a cache eviction policy.  For example, a least-recently-
+
+
+
+Williams                 Expires August 23, 2014                [Page 5]
+
+Internet-Draft                   PKCROSS                   February 2014
+
+
    used (LRU) or least-frequently-used (LFU) policy.  Otherwise a
    resource exhaustion DoS attack may be possible.  See also the
    preceding section.
 
-2.2.  Indication of Preference for/ Required Use of Symmetrically-Keyed
+2.3.  Indication of Preference for/ Required Use of Symmetrically-Keyed
       Cross-Realm Principals
 
    A KDC MAY reject a PKINIT/PKCROSS request with a KRB-ERROR indicating
@@ -276,9 +307,34 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014               [Page 5]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 23, 2014                [Page 6]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
 3.  Security Properties
@@ -332,9 +388,9 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014               [Page 6]
+Williams                 Expires August 23, 2014                [Page 7]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
    destination realms are as good as anonymous authentication.  If the
@@ -388,9 +444,9 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014               [Page 7]
+Williams                 Expires August 23, 2014                [Page 8]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
 4.  Using DANE (DNSSEC) for Realm Certificate Validation
@@ -444,9 +500,9 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014               [Page 8]
+Williams                 Expires August 23, 2014                [Page 9]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
 5.  Application Programming Interface Considerations
@@ -500,9 +556,9 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014               [Page 9]
+Williams                 Expires August 23, 2014               [Page 10]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
    1.  peer's EE certificate's subject public key;
@@ -556,9 +612,9 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014              [Page 10]
+Williams                 Expires August 23, 2014               [Page 11]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
 5.4.1.  Kerberos Name-Type for Pseudonymous Principals
@@ -612,9 +668,9 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014              [Page 11]
+Williams                 Expires August 23, 2014               [Page 12]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
 6.  Security Considerations
@@ -668,9 +724,9 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014              [Page 12]
+Williams                 Expires August 23, 2014               [Page 13]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
    application/protocol that provides LoF/TOFU [references for this
@@ -724,9 +780,9 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014              [Page 13]
+Williams                 Expires August 23, 2014               [Page 14]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
 7.  IANA Considerations
@@ -780,9 +836,9 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014              [Page 14]
+Williams                 Expires August 23, 2014               [Page 15]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
 8.  Acknowledgements
@@ -836,9 +892,9 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014              [Page 15]
+Williams                 Expires August 23, 2014               [Page 16]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
 9.  References
@@ -847,10 +903,6 @@ Internet-Draft                   PKCROSS                     August 2013
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
-
-   [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
-              Request Syntax Specification Version 1.7", RFC 2986,
-              November 2000.
 
    [RFC4120]  Neuman, C., Yu, T., Hartman, S., and K. Raeburn, "The
               Kerberos Network Authentication Service (V5)", RFC 4120,
@@ -889,18 +941,17 @@ Internet-Draft                   PKCROSS                     August 2013
 
    [RFC4033]  Arends, R., Austein, R., Larson, M., Massey, D., and S.
               Rose, "DNS Security Introduction and Requirements",
-
-
-
-Williams                Expires February 24, 2014              [Page 16]
-
-Internet-Draft                   PKCROSS                     August 2013
-
-
               RFC 4033, March 2005.
 
    [RFC4251]  Ylonen, T. and C. Lonvick, "The Secure Shell (SSH)
               Protocol Architecture", RFC 4251, January 2006.
+
+
+
+Williams                 Expires August 23, 2014               [Page 17]
+
+Internet-Draft                   PKCROSS                   February 2014
+
 
    [RFC6251]  Josefsson, S., "Using Kerberos Version 5 over the
               Transport Layer Security (TLS) Protocol", RFC 6251,
@@ -948,9 +999,14 @@ Internet-Draft                   PKCROSS                     August 2013
 
 
 
-Williams                Expires February 24, 2014              [Page 17]
+
+
+
+
+
+Williams                 Expires August 23, 2014               [Page 18]
 
-Internet-Draft                   PKCROSS                     August 2013
+Internet-Draft                   PKCROSS                   February 2014
 
 
 Author's Address
@@ -1004,5 +1060,5 @@ Author's Address
 
 
 
-Williams                Expires February 24, 2014              [Page 18]
+Williams                 Expires August 23, 2014               [Page 19]
 
