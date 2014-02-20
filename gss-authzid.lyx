@@ -283,7 +283,7 @@ Impersonation Naming Attribute for the Generic Security Services Application
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-impersonation-naming-attribute-00
+draft-williams-kitten-impersonation-naming-attr-00
 \end_layout
 
 \end_inset
@@ -1454,6 +1454,86 @@ status open
  <TBD>
 \end_layout
 
+\begin_layout Plain Layout
+
+ /*
+\end_layout
+
+\begin_layout Plain Layout
+
+  * Roughly this looks like:
+\end_layout
+
+\begin_layout Plain Layout
+
+  *  - if the impseronator application is an acceptor
+\end_layout
+
+\begin_layout Plain Layout
+
+  *    it calls gss_accept_sec_context() and gets a
+\end_layout
+
+\begin_layout Plain Layout
+
+  *    delegated credential handle even when the initiator
+\end_layout
+
+\begin_layout Plain Layout
+
+  *    didn't request delegation;
+\end_layout
+
+\begin_layout Plain Layout
+
+  *  - else the impersonator calls
+\end_layout
+
+\begin_layout Plain Layout
+
+  *    gss_acquire_cred_impersonate_name()
+\end_layout
+
+\begin_layout Plain Layout
+
+  *    to acquire a credential for impersonating a given
+\end_layout
+
+\begin_layout Plain Layout
+
+  *    principal;
+\end_layout
+
+\begin_layout Plain Layout
+
+  *
+\end_layout
+
+\begin_layout Plain Layout
+
+  * then the application calls gss_init_sec_context() with
+\end_layout
+
+\begin_layout Plain Layout
+
+  * the impersonation credential as the initiator credential
+\end_layout
+
+\begin_layout Plain Layout
+
+  * handle.
+\end_layout
+
+\begin_layout Plain Layout
+
+  */
+\end_layout
+
+\begin_layout Plain Layout
+
+  <TBD>
+\end_layout
+
 \end_inset
 
 
@@ -1492,6 +1572,86 @@ status open
  <TBD>
 \end_layout
 
+\begin_layout Plain Layout
+
+ /*
+\end_layout
+
+\begin_layout Plain Layout
+
+  * An impersonation-aware acceptor application
+\end_layout
+
+\begin_layout Plain Layout
+
+  * uses gss_get_name_attribute() to check whether
+\end_layout
+
+\begin_layout Plain Layout
+
+  * its peers' NAMEs (values of gss_name_t type output by
+\end_layout
+
+\begin_layout Plain Layout
+
+  * gss_accept_sec_context()) have either or both of the
+\end_layout
+
+\begin_layout Plain Layout
+
+  * GSS_C_ATTR_IMPERSONATED_PRINCIPAL and/or
+\end_layout
+
+\begin_layout Plain Layout
+
+  * GSS_C_ATTR_AUTHZ_ID name attributes -prefixed with
+\end_layout
+
+\begin_layout Plain Layout
+
+  * GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK- set, and if so,
+\end_layout
+
+\begin_layout Plain Layout
+
+  * then they check local policy.
+\end_layout
+
+\begin_layout Plain Layout
+
+  *
+\end_layout
+
+\begin_layout Plain Layout
+
+  * Third-party policy can be checked by checking the
+\end_layout
+
+\begin_layout Plain Layout
+
+  * 'authenticated' boolean output of gss_get_name_attribute()
+\end_layout
+
+\begin_layout Plain Layout
+
+  * or by not prefixing with either these attributes with either
+\end_layout
+
+\begin_layout Plain Layout
+
+  * GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK nor
+\end_layout
+
+\begin_layout Plain Layout
+
+  * GSS_C_ATTR_GENERIC_UNCONSTRAINED.
+\end_layout
+
+\begin_layout Plain Layout
+
+  */
+\end_layout
+
 \end_inset
 
 
@@ -1512,6 +1672,10 @@ Acceptor-side code
 \end_inset
 
 
+\end_layout
+
+\begin_layout RevisionRemark
+Also add sample code using the authz-id attribute.
 \end_layout
 
 \begin_layout Section

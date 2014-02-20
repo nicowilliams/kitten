@@ -18,7 +18,7 @@
 <!ENTITY I-D.williams-kitten-generic-naming-attributes PUBLIC "" "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml">
 <!ENTITY rfc4422 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4422.xml">
 ]>
-<rfc docName="draft-williams-kitten-impersonation-naming-attribute-00" ipr="trust200902" category="std" updates="1964, 2743, 2744">
+<rfc docName="draft-williams-kitten-impersonation-naming-attr-00" ipr="trust200902" category="std" updates="1964, 2743, 2744">
   <front>
     <title abbrev="GSS Impersonation">Impersonation Naming Attribute for the Generic Security Services Application Programming Interface (GSS-API)</title>
     <author initials="N." surname="Williams" fullname="Nicolas Williams">
@@ -278,19 +278,55 @@ DER encoding with IMPLICIT tagging MUST be used to encode these authorization-da
       <t>
 </t>
       <t>
-        <figure anchor="magicparlabel-277" title="Impersonator-side code">
-          <artwork> &lt;TBD&gt;</artwork>
+        <figure anchor="magicparlabel-293" title="Impersonator-side code">
+          <artwork> &lt;TBD&gt;
+ /*
+  * Roughly this looks like:
+  *  - if the impseronator application is an acceptor
+  *    it calls gss_accept_sec_context() and gets a
+  *    delegated credential handle even when the initiator
+  *    didn't request delegation;
+  *  - else the impersonator calls
+  *    gss_acquire_cred_impersonate_name()
+  *    to acquire a credential for impersonating a given
+  *    principal;
+  *
+  * then the application calls gss_init_sec_context() with
+  * the impersonation credential as the initiator credential
+  * handle.
+  */
+  &lt;TBD&gt;</artwork>
         </figure>
       </t>
       <t>
 </t>
       <t>
-        <figure anchor="magicparlabel-291" title="Acceptor-side code">
-          <artwork> &lt;TBD&gt;</artwork>
+        <figure anchor="magicparlabel-323" title="Acceptor-side code">
+          <artwork> &lt;TBD&gt;
+ /*
+  * An impersonation-aware acceptor application
+  * uses gss_get_name_attribute() to check whether
+  * its peers' NAMEs (values of gss_name_t type output by
+  * gss_accept_sec_context()) have either or both of the
+  * GSS_C_ATTR_IMPERSONATED_PRINCIPAL and/or
+  * GSS_C_ATTR_AUTHZ_ID name attributes -prefixed with
+  * GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK- set, and if so,
+  * then they check local policy.
+  *
+  * Third-party policy can be checked by checking the
+  * 'authenticated' boolean output of gss_get_name_attribute()
+  * or by not prefixing with either these attributes with either
+  * GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK nor
+  * GSS_C_ATTR_GENERIC_UNCONSTRAINED.
+  */</artwork>
         </figure>
       </t>
+      <t>
+        <cref>
+Also add sample code using the authz-id attribute.</cref>
+      </t>
     </section>
-    <section title="Security Considerations" anchor="d1e839">
+    <section title="Security Considerations" anchor="d1e842">
       <t>
 This entire document deals with security. Specifically this document provides a method for denoting impersonation while failing safe when peers do not support this method. Failing safe means: peers observe the impersonator's name, not the impersonated name, and impersonator applications fail when their GSS-API implementation is not impersonation-aware.</t>
       <t>
@@ -299,7 +335,7 @@ Local policy is to be used for deciding when impersonators may impersonate any o
         <cref>
 Should add text about when and why one might need or use impersonation.</cref>
       </t>
-      <section title="Security Requirements and Recommendations" anchor="d1e854">
+      <section title="Security Requirements and Recommendations" anchor="d1e857">
         <t>
 GSS_Set_name_attribute() is required to fail when used with attributes not understood by the mechanism. This ensures that impersonators applications that set these attributes do not accidentally fail to actually use them when impersonating principals. Some additional safe-guards MAY be applied:</t>
         <t>
@@ -318,7 +354,7 @@ Kerberos initiators should (as opposed to SHOULD, but perhaps SHOULD) use impers
 Our approach fails safe: service applications that are not aware of impersonation will not think that they are talking to the principal that an impersonator wishes to impersonate, and impersonator applications should fail when their GSS-API mechanism implementations do not support this feature.</t>
       </section>
     </section>
-    <section title="IANA Considerations" anchor="d1e880">
+    <section title="IANA Considerations" anchor="d1e883">
       <t>
         <cref>
 Request addition of the new GSS name attributes and Kerberos authorization-data to the relevant registries.</cref>

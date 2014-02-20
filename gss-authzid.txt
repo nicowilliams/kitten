@@ -3,15 +3,15 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: 1964, 2743, 2744                              February 10, 2014
+Updates: 1964, 2743, 2744                              February 19, 2014
 (if approved)
 Intended status: Standards Track
-Expires: August 14, 2014
+Expires: August 23, 2014
 
 
     Impersonation Naming Attribute for the Generic Security Services
               Application Programming Interface (GSS-API)
-        draft-williams-kitten-impersonation-naming-attribute-00
+           draft-williams-kitten-impersonation-naming-attr-00
 
 Abstract
 
@@ -37,7 +37,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 14, 2014.
+   This Internet-Draft will expire on August 23, 2014.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Williams                 Expires August 14, 2014                [Page 1]
+Williams                 Expires August 23, 2014                [Page 1]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -108,7 +108,7 @@ Table of Contents
 
 
 
-Williams                 Expires August 14, 2014                [Page 2]
+Williams                 Expires August 23, 2014                [Page 2]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -164,7 +164,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014                [Page 3]
+Williams                 Expires August 23, 2014                [Page 3]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -220,7 +220,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014                [Page 4]
+Williams                 Expires August 23, 2014                [Page 4]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -276,7 +276,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014                [Page 5]
+Williams                 Expires August 23, 2014                [Page 5]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -332,7 +332,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014                [Page 6]
+Williams                 Expires August 23, 2014                [Page 6]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -388,7 +388,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014                [Page 7]
+Williams                 Expires August 23, 2014                [Page 7]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -444,7 +444,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014                [Page 8]
+Williams                 Expires August 23, 2014                [Page 8]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -500,7 +500,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014                [Page 9]
+Williams                 Expires August 23, 2014                [Page 9]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -556,7 +556,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014               [Page 10]
+Williams                 Expires August 23, 2014               [Page 10]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -612,7 +612,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014               [Page 11]
+Williams                 Expires August 23, 2014               [Page 11]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -620,13 +620,46 @@ Internet-Draft              GSS Impersonation              February 2014
 4.  Sample Code
 
     <TBD>
+    /*
+     * Roughly this looks like:
+     *  - if the impseronator application is an acceptor
+     *    it calls gss_accept_sec_context() and gets a
+     *    delegated credential handle even when the initiator
+     *    didn't request delegation;
+     *  - else the impersonator calls
+     *    gss_acquire_cred_impersonate_name()
+     *    to acquire a credential for impersonating a given
+     *    principal;
+     *
+     * then the application calls gss_init_sec_context() with
+     * the impersonation credential as the initiator credential
+     * handle.
+     */
+     <TBD>
 
                      Figure 3: Impersonator-side code
 
     <TBD>
+    /*
+     * An impersonation-aware acceptor application
+     * uses gss_get_name_attribute() to check whether
+     * its peers' NAMEs (values of gss_name_t type output by
+     * gss_accept_sec_context()) have either or both of the
+     * GSS_C_ATTR_IMPERSONATED_PRINCIPAL and/or
+     * GSS_C_ATTR_AUTHZ_ID name attributes -prefixed with
+     * GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK- set, and if so,
+     * then they check local policy.
+     *
+     * Third-party policy can be checked by checking the
+     * 'authenticated' boolean output of gss_get_name_attribute()
+     * or by not prefixing with either these attributes with either
+     * GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK nor
+     * GSS_C_ATTR_GENERIC_UNCONSTRAINED.
+     */
 
                        Figure 4: Acceptor-side code
 
+   [[anchor4: Also add sample code using the authz-id attribute.]]
 
 
 
@@ -635,40 +668,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                 Expires August 14, 2014               [Page 12]
+Williams                 Expires August 23, 2014               [Page 12]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -693,7 +693,7 @@ Internet-Draft              GSS Impersonation              February 2014
    this is strictly to avoid having to modify existing GSS-API
    applications, but should not be encouraged beyond that purpose.
 
-   [[anchor4: Should add text about when and why one might need or use
+   [[anchor5: Should add text about when and why one might need or use
    impersonation.]]
 
 5.1.  Security Requirements and Recommendations
@@ -724,7 +724,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014               [Page 13]
+Williams                 Expires August 23, 2014               [Page 13]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -780,14 +780,14 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014               [Page 14]
+Williams                 Expires August 23, 2014               [Page 14]
 
 Internet-Draft              GSS Impersonation              February 2014
 
 
 6.  IANA Considerations
 
-   [[anchor5: Request addition of the new GSS name attributes and
+   [[anchor6: Request addition of the new GSS name attributes and
    Kerberos authorization-data to the relevant registries.]]
 
 
@@ -836,7 +836,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014               [Page 15]
+Williams                 Expires August 23, 2014               [Page 15]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -892,7 +892,7 @@ Internet-Draft              GSS Impersonation              February 2014
 
 
 
-Williams                 Expires August 14, 2014               [Page 16]
+Williams                 Expires August 23, 2014               [Page 16]
 
 Internet-Draft              GSS Impersonation              February 2014
 
@@ -948,5 +948,5 @@ Author's Address
 
 
 
-Williams                 Expires August 14, 2014               [Page 17]
+Williams                 Expires August 23, 2014               [Page 17]
 
