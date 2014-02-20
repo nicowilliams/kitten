@@ -1,0 +1,1244 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass docbook
+\use_default_options true
+\maintain_unincluded_children false
+\begin_local_layout
+Format 31
+
+InsetLayout Flex:PI_Strict
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_Strict
+End
+
+InsetLayout Flex:PI
+    LyXType Custom
+    HTMLTag div
+    LabelString PI
+End
+
+InsetLayout Flex:PI_SymRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SymRefs
+End
+
+InsetLayout Flex:PI_SortRefs
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_SortRefs
+End
+
+InsetLayout Flex:PI_TOC
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOC
+End
+
+InsetLayout Flex:PI_TOCIndent
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCIndent
+End
+
+InsetLayout Flex:PI_TOCDepth
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCDepth
+End
+
+InsetLayout Flex:PI_TOCNarrow
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCNarrow
+End
+
+InsetLayout Flex:PI_TOCCompact
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCCompact
+End
+
+InsetLayout Flex:PI_TOCAppendix
+    LyXType Custom
+    HTMLTag div
+    LabelString PI_TOCAppendix
+End
+
+InsetLayout Flex:DocName
+    LyXType Custom
+    HTMLTag div
+    LabelString DocName
+End
+
+InsetLayout Flex:IntendedStatus
+    LyXType Custom
+    HTMLTag div
+    LabelString IntendedStatus
+End
+
+InsetLayout Flex:Updates
+    LyXType Custom
+    HTMLTag div
+    LabelString Updates
+End
+
+InsetLayout Flex:Obsoletes
+    LyXType Custom
+    HTMLTag div
+    LabelString Obsoletes
+End
+
+InsetLayout Flex:SeriesNo
+    LyXType Custom
+    HTMLTag div
+    LabelString SeriesNo
+End
+
+InsetLayout Flex:RFCNumber
+    LyXType Custom
+    HTMLTag div
+    LabelString RFCNumber
+End
+
+InsetLayout Flex:IPR
+    LyXType Custom
+    HTMLTag div
+    LabelString IPR
+End
+
+InsetLayout Flex:IETFArea
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFArea
+End
+
+InsetLayout Flex:IETFWorkingGroup
+    LyXType Custom
+    HTMLTag div
+    LabelString IETFWorkingGroup
+End
+
+InsetLayout Flex:XML2RFCKeyword
+    LyXType Custom
+    HTMLTag div
+    LabelString XML2RFCKeyword
+End
+
+InsetLayout Flex:TitleAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString TitleAbbrev
+End
+
+InsetLayout Flex:AuthorRole
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthRole
+End
+
+InsetLayout Flex:AuthorInitials
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthInitials
+End
+
+InsetLayout Flex:AuthorSurname
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthSurname
+End
+
+InsetLayout Flex:AuthorOrg
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrg
+End
+
+InsetLayout Flex:AuthorOrgAbbrev
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthOrgAbbrev
+End
+
+InsetLayout Flex:AuthorEmailAddr
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthEmailAddr
+End
+
+InsetLayout Flex:AuthorAddrStreet
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrStreet
+End
+
+InsetLayout Flex:AuthorAddrCity
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCity
+End
+
+InsetLayout Flex:AuthorAddrRegion
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrRegion
+End
+
+InsetLayout Flex:AuthorAddrCode
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCode
+End
+
+InsetLayout Flex:AuthorAddrCountry
+    LyXType Custom
+    HTMLTag div
+    LabelString AuthAddrCountry
+End
+
+InsetLayout Flex:EntityXRef
+    LyXType Custom
+    HTMLTag div
+    LabelString EntityXRef
+End
+
+InsetLayout Flex:BibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString BibXML
+End
+
+InsetLayout Flex:EmbeddedBibXML
+    LyXType Custom
+    HTMLTag div
+    LabelString EmbeddedBibXML
+End
+\end_local_layout
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman cmr
+\font_sans cmss
+\font_typewriter cmtt
+\font_default_family ttdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Using Wildcard A and AAAA Resource Records in the DNS for Per-User Host-Based
+ Services
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex DocName
+status open
+
+\begin_layout Plain Layout
+draft-dukhovni-using-wildcard-a-rrsets-00
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IPR
+status open
+
+\begin_layout Plain Layout
+trust200902
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IntendedStatus
+status open
+
+\begin_layout Plain Layout
+bcp
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex TitleAbbrev
+status open
+
+\begin_layout Plain Layout
+Using Wildcard A RRs
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex IETFArea
+status open
+
+\begin_layout Plain Layout
+Security Area
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex XML2RFCKeyword
+status open
+
+\begin_layout Plain Layout
+Internet-Draft
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex Updates
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex PI TOC
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI SymRefs
+status open
+
+\begin_layout Plain Layout
+yes
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI TOCIndent
+status open
+
+\begin_layout Plain Layout
+no
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+comments="yes"
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status open
+
+\begin_layout Plain Layout
+inline="yes"
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex PI
+status collapsed
+
+\begin_layout Plain Layout
+compact="yes"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Viktor Dukhovni
+\begin_inset Flex AuthorOrgAbbrev
+status open
+
+\begin_layout Plain Layout
+TS
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorEmailAddr
+status open
+
+\begin_layout Plain Layout
+ietf-dane@dukhovni.org
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Nicolas Williams
+\begin_inset Flex AuthorOrg
+status open
+
+\begin_layout Plain Layout
+Cryptonector, LLC
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorOrgAbbrev
+status open
+
+\begin_layout Plain Layout
+Cryptonector
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorEmailAddr
+status open
+
+\begin_layout Plain Layout
+nico@cryptonector.com
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex AuthorRole
+status collapsed
+
+\begin_layout Plain Layout
+editor
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+This document describes how the use of wildcard A and AAAA resource records
+ (RRs) in the Domain Name System (DNS), optionally coupled with self-service
+ key management for host names that match the wildcards, to create per-user
+ services.
+ This memo describes what should be a best current practice.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Wildcard A/AAAA RRs in DNS for Per-User Host-Based Services (PUHBSs)
+\end_layout
+
+\begin_layout Standard
+Often users need to run services (often on multi-user systems) that need
+ host-based service principal names.
+ We describe a method for arranging this without having to share sensitive
+ cryptographic host credentials with users:
+\end_layout
+
+\begin_layout Enumerate
+Publish in the DNS 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC1034
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC1035
+\end_layout
+
+\end_inset
+
+ a wildcard A and/or AAAA RRset for every hostname on which self-service
+ per-user services will be permitted.
+\begin_inset Newline newline
+\end_inset
+
+This means that for any host named, say, 
+\begin_inset Quotes eld
+\end_inset
+
+foo.bar.example
+\begin_inset Quotes erd
+\end_inset
+
+, one would publish 
+\begin_inset Quotes eld
+\end_inset
+
+*.foo.bar.example.
+\begin_inset Quotes erd
+\end_inset
+
+, with the same A and/or AAAA RRset as 
+\begin_inset Quotes eld
+\end_inset
+
+foo.bar.example.
+\begin_inset Quotes erd
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Provision users with credentials for host-based service names on hostnames
+ of the form: <username>.<hostname.fqdn>.
+\end_layout
+
+\begin_layout Standard
+This allows users to publish 
+\begin_inset Quotes eld
+\end_inset
+
+<username>.<hostname-FQDN>
+\begin_inset Quotes erd
+\end_inset
+
+ as their services' hostname.
+\end_layout
+
+\begin_layout Standard
+For the rest of this document we shorten 
+\begin_inset Quotes eld
+\end_inset
+
+per-user host-based service principal
+\begin_inset Quotes erd
+\end_inset
+
+ to 
+\begin_inset Quotes eld
+\end_inset
+
+PUHBSP
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+And that's it.
+ The difficult part, of course, is (2), but it is possible to adjust existing
+ provisioning systems and/or build new ones to address this.
+ See 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Self-Service-Key-Management"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conventions used in this document
+\end_layout
+
+\begin_layout Standard
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+ "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are
+ to be interpreted as described in 
+\begin_inset Flex EntityXRef
+status open
+
+\begin_layout Plain Layout
+RFC2119
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Self-Service-Key-Management"
+
+\end_inset
+
+Provisioning of Service Credentials, or Self-Service Key Management
+\end_layout
+
+\begin_layout Standard
+Existing standard and non-standard Kerberos 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4120
+\end_layout
+
+\end_inset
+
+ administration and PKIX 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC5280
+\end_layout
+
+\end_inset
+
+ online certification authority (CA) protocols may be used for self-service
+ key management of PUHBSP credentials with minimal changes.
+ The main change that is needed is an authorization change on the server-side.
+\end_layout
+
+\begin_layout Standard
+Example protocols whose services may be modified to suit this purpose:
+\end_layout
+
+\begin_layout Itemize
+The 
+\begin_inset Quotes eld
+\end_inset
+
+Microsoft Windows 2000 Kerberos Change Password and Set Password Protocols
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC3244
+\end_layout
+
+\end_inset
+
+ and its non-standard predecessors.
+\end_layout
+
+\begin_layout Itemize
+The various other non-standard Kerberos administration protocols that provide
+ interfaces for creating principals and setting their credentials.
+ [XXX Add references to various such protocols? There are at least five
+ such protocols known to the editor.]
+\end_layout
+
+\begin_layout Itemize
+kx509 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC6717
+\end_layout
+
+\end_inset
+
+ (a kerberized online CA).
+\end_layout
+
+\begin_layout Itemize
+Any protocol using PKCS#10 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2986
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The principle is general, applying to any authentication mechanism that
+ can authenticate host-based services, not just Kerberos or PKIX.
+\end_layout
+
+\begin_layout Subsection
+Requirements and Recommendations
+\end_layout
+
+\begin_layout Standard
+Three different sorts of authorization decisions are involved:
+\end_layout
+
+\begin_layout Enumerate
+DNS zone administrators decide which hosts get wildcard A/AAAA RRsets.
+\begin_inset Newline newline
+\end_inset
+
+DNS zone administrators MAY safely publish wildcard A and AAAA RRsets for
+ all hostnames in their zones, but they may also keep a white-list of such
+ hostnames.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+The PUHBSP's credential issuer MUST decide whether to issue credentials
+ for any given sub-domain of a given hostname.
+\begin_inset Newline newline
+\end_inset
+
+This decision MUST be based on and constrained by the requestor's credentials.
+ For example, the issuer might require that a client authenticate with a
+ user and a host-based service credential or that a user have opted-in any
+ given host whose credentials will be used to acquire the PUHBSP's credentials,
+ it might require that the username label of the PUHBSP correspond to an
+ existing user, and so on.
+\begin_inset Newline newline
+\end_inset
+
+Credential issuers SHOULD NOT issue PUHBSP credentials for hostnames with
+ more than one sub-domain label of the actual host's hostname.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+The credential issuer SHOULD require that hosts themselves SHOULD authorize
+ local requests by local users/processes for credentials for any given sub-domai
+n of the host's hostname.
+\end_layout
+
+\begin_layout Standard
+For example, a host might authenticate local users using traditional operating
+ system facilities (e.g., processes' credentials), then decide whether the
+ local user gets to have a requested sub-domain of the host's hostname.
+\end_layout
+
+\begin_layout Subsection
+Sample Use Case: per-User Web Services
+\end_layout
+
+\begin_layout Standard
+In our deployment it is trivial for users to run their own web services:
+\end_layout
+
+\begin_layout Itemize
+pick an available port number,
+\end_layout
+
+\begin_layout Itemize
+locally request credentials (server certificates and/or Kerberos keys) for
+ running a web service on 
+\begin_inset Quotes eld
+\end_inset
+
+<local-username>.<hostname-fqdn>:<port>
+\begin_inset Quotes erd
+\end_inset
+
+ (for example, https://jdoe.someserver.foo.example:3000/),
+\end_layout
+
+\begin_layout Itemize
+configure the web service to start on the chosen port number and with the
+ given credentials,
+\end_layout
+
+\begin_layout Itemize
+then start the service.
+\end_layout
+
+\begin_layout Standard
+In this use case no credential acquisition protocols were modified.
+ Instead their services were modified to permit clients with host-based
+ service credentials to acquire credentials for PUHBSPs whose hostname component
+ is a sub-domain of the actual host's.
+\end_layout
+
+\begin_layout Section
+Security Considerations
+\end_layout
+
+\begin_layout Standard
+Some hostnames may be meaningful (e.g., 
+\begin_inset Quotes eld
+\end_inset
+
+irc.foo.bar.example
+\begin_inset Quotes erd
+\end_inset
+
+ might be taken to mean that an IRC 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2812
+\end_layout
+
+\end_inset
+
+ server is located at that hostname).
+ Users may need to be educated as to how to determine that a fully-qualified
+ hostname is a per-user one.
+\end_layout
+
+\begin_layout Standard
+Credential issuers SHOULD keep white-lists of users and hostnames that are
+ permitted to have PUHBSPs, though not necessarily white-lists of {username,
+ hostname} that are permitted to have PUHBSPs.
+\end_layout
+
+\begin_layout Standard
+Self-service key management services for PKIX 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC5280
+\end_layout
+
+\end_inset
+
+ SHOULD use an intermediate, online certification authority (CA), rather
+ than a top-level CA, so as to make it possible to revoke the online CA's
+ certificate.
+ (This is good advice for any CA anyways.)
+\end_layout
+
+\begin_layout Standard
+Note that this scheme does not support users from more than one realm having
+ PUHBSPs on the same host.
+\end_layout
+
+\begin_layout Subsection
+Man-in-the-Middle Attacks by Local Users
+\end_layout
+
+\begin_layout Standard
+Note that a large number of port numbers for running services are available
+ to all users on most operating systems.
+ This means that a local user could start a proxy on one port and forward
+ to another port on the same host, where the second port is a service run
+ by a different user.
+ Mutual authentication generally protects against this attack.
+\end_layout
+
+\begin_layout Subsubsection
+Security Considerations for Per-User HTTP Services
+\end_layout
+
+\begin_layout Standard
+Hypertext Transfer Protocol (HTTP) 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2616
+\end_layout
+
+\end_inset
+
+ used with the SPNEGO-based 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4178
+\end_layout
+
+\end_inset
+
+ HTTP authentication method 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4559
+\end_layout
+
+\end_inset
+
+ is quite common in some environments.
+ Negotiate does not make use of session keys to protect HTTP data and metadata.
+ To safeguard against this, per-user HTTP services MUST use Transport Layer
+ Security (TLS) 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC5246
+\end_layout
+
+\end_inset
+
+, not just SPNEGO.
+\end_layout
+
+\begin_layout Section
+IANA Considerations
+\end_layout
+
+\begin_layout Standard
+There are no IANA considerations in this document.
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:References"
+
+\end_inset
+
+Normative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2119"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Informative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc1034"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1034.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc1035"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1035.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2616"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2812"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2812.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc2986"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2986.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc3244"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3244.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4120"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4178"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4178.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4559"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4559.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc5280"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc5246"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc6717"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6717.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

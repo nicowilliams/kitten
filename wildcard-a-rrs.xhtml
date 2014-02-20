@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "file:///home/nico/I-Ds/kitten/../test/src/../data/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="GENERATOR" content="LyX 2.0.2" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>Using Wildcard A and AAAA Resource Records in the DNS for Per-User Host-Based Services</title>
+
+<!-- Text Class Preamble -->
+<style type="text/css">
+div.toc {
+margin: 2em 0em;
+border-style: solid;
+border-width: 2px 0px;
+padding: 1em 0em;
+}
+div.tochead { font-size: x-large; font-weight: bold; }
+div.lyxtoc-0 {
+margin: 2em 0em 0em 0em;
+font-size: xx-large;
+font-weight: bold;
+}
+div.lyxtoc-1 {
+margin: 1em 0em 0em 0em;
+font-size: x-large;
+font-weight: bold;
+}
+div.lyxtoc-2 {
+margin: 0em 0em 0em 1em;
+font-size: large;
+font-weight: normal;
+}
+div.lyxtoc-3 { margin: 0em 0em 0em 0.5em; font-size: medium; }
+div.lyxtoc-4 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-5 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-6 { margin: 0em 0em 0em 0.5em; }
+a.tocentry {
+text-decoration: none;
+color: black;
+}
+a.tocentry:visited { color: black; }
+a.tocarrow {
+font-weight: bold;
+text-decoration: none;
+color: #909090;
+}
+a.tocarrow:visited { color: #C0C0C0; }
+</style>
+
+<!-- Preamble Snippets -->
+
+<!-- Layout-provided Styles -->
+<style type='text/css'>
+h1.title {
+font-size: x-large;
+margin-bottom: 1ex;
+text-align: center;
+
+}
+div.standard {
+text-align: left;
+
+}
+div.plain_layout {
+text-align: left;
+
+}
+div.author {
+font-size: large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: center;
+
+}
+div.abstract {
+font-size: small;
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+margin-right: 3ex;
+text-align: left;
+
+}
+div.abstract_label {
+font-weight: bold;
+font-size: large;
+text-align: center;
+
+}
+
+div.abstract {
+margin: 4ex;
+}
+div.abstract_item {
+font-size: small;
+padding-top: 1ex;
+}
+div.abstract_label {
+font-weight: bold;
+}
+h2.section {
+font-weight: bold;
+font-size: x-large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: left;
+
+}
+ol.enumerate {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+ul.itemize {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+h3.subsection {
+font-weight: bold;
+font-size: large;
+margin-top: 0.9ex;
+margin-bottom: 0.5ex;
+text-align: left;
+
+}
+h4.subsubsection {
+font-weight: bold;
+font-size: medium;
+margin-top: 0.7ex;
+margin-bottom: 0.4ex;
+text-align: left;
+
+}
+div.flex_docname {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ipr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_intendedstatus {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_titleabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ietfarea {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_xml_rfckeyword {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_updates {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_toc {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_symrefs {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_tocindent {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororgabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authoremailaddr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororg {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authorrole {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_entityxref {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_bibxml {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+</style>
+</head>
+<body>
+<h1 class="title"><a id='magicparlabel-1' />
+Using Wildcard A and AAAA Resource Records in the DNS for Per-User Host-Based Services</h1>
+<div class="standard"><a id='magicparlabel-2' />
+<div class="flex_docname"><div class="plain_layout"><a id='magicparlabel-6' />
+draft-dukhovni-using-wildcard-a-rrsets-00</div>
+</div><div class="flex_ipr"><div class="plain_layout"><a id='magicparlabel-10' />
+trust200902</div>
+</div><div class="flex_intendedstatus"><div class="plain_layout"><a id='magicparlabel-14' />
+bcp</div>
+</div><div class="flex_titleabbrev"><div class="plain_layout"><a id='magicparlabel-18' />
+Using Wildcard A RRs</div>
+</div><div class="flex_ietfarea"><div class="plain_layout"><a id='magicparlabel-22' />
+Security Area</div>
+</div><div class="flex_xml_rfckeyword"><div class="plain_layout"><a id='magicparlabel-26' />
+Internet-Draft</div>
+</div><div class="flex_updates"><div class="plain_layout"><a id='magicparlabel-30' />
+</div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-31' />
+<div class="flex_pi_toc"><div class="plain_layout"><a id='magicparlabel-35' />
+yes</div>
+</div><div class="flex_pi_symrefs"><div class="plain_layout"><a id='magicparlabel-39' />
+yes</div>
+</div><div class="flex_pi_tocindent"><div class="plain_layout"><a id='magicparlabel-43' />
+no</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-47' />
+comments="yes"</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-51' />
+inline="yes"</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-55' />
+compact="yes"</div>
+</div></div>
+
+<div class="author"><div class="author_item"><a id='magicparlabel-56' />
+Viktor Dukhovni<div class="flex_authororgabbrev"><div class="plain_layout"><a id='magicparlabel-60' />
+TS</div>
+</div><div class="flex_authoremailaddr"><div class="plain_layout"><a id='magicparlabel-64' />
+ietf-dane@dukhovni.org</div>
+</div></div>
+<div class="author_item"><a id='magicparlabel-65' />
+Nicolas Williams<div class="flex_authororg"><div class="plain_layout"><a id='magicparlabel-69' />
+Cryptonector, LLC</div>
+</div><div class="flex_authororgabbrev"><div class="plain_layout"><a id='magicparlabel-73' />
+Cryptonector</div>
+</div><div class="flex_authoremailaddr"><div class="plain_layout"><a id='magicparlabel-77' />
+nico@cryptonector.com</div>
+</div><div class="flex_authorrole"><div class="plain_layout"><a id='magicparlabel-81' />
+editor</div>
+</div></div>
+</div>
+
+<div class="abstract"><div class="abstract_label">Abstract</div>
+<div class="abstract_item"><a id='magicparlabel-82' />
+This document describes how the use of wildcard A and AAAA resource records (RRs) in the Domain Name System (DNS), optionally coupled with self-service key management for host names that match the wildcards, to create per-user services. This memo describes what should be a best current practice.</div>
+</div>
+<div class="standard"><a id='magicparlabel-83' />
+</div>
+<div class='toc'><div class='tochead part_'>Table of Contents</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-84' class='tocentry'>1 Wildcard A/AAAA RRs in DNS for Per-User Host-Based Services (PUHBSs)</a> <a href='#magicparlabel-84' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-99' class='tocentry'>2 Conventions used in this document</a> <a href='#magicparlabel-99' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-105' class='tocentry'>3 Provisioning of Service Credentials, or Self-Service Key Management</a> <a href='#magicparlabel-105' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-133' class='tocentry'>3.1 Requirements and Recommendations</a> <a href='#magicparlabel-133' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-139' class='tocentry'>3.2 Sample Use Case: per-User Web Services</a> <a href='#magicparlabel-139' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-146' class='tocentry'>4 Security Considerations</a> <a href='#magicparlabel-146' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-159' class='tocentry'>4.1 Man-in-the-Middle Attacks by Local Users</a> <a href='#magicparlabel-159' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-161' class='tocentry'>4.1.1 Security Considerations for Per-User HTTP Services</a> <a href='#magicparlabel-161' class='tocarrow'>&gt;</a></div>
+</div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-179' class='tocentry'>5 IANA Considerations</a> <a href='#magicparlabel-179' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-181' class='tocentry'>6 Normative References</a> <a href='#magicparlabel-181' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-187' class='tocentry'>7 Informative References</a> <a href='#magicparlabel-187' class='tocarrow'>&gt;</a></div>
+</div>
+
+<h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-84' />
+Wildcard A/AAAA RRs in DNS for Per-User Host-Based Services (PUHBSs)</h2>
+<div class="standard"><a id='magicparlabel-85' />
+Often users need to run services (often on multi-user systems) that need host-based service principal names. We describe a method for arranging this without having to share sensitive cryptographic host credentials with users:</div>
+
+<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-86' />
+Publish in the DNS <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-90' />
+RFC1034</div>
+</div> <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-94' />
+RFC1035</div>
+</div> a wildcard A and/or AAAA RRset for every hostname on which self-service per-user services will be permitted.
+<br />
+
+This means that for any host named, say, &ldquo;foo.bar.example&rdquo;, one would publish &ldquo;*.foo.bar.example.&rdquo;, with the same A and/or AAAA RRset as &ldquo;foo.bar.example.&rdquo;.
+<br />
+
+</li>
+<li class="enumerate_item"><a id='magicparlabel-95' />
+Provision users with credentials for host-based service names on hostnames of the form: &lt;username&gt;.&lt;hostname.fqdn&gt;.</li>
+</ol>
+<div class="standard"><a id='magicparlabel-96' />
+This allows users to publish &ldquo;&lt;username&gt;.&lt;hostname-FQDN&gt;&rdquo; as their services' hostname.</div>
+
+<div class="standard"><a id='magicparlabel-97' />
+For the rest of this document we shorten &ldquo;per-user host-based service principal&rdquo; to &ldquo;PUHBSP&rdquo;.</div>
+
+<div class="standard"><a id='magicparlabel-98' />
+And that's it. The difficult part, of course, is (2), but it is possible to adjust existing provisioning systems and/or build new ones to address this. See <a href="#sec_Self_Service_Key_Management">3</a></div>
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-99' />
+Conventions used in this document</h2>
+<div class="standard"><a id='magicparlabel-100' />
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-104' />
+RFC2119</div>
+</div>.</div>
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-105' />
+<a id="sec_Self_Service_Key_Management" />
+Provisioning of Service Credentials, or Self-Service Key Management</h2>
+<div class="standard"><a id='magicparlabel-106' />
+Existing standard and non-standard Kerberos <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-110' />
+RFC4120</div>
+</div> administration and PKIX <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-114' />
+RFC5280</div>
+</div> online certification authority (CA) protocols may be used for self-service key management of PUHBSP credentials with minimal changes. The main change that is needed is an authorization change on the server-side.</div>
+
+<div class="standard"><a id='magicparlabel-115' />
+Example protocols whose services may be modified to suit this purpose:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-116' />
+The &ldquo;Microsoft Windows 2000 Kerberos Change Password and Set Password Protocols&rdquo; <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-120' />
+RFC3244</div>
+</div> and its non-standard predecessors.</li>
+<li class="itemize_item"><a id='magicparlabel-121' />
+The various other non-standard Kerberos administration protocols that provide interfaces for creating principals and setting their credentials. [XXX Add references to various such protocols? There are at least five such protocols known to the editor.]</li>
+<li class="itemize_item"><a id='magicparlabel-122' />
+kx509 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-126' />
+RFC6717</div>
+</div> (a kerberized online CA).</li>
+<li class="itemize_item"><a id='magicparlabel-127' />
+Any protocol using PKCS#10 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-131' />
+RFC2986</div>
+</div>.</li>
+</ul>
+<div class="standard"><a id='magicparlabel-132' />
+The principle is general, applying to any authentication mechanism that can authenticate host-based services, not just Kerberos or PKIX.</div>
+<h3 class="subsection"><span class="subsection_label">3.1</span> <a id='magicparlabel-133' />
+Requirements and Recommendations</h3>
+<div class="standard"><a id='magicparlabel-134' />
+Three different sorts of authorization decisions are involved:</div>
+
+<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-135' />
+DNS zone administrators decide which hosts get wildcard A/AAAA RRsets.
+<br />
+
+DNS zone administrators MAY safely publish wildcard A and AAAA RRsets for all hostnames in their zones, but they may also keep a white-list of such hostnames.
+<br />
+
+</li>
+<li class="enumerate_item"><a id='magicparlabel-136' />
+The PUHBSP's credential issuer MUST decide whether to issue credentials for any given sub-domain of a given hostname.
+<br />
+
+This decision MUST be based on and constrained by the requestor's credentials. For example, the issuer might require that a client authenticate with a user and a host-based service credential or that a user have opted-in any given host whose credentials will be used to acquire the PUHBSP's credentials, it might require that the username label of the PUHBSP correspond to an existing user, and so on.
+<br />
+
+Credential issuers SHOULD NOT issue PUHBSP credentials for hostnames with more than one sub-domain label of the actual host's hostname.
+<br />
+
+</li>
+<li class="enumerate_item"><a id='magicparlabel-137' />
+The credential issuer SHOULD require that hosts themselves SHOULD authorize local requests by local users/processes for credentials for any given sub-domain of the host's hostname.</li>
+</ol>
+<div class="standard"><a id='magicparlabel-138' />
+For example, a host might authenticate local users using traditional operating system facilities (e.g., processes' credentials), then decide whether the local user gets to have a requested sub-domain of the host's hostname.</div>
+<h3 class="subsection"><span class="subsection_label">3.2</span> <a id='magicparlabel-139' />
+Sample Use Case: per-User Web Services</h3>
+<div class="standard"><a id='magicparlabel-140' />
+In our deployment it is trivial for users to run their own web services:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-141' />
+pick an available port number,</li>
+<li class="itemize_item"><a id='magicparlabel-142' />
+locally request credentials (server certificates and/or Kerberos keys) for running a web service on &ldquo;&lt;local-username&gt;.&lt;hostname-fqdn&gt;:&lt;port&gt;&rdquo; (for example, https://jdoe.someserver.foo.example:3000/),</li>
+<li class="itemize_item"><a id='magicparlabel-143' />
+configure the web service to start on the chosen port number and with the given credentials,</li>
+<li class="itemize_item"><a id='magicparlabel-144' />
+then start the service.</li>
+</ul>
+<div class="standard"><a id='magicparlabel-145' />
+In this use case no credential acquisition protocols were modified. Instead their services were modified to permit clients with host-based service credentials to acquire credentials for PUHBSPs whose hostname component is a sub-domain of the actual host's.</div>
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-146' />
+Security Considerations</h2>
+<div class="standard"><a id='magicparlabel-147' />
+Some hostnames may be meaningful (e.g., &ldquo;irc.foo.bar.example&rdquo; might be taken to mean that an IRC <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-151' />
+RFC2812</div>
+</div> server is located at that hostname). Users may need to be educated as to how to determine that a fully-qualified hostname is a per-user one.</div>
+
+<div class="standard"><a id='magicparlabel-152' />
+Credential issuers SHOULD keep white-lists of users and hostnames that are permitted to have PUHBSPs, though not necessarily white-lists of {username, hostname} that are permitted to have PUHBSPs.</div>
+
+<div class="standard"><a id='magicparlabel-153' />
+Self-service key management services for PKIX <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-157' />
+RFC5280</div>
+</div> SHOULD use an intermediate, online certification authority (CA), rather than a top-level CA, so as to make it possible to revoke the online CA's certificate. (This is good advice for any CA anyways.)</div>
+
+<div class="standard"><a id='magicparlabel-158' />
+Note that this scheme does not support users from more than one realm having PUHBSPs on the same host.</div>
+<h3 class="subsection"><span class="subsection_label">4.1</span> <a id='magicparlabel-159' />
+Man-in-the-Middle Attacks by Local Users</h3>
+<div class="standard"><a id='magicparlabel-160' />
+Note that a large number of port numbers for running services are available to all users on most operating systems. This means that a local user could start a proxy on one port and forward to another port on the same host, where the second port is a service run by a different user. Mutual authentication generally protects against this attack.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">4.1.1</span> <a id='magicparlabel-161' />
+Security Considerations for Per-User HTTP Services</h4>
+<div class="standard"><a id='magicparlabel-162' />
+Hypertext Transfer Protocol (HTTP) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-166' />
+RFC2616</div>
+</div> used with the SPNEGO-based <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-170' />
+RFC4178</div>
+</div> HTTP authentication method <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-174' />
+RFC4559</div>
+</div> is quite common in some environments. Negotiate does not make use of session keys to protect HTTP data and metadata. To safeguard against this, per-user HTTP services MUST use Transport Layer Security (TLS) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-178' />
+RFC5246</div>
+</div>, not just SPNEGO.</div>
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-179' />
+IANA Considerations</h2>
+<div class="standard"><a id='magicparlabel-180' />
+There are no IANA considerations in this document.</div>
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-181' />
+<a id="sec_References" />
+Normative References</h2>
+<div class="standard"><a id='magicparlabel-182' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-186' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
+</div></div>
+<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-187' />
+Informative References</h2>
+<div class="standard"><a id='magicparlabel-188' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-192' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.1034.xml">rfc1034</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-193' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-197' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.1035.xml">rfc1035</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-198' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-202' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">rfc2616</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-203' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-207' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2812.xml">rfc2812</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-208' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-212' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2986.xml">rfc2986</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-213' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-217' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3244.xml">rfc3244</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-218' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-222' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-223' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-227' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4178.xml">rfc4178</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-228' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-232' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4559.xml">rfc4559</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-233' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-237' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml">rfc5280</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-238' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-242' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml">rfc5246</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-243' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-247' />
+<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.6717.xml">rfc6717</a></div>
+</div></div>
+</body>
+</html>

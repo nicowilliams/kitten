@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc tocindent="no"?>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc tocindent="no"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes"?>
+<?rfc compact="yes"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc1034 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1034.xml">
+<!ENTITY rfc1035 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1035.xml">
+<!ENTITY rfc2616 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">
+<!ENTITY rfc2812 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2812.xml">
+<!ENTITY rfc2986 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2986.xml">
+<!ENTITY rfc3244 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3244.xml">
+<!ENTITY rfc4120 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">
+<!ENTITY rfc4178 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4178.xml">
+<!ENTITY rfc4559 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4559.xml">
+<!ENTITY rfc5280 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml">
+<!ENTITY rfc5246 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml">
+<!ENTITY rfc6717 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6717.xml">
+]>
+<rfc docName="draft-dukhovni-using-wildcard-a-rrsets-00" ipr="trust200902" category="bcp" updates="">
+  <front>
+    <title abbrev="Using Wildcard A RRs">Using Wildcard A and AAAA Resource Records in the DNS for Per-User Host-Based Services</title>
+    <author initials="V." surname="Dukhovni" fullname="Viktor Dukhovni">
+      <address>
+        <email>ietf-dane@dukhovni.org</email>
+      </address>
+    </author>
+    <author initials="N." surname="Williams" fullname="Nicolas Williams" role="editor">
+      <organization abbrev="Cryptonector">Cryptonector, LLC</organization>
+      <address>
+        <email>nico@cryptonector.com</email>
+      </address>
+    </author>
+    <date month="February" year="2014"/>
+    <area>
+Security Area
+</area>
+    <keyword>Internet-Draft</keyword>
+    <abstract>
+      <t>
+This document describes how the use of wildcard A and AAAA resource records (RRs) in the Domain Name System (DNS), optionally coupled with self-service key management for host names that match the wildcards, to create per-user services. This memo describes what should be a best current practice.</t>
+    </abstract>
+  </front>
+  <middle>
+    <section title="Wildcard A/AAAA RRs in DNS for Per-User Host-Based Services (PUHBSs)" anchor="d1e224">
+      <t>
+Often users need to run services (often on multi-user systems) that need host-based service principal names. We describe a method for arranging this without having to share sensitive cryptographic host credentials with users:</t>
+      <t>
+        <list style="numbers">
+          <t>
+Publish in the DNS <xref target="RFC1034"/> <xref target="RFC1035"/> a wildcard A and/or AAAA RRset for every hostname on which self-service per-user services will be permitted.
+<vspace blankLines="1"/>
+
+This means that for any host named, say, “foo.bar.example”, one would publish “*.foo.bar.example.”, with the same A and/or AAAA RRset as “foo.bar.example.”.
+<vspace blankLines="1"/>
+
+</t>
+          <t>
+Provision users with credentials for host-based service names on hostnames of the form: &lt;username&gt;.&lt;hostname.fqdn&gt;.</t>
+        </list>
+      </t>
+      <t>
+This allows users to publish “&lt;username&gt;.&lt;hostname-FQDN&gt;” as their services' hostname.</t>
+      <t>
+For the rest of this document we shorten “per-user host-based service principal” to “PUHBSP”.</t>
+      <t>
+And that's it. The difficult part, of course, is (2), but it is possible to adjust existing provisioning systems and/or build new ones to address this. See  <xref target="sec_Self_Service_Key_Management"/>
+</t>
+    </section>
+    <section title="Conventions used in this document" anchor="d1e268">
+      <t>
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
+    </section>
+    <section title="Provisioning of Service Credentials, or Self-Service Key Management" anchor="sec_Self_Service_Key_Management">
+      <t>
+Existing standard and non-standard Kerberos <xref target="RFC4120"/> administration and PKIX <xref target="RFC5280"/> online certification authority (CA) protocols may be used for self-service key management of PUHBSP credentials with minimal changes. The main change that is needed is an authorization change on the server-side.</t>
+      <t>
+Example protocols whose services may be modified to suit this purpose:</t>
+      <t>
+        <list style="symbols">
+          <t>
+The “Microsoft Windows 2000 Kerberos Change Password and Set Password Protocols” <xref target="RFC3244"/> and its non-standard predecessors.</t>
+          <t>
+The various other non-standard Kerberos administration protocols that provide interfaces for creating principals and setting their credentials. [XXX Add references to various such protocols? There are at least five such protocols known to the editor.]</t>
+          <t>
+kx509 <xref target="RFC6717"/> (a kerberized online CA).</t>
+          <t>
+Any protocol using PKCS#10 <xref target="RFC2986"/>.</t>
+        </list>
+      </t>
+      <t>
+The principle is general, applying to any authentication mechanism that can authenticate host-based services, not just Kerberos or PKIX.</t>
+      <section title="Requirements and Recommendations" anchor="d1e343">
+        <t>
+Three different sorts of authorization decisions are involved:</t>
+        <t>
+          <list style="numbers">
+            <t>
+DNS zone administrators decide which hosts get wildcard A/AAAA RRsets.
+<vspace blankLines="1"/>
+
+DNS zone administrators MAY safely publish wildcard A and AAAA RRsets for all hostnames in their zones, but they may also keep a white-list of such hostnames.
+<vspace blankLines="1"/>
+
+</t>
+            <t>
+The PUHBSP's credential issuer MUST decide whether to issue credentials for any given sub-domain of a given hostname.
+<vspace blankLines="1"/>
+
+This decision MUST be based on and constrained by the requestor's credentials. For example, the issuer might require that a client authenticate with a user and a host-based service credential or that a user have opted-in any given host whose credentials will be used to acquire the PUHBSP's credentials, it might require that the username label of the PUHBSP correspond to an existing user, and so on.
+<vspace blankLines="1"/>
+
+Credential issuers SHOULD NOT issue PUHBSP credentials for hostnames with more than one sub-domain label of the actual host's hostname.
+<vspace blankLines="1"/>
+
+</t>
+            <t>
+The credential issuer SHOULD require that hosts themselves SHOULD authorize local requests by local users/processes for credentials for any given sub-domain of the host's hostname.</t>
+          </list>
+        </t>
+        <t>
+For example, a host might authenticate local users using traditional operating system facilities (e.g., processes' credentials), then decide whether the local user gets to have a requested sub-domain of the host's hostname.</t>
+      </section>
+      <section title="Sample Use Case: per-User Web Services" anchor="d1e376">
+        <t>
+In our deployment it is trivial for users to run their own web services:</t>
+        <t>
+          <list style="symbols">
+            <t>
+pick an available port number,</t>
+            <t>
+locally request credentials (server certificates and/or Kerberos keys) for running a web service on “&lt;local-username&gt;.&lt;hostname-fqdn&gt;:&lt;port&gt;” (for example, https://jdoe.someserver.foo.example:3000/),</t>
+            <t>
+configure the web service to start on the chosen port number and with the given credentials,</t>
+            <t>
+then start the service.</t>
+          </list>
+        </t>
+        <t>
+In this use case no credential acquisition protocols were modified. Instead their services were modified to permit clients with host-based service credentials to acquire credentials for PUHBSPs whose hostname component is a sub-domain of the actual host's.</t>
+      </section>
+    </section>
+    <section title="Security Considerations" anchor="d1e401">
+      <t>
+Some hostnames may be meaningful (e.g., “irc.foo.bar.example” might be taken to mean that an IRC <xref target="RFC2812"/> server is located at that hostname). Users may need to be educated as to how to determine that a fully-qualified hostname is a per-user one.</t>
+      <t>
+Credential issuers SHOULD keep white-lists of users and hostnames that are permitted to have PUHBSPs, though not necessarily white-lists of {username, hostname} that are permitted to have PUHBSPs.</t>
+      <t>
+Self-service key management services for PKIX <xref target="RFC5280"/> SHOULD use an intermediate, online certification authority (CA), rather than a top-level CA, so as to make it possible to revoke the online CA's certificate. (This is good advice for any CA anyways.)</t>
+      <t>
+Note that this scheme does not support users from more than one realm having PUHBSPs on the same host.</t>
+      <section title="Man-in-the-Middle Attacks by Local Users" anchor="d1e432">
+        <t>
+Note that a large number of port numbers for running services are available to all users on most operating systems. This means that a local user could start a proxy on one port and forward to another port on the same host, where the second port is a service run by a different user. Mutual authentication generally protects against this attack.</t>
+        <section title="Security Considerations for Per-User HTTP Services" anchor="d1e441">
+          <t>
+Hypertext Transfer Protocol (HTTP) <xref target="RFC2616"/> used with the SPNEGO-based <xref target="RFC4178"/> HTTP authentication method <xref target="RFC4559"/> is quite common in some environments. Negotiate does not make use of session keys to protect HTTP data and metadata. To safeguard against this, per-user HTTP services MUST use Transport Layer Security (TLS) <xref target="RFC5246"/>, not just SPNEGO.</t>
+        </section>
+      </section>
+    </section>
+    <section title="IANA Considerations" anchor="d1e474">
+      <t>
+There are no IANA considerations in this document.</t>
+    </section>
+  </middle>
+  <back>
+    <references title="Normative References">&rfc2119;</references>
+    <references title="Informative References">&rfc1034;
+&rfc1035;
+&rfc2616;
+&rfc2812;
+&rfc2986;
+&rfc3244;
+&rfc4120;
+&rfc4178;
+&rfc4559;
+&rfc5280;
+&rfc5246;
+&rfc6717;
+</references>
+  </back>
+</rfc>
