@@ -3,10 +3,10 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: 1964, 2743, 2744                                August 23, 2013
+Updates: 1964, 2743, 2744                              February 20, 2014
 (if approved)
 Intended status: Standards Track
-Expires: February 24, 2014
+Expires: August 24, 2014
 
 
 Generic Naming Attributes for the Generic Security Services Application
@@ -39,11 +39,11 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 24, 2014.
+   This Internet-Draft will expire on August 24, 2014.
 
 Copyright Notice
 
-   Copyright (c) 2013 IETF Trust and the persons identified as the
+   Copyright (c) 2014 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Williams                Expires February 24, 2014               [Page 1]
+Williams                 Expires August 24, 2014                [Page 1]
 
-Internet-Draft                 Simple GSS                    August 2013
+Internet-Draft                 Simple GSS                  February 2014
 
 
    publication of this document.  Please review these documents
@@ -73,28 +73,31 @@ Table of Contents
    2.      Generic Attributes . . . . . . . . . . . . . . . . . . . .  5
    2.1.    Concrete Attributes  . . . . . . . . . . . . . . . . . . .  5
    2.1.1.  Issuer Name  . . . . . . . . . . . . . . . . . . . . . . .  5
-   2.1.2.  User Name  . . . . . . . . . . . . . . . . . . . . . . . .  5
-   2.1.3.  Service Name . . . . . . . . . . . . . . . . . . . . . . .  6
-   2.1.4.  Host Name  . . . . . . . . . . . . . . . . . . . . . . . .  6
-   2.1.5.  Domain Name  . . . . . . . . . . . . . . . . . . . . . . .  6
-   2.2.    Prefix Attributes  . . . . . . . . . . . . . . . . . . . .  6
+   2.1.2.  Trust Validation Path  . . . . . . . . . . . . . . . . . .  6
+   2.1.3.  User Name  . . . . . . . . . . . . . . . . . . . . . . . .  6
+   2.1.4.  Service Name . . . . . . . . . . . . . . . . . . . . . . .  6
+   2.1.5.  Host Name  . . . . . . . . . . . . . . . . . . . . . . . .  6
+   2.1.6.  Domain Name  . . . . . . . . . . . . . . . . . . . . . . .  7
+   2.2.    Prefix Attributes  . . . . . . . . . . . . . . . . . . . .  7
    2.2.1.  GSS_C_ATTR_GENERIC_UNCONSTRAINED . . . . . . . . . . . . .  7
-   2.2.2.  GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK  . . . . . . . . . . .  7
-   2.2.3.  GSS_C_ATTR_GENERIC_FAST  . . . . . . . . . . . . . . . . .  7
-   3.      Local Name Attributes  . . . . . . . . . . . . . . . . . .  8
-   3.1.    GSS_C_ATTR_LOCAL_LOGIN_USER  . . . . . . . . . . . . . . .  8
+   2.2.2.  GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK  . . . . . . . . . . .  8
+   2.2.3.  GSS_C_ATTR_GENERIC_FAST  . . . . . . . . . . . . . . . . .  8
+   3.      Local Name Attributes  . . . . . . . . . . . . . . . . . .  9
+   3.1.    GSS_C_ATTR_LOCAL_LOGIN_USER  . . . . . . . . . . . . . . .  9
    4.      Suggested Mechanism-Specific Name Attributes
-           (INFORMATIONAL)  . . . . . . . . . . . . . . . . . . . . .  9
-   4.1.    Suggested Kerberos-Specific Name Attributes  . . . . . . .  9
-   4.2.    Suggested PKU2U-Specific Name Attributes . . . . . . . . .  9
-   5.      Issuer Name Type . . . . . . . . . . . . . . . . . . . . . 11
-   5.1.    Kerberos Realm Name Type . . . . . . . . . . . . . . . . . 11
-   6.      Security Considerations  . . . . . . . . . . . . . . . . . 12
-   7.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 13
-   8.      References . . . . . . . . . . . . . . . . . . . . . . . . 14
-   8.1.    Normative References . . . . . . . . . . . . . . . . . . . 14
-   8.2.    Informative References . . . . . . . . . . . . . . . . . . 14
-           Author's Address . . . . . . . . . . . . . . . . . . . . . 15
+           (INFORMATIONAL)  . . . . . . . . . . . . . . . . . . . . . 10
+   4.1.    Suggested Kerberos-Specific Name Attributes  . . . . . . . 10
+   4.1.1.  Kerberos Transit Path Constraint Semantics . . . . . . . . 10
+   4.2.    Suggested PKU2U-Specific Name Attributes . . . . . . . . . 11
+   5.      Generic Issuer Name Type . . . . . . . . . . . . . . . . . 12
+   5.1.    Kerberos Realm Name Type . . . . . . . . . . . . . . . . . 12
+   5.2.    PKIX Issuer Name Type  . . . . . . . . . . . . . . . . . . 12
+   6.      Security Considerations  . . . . . . . . . . . . . . . . . 13
+   7.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 14
+   8.      References . . . . . . . . . . . . . . . . . . . . . . . . 15
+   8.1.    Normative References . . . . . . . . . . . . . . . . . . . 15
+   8.2.    Informative References . . . . . . . . . . . . . . . . . . 15
+           Author's Address . . . . . . . . . . . . . . . . . . . . . 16
 
 
 
@@ -105,12 +108,9 @@ Table of Contents
 
 
 
-
-
-
-Williams                Expires February 24, 2014               [Page 2]
+Williams                 Expires August 24, 2014                [Page 2]
 
-Internet-Draft                 Simple GSS                    August 2013
+Internet-Draft                 Simple GSS                  February 2014
 
 
 1.  Introduction and Motivation
@@ -164,9 +164,9 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 24, 2014               [Page 3]
+Williams                 Expires August 24, 2014                [Page 3]
 
-Internet-Draft                 Simple GSS                    August 2013
+Internet-Draft                 Simple GSS                  February 2014
 
 
    2.  with naming constraint checking, providing an output indicator of
@@ -220,9 +220,9 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 24, 2014               [Page 4]
+Williams                 Expires August 24, 2014                [Page 4]
 
-Internet-Draft                 Simple GSS                    August 2013
+Internet-Draft                 Simple GSS                  February 2014
 
 
 2.  Generic Attributes
@@ -231,6 +231,9 @@ Internet-Draft                 Simple GSS                    August 2013
    API extended naming facility [RFC6680].  Some of these attributes can
    be used as prefixes of other attributes, that is, they can be used to
    modify the semantics of other attributes (see section 6 of RFC6680).
+
+   We also provide C bindings for these attributes, namely, the same
+   symbolic names that we provide for the generic attributes.
 
    Note: in all cases the display form of each attribute SHALL consist
    of text using the character set, codeset, and encoding from the
@@ -267,25 +270,50 @@ Internet-Draft                 Simple GSS                    August 2013
    know the name of the issuer of the prefixed attribute of the given
    MN.
 
-2.1.2.  User Name
+
+
+
+
+
+
+Williams                 Expires August 24, 2014                [Page 5]
+
+Internet-Draft                 Simple GSS                  February 2014
+
+
+2.1.2.  Trust Validation Path
+
+   We add an attribute by which to obtain the trust validation path for
+   a given authenticated MN.  The API for this attribute is
+   GSS_C_ATTR_GENERIC_TRUST_PATH, and its actual attribute name is
+   urn:ietf:id:ietf-kitten-name-attrs-01-trust-path".
+
+   This attribute has zero or more ordered values.  The interpretation
+   of the trust validation path will vary somewhat by mechanism.  For
+   PKIX-based mechanisms this is the list of issuers in the trust
+   validation path for the given MN's cert.  For Kerberos this is the
+   list of realms traversed from the MN to the local name of a security
+   context.  The MN's immediate issuer is not included.  In the case of
+   Kerberos, the issuer of the local MN is also not included.  For
+   Kerberos the trust validation path is the realm transit path of the
+   Ticket used to establish a security context, but may also include
+   PKIX trust validation paths (e.g., if PKINIT is used).
+
+   The display and non-display forms of trust validation path values is
+   as for issuer names; see Section 2.1.1.
+
+2.1.3.  User Name
 
    We add an attribute by which to obtain the component of an MN naming
    a user.  The API name for this attribute is
    GSS_C_ATTR_GENERIC_USERNAME, and it's actual attribute name is
    "urn:ietf:id:ietf-kitten-name-attrs-00-username".
 
-
-
-Williams                Expires February 24, 2014               [Page 5]
-
-Internet-Draft                 Simple GSS                    August 2013
-
-
    The display form of user names is mechanism-specific.
 
    The non-display form of user names is mechanism-specific.
 
-2.1.3.  Service Name
+2.1.4.  Service Name
 
    We add an attribute by which to obtain the component of an MN naming
    a service as part of a host- or domain-based service name.  The API
@@ -296,11 +324,19 @@ Internet-Draft                 Simple GSS                    August 2013
    The non-display form of the service name SHALL be the UTF-8 encoding
    of the service name.
 
-2.1.4.  Host Name
+2.1.5.  Host Name
 
    We add an attribute by which to obtain the component of an MN naming
    a host as part of a host- or domain-based service name.  The API name
    for this attribute is GSS_C_ATTR_GENERIC_HOSTNAME, and it's actual
+
+
+
+Williams                 Expires August 24, 2014                [Page 6]
+
+Internet-Draft                 Simple GSS                  February 2014
+
+
    attribute name is "urn:ietf:id:ietf-kitten-name-attrs-00-hostname".
 
    The display form of a host name MAY be stylized and SHOULD NOT be
@@ -309,7 +345,7 @@ Internet-Draft                 Simple GSS                    August 2013
    The non-display form of host names SHOULD be a character string as
    described in [RFC1123], and SHOULD NOT be U-labels [RFC5890].
 
-2.1.5.  Domain Name
+2.1.6.  Domain Name
 
    We add an attribute by which to obtain the component of an MN naming
    a domain as part of a domain-based service name.  The API name for
@@ -330,13 +366,6 @@ Internet-Draft                 Simple GSS                    August 2013
    constraints, it is discovered that the issuer was not permitted to
    issue credentials for the MN.
 
-
-
-Williams                Expires February 24, 2014               [Page 6]
-
-Internet-Draft                 Simple GSS                    August 2013
-
-
    For example, a Kerberos realm named "FOO.EXAMPLE" might not be
    expected to issue credentials (tickets, keys) to host-based service
    names for hosts not ending in ".foo.example" or which are not
@@ -352,6 +381,17 @@ Internet-Draft                 Simple GSS                    August 2013
    "urn:ietf:id:ietf-kitten-name-attrs-00-gen-unconstrained", indicates
    that the application wants the value of the prefixed attribute
    without any name constraint checking.
+
+
+
+
+
+
+
+Williams                 Expires August 24, 2014                [Page 7]
+
+Internet-Draft                 Simple GSS                  February 2014
+
 
 2.2.2.  GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK
 
@@ -388,9 +428,25 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 24, 2014               [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires August 24, 2014                [Page 8]
 
-Internet-Draft                 Simple GSS                    August 2013
+Internet-Draft                 Simple GSS                  February 2014
 
 
 3.  Local Name Attributes
@@ -444,9 +500,9 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 24, 2014               [Page 8]
+Williams                 Expires August 24, 2014                [Page 9]
 
-Internet-Draft                 Simple GSS                    August 2013
+Internet-Draft                 Simple GSS                  February 2014
 
 
 4.  Suggested Mechanism-Specific Name Attributes (INFORMATIONAL)
@@ -468,14 +524,9 @@ Internet-Draft                 Simple GSS                    August 2013
 
    o  ..
 
-   o  component 9 (10th component of a principal name)
+   o  component 9 (tenth component of a principal name; ten is enough)
 
-   o  components (ordered set of components of a principal name)
-
-   o  transit path (ordered set of realm and CA names); this should be a
-      multi-valued attribute, with each value being an issuer name in
-      the order in which they were transited [for convenience we should
-      include the start and end realms, no? -Nico]
+   o  components (ordered set of all components of a principal name)
 
    o  specific authorization data elements
 
@@ -486,6 +537,47 @@ Internet-Draft                 Simple GSS                    August 2013
    o  enctypes involved in transit path (this would only be available to
       initiators)
 
+4.1.1.  Kerberos Transit Path Constraint Semantics
+
+   For initiator MNs obtained by acceptors from established security
+   contexts, the trust path SHALL be the uncompressed domain- and X.500-
+   style realm names from the initiator's Ticket's 'transited' field,
+   plus the issuer names from the AD-INITIAL-VERIFIED-CAS authorization-
+   data element (if it's in an AD-KDC-ISSUED or similar) if PKINIT
+   [RFC4556] was used.
+
+   For acceptor MNs obtained by initiators from established security
+   contexts, the trust path SHALL be the realms traversed -including
+   realms issuing referrals- to obtain a service ticket for the target
+   acceptor.
+
+   For MNs for the local end of a security context, the trust path SHALL
+   be empty.  This means that GSS_Get_name_attribute() will return empty
+
+
+
+Williams                 Expires August 24, 2014               [Page 10]
+
+Internet-Draft                 Simple GSS                  February 2014
+
+
+   value sets; for the C bindings the gss_get_name_attribute() function
+   will return zero in the 'more' output parameter and empty values.
+
+   For initiator MNs as seen by acceptors, if the initiator's Ticket has
+   the TRANSIT-POLICY-CHECKED flag set, and if local transit path policy
+   is missing, then the GSS_C_ATTR_GENERIC_TRUST_PATH attribute will be
+   considered authenticated -- the trust path will be considered to meet
+   constraints.
+
+   Otherwise, if the acceptor has local transit path policy then the
+   GSS_C_ATTR_GENERIC_TRUST_PATH attribute will be considered
+   authenticated -- the trust path will be considered to meet
+   constraints.
+
+   In all other cases the GSS_C_ATTR_GENERIC_TRUST_PATH attribute will
+   be considered not authenticated.
+
 4.2.  Suggested PKU2U-Specific Name Attributes
 
    [[anchor3: Add reference to PKU2U.]]
@@ -495,15 +587,6 @@ Internet-Draft                 Simple GSS                    August 2013
    o  certificate trust validation path to a trust anchor
 
    o  certificate
-
-
-
-
-
-Williams                Expires February 24, 2014               [Page 9]
-
-Internet-Draft                 Simple GSS                    August 2013
-
 
    o  certificate subject public key
 
@@ -529,39 +612,12 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                Expires February 24, 2014              [Page 10]
+Williams                 Expires August 24, 2014               [Page 11]
 
-Internet-Draft                 Simple GSS                    August 2013
+Internet-Draft                 Simple GSS                  February 2014
 
 
-5.  Issuer Name Type
+5.  Generic Issuer Name Type
 
    We add a GSS name-type for use in representing issuer names,
    designated symbolically as GSS_C_NT_ISSUER.  Its query syntax is
@@ -594,6 +650,14 @@ Internet-Draft                 Simple GSS                    August 2013
    information for such use-cases will be provided by any future
    application protocol specifications that use them.
 
+5.2.  PKIX Issuer Name Type
+
+   [[anchor4: A name type for PKIX issuers is needed, even when dealing
+   with Kerberos, since X.500-style realm names may be involved, as well
+   as real PKIX CA names from PKINIT/PKCROSS.  We'll need a mechanism
+   OID for a generic PKIX mechanism (even if it isn't specified!) for
+   the exported name tokens!  One that Kerberos, PKU2U and other PKIX
+   mechanisms can share.]]
 
 
 
@@ -604,17 +668,9 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-
-
-
-
-
-
-
-
-Williams                Expires February 24, 2014              [Page 11]
+Williams                 Expires August 24, 2014               [Page 12]
 
-Internet-Draft                 Simple GSS                    August 2013
+Internet-Draft                 Simple GSS                  February 2014
 
 
 6.  Security Considerations
@@ -668,9 +724,9 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 24, 2014              [Page 12]
+Williams                 Expires August 24, 2014               [Page 13]
 
-Internet-Draft                 Simple GSS                    August 2013
+Internet-Draft                 Simple GSS                  February 2014
 
 
 7.  IANA Considerations
@@ -724,9 +780,9 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 24, 2014              [Page 13]
+Williams                 Expires August 24, 2014               [Page 14]
 
-Internet-Draft                 Simple GSS                    August 2013
+Internet-Draft                 Simple GSS                  February 2014
 
 
 8.  References
@@ -748,8 +804,8 @@ Internet-Draft                 Simple GSS                    August 2013
    [RFC2743]  Linn, J., "Generic Security Service Application Program
               Interface Version 2, Update 1", RFC 2743, January 2000.
 
-   [RFC2744]  Wray, J., "Generic Security Service API Version 2 :
-              C-bindings", RFC 2744, January 2000.
+   [RFC4556]  Zhu, L. and B. Tung, "Public Key Cryptography for Initial
+              Authentication in Kerberos (PKINIT)", RFC 4556, June 2006.
 
    [RFC5890]  Klensin, J., "Internationalized Domain Names for
               Applications (IDNA): Definitions and Document Framework",
@@ -780,9 +836,9 @@ Internet-Draft                 Simple GSS                    August 2013
 
 
 
-Williams                Expires February 24, 2014              [Page 14]
+Williams                 Expires August 24, 2014               [Page 15]
 
-Internet-Draft                 Simple GSS                    August 2013
+Internet-Draft                 Simple GSS                  February 2014
 
 
 Author's Address
@@ -836,5 +892,5 @@ Author's Address
 
 
 
-Williams                Expires February 24, 2014              [Page 15]
+Williams                 Expires August 24, 2014               [Page 16]
 

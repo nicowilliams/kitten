@@ -689,6 +689,11 @@ RFC6680
 \end_layout
 
 \begin_layout Standard
+We also provide C bindings for these attributes, namely, the same symbolic
+ names that we provide for the generic attributes.
+\end_layout
+
+\begin_layout Standard
 Note: in all cases the display form of each attribute SHALL consist of text
  using the character set, codeset, and encoding from the caller's locale.
 \end_layout
@@ -760,6 +765,47 @@ RFC4121
 This attribute can be used as prefix of other attributes.
  When used as a prefix, this attribute indicates that the application wishes
  to know the name of the issuer of the prefixed attribute of the given MN.
+\end_layout
+
+\begin_layout Subsubsection
+Trust Validation Path
+\end_layout
+
+\begin_layout Standard
+We add an attribute by which to obtain the trust validation path for a given
+ authenticated MN.
+ The API for this attribute is GSS_C_ATTR_GENERIC_TRUST_PATH, and its actual
+ attribute name is urn:ietf:id:ietf-kitten-name-attrs-01-trust-path
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+This attribute has zero or more ordered values.
+ The interpretation of the trust validation path will vary somewhat by mechanism.
+ For PKIX-based mechanisms this is the list of issuers in the trust validation
+ path for the given MN's cert.
+ For Kerberos this is the list of realms traversed from the MN to the local
+ name of a security context.
+ The MN's immediate issuer is not included.
+ In the case of Kerberos, the issuer of the local MN is also not included.
+ For Kerberos the trust validation path is the realm transit path of the
+ Ticket used to establish a security context, but may also include PKIX
+ trust validation paths (e.g., if PKINIT is used).
+\end_layout
+
+\begin_layout Standard
+The display and non-display forms of trust validation path values is as
+ for issuer names; see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Issuer-Name"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1104,18 +1150,11 @@ component 1 (second component of a principal name)
 \end_layout
 
 \begin_layout Itemize
-component 9 (10th component of a principal name)
+component 9 (tenth component of a principal name; ten is enough)
 \end_layout
 
 \begin_layout Itemize
-components (ordered set of components of a principal name)
-\end_layout
-
-\begin_layout Itemize
-transit path (ordered set of realm and CA names); this should be a multi-valued
- attribute, with each value being an issuer name in the order in which they
- were transited [for convenience we should include the start and end realms,
- no? -Nico]
+components (ordered set of all components of a principal name)
 \end_layout
 
 \begin_layout Itemize
@@ -1132,6 +1171,60 @@ session key enctype
 
 \begin_layout Itemize
 enctypes involved in transit path (this would only be available to initiators)
+\end_layout
+
+\begin_layout Subsubsection
+Kerberos Transit Path Constraint Semantics
+\end_layout
+
+\begin_layout Standard
+For initiator MNs obtained by acceptors from established security contexts,
+ the trust path SHALL be the uncompressed domain- and X.500-style realm names
+ from the initiator's Ticket's 'transited' field, plus the issuer names
+ from the AD-INITIAL-VERIFIED-CAS authorization-data element (if it's in
+ an AD-KDC-ISSUED or similar) if PKINIT 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4556
+\end_layout
+
+\end_inset
+
+ was used.
+\end_layout
+
+\begin_layout Standard
+For acceptor MNs obtained by initiators from established security contexts,
+ the trust path SHALL be the realms traversed -including realms issuing
+ referrals- to obtain a service ticket for the target acceptor.
+\end_layout
+
+\begin_layout Standard
+For MNs for the local end of a security context, the trust path SHALL be
+ empty.
+ This means that GSS_Get_name_attribute() will return empty value sets;
+ for the C bindings the gss_get_name_attribute() function will return zero
+ in the 'more' output parameter and empty values.
+\end_layout
+
+\begin_layout Standard
+For initiator MNs as seen by acceptors, if the initiator's Ticket has the
+ TRANSIT-POLICY-CHECKED flag set, and if local transit path policy is missing,
+ then the GSS_C_ATTR_GENERIC_TRUST_PATH attribute will be considered authenticat
+ed -- the trust path will be considered to meet constraints.
+\end_layout
+
+\begin_layout Standard
+Otherwise, if the acceptor has local transit path policy then the GSS_C_ATTR_GEN
+ERIC_TRUST_PATH attribute will be considered authenticated -- the trust
+ path will be considered to meet constraints.
+\end_layout
+
+\begin_layout Standard
+In all other cases the GSS_C_ATTR_GENERIC_TRUST_PATH attribute will be considere
+d not authenticated.
 \end_layout
 
 \begin_layout Subsection
@@ -1183,7 +1276,7 @@ session key enctype
 \end_layout
 
 \begin_layout Section
-Issuer Name Type
+Generic Issuer Name Type
 \end_layout
 
 \begin_layout Standard
@@ -1252,6 +1345,19 @@ In the unlikely event that a name of GSS_C_NT_ISSUER type is used as a GSS
  be an appropriate TGS principal name.
  More specific information for such use-cases will be provided by any future
  application protocol specifications that use them.
+\end_layout
+
+\begin_layout Subsection
+PKIX Issuer Name Type
+\end_layout
+
+\begin_layout RevisionRemark
+A name type for PKIX issuers is needed, even when dealing with Kerberos,
+ since X.500-style realm names may be involved, as well as real PKIX CA names
+ from PKINIT/PKCROSS.
+ We'll need a mechanism OID for a generic PKIX mechanism (even if it isn't
+ specified!) for the exported name tokens! One that Kerberos, PKU2U and
+ other PKIX mechanisms can share.
 \end_layout
 
 \begin_layout Section
@@ -1391,8 +1497,8 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset CommandInset href
 LatexCommand href
-name "rfc2744"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml"
+name "rfc4556"
+target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4556.xml"
 
 \end_inset
 
