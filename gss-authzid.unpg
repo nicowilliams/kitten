@@ -3,10 +3,10 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: 1964, 2743, 2744                              February 19, 2014
+Updates: 1964, 2743, 2744                                  March 4, 2014
 (if approved)
 Intended status: Standards Track
-Expires: August 23, 2014
+Expires: September 5, 2014
 
 
     Impersonation Naming Attribute for the Generic Security Services
@@ -37,7 +37,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 23, 2014.
+   This Internet-Draft will expire on September 5, 2014.
 
 Copyright Notice
 
@@ -57,29 +57,32 @@ Copyright Notice
 
 Table of Contents
 
-   1.      Introduction and Motivation
-   1.1.    Comparison to S4U
-   1.1.1.  Comparison to S4U2Proxy
-   1.2.    Conventions used in this document
-   2.      Generic Interfaces for Impersonation
-   2.1.    Naming Attributes for Generic Impersonation
-   2.1.1.  C Bindings
-   2.2.    GSS_Acquire_cred_impersonate_name()
-   2.2.1.  C Bindings of GSS_Acquire_cred_impersonate_name()
-   2.3.    Apparent Credential Delegation
-   2.4.    Intended Usage
-   2.5.    Local Policy
-   2.6.    Third-Party Impersonation Policy Assistance
-   3.      Kerberos Bindings of Impersonation Attributes
-   4.      Sample Code
-   5.      Security Considerations
-   5.1.    Security Requirements and Recommendations
-   6.      IANA Considerations
-   7.      Acknowledgements
-   8.      References
-   8.1.    Normative References
-   8.2.    Informative References
-           Author's Address
+   1.          Introduction and Motivation
+   1.1.        Comparison to S4U
+   1.1.1.      Comparison to S4U2Proxy
+   1.2.        Conventions used in this document
+   2.          Generic Interfaces for Impersonation
+   2.1.        Naming Attributes for Generic Impersonation
+   2.1.1.      C Bindings
+   2.2.        GSS_Acquire_cred_impersonate_name()
+   2.2.1.      C Bindings of GSS_Acquire_cred_impersonate_name()
+   2.3.        Apparent Credential Delegation
+   2.4.        Intended Usage
+   2.5.        Local Policy
+   2.6.        Third-Party Impersonation Policy Assistance
+   3.          Kerberos Bindings of Impersonation Attributes
+   3.1.        Client Processing
+   3.2.        TGS Processing (OPTIONAL)
+   3.3.        Target Service Processing
+   4.          Sample Code
+   5.          Security Considerations
+   5.1.        Security Requirements and Recommendations
+   6.          IANA Considerations
+   7.          References
+   7.1.        Normative References
+   7.2.        Informative References
+   Appendix A. Acknowledgements
+               Author's Address
 
 
 1.  Introduction and Motivation
@@ -379,8 +382,8 @@ Table of Contents
    embedded in AD-KDC-ISSUED or similar (when embedded in a Ticket).
    KDC policy approval is expressed via embedding these authorization-
    data in AD-KDC-ISSUED or similar (in a Ticket).  KDC policy
-   application is requested by placing the authorization-data in the
-   TGS-REQ for a Ticket.
+   application is requested by placing the authorization-data in a TGS-
+   REQ's enc-authorization-data.
 
    KDC support for all these authorization-data elements is OPTIONAL.
 
@@ -393,44 +396,80 @@ Table of Contents
 
    The authorization-data element is:
 
-   AD-IMPERSONATE  Indicates that the Ticket or Authenticator is
-      intended to impersonate the given principal.
+   AD-IMPERSONATE-GSS  Indicates that the Ticket or Authenticator is
+      intended to impersonate the given principal.  The octet string
+      value of this element is an exported GSS-API name token
 
-   KDCs MUST NOT issue Tickets with this authorization-data element if
-   its contents do not match the client's Ticket's AD-IMPERSONATE
-   element (if present).  KDCs MUST NOT issue Tickets with this element
-   embedded in an AD-KDC-ISSUED or similar unless the KDC blesses the
-   impersonation; conversely, if the KDC blesses the impersonation then
-   the KDC MUST place this authorization-data element in an AD-KDC-
-   ISSUED or similar element.
+   AD-ASSERT-AUTHZID  Indicates that the Ticket or Authenticator is
+      intended to impersonate the given authzid (SASL semantics).  The
+      octet string value of this element is application-specific,
+      therefore clients SHOULD NOT request this element be added to
+      TGTs.
 
-   Clients MAY embed this in an AD-IF-RELEVANT authorization-data
-   element in TGS requests for new Tickets, except when requesting
-   forwarded/forwardable Tickets, in which case the element MUST be made
-   critical (by not including it in any authorization-data element that
-   denotes non-criticality).
+   (Note that no ASN.1 syntax is needed to describe these authorization-
+   data elements' values.)
+
+3.1.  Client Processing
+
+   Clients MAY embed AD-IMPERSONATE-GSS and/or AD-ASSERT-AUTHZID in an
+   AD-IF-RELEVANT authorization-data element in TGS requests for new
+   Tickets, except when requesting forwarded/forwardable Tickets, in
+   which case the element MUST be made critical (by not including it in
+   any authorization-data element that denotes non-criticality).
 
    Clients that do not need or do not want KDC blessing SHOULD only
-   include AD-IMPERSONATE in Authenticators.  When used in an
-   Authenticator the client should include AD-IMPERSONATE in an AD-IF-
-   RELEVANT (on the theory that it's safe for the target service to
-   observe the impersonator's name instead of the impersonated name),
-   but the client MAY make AD-IMPERSONATE critical to ensure that the
-   target service rejects the AP-REQ if it does not understand AD-
-   IMPERSONATE.
+   include these authorization-data elements in Authenticators.  The
+   client MAY include these elements in AD-IF-RELEVANT (on the theory
+   that it's safe for the target service to observe the impersonator's
+   name instead of the impersonated name), but the client SHOULD make
+   these authorization-data elements critical to ensure that the target
+   service rejects the AP-REQ if it does not understand them.
 
-   The ASN.1 description of these elements' contents is as follows:
+3.2.  TGS Processing (OPTIONAL)
 
-    AD-IMPERSONATE ::= SEQUENCE {
-        -- One of these two MUST be present; both MAY be present
-        principal [0] OCTET STRING OPTIONAL, -- exported name token
-        authz-id [1] SEQUENCE OF OCTET STRING OPTIONAL
-    }
+   TGSes need not have any further support for these authorization-data
+   elements than is required by RFC4120.  However, a TGS may contribute
+   its own local policy by including any AD-IMPERSONATE-GSS or AD-
+   ASSERT-AUTHZID elements from a TGS-REQ's enc-authorization-data (or
+   from a TGT's authorization-data) in AD-KDC-ISSUED (or similar)
+   elements.  A TGS MUST NOT include these attributes in AD-KDC-ISSUED
+   (or similar) without having applied local policy and determined that
+   the client principal is permitted to make the requested assertions to
+   the requested target service principal.
 
-               Figure 2: ASN.1 for impersonation AD elements
+   A TGS can only interpret AD-ASSERT-AUTHZID elements relative to the
+   target service principal name.  As there is no authzid concept for
+   TGS principals, the TGS MUST NOT include AD-ASSERT-AUTHZID elements
+   in any AD-KDC-ISSUED (or similar) elements when the sname of the
+   Ticket to be issued is a TGS name.  But a TGS may be able to
+   interpret (and therefore apply local policy) authzids in other cases.
 
-   DER encoding with IMPLICIT tagging MUST be used to encode these
-   authorization-data elements.
+   TGS policy MUST NOT bless (i.e., include these elements in AD-KDC-
+   ISSUED or similar) requests with multiple instances of either AD-
+   IMPERSONATE-GSS or AD-ASSERT-AUTHZID.
+
+   As usual, per-RFC4120, if these authorization-data elements appear in
+   the enc-authorization-data field of the TGS-REQ and/or the TGT, then
+   the TGS should copy them to the issued Ticket.  But if the TGS has
+   policy approving of the requested impersonation, then it SHOULD
+   include the impersonation authorization-data elements in a critical
+   AD-KDC-ISSUED (or similar) element.
+
+3.3.  Target Service Processing
+
+   Services must adhere to the authorization-data handling rules
+   specified in RFC4120.  Services that implement these authorization-
+   data element MUST expose them to applications in some manner (e.g.,
+   as GSS-API naming attributes, as described in this document).
+
+   Service implementations MAY apply local policy as to AD-IMPERSONATE-
+   GSS on behalf of specific applications and, when local policy
+   approves, may report the client's principal name as the impersonated
+   principal name.  However, it is preferred that applications apply
+   local policy, not the Kerberos implementation.
+
+   Services MUST reject AP-REQs with multiple distinct AD-IMPERSONATE-
+   GSS or AD-ASSERT-AUTHZID elements.
 
 
 4.  Sample Code
@@ -453,7 +492,7 @@ Table of Contents
      */
      <TBD>
 
-                     Figure 3: Impersonator-side code
+                     Figure 2: Impersonator-side code
 
     <TBD>
     /*
@@ -473,7 +512,7 @@ Table of Contents
      * GSS_C_ATTR_GENERIC_UNCONSTRAINED.
      */
 
-                       Figure 4: Acceptor-side code
+                       Figure 3: Acceptor-side code
 
    [[anchor4: Also add sample code using the authz-id attribute.]]
 
@@ -519,14 +558,15 @@ Table of Contents
    In particular, for Kerberos, KDCs SHOULD NOT issue Ticket Granting
    Tickets (TGTs) with the FORWARDED or FORWARDABLE flags set if the
    Ticket's client principal is a known impersonator and the AD-
-   IMPERSONATE authorization-data element is not present in the client's
-   Ticket and/or TGS-REQ as a critical authorization-data element (if
-   it's present in the Ticket but not the TGS-REQ then the KDC MUST copy
-   the AD-IMPERSONATE to the Ticket to be issued.
+   IMPERSONATE-GSS authorization-data element is not present in the
+   client's Ticket and/or TGS-REQ as a critical authorization-data
+   element; if AD-IMPERSONATE-GSS is present in the Ticket as a critical
+   and KDC-issued element but not in the TGS-REQ then the KDC SHOULD
+   copy the AD-IMPERSONATE-GSS to the Ticket to be issued.
 
-   Kerberos initiators should (as opposed to SHOULD, but perhaps SHOULD)
-   use impersonator names that begin with a zeroth component with this
-   value: "IMPERSONATE".
+   Kerberos initiators should (as opposed to SHOULD, but perhaps this
+   should be a SHOULD) use impersonator names that begin with a zeroth
+   component with this value: "IMPERSONATE".
 
    Our approach fails safe: service applications that are not aware of
    impersonation will not think that they are talking to the principal
@@ -541,16 +581,9 @@ Table of Contents
    Kerberos authorization-data to the relevant registries.]]
 
 
-7.  Acknowledgements
+7.  References
 
-   This document resulted from Viktor Dukhovni's notes on S4U2Proxy's
-   shortcomings and discussions between him and the author as to how
-   best to address this.
-
-
-8.  References
-
-8.1.  Normative References
+7.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -584,7 +617,7 @@ Table of Contents
               API)", draft-williams-kitten-generic-naming-attributes-01
               (work in progress), August 2013.
 
-8.2.  Informative References
+7.2.  Informative References
 
    [RFC4422]  Melnikov, A. and K. Zeilenga, "Simple Authentication and
               Security Layer (SASL)", RFC 4422, June 2006.
@@ -592,6 +625,13 @@ Table of Contents
    [S4U]      Unspecified, U., "[MS-SFU]: Kerberos Protocol Extensions:
               Service for User and Constrained Delegation Protocol",
               August 2013.
+
+
+Appendix A.  Acknowledgements
+
+   This document resulted from Viktor Dukhovni's notes on S4U2Proxy's
+   shortcomings and discussions between him and the author as to how
+   best to address this.
 
 
 Author's Address

@@ -1309,7 +1309,7 @@ tors, and may or may not be embedded in AD-KDC-ISSUED or similar (when embedded
  KDC policy approval is expressed via embedding these authorization-data
  in AD-KDC-ISSUED or similar (in a Ticket).
  KDC policy application is requested by placing the authorization-data in
- the TGS-REQ for a Ticket.
+ a TGS-REQ's enc-authorization-data.
 \end_layout
 
 \begin_layout Standard
@@ -1336,102 +1336,109 @@ The authorization-data element is:
 \end_layout
 
 \begin_layout Description
-AD-IMPERSONATE Indicates that the Ticket or Authenticator is intended to
- impersonate the given principal.
+AD-IMPERSONATE-GSS Indicates that the Ticket or Authenticator is intended
+ to impersonate the given principal.
+ The octet string value of this element is an exported GSS-API name token
+\end_layout
+
+\begin_layout Description
+AD-ASSERT-AUTHZID Indicates that the Ticket or Authenticator is intended
+ to impersonate the given authzid (SASL semantics).
+ The octet string value of this element is application-specific, therefore
+ clients SHOULD NOT request this element be added to TGTs.
 \end_layout
 
 \begin_layout Standard
-KDCs MUST NOT issue Tickets with this authorization-data element if its
- contents do not match the client's Ticket's AD-IMPERSONATE element (if
- present).
- KDCs MUST NOT issue Tickets with this element embedded in an AD-KDC-ISSUED
- or similar unless the KDC blesses the impersonation; conversely, if the
- KDC blesses the impersonation then the KDC MUST place this authorization-data
- element in an AD-KDC-ISSUED or similar element.
+(Note that no ASN.1 syntax is needed to describe these authorization-data
+ elements' values.)
+\end_layout
+
+\begin_layout Subsection
+Client Processing
 \end_layout
 
 \begin_layout Standard
-Clients MAY embed this in an AD-IF-RELEVANT authorization-data element in
- TGS requests for new Tickets, except when requesting forwarded/forwardable
- Tickets, in which case the element MUST be made critical (by not including
- it in any authorization-data element that denotes non-criticality).
+Clients MAY embed AD-IMPERSONATE-GSS and/or AD-ASSERT-AUTHZID in an AD-IF-RELEVA
+NT authorization-data element in TGS requests for new Tickets, except when
+ requesting forwarded/forwardable Tickets, in which case the element MUST
+ be made critical (by not including it in any authorization-data element
+ that denotes non-criticality).
 \end_layout
 
 \begin_layout Standard
 Clients that do not need or do not want KDC blessing SHOULD only include
- AD-IMPERSONATE in Authenticators.
- When used in an Authenticator the client should include AD-IMPERSONATE
- in an AD-IF-RELEVANT (on the theory that it's safe for the target service
- to observe the impersonator's name instead of the impersonated name), but
- the client MAY make AD-IMPERSONATE critical to ensure that the target service
- rejects the AP-REQ if it does not understand AD-IMPERSONATE.
+ these authorization-data elements in Authenticators.
+ The client MAY include these elements in AD-IF-RELEVANT (on the theory
+ that it's safe for the target service to observe the impersonator's name
+ instead of the impersonated name), but the client SHOULD make these authorizati
+on-data elements critical to ensure that the target service rejects the
+ AP-REQ if it does not understand them.
+\end_layout
+
+\begin_layout Subsection
+TGS Processing (OPTIONAL)
 \end_layout
 
 \begin_layout Standard
-The ASN.1 description of these elements' contents is as follows:
+TGSes need not have any further support for these authorization-data elements
+ than is required by RFC4120.
+ However, a TGS may contribute its own local policy by including any AD-IMPERSON
+ATE-GSS or AD-ASSERT-AUTHZID elements from a TGS-REQ's enc-authorization-data
+ (or from a TGT's authorization-data) in AD-KDC-ISSUED (or similar) elements.
+ A TGS MUST NOT include these attributes in AD-KDC-ISSUED (or similar) without
+ having applied local policy and determined that the client principal is
+ permitted to make the requested assertions to the requested target service
+ principal.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
- AD-IMPERSONATE ::= SEQUENCE {
-\end_layout
-
-\begin_layout Plain Layout
-
-     -- One of these two MUST be present; both MAY be present
-\end_layout
-
-\begin_layout Plain Layout
-
-     principal [0] OCTET STRING OPTIONAL, -- exported name token
-\end_layout
-
-\begin_layout Plain Layout
-
-     authz-id [1] SEQUENCE OF OCTET STRING OPTIONAL
-\end_layout
-
-\begin_layout Plain Layout
-
- }
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-ASN.1 for impersonation AD elements
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
+A TGS can only interpret AD-ASSERT-AUTHZID elements relative to the target
+ service principal name.
+ As there is no authzid concept for TGS principals, the TGS MUST NOT include
+ AD-ASSERT-AUTHZID elements in any AD-KDC-ISSUED (or similar) elements when
+ the sname of the Ticket to be issued is a TGS name.
+ But a TGS may be able to interpret (and therefore apply local policy) authzids
+ in other cases.
 \end_layout
 
 \begin_layout Standard
-DER encoding with IMPLICIT tagging MUST be used to encode these authorization-da
-ta elements.
+TGS policy MUST NOT bless (i.e., include these elements in AD-KDC-ISSUED or
+ similar) requests with multiple instances of either AD-IMPERSONATE-GSS
+ or AD-ASSERT-AUTHZID.
+\end_layout
+
+\begin_layout Standard
+As usual, per-RFC4120, if these authorization-data elements appear in the
+ enc-authorization-data field of the TGS-REQ and/or the TGT, then the TGS
+ should copy them to the issued Ticket.
+ But if the TGS has policy approving of the requested impersonation, then
+ it SHOULD include the impersonation authorization-data elements in a critical
+ AD-KDC-ISSUED (or similar) element.
+\end_layout
+
+\begin_layout Subsection
+Target Service Processing
+\end_layout
+
+\begin_layout Standard
+Services must adhere to the authorization-data handling rules specified
+ in RFC4120.
+ Services that implement these authorization-data element MUST expose them
+ to applications in some manner (e.g., as GSS-API naming attributes, as described
+ in this document).
+\end_layout
+
+\begin_layout Standard
+Service implementations MAY apply local policy as to AD-IMPERSONATE-GSS
+ on behalf of specific applications and, when local policy approves, may
+ report the client's principal name as the impersonated principal name.
+ However, it is preferred that applications apply local policy, not the
+ Kerberos implementation.
+\end_layout
+
+\begin_layout Standard
+Services MUST reject AP-REQs with multiple distinct AD-IMPERSONATE-GSS or
+ AD-ASSERT-AUTHZID elements.
 \end_layout
 
 \begin_layout Section
@@ -1741,16 +1748,17 @@ credential issuers (e.g., Kerberos KDCs) MAY constrain the use of credentials
 \begin_layout Standard
 In particular, for Kerberos, KDCs SHOULD NOT issue Ticket Granting Tickets
  (TGTs) with the FORWARDED or FORWARDABLE flags set if the Ticket's client
- principal is a known impersonator and the AD-IMPERSONATE authorization-data
+ principal is a known impersonator and the AD-IMPERSONATE-GSS authorization-data
  element is not present in the client's Ticket and/or TGS-REQ as a critical
- authorization-data element (if it's present in the Ticket but not the TGS-REQ
- then the KDC MUST copy the AD-IMPERSONATE to the Ticket to be issued.
+ authorization-data element; if AD-IMPERSONATE-GSS is present in the Ticket
+ as a critical and KDC-issued element but not in the TGS-REQ then the KDC
+ SHOULD copy the AD-IMPERSONATE-GSS to the Ticket to be issued.
 \end_layout
 
 \begin_layout Standard
-Kerberos initiators should (as opposed to SHOULD, but perhaps SHOULD) use
- impersonator names that begin with a zeroth component with this value:
- 
+Kerberos initiators should (as opposed to SHOULD, but perhaps this should
+ be a SHOULD) use impersonator names that begin with a zeroth component
+ with this value: 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1993,6 +2001,7 @@ msdn.microsoft.com/en-us/library/cc246071.aspx' /> </reference>
 \end_layout
 
 \begin_layout Section
+\start_of_appendix
 Acknowledgements
 \end_layout
 
