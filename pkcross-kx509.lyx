@@ -537,12 +537,21 @@ We provide two variants of the PKCROSS protocol: one that is client-driven,
  of its clients.
  The latter is based on the former, with the TGS acting as a client.
  We begin with the client-driven case.
- DNS-Based Authentication of Named Entities (DANE) can and should be used
- for realm CA certificate validation.
+ DNS-Based Authentication of Named Entities (DANE) 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC6698
+\end_layout
+
+\end_inset
+
+ can and should be used for realm CA certificate validation.
 \end_layout
 
 \begin_layout Subsection
-Client-driven PKCROSS
+Client-Driven PKCROSS
 \end_layout
 
 \begin_layout Standard
@@ -581,7 +590,7 @@ RFC4556
 
 \end_inset
 
-.
+ and the client certificate obtained in step #2.
 \end_layout
 
 \begin_layout Standard
@@ -589,6 +598,18 @@ If the destination realm issues the requested Ticket then it SHOULD include
  the client's certificate in an AD-CLIENT-CERTIFICATE authorization-data
  element, and it MUST do so if it does not validate the client's certificate
  to an acceptable trust anchor.
+ The AD-CLIENT-CERTIFICATE authorization-data MUST be in a KDC-signed authorizat
+ion-data container [XXX add reference to CAMMAC].
+\end_layout
+
+\begin_layout RevisionRemark
+QUESTION: Should the PKINIT request in step #3 be a TGS-REQ with PKINIT
+ pre-auth data?
+\end_layout
+
+\begin_layout RevisionRemark
+QUESTION: Should the PKINIT request in step #3 be required to be used within
+ a FAST tunnel?
 \end_layout
 
 \begin_layout Subsection
@@ -596,18 +617,30 @@ TGS-Driven PKCROSS
 \end_layout
 
 \begin_layout Standard
-A TGS can use the client-driven PKCROSS protocol to acquire a TGT at a target
- realm with the source realm's TGS principal (
-\begin_inset Quotes eld
-\end_inset
+A TGS can bootstrap ephemeral cross-realm trust principals on behalf of
+ its clients.
+ This allows the cost of PKCROSS to be amortized over many clients, and
+ it allows participation by clients that do not support client-driven PKCROSS
+ (or whose PKCROSS requests are rejected by the target).
+\end_layout
 
-krbtgt/SOURCE@SOURCE
-\begin_inset Quotes erd
-\end_inset
+\begin_layout Standard
+In this mode the TGS uses the client-driven PKCROSS protocol, modified as
+ follows:
+\end_layout
 
-) as the client name, and with an Extended Key Usage (EKU) of id-pkcross-issuer
- (TBD) (which MUST be present).
- The resulting TGT -which we shall term an 
+\begin_layout Itemize
+the TGS's client certificate MUST have an id-pkinit-san Subject Alternative
+ Name (SAN) identifying the source TGS as krbtgt/SOURCE@SOURCE
+\end_layout
+
+\begin_layout Itemize
+the TGS's client certificate MUST have an Extended Key Usage (EKU) of id-pkcross
+-issuer (TBD)
+\end_layout
+
+\begin_layout Standard
+The resulting TGT -which we shall term an 
 \begin_inset Quotes eld
 \end_inset
 
@@ -628,12 +661,11 @@ krbtgt/TARGET@SOURCE
 \end_layout
 
 \begin_layout Standard
-Each TGS for a given source realm MUST acquire its own ITGT for any given
- target realm.
+This ITGT will be used to mint tickets as described below.
 \end_layout
 
 \begin_layout Subsubsection
-Cross-realm TGTs issued for PKCROSS-keyed trusts
+Issuing cross-realm TGTs issued for PKCROSS-keyed cross-realm TGS principals
 \end_layout
 
 \begin_layout Standard
@@ -746,56 +778,134 @@ apable TGS as well, so as to be able to throttle low-priority requests when
 \end_layout
 
 \begin_layout Subsection
-Transit Path and Transit Policy
+Stapled DANE
+\end_layout
+
+\begin_layout RevisionRemark
+TBD.
+ We should use Google's serialization of DNS RRsets needed for DANE validation.
+ We will need a label for the TLSA RRs for kx509 issuers.
+\end_layout
+
+\begin_layout Subsection
+Validation
 \end_layout
 
 \begin_layout Standard
-The destination realm MUST NOT set the TRANSIT-POLICY-CHECKED flag on the
- tickets they issue to clients whose foreign realm certificates cannot be
- validated by the KDC.
- KDCs SHOULD reject requests from clients whose certificates cannot be validated
-, unless configured to do otherwise, but KDCs that proceed in such cases
- MUST NOT set the TRANSIT-POLICY-CHECKED flag on the resulting tickets.
-\end_layout
-
-\begin_layout Standard
-Note that destination realm administrators may configure their realms to
- know specific foreign realm clients' certificates.
-\end_layout
-
-\begin_layout Standard
-The trust validation path of the client's end-entity certificate will be
- represented in the issued Ticket as follows:
+KDCs processing PKINIT requests crossing realms MUST apply either or both
+ of:
 \end_layout
 
 \begin_layout Itemize
-If the client's certificate's validated trust path is sufficiently trusted
- by the KDC then the destination realm's KDC MAY leave the transit path
- of the resulting Ticket empty (i.e., as if the client's realm and the service's
- realm had a direct cross-realm relationship).
- And the KDC SHOULD set the TRANSIT-POLICY-CHECKED flag.
+PKIX certificate validation
+\end_layout
+
+\begin_layout Itemize
+DANE certificate validation
+\end_layout
+
+\begin_layout Standard
+KDCs MUST reject PKINIT requests from clients of foreign realms whose certificat
+es cannot be validated, unless the client request the anonymous principal
+ name in the target's realm.
+\end_layout
+
+\begin_layout Subsection
+Transit Path
+\end_layout
+
+\begin_layout Standard
+The combined Kerberos/PKIX/DNSSEC transit path MUST be represented in any
+ tickets issued using PKCROSS (see below).
+ As usual, each realm's KDCs in the mix can set the transit policy checked
+ flag if a client's transit path is acceptable per the realm's KDCs' local
+ policy.
+\end_layout
+
+\begin_layout Standard
+Two validation mechanisms are available: all PKIX 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC5280
+\end_layout
+
+\end_inset
+
+ validation methods, and DANE 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC6698
+\end_layout
+
+\end_inset
+
+.
+ DANE validation records SHOULD be stapled onto the client certificates
+ by the issuing kx509 CA; alternatively clients can staple DANE validation
+ records onto their PKINIT requests using an authorization-data element,
+ AD-PKINIT-CLIENT-DANE.
+\end_layout
+
+\begin_layout Standard
+Additionally, when PKIX certificate validation is used, the trust path should
+ be encoded in an AD-INITIAL-VERIFIED-CAS authorization data element, per-PKINIT.
+\end_layout
+
+\begin_layout Subsubsection
+Transit path representation
+\end_layout
+
+\begin_layout Standard
+The notional transit path for a ticket issued by a target realm's KDCs includes:
+\end_layout
+
+\begin_layout Itemize
+the source realm (never expressed in the 'transited' field of Kerberos Tickets)
+\end_layout
+
+\begin_layout Itemize
+all realms in the ITGT's transited field (in the TGS-driven PKCROSS case)
+\end_layout
+
+\begin_layout Itemize
+all issuers in the validation path for the kx509-issued certificate, which
+ are
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-Alternatively the KDC MAY insert a suitable domain-style representation
- of the certificate trust path as the transit path.
+all issuers in the certificate's PKIX validation path when PKIX validation
+ is used
+\end_layout
+
+\begin_layout Itemize
+all DNS zone domainnames transited from the source realm's domainname to
+ the root zone
 \end_layout
 
 \end_deeper
 \begin_layout Itemize
-Otherwise, and if the client certificate is valid to a trusted trust anchor,
- then the destination realm's KDC MUST include the trust path of the client's
- certificate in the 'transited' field of the issued Ticket, using X.500-style
- realm naming.
- And the KDC SHOULD set the TRANSIT-POLICY-CHECKED flag.
+the target realm (also never expressed in the 'transited' field)
 \end_layout
 
-\begin_layout Itemize
-Finally, if the client certificate cannot be validated fully but the KDC
- wishes to continue, then the KDC MUST NOT set the TRANSIT-POLICY-CHECKED
- flag unless it has prior knowledge of the client's certificate as authorized
- to the requested name.
+\begin_layout Standard
+When using DANE for validation of the issuer's certificate the target SHOULD
+ represent the transit path as hierarchical from the source realm's domain
+ to the root domain, then direct from there to the target's realm.
+\end_layout
+
+\begin_layout Standard
+The notional transit path for a given client principal MUST be encoded as
+ usual, using the Kerberos X.500 and domain-style representations of PKIX
+ issuer names and DNS domainnames as faithfully to the original as possible.
+\end_layout
+
+\begin_layout RevisionRemark
+QUESTION: Do we need a 100% faithful representation of the transit path?
 \end_layout
 
 \begin_layout Subsection
@@ -855,7 +965,7 @@ The proposed PKCROSS protocol has several useful properties described below.
 \end_layout
 
 \begin_layout Subsection
-Automated Cross-Realm Keying
+Automatic Cross-Realm Keying
 \end_layout
 
 \begin_layout Standard
@@ -864,7 +974,7 @@ No more manual keying of cross-realm principals via exchanging passwords
 \end_layout
 
 \begin_layout Subsection
-Scalability and Vulnerability to Trusted Third Parties (TTPs)
+Scalability
 \end_layout
 
 \begin_layout Standard
@@ -881,7 +991,10 @@ child
  realms.
  Such top-level realms do not exist in practice, leading to an O(N^2) scaling
  problem for most two-label realms.
- Leveraging a PKI, such as a PKIX PKI 
+\end_layout
+
+\begin_layout Standard
+Leveraging a PKI, such as a PKIX PKI 
 \begin_inset Flex EntityXRef
 status collapsed
 
@@ -904,13 +1017,12 @@ RFC4033
  removes the need for either top-level realms (which are not likely to ever
  be operated as commercial or even non-profit entities) or O(N^2) pair-wise
  cross-realm symmetric keying.
- The cost of this is having to add PKI trust paths to Kerberos trust paths
+\end_layout
+
+\begin_layout Standard
+The cost of this is having to add PKI trust paths to Kerberos trust paths
  (though the resulting trust path length need not be much different than
  before).
- Another cost is that having one (or many) top-level / root trusted third
- party (TTP), makes Kerberos susceptible to attack by those TTPs -- this
- was, and is, always a problem with any TTP protocol -such as Kerberos and
- PKI- anyways.
 \end_layout
 
 \begin_layout Subsection
@@ -919,9 +1031,7 @@ Privacy Protection relative to home realm
 
 \begin_layout Standard
 This protocol protects the privacy of client principals vis-a-vis their
- home realms: client principals' home realms need not know what destination
- realms the clients are speaking to because client principals need not ask
- their home realms.
+ home realms, when the clients use the client-driven PKCROSS protocol.
 \end_layout
 
 \begin_layout Standard
@@ -934,7 +1044,8 @@ This feature is generally and naturally available in PKI, and as this protocol
 The realms visited by the client may, of course, inform the client's home
  realm, but in the event that they don't, the client does gain this small
  measure of privacy.
- Of course, the client SHOULD attach an OCSP Response 
+ Of course, the privacy-conscious client SHOULD attach an OCSP Response
+ 
 \begin_inset Flex EntityXRef
 status collapsed
 
@@ -993,13 +1104,10 @@ leap-of-faith
 \end_layout
 
 \begin_layout Standard
-Destination services too may apply apply LoF/TOFU: by not validating the
- transit path of the client (e.g., if it's not in a white-list of realms whose
- clients must have valid transit paths) and accepting tickets without the
- TRANSITED-POLICY-CHECKED ticket flag set.
- The destination service can save the client's certificate, if found in
- an AD-CLIENT-CERTIFICATE authorization-data element in the client's Ticket,
- and may use it later to ensure that it is talking to the same client.
+Destination services too may apply LoF/TOFU: by using the subjectPublicKey
+ of the certificate in the ticket's AD-CLIENT-CERTIFICATE KDC-issued authorizati
+on-data as the client's name instead of validating the transit path of the
+ client.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1025,57 +1133,6 @@ Implementations MAY allow users and/or service administrators to establish
  fingerprint material.
 \end_layout
 
-\begin_layout Itemize
-Implementations MAY provide a way to automatically learn realm name <->
- public key / certificate bindings.
- Pinning [add reference to HSTS] SHOULD be supported in that case.
- The user MUST approve of each such mapping.
-\end_layout
-
-\begin_layout Section
-Using DANE (DNSSEC) for Realm Certificate Validation
-\end_layout
-
-\begin_layout Standard
-It is possible to use DNS-Based Authentication of Named Entities (DANE)
- 
-\begin_inset Flex EntityXRef
-status collapsed
-
-\begin_layout Plain Layout
-RFC6698
-\end_layout
-
-\end_inset
-
- to authenticate the KDC certificates of realms with domain-style names.
- To do this simply format the realm's DOMAIN-style name as a DNS domainname
- (no case folding is necessary), then format the DANE TLSA resource record
- set's (RRset) domainname per-DANE, using the KDC's port number.
- Note that the KDCs will usually not speak TLS, though there is an extension
- for using TLS in the KDC over TCP protocol 
-\begin_inset Flex EntityXRef
-status collapsed
-
-\begin_layout Plain Layout
-RFC6251
-\end_layout
-
-\end_inset
-
-.
- For example, the TLSA RRset for any KDC for the DESTINATION.EXAMPLE realm
- might be named _88._tcp.destination.example.
- Follow DANE TLSA certificate validation procedures to validate the KDC's
- certificate regardless of whether the certificate was obtained by using
- PKINIT or TLS.
-\end_layout
-
-\begin_layout Standard
-Normal PKINIT KDC certificate validation rules MAY also be used in addition
- to DANE rules.
-\end_layout
-
 \begin_layout Section
 Application Programming Interface Considerations
 \end_layout
@@ -1087,7 +1144,7 @@ For non-LoF/TOFU uses the main security consideration for applications is
  to have useful and expressive local policy for evaluating the trustworthiness
  of any given transit path.
  Because in most applications local policy should be a component external
- to the application, there is little impact on APIs here.
+ to the application, there is no impact on APIs here.
  However, an implementation may wish to provide applications with interfaces
  for specifying policies, either named or by value.
 \end_layout
@@ -1323,15 +1380,15 @@ Loss of Cross-Realm Principal Trust Establishment Information
 \end_layout
 
 \begin_layout Standard
-Note that once a cross-realm principal is symmetrically keyed no information
- about how that keying operation took place will appear in tickets issued
- by that TGS principal.
+Once a cross-realm principal is symmetrically keyed the transit path used
+ to automatically key that principal will no longer appear in subsequent
+ cross-realm tickets issued by the target.
 \end_layout
 
 \begin_layout Standard
-Note also that the Kebreros transit path encodes only realm names (including
- X.500-style names, thus PKIX certificate subject and issuer names), and
- lacks any public key information that might be useful for pinning.
+The Kerberos transit path encodes only realm names (including X.500-style
+ names, thus PKIX certificate subject and issuer names), and lacks any public
+ key information that might be useful for pinning.
  However, the certificate validation path for each realm in a transit path
  SHOULD be included in the transit path.
 \end_layout
@@ -1408,7 +1465,7 @@ IANA Considerations
 
 \begin_layout RevisionRemark
 Allocate the new KDCOptions flag (USE-SESSION-KEY-AS-REALM-KEY) and authorizatio
-n-data element (AD-CLIENT-CERTIFICATE).
+n-data element (AD-CLIENT-CERTIFICATE), as well as the new EKU id-pkcross-issuer.
 \end_layout
 
 \begin_layout Section
@@ -1448,7 +1505,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2119"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"
 
 \end_inset
 
@@ -1468,7 +1525,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4120"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4120.xml"
 
 \end_inset
 
@@ -1488,7 +1545,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4556"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4556.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4556.xml"
 
 \end_inset
 
@@ -1508,7 +1565,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4557"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4557.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4557.xml"
 
 \end_inset
 
@@ -1528,7 +1585,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4648"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4648.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4648.xml"
 
 \end_inset
 
@@ -1548,7 +1605,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc5280"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml"
 
 \end_inset
 
@@ -1568,7 +1625,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc6698"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6698.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6698.xml"
 
 \end_inset
 
@@ -1588,7 +1645,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc6717"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6717.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6717.xml"
 
 \end_inset
 
@@ -1608,7 +1665,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "I-D.williams-kitten-generic-naming-attributes"
-target "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml"
 
 \end_inset
 
@@ -1632,7 +1689,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4033"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4033.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4033.xml"
 
 \end_inset
 
@@ -1652,27 +1709,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4251"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4251.xml"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Flex BibXML
-status open
-
-\begin_layout Plain Layout
-\begin_inset CommandInset href
-LatexCommand href
-name "rfc6251"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6251.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml"
 
 \end_inset
 
@@ -1692,7 +1729,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc6960"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6960.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6960.xml"
 
 \end_inset
 
