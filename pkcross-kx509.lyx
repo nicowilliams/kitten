@@ -433,11 +433,8 @@ This document specifies a protocol for obtaining cross-realm Kerberos tickets
  using existing, related protocols: kerberized certification authorities
  (kx509) and public key cryptography initial authentication in Kerberos
  (PKINIT).
- The resulting protocol has a number of desirable security properties, including
- privacy protection for the user relative to their home realm's infrastructure,
- as well a support for leap-of-faith trust establishment, and automated
- cross-realm keying.
- This protocol allows Kerberos to scale to large numbers of realms.
+ The resulting protocol has a number of desirable properties, primarily
+ that it allows Kerberos to scale to large numbers of realms.
 \end_layout
 
 \begin_layout Standard
@@ -467,12 +464,22 @@ RFC4120
  supports meshes of many realms.
  The individual relationships between realms must be manually keyed, usually
  with keys derived from passwords.
- These keys are very difficult to rollover, and when they are changed the
- result is often outages -- controlled outages where foreseen, but outages
- nonetheless.
- This method of cross-realm keying does not scale, and has very poor security
- properties.
- We seek to remediate this.
+ A full mesh wouldn't scale, therefore the protocol calls for hierarchical
+ trust hierarchies.
+ In practice non-hierarchical but also non-fully-meshed relationships are
+ used.
+\end_layout
+
+\begin_layout Standard
+These manually-exchanged keys are very difficult to rollover safely, and
+ when they are changed the result is often outages -- controlled outages
+ where foreseen, but outages nonetheless.
+\end_layout
+
+\begin_layout Standard
+Manual cross-realm keying does not scale, and has very poor security properties.
+ We seek to remediate this using public key cryptography, building on existing
+ Kerberos specifications.
 \end_layout
 
 \begin_layout Standard
@@ -521,7 +528,21 @@ RFC2119
 \end_layout
 
 \begin_layout Section
-The Protocol
+The PKCROSS Protocol
+\end_layout
+
+\begin_layout Standard
+We provide two variants of the PKCROSS protocol: one that is client-driven,
+ and another that is driven by a Ticket Granting Service (TGS) on behalf
+ of its clients.
+ The latter is based on the former, with the TGS acting as a client.
+ We begin with the client-driven case.
+ DNS-Based Authentication of Named Entities (DANE) can and should be used
+ for realm CA certificate validation.
+\end_layout
+
+\begin_layout Subsection
+Client-driven PKCROSS
 \end_layout
 
 \begin_layout Standard
@@ -568,6 +589,160 @@ If the destination realm issues the requested Ticket then it SHOULD include
  the client's certificate in an AD-CLIENT-CERTIFICATE authorization-data
  element, and it MUST do so if it does not validate the client's certificate
  to an acceptable trust anchor.
+\end_layout
+
+\begin_layout Subsection
+TGS-Driven PKCROSS
+\end_layout
+
+\begin_layout Standard
+A TGS can use the client-driven PKCROSS protocol to acquire a TGT at a target
+ realm with the source realm's TGS principal (
+\begin_inset Quotes eld
+\end_inset
+
+krbtgt/SOURCE@SOURCE
+\begin_inset Quotes erd
+\end_inset
+
+) as the client name, and with an Extended Key Usage (EKU) of id-pkcross-issuer
+ (TBD) (which MUST be present).
+ The resulting TGT -which we shall term an 
+\begin_inset Quotes eld
+\end_inset
+
+issuer TGT
+\begin_inset Quotes erd
+\end_inset
+
+ (ITGT)- and its session key can then be used by the source TGS to create
+ cross-realm TGTs for the source-to-target trust principal (
+\begin_inset Quotes eld
+\end_inset
+
+krbtgt/TARGET@SOURCE
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Each TGS for a given source realm MUST acquire its own ITGT for any given
+ target realm.
+\end_layout
+
+\begin_layout Subsubsection
+Cross-realm TGTs issued for PKCROSS-keyed trusts
+\end_layout
+
+\begin_layout Standard
+Cross-realm TGTs issued by a source TGS using an ITGT will not be quite
+ like normal Kerberos Tickets: their encrypted part contains an AP-REQ using
+ the ITGT acquired by the source TGS, and this AP-REQ is 
+\begin_inset Quotes eld
+\end_inset
+
+encrypted
+\begin_inset Quotes erd
+\end_inset
+
+ with the null enctype, The AP-REQ's Authenitcator MUST contain an authorization
+-data element that carries a) the name of the client principal, b) the session
+ key that the client should be using with the cross-realm TGTs issued.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ AD-PKCROSS-TGT-INFO ::= SEQUENCE {
+\end_layout
+
+\begin_layout Plain Layout
+
+     cname [0] Principal,    -- the client's realm is the
+\end_layout
+
+\begin_layout Plain Layout
+
+                             -- crealm from the ITGT's EncTicketPart
+\end_layout
+
+\begin_layout Plain Layout
+
+     key   [1] EncryptionKey
+\end_layout
+
+\begin_layout Plain Layout
+
+ }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+AD-PKCROSS-TGT-INFO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Handling impatient clients
+\end_layout
+
+\begin_layout Standard
+Because the process of acquiring an ITGT might be slow, a TGS doing so on
+ behalf of a client could use a mechanism for instructing the client to
+ be patient.
+ Existing clients would not handler a new error code by waiting, therefore
+ there is not much that can be done to keep an impatient client from retrying
+ at another KDC.
+\end_layout
+
+\begin_layout Standard
+The existing KDC_ERR_SVC_UNAVAILABLE error code cannot be used as often
+ this causes the client to immediately retry the request at another KDC.
+ A new error code for indicating estimated time to completion of request
+ would be handy, but out of scope for this document.
+\end_layout
+
+\begin_layout Standard
+Note that there is a denial of service (DoS) attack by clients on willing
+ source KDCs: the clients can ask the KDCs to acquire cross-realm ITGTs
+ for many target realms.
+ Ideally the quality of service for the Kerberos authentication service
+ (AS) with PKINIT (and/or other slow pre-authentication mechanisms) should
+ be separate from that of the Kerberos TGS co-located with it, and the PKCROSS-c
+apable TGS as well, so as to be able to throttle low-priority requests when
+ under load.
 \end_layout
 
 \begin_layout Subsection
@@ -628,78 +803,47 @@ Exchange of Long-Term Cross-Realm Symmetric Keys
 \end_layout
 
 \begin_layout Standard
-When the client principal is a TGS principal and its PKINIT AS-REQ protocol
- data unit (PDU) has the USE-SESSION-KEY-AS-REALM-KEY KDCOptions flag set
- then the client is requesting that the session key of the ticket issued
- by the destination realm become the long-term key for the corresponding
- krbtgt/DESTINATION@SOURCE principal.
- The destination realm MUST validate the client principal's certificate,
- building a trust path if need be, and validating it to a trust anchor.
- The source and destination realm MAY have previously exchange fingerprints
- of their respective key distribution service (KDC) public keys and/or certifica
-tes and/or the source realm's kx509 root or intermediate certification authority
- (CA), and such previously exchanged material, if any, MUST be used for
- certificate trust validation.
+A KDC can acquire a TGT using PKCROSS whose session key then becomes the
+ long-lived, persistent symmetric key for a cross-realm principal from the
+ source realm to the target realm (
+\begin_inset Quotes eld
+\end_inset
+
+krbtgt/TARGET@SOURCE
+\begin_inset Quotes erd
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Standard
-Realm administrators should use the procedure to setup symmetric cross-realm
- keys as necessary to save clients from having to frequently use kx509 and
- PKINIT as described in the preceding section.
+To do this the KDC MUST set the USE-SESSION-KEY-AS-REALM-KEY KDCOptions
+ flag (TBD) in its request for an ITGT from the target realm.
+ As usual, the target realm's KDC MUST validate the client principal's certifica
+te.
+ The target realm's KDC MUST NOT return a TGS-REP until the new principal
+ is committed to its principal database, and MUST set the endtime of the
+ ITGT to the time at which the source realm may begin using the new symmetricall
+y-keyed principal.
 \end_layout
 
 \begin_layout Standard
-Where public key infrastructure (PKI) exists allowing this to happen automatical
-ly, realms' KDCs MAY be configured to automatically key cross-realm principals
- for any realms that their source realms' clients request cross-realm TGTs
- for, but note that this presents a denial of service (DoS) opportunity
- to the source realm's clients.
- Source realm KDCs SHOULD only do this when a) they are configured to do
- so, b) the requesting client principal is in the same realm, and c) the
- KDC has not spent too much effort recently providing this service (i.e.,
- KDCs should throttle attempts to establish symmetric cross-realm keys in
- this manner).
- See also the next section.
-\end_layout
-
-\begin_layout Subsubsection
-Caching of PKCROSS Symmetrically-Keyed Cross-Realm Principals
+The source realm's KDC MUST commit the new principal to its principal database
+ and MUST NOT begin using the new principal's long-term keys until the new
+ principal is available to all KDCs for the source realm and the endtime
+ of the ITGT passes.
 \end_layout
 
 \begin_layout Standard
-Realms whose KDCs automatically setup symmetrically-keyed cross-realm principals
- SHOULD treat these principals as a cache, and SHOULD implement a cache
- eviction policy.
- For example, a least-recently-used (LRU) or least-frequently-used (LFU)
- policy.
- Otherwise a resource exhaustion DoS attack may be possible.
- See also the preceding section.
-\end_layout
-
-\begin_layout Subsection
-Indication of Preference for/ Required Use of Symmetrically-Keyed Cross-Realm
- Principals
+Target KDCs SHOULD require manual pre-approval of such new cross-realm principal
+s.
+ In small, isolated environments a KDC MAY be configured to pre-approve
+ all such new principals.
 \end_layout
 
 \begin_layout Standard
-A KDC MAY reject a PKINIT/PKCROSS request with a KRB-ERROR indicating that
- the use of a symmetrically-keyed cross-realm relation is required.
- This is done using the following error code: <TBD>.
- The following e-data TD type is used to hold a SEQUENCE OF Realm: <TBD>.
-\end_layout
-
-\begin_layout Standard
-A KDC MAY accept a PKINIT/PKCROSS request but indicate to the client that
- a symmetrically-keyed cross-realm relation is preferred.
- The KDC does this by including a PA-DATA containing a SEQUENCE OF Realm,
- with the following pa-type: <TBD>.
-\end_layout
-
-\begin_layout RevisionRemark
-Add an ASN.1 module, even though it will contain only one untagged type consistin
-g of a SEQUENCE OF Realm, and the IANA-assigned values for error code, e-data
- TD type, and pa-type, plus the import of the RFC4120 module (to get the
- Realm type).
+By default, source KDCs SHOULD NOT automatically request long-term keying
+ of cross-realm principals.
 \end_layout
 
 \begin_layout Section
@@ -716,7 +860,7 @@ Automated Cross-Realm Keying
 
 \begin_layout Standard
 No more manual keying of cross-realm principals via exchanging passwords
- on a telephone call (or similar).
+ in-person on a telephone call (or similar).
 \end_layout
 
 \begin_layout Subsection
