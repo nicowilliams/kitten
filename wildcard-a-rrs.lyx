@@ -283,7 +283,7 @@ Using Wildcard A and AAAA Resource Records in the DNS for Per-User Host-Based
 status open
 
 \begin_layout Plain Layout
-draft-dukhovni-using-wildcard-a-rrsets-00
+draft-dukhovni-using-wildcard-a-rrsets-01
 \end_layout
 
 \end_inset
@@ -703,10 +703,37 @@ RFC3244
 \begin_layout Itemize
 The various other non-standard Kerberos administration protocols that provide
  interfaces for creating principals and setting their credentials.
- [XXX Add references to various such protocols? There are at least five
- such protocols known to the editor.]
+ For example:
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+name "krb5_admin"
+target "http://oskt.secure-endpoints.com/krb5_admin.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+name "wallet"
+target "http://www.eyrie.org/~eagle/software/wallet/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+and others.
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 kx509 
 \begin_inset Flex EntityXRef
@@ -786,9 +813,8 @@ Credential issuers SHOULD NOT issue PUHBSP credentials for hostnames with
 \end_layout
 
 \begin_layout Enumerate
-The credential issuer SHOULD require that hosts themselves SHOULD authorize
- local requests by local users/processes for credentials for any given sub-domai
-n of the host's hostname.
+Hosts themselves SHOULD authorize local requests by local users/processes
+ for credentials for any given sub-domain of the host's hostname.
 \end_layout
 
 \begin_layout Standard
@@ -984,7 +1010,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2119"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"
 
 \end_inset
 
@@ -1008,7 +1034,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc1034"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1034.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1034.xml"
 
 \end_inset
 
@@ -1028,7 +1054,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc1035"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1035.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml"
 
 \end_inset
 
@@ -1048,7 +1074,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2616"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2616.xml"
 
 \end_inset
 
@@ -1068,7 +1094,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2812"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2812.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2812.xml"
 
 \end_inset
 
@@ -1088,7 +1114,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2986"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2986.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2986.xml"
 
 \end_inset
 
@@ -1108,7 +1134,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc3244"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3244.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3244.xml"
 
 \end_inset
 
@@ -1128,7 +1154,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4120"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4120.xml"
 
 \end_inset
 
@@ -1148,7 +1174,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4178"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4178.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4178.xml"
 
 \end_inset
 
@@ -1168,7 +1194,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4559"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4559.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4559.xml"
 
 \end_inset
 
@@ -1188,7 +1214,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc5280"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml"
 
 \end_inset
 
@@ -1208,7 +1234,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc5246"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml"
 
 \end_inset
 
@@ -1228,7 +1254,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc6717"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6717.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6717.xml"
 
 \end_inset
 

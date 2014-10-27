@@ -4,13 +4,13 @@
 Network Working Group                                        V. Dukhovni
 Internet-Draft
 Intended status: BCP                                    N. Williams, Ed.
-Expires: August 23, 2014                                    Cryptonector
-                                                       February 19, 2014
+Expires: April 30, 2015                                     Cryptonector
+                                                        October 27, 2014
 
 
 Using Wildcard A and AAAA Resource Records in the DNS for Per-User Host-
                              Based Services
-               draft-dukhovni-using-wildcard-a-rrsets-00
+               draft-dukhovni-using-wildcard-a-rrsets-01
 
 Abstract
 
@@ -35,7 +35,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 23, 2014.
+   This Internet-Draft will expire on April 30, 2015.
 
 Copyright Notice
 
@@ -123,8 +123,10 @@ Table of Contents
       Password Protocols" [RFC3244] and its non-standard predecessors.
    o  The various other non-standard Kerberos administration protocols
       that provide interfaces for creating principals and setting their
-      credentials.  [XXX Add references to various such protocols?
-      There are at least five such protocols known to the editor.]
+      credentials.  For example:
+      *  <http://oskt.secure-endpoints.com/krb5_admin.html>
+      *  <http://www.eyrie.org/~eagle/software/wallet/>
+      *  and others.
    o  kx509 [RFC6717] (a kerberized online CA).
    o  Any protocol using PKCS#10 [RFC2986].
 
@@ -157,9 +159,9 @@ Table of Contents
        hostnames with more than one sub-domain label of the actual
        host's hostname.
 
-   3.  The credential issuer SHOULD require that hosts themselves SHOULD
-       authorize local requests by local users/processes for credentials
-       for any given sub-domain of the host's hostname.
+   3.  Hosts themselves SHOULD authorize local requests by local users/
+       processes for credentials for any given sub-domain of the host's
+       hostname.
 
    For example, a host might authenticate local users using traditional
    operating system facilities (e.g., processes' credentials), then

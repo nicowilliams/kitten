@@ -4,13 +4,13 @@
 Network Working Group                                        V. Dukhovni
 Internet-Draft
 Intended status: BCP                                    N. Williams, Ed.
-Expires: August 23, 2014                                    Cryptonector
-                                                       February 19, 2014
+Expires: April 30, 2015                                     Cryptonector
+                                                        October 27, 2014
 
 
 Using Wildcard A and AAAA Resource Records in the DNS for Per-User Host-
                              Based Services
-               draft-dukhovni-using-wildcard-a-rrsets-00
+               draft-dukhovni-using-wildcard-a-rrsets-01
 
 Abstract
 
@@ -35,7 +35,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 23, 2014.
+   This Internet-Draft will expire on April 30, 2015.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Dukhovni & Williams      Expires August 23, 2014                [Page 1]
+Dukhovni & Williams      Expires April 30, 2015                 [Page 1]
 
-Internet-Draft            Using Wildcard A RRs             February 2014
+Internet-Draft            Using Wildcard A RRs              October 2014
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -108,9 +108,9 @@ Table of Contents
 
 
 
-Dukhovni & Williams      Expires August 23, 2014                [Page 2]
+Dukhovni & Williams      Expires April 30, 2015                 [Page 2]
 
-Internet-Draft            Using Wildcard A RRs             February 2014
+Internet-Draft            Using Wildcard A RRs              October 2014
 
 
 1.  Wildcard A/AAAA RRs in DNS for Per-User Host-Based Services (PUHBSs)
@@ -164,17 +164,19 @@ Internet-Draft            Using Wildcard A RRs             February 2014
 
 
 
-Dukhovni & Williams      Expires August 23, 2014                [Page 3]
+Dukhovni & Williams      Expires April 30, 2015                 [Page 3]
 
-Internet-Draft            Using Wildcard A RRs             February 2014
+Internet-Draft            Using Wildcard A RRs              October 2014
 
 
    o  The "Microsoft Windows 2000 Kerberos Change Password and Set
       Password Protocols" [RFC3244] and its non-standard predecessors.
    o  The various other non-standard Kerberos administration protocols
       that provide interfaces for creating principals and setting their
-      credentials.  [XXX Add references to various such protocols?
-      There are at least five such protocols known to the editor.]
+      credentials.  For example:
+      *  <http://oskt.secure-endpoints.com/krb5_admin.html>
+      *  <http://www.eyrie.org/~eagle/software/wallet/>
+      *  and others.
    o  kx509 [RFC6717] (a kerberized online CA).
    o  Any protocol using PKCS#10 [RFC2986].
 
@@ -207,9 +209,9 @@ Internet-Draft            Using Wildcard A RRs             February 2014
        hostnames with more than one sub-domain label of the actual
        host's hostname.
 
-   3.  The credential issuer SHOULD require that hosts themselves SHOULD
-       authorize local requests by local users/processes for credentials
-       for any given sub-domain of the host's hostname.
+   3.  Hosts themselves SHOULD authorize local requests by local users/
+       processes for credentials for any given sub-domain of the host's
+       hostname.
 
    For example, a host might authenticate local users using traditional
    operating system facilities (e.g., processes' credentials), then
@@ -218,11 +220,9 @@ Internet-Draft            Using Wildcard A RRs             February 2014
 
 
 
-
-
-Dukhovni & Williams      Expires August 23, 2014                [Page 4]
+Dukhovni & Williams      Expires April 30, 2015                 [Page 4]
 
-Internet-Draft            Using Wildcard A RRs             February 2014
+Internet-Draft            Using Wildcard A RRs              October 2014
 
 
 3.2.  Sample Use Case: per-User Web Services
@@ -276,9 +276,9 @@ Internet-Draft            Using Wildcard A RRs             February 2014
 
 
 
-Dukhovni & Williams      Expires August 23, 2014                [Page 5]
+Dukhovni & Williams      Expires April 30, 2015                 [Page 5]
 
-Internet-Draft            Using Wildcard A RRs             February 2014
+Internet-Draft            Using Wildcard A RRs              October 2014
 
 
 4.1.1.  Security Considerations for Per-User HTTP Services
@@ -332,9 +332,9 @@ Internet-Draft            Using Wildcard A RRs             February 2014
 
 
 
-Dukhovni & Williams      Expires August 23, 2014                [Page 6]
+Dukhovni & Williams      Expires April 30, 2015                 [Page 6]
 
-Internet-Draft            Using Wildcard A RRs             February 2014
+Internet-Draft            Using Wildcard A RRs              October 2014
 
 
    [RFC4178]  Zhu, L., Leach, P., Jaganathan, K., and W. Ingersoll, "The
@@ -388,5 +388,5 @@ Authors' Addresses
 
 
 
-Dukhovni & Williams      Expires August 23, 2014                [Page 7]
+Dukhovni & Williams      Expires April 30, 2015                 [Page 7]
 

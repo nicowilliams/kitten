@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "file:///home/nico/I-Ds/kitten/../test/src/../data/xhtml-math11-f.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/TR/2001/REC-MathML2-20010221/dtd/xhtml-math11-f.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta name="GENERATOR" content="LyX 2.0.2" />
+<meta name="GENERATOR" content="LyX 2.0.6" />
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 <title>Using Wildcard A and AAAA Resource Records in the DNS for Per-User Host-Based Services</title>
 
@@ -262,7 +262,7 @@ font-size: medium;
 Using Wildcard A and AAAA Resource Records in the DNS for Per-User Host-Based Services</h1>
 <div class="standard"><a id='magicparlabel-2' />
 <div class="flex_docname"><div class="plain_layout"><a id='magicparlabel-6' />
-draft-dukhovni-using-wildcard-a-rrsets-00</div>
+draft-dukhovni-using-wildcard-a-rrsets-01</div>
 </div><div class="flex_ipr"><div class="plain_layout"><a id='magicparlabel-10' />
 trust200902</div>
 </div><div class="flex_intendedstatus"><div class="plain_layout"><a id='magicparlabel-14' />
@@ -324,24 +324,24 @@ This document describes how the use of wildcard A and AAAA resource records (RRs
 
 <div class='lyxtoc-1'><a href='#magicparlabel-105' class='tocentry'>3 Provisioning of Service Credentials, or Self-Service Key Management</a> <a href='#magicparlabel-105' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-133' class='tocentry'>3.1 Requirements and Recommendations</a> <a href='#magicparlabel-133' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-136' class='tocentry'>3.1 Requirements and Recommendations</a> <a href='#magicparlabel-136' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-139' class='tocentry'>3.2 Sample Use Case: per-User Web Services</a> <a href='#magicparlabel-139' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-142' class='tocentry'>3.2 Sample Use Case: per-User Web Services</a> <a href='#magicparlabel-142' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-146' class='tocentry'>4 Security Considerations</a> <a href='#magicparlabel-146' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-1'><a href='#magicparlabel-149' class='tocentry'>4 Security Considerations</a> <a href='#magicparlabel-149' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-159' class='tocentry'>4.1 Man-in-the-Middle Attacks by Local Users</a> <a href='#magicparlabel-159' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-162' class='tocentry'>4.1 Man-in-the-Middle Attacks by Local Users</a> <a href='#magicparlabel-162' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-161' class='tocentry'>4.1.1 Security Considerations for Per-User HTTP Services</a> <a href='#magicparlabel-161' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-164' class='tocentry'>4.1.1 Security Considerations for Per-User HTTP Services</a> <a href='#magicparlabel-164' class='tocarrow'>&gt;</a></div>
 </div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-179' class='tocentry'>5 IANA Considerations</a> <a href='#magicparlabel-179' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-182' class='tocentry'>5 IANA Considerations</a> <a href='#magicparlabel-182' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-181' class='tocentry'>6 Normative References</a> <a href='#magicparlabel-181' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-184' class='tocentry'>6 Normative References</a> <a href='#magicparlabel-184' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-187' class='tocentry'>7 Informative References</a> <a href='#magicparlabel-187' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-190' class='tocentry'>7 Informative References</a> <a href='#magicparlabel-190' class='tocarrow'>&gt;</a></div>
 </div>
 
 <h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-84' />
@@ -396,24 +396,32 @@ The &ldquo;Microsoft Windows 2000 Kerberos Change Password and Set Password Prot
 RFC3244</div>
 </div> and its non-standard predecessors.</li>
 <li class="itemize_item"><a id='magicparlabel-121' />
-The various other non-standard Kerberos administration protocols that provide interfaces for creating principals and setting their credentials. [XXX Add references to various such protocols? There are at least five such protocols known to the editor.]</li>
-<li class="itemize_item"><a id='magicparlabel-122' />
-kx509 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-126' />
+The various other non-standard Kerberos administration protocols that provide interfaces for creating principals and setting their credentials. For example:
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-122' />
+<a href="http://oskt.secure-endpoints.com/krb5_admin.html">krb5_admin</a></li>
+<li class="itemize_item"><a id='magicparlabel-123' />
+<a href="http://www.eyrie.org/~eagle/software/wallet/">wallet</a></li>
+<li class="itemize_item"><a id='magicparlabel-124' />
+and others.</li>
+</ul>
+</li><li class="itemize_item"><a id='magicparlabel-125' />
+kx509 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-129' />
 RFC6717</div>
 </div> (a kerberized online CA).</li>
-<li class="itemize_item"><a id='magicparlabel-127' />
-Any protocol using PKCS#10 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-131' />
+<li class="itemize_item"><a id='magicparlabel-130' />
+Any protocol using PKCS#10 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-134' />
 RFC2986</div>
 </div>.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-132' />
+<div class="standard"><a id='magicparlabel-135' />
 The principle is general, applying to any authentication mechanism that can authenticate host-based services, not just Kerberos or PKIX.</div>
-<h3 class="subsection"><span class="subsection_label">3.1</span> <a id='magicparlabel-133' />
+<h3 class="subsection"><span class="subsection_label">3.1</span> <a id='magicparlabel-136' />
 Requirements and Recommendations</h3>
-<div class="standard"><a id='magicparlabel-134' />
+<div class="standard"><a id='magicparlabel-137' />
 Three different sorts of authorization decisions are involved:</div>
 
-<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-135' />
+<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-138' />
 DNS zone administrators decide which hosts get wildcard A/AAAA RRsets.
 <br />
 
@@ -421,7 +429,7 @@ DNS zone administrators MAY safely publish wildcard A and AAAA RRsets for all ho
 <br />
 
 </li>
-<li class="enumerate_item"><a id='magicparlabel-136' />
+<li class="enumerate_item"><a id='magicparlabel-139' />
 The PUHBSP's credential issuer MUST decide whether to issue credentials for any given sub-domain of a given hostname.
 <br />
 
@@ -432,131 +440,131 @@ Credential issuers SHOULD NOT issue PUHBSP credentials for hostnames with more t
 <br />
 
 </li>
-<li class="enumerate_item"><a id='magicparlabel-137' />
-The credential issuer SHOULD require that hosts themselves SHOULD authorize local requests by local users/processes for credentials for any given sub-domain of the host's hostname.</li>
+<li class="enumerate_item"><a id='magicparlabel-140' />
+Hosts themselves SHOULD authorize local requests by local users/processes for credentials for any given sub-domain of the host's hostname.</li>
 </ol>
-<div class="standard"><a id='magicparlabel-138' />
+<div class="standard"><a id='magicparlabel-141' />
 For example, a host might authenticate local users using traditional operating system facilities (e.g., processes' credentials), then decide whether the local user gets to have a requested sub-domain of the host's hostname.</div>
-<h3 class="subsection"><span class="subsection_label">3.2</span> <a id='magicparlabel-139' />
+<h3 class="subsection"><span class="subsection_label">3.2</span> <a id='magicparlabel-142' />
 Sample Use Case: per-User Web Services</h3>
-<div class="standard"><a id='magicparlabel-140' />
+<div class="standard"><a id='magicparlabel-143' />
 In our deployment it is trivial for users to run their own web services:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-141' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-144' />
 pick an available port number,</li>
-<li class="itemize_item"><a id='magicparlabel-142' />
+<li class="itemize_item"><a id='magicparlabel-145' />
 locally request credentials (server certificates and/or Kerberos keys) for running a web service on &ldquo;&lt;local-username&gt;.&lt;hostname-fqdn&gt;:&lt;port&gt;&rdquo; (for example, https://jdoe.someserver.foo.example:3000/),</li>
-<li class="itemize_item"><a id='magicparlabel-143' />
+<li class="itemize_item"><a id='magicparlabel-146' />
 configure the web service to start on the chosen port number and with the given credentials,</li>
-<li class="itemize_item"><a id='magicparlabel-144' />
+<li class="itemize_item"><a id='magicparlabel-147' />
 then start the service.</li>
 </ul>
-<div class="standard"><a id='magicparlabel-145' />
+<div class="standard"><a id='magicparlabel-148' />
 In this use case no credential acquisition protocols were modified. Instead their services were modified to permit clients with host-based service credentials to acquire credentials for PUHBSPs whose hostname component is a sub-domain of the actual host's.</div>
-<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-146' />
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-149' />
 Security Considerations</h2>
-<div class="standard"><a id='magicparlabel-147' />
-Some hostnames may be meaningful (e.g., &ldquo;irc.foo.bar.example&rdquo; might be taken to mean that an IRC <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-151' />
+<div class="standard"><a id='magicparlabel-150' />
+Some hostnames may be meaningful (e.g., &ldquo;irc.foo.bar.example&rdquo; might be taken to mean that an IRC <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-154' />
 RFC2812</div>
 </div> server is located at that hostname). Users may need to be educated as to how to determine that a fully-qualified hostname is a per-user one.</div>
 
-<div class="standard"><a id='magicparlabel-152' />
+<div class="standard"><a id='magicparlabel-155' />
 Credential issuers SHOULD keep white-lists of users and hostnames that are permitted to have PUHBSPs, though not necessarily white-lists of {username, hostname} that are permitted to have PUHBSPs.</div>
 
-<div class="standard"><a id='magicparlabel-153' />
-Self-service key management services for PKIX <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-157' />
+<div class="standard"><a id='magicparlabel-156' />
+Self-service key management services for PKIX <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-160' />
 RFC5280</div>
 </div> SHOULD use an intermediate, online certification authority (CA), rather than a top-level CA, so as to make it possible to revoke the online CA's certificate. (This is good advice for any CA anyways.)</div>
 
-<div class="standard"><a id='magicparlabel-158' />
+<div class="standard"><a id='magicparlabel-161' />
 Note that this scheme does not support users from more than one realm having PUHBSPs on the same host.</div>
-<h3 class="subsection"><span class="subsection_label">4.1</span> <a id='magicparlabel-159' />
+<h3 class="subsection"><span class="subsection_label">4.1</span> <a id='magicparlabel-162' />
 Man-in-the-Middle Attacks by Local Users</h3>
-<div class="standard"><a id='magicparlabel-160' />
+<div class="standard"><a id='magicparlabel-163' />
 Note that a large number of port numbers for running services are available to all users on most operating systems. This means that a local user could start a proxy on one port and forward to another port on the same host, where the second port is a service run by a different user. Mutual authentication generally protects against this attack.</div>
-<h4 class="subsubsection"><span class="subsubsection_label">4.1.1</span> <a id='magicparlabel-161' />
+<h4 class="subsubsection"><span class="subsubsection_label">4.1.1</span> <a id='magicparlabel-164' />
 Security Considerations for Per-User HTTP Services</h4>
-<div class="standard"><a id='magicparlabel-162' />
-Hypertext Transfer Protocol (HTTP) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-166' />
+<div class="standard"><a id='magicparlabel-165' />
+Hypertext Transfer Protocol (HTTP) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-169' />
 RFC2616</div>
-</div> used with the SPNEGO-based <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-170' />
+</div> used with the SPNEGO-based <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-173' />
 RFC4178</div>
-</div> HTTP authentication method <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-174' />
+</div> HTTP authentication method <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-177' />
 RFC4559</div>
-</div> is quite common in some environments. Negotiate does not make use of session keys to protect HTTP data and metadata. To safeguard against this, per-user HTTP services MUST use Transport Layer Security (TLS) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-178' />
+</div> is quite common in some environments. Negotiate does not make use of session keys to protect HTTP data and metadata. To safeguard against this, per-user HTTP services MUST use Transport Layer Security (TLS) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-181' />
 RFC5246</div>
 </div>, not just SPNEGO.</div>
-<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-179' />
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-182' />
 IANA Considerations</h2>
-<div class="standard"><a id='magicparlabel-180' />
+<div class="standard"><a id='magicparlabel-183' />
 There are no IANA considerations in this document.</div>
-<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-181' />
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-184' />
 <a id="sec_References" />
 Normative References</h2>
-<div class="standard"><a id='magicparlabel-182' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-186' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
+<div class="standard"><a id='magicparlabel-185' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-189' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
 </div></div>
-<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-187' />
+<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-190' />
 Informative References</h2>
-<div class="standard"><a id='magicparlabel-188' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-192' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.1034.xml">rfc1034</a></div>
+<div class="standard"><a id='magicparlabel-191' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-195' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1034.xml">rfc1034</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-193' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-197' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.1035.xml">rfc1035</a></div>
+<div class="standard"><a id='magicparlabel-196' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-200' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml">rfc1035</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-198' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-202' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml">rfc2616</a></div>
+<div class="standard"><a id='magicparlabel-201' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-205' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2616.xml">rfc2616</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-203' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-207' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2812.xml">rfc2812</a></div>
+<div class="standard"><a id='magicparlabel-206' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-210' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2812.xml">rfc2812</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-208' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-212' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2986.xml">rfc2986</a></div>
+<div class="standard"><a id='magicparlabel-211' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-215' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2986.xml">rfc2986</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-213' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-217' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3244.xml">rfc3244</a></div>
+<div class="standard"><a id='magicparlabel-216' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-220' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3244.xml">rfc3244</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-218' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-222' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
+<div class="standard"><a id='magicparlabel-221' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-225' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-223' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-227' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4178.xml">rfc4178</a></div>
+<div class="standard"><a id='magicparlabel-226' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-230' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4178.xml">rfc4178</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-228' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-232' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.4559.xml">rfc4559</a></div>
+<div class="standard"><a id='magicparlabel-231' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-235' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4559.xml">rfc4559</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-233' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-237' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml">rfc5280</a></div>
+<div class="standard"><a id='magicparlabel-236' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-240' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml">rfc5280</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-238' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-242' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml">rfc5246</a></div>
+<div class="standard"><a id='magicparlabel-241' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-245' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml">rfc5246</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-243' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-247' />
-<a href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.6717.xml">rfc6717</a></div>
+<div class="standard"><a id='magicparlabel-246' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-250' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6717.xml">rfc6717</a></div>
 </div></div>
 </body>
 </html>
