@@ -265,7 +265,7 @@ font-size: medium;
 Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using Kerberized Certification Authorities (kx509) and PKINIT</h1>
 <div class="standard"><a id='magicparlabel-2' />
 <div class="flex_docname"><div class="plain_layout"><a id='magicparlabel-6' />
-draft-williams-kitten-krb5-pkcross-04</div>
+draft-williams-kitten-krb5-pkcross-05</div>
 </div><div class="flex_ipr"><div class="plain_layout"><a id='magicparlabel-10' />
 trust200902</div>
 </div><div class="flex_intendedstatus"><div class="plain_layout"><a id='magicparlabel-14' />
@@ -311,60 +311,69 @@ This document specifies a protocol for obtaining cross-realm Kerberos tickets us
 
 <div class='lyxtoc-1'><a href='#magicparlabel-63' class='tocentry'>1 Introduction</a> <a href='#magicparlabel-63' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-76' class='tocentry'>1.1 Conventions used in this document</a> <a href='#magicparlabel-76' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-78' class='tocentry'>1.1 Conventions used in this document</a> <a href='#magicparlabel-78' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-82' class='tocentry'>2 The PKCROSS Protocol</a> <a href='#magicparlabel-82' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-1'><a href='#magicparlabel-84' class='tocentry'>2 The PKCROSS Protocol</a> <a href='#magicparlabel-84' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-88' class='tocentry'>2.1 Client-Driven PKCROSS</a> <a href='#magicparlabel-88' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-90' class='tocentry'>2.1 Client-Driven PKCROSS</a> <a href='#magicparlabel-90' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-104' class='tocentry'>2.2 TGS-Driven PKCROSS</a> <a href='#magicparlabel-104' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-106' class='tocentry'>2.2 TGS-Driven PKCROSS</a> <a href='#magicparlabel-106' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-111' class='tocentry'>2.2.1 Issuing cross-realm TGTs issued for PKCROSS-keyed cross-realm TGS principals</a> <a href='#magicparlabel-111' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-113' class='tocentry'>2.2.1 Issuing cross-realm TGTs issued for PKCROSS-keyed cross-realm TGS principals</a> <a href='#magicparlabel-113' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-132' class='tocentry'>2.2.2 Handling impatient clients</a> <a href='#magicparlabel-132' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-134' class='tocentry'>2.2.2 Handling impatient clients</a> <a href='#magicparlabel-134' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-136' class='tocentry'>2.3 Stapled DANE</a> <a href='#magicparlabel-136' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-138' class='tocentry'>2.3 Stapled DANE</a> <a href='#magicparlabel-138' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-138' class='tocentry'>2.4 Validation</a> <a href='#magicparlabel-138' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-140' class='tocentry'>2.4 Validation</a> <a href='#magicparlabel-140' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-143' class='tocentry'>2.5 Transit Path</a> <a href='#magicparlabel-143' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-2'><a href='#magicparlabel-145' class='tocentry'>2.5 Transit Path</a> <a href='#magicparlabel-145' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-3'><a href='#magicparlabel-155' class='tocentry'>2.5.1 Transit path representation</a> <a href='#magicparlabel-155' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-157' class='tocentry'>2.5.1 Transit path representation</a> <a href='#magicparlabel-157' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-166' class='tocentry'>2.6 Exchange of Long-Term Cross-Realm Symmetric Keys</a> <a href='#magicparlabel-166' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-168' class='tocentry'>2.6 Exchange of Long-Term Cross-Realm Symmetric Keys</a> <a href='#magicparlabel-168' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-172' class='tocentry'>3 Security Properties</a> <a href='#magicparlabel-172' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-1'><a href='#magicparlabel-174' class='tocentry'>3 Security Properties</a> <a href='#magicparlabel-174' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-174' class='tocentry'>3.1 Automatic Cross-Realm Keying</a> <a href='#magicparlabel-174' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-176' class='tocentry'>3.1 Automatic Cross-Realm Keying</a> <a href='#magicparlabel-176' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-176' class='tocentry'>3.2 Scalability</a> <a href='#magicparlabel-176' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-178' class='tocentry'>3.2 Scalability</a> <a href='#magicparlabel-178' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-188' class='tocentry'>3.3 Privacy Protection relative to home realm</a> <a href='#magicparlabel-188' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-3'><a href='#magicparlabel-190' class='tocentry'>3.2.1 Simplified trust routing</a> <a href='#magicparlabel-190' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-193' class='tocentry'>3.2.2 Simplified trust path validation</a> <a href='#magicparlabel-193' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-200' class='tocentry'>4 Application Programming Interface Considerations</a> <a href='#magicparlabel-200' class='tocarrow'>&gt;</a>
-
-<div class='lyxtoc-2'><a href='#magicparlabel-202' class='tocentry'>4.1 GSS-API Considerations</a> <a href='#magicparlabel-202' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-195' class='tocentry'>3.3 Privacy Protection relative to home realm</a> <a href='#magicparlabel-195' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-213' class='tocentry'>5 Security Considerations</a> <a href='#magicparlabel-213' class='tocarrow'>&gt;</a>
+<div class='lyxtoc-1'><a href='#magicparlabel-207' class='tocentry'>4 Application Programming Interface Considerations</a> <a href='#magicparlabel-207' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-2'><a href='#magicparlabel-216' class='tocentry'>5.1 Loss of Cross-Realm Principal Trust Establishment Information</a> <a href='#magicparlabel-216' class='tocarrow'>&gt;</a></div>
-
-<div class='lyxtoc-2'><a href='#magicparlabel-219' class='tocentry'>5.2 On the Need for a Common Transit Path Policy Language</a> <a href='#magicparlabel-219' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-209' class='tocentry'>4.1 GSS-API Considerations</a> <a href='#magicparlabel-209' class='tocarrow'>&gt;</a></div>
 </div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-222' class='tocentry'>6 IANA Considerations</a> <a href='#magicparlabel-222' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-1'><a href='#magicparlabel-220' class='tocentry'>5 Security Considerations</a> <a href='#magicparlabel-220' class='tocarrow'>&gt;</a>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-224' class='tocentry'>7 Acknowledgements</a> <a href='#magicparlabel-224' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-223' class='tocentry'>5.1 Loss of Cross-Realm Principal Trust Establishment Information</a> <a href='#magicparlabel-223' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-226' class='tocentry'>8 Normative References</a> <a href='#magicparlabel-226' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-226' class='tocentry'>5.2 On the Need for a Common Transit Path Policy Language</a> <a href='#magicparlabel-226' class='tocarrow'>&gt;</a></div>
 
-<div class='lyxtoc-1'><a href='#magicparlabel-272' class='tocentry'>9 Informative References</a> <a href='#magicparlabel-272' class='tocarrow'>&gt;</a></div>
+<div class='lyxtoc-2'><a href='#magicparlabel-230' class='tocentry'>5.3 On the Need for Trust Routing</a> <a href='#magicparlabel-230' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-232' class='tocentry'>6 IANA Considerations</a> <a href='#magicparlabel-232' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-234' class='tocentry'>7 TODO</a> <a href='#magicparlabel-234' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-236' class='tocentry'>8 Acknowledgements</a> <a href='#magicparlabel-236' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-238' class='tocentry'>9 Normative References</a> <a href='#magicparlabel-238' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-284' class='tocentry'>10 Informative References</a> <a href='#magicparlabel-284' class='tocarrow'>&gt;</a></div>
 </div>
 
 <h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-63' />
@@ -372,7 +381,7 @@ Introduction</h2>
 <div class="standard"><a id='magicparlabel-64' />
 Kerberos <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-68' />
 RFC4120</div>
-</div> supports meshes of many realms. The individual relationships between realms must be manually keyed, usually with keys derived from passwords. A full mesh wouldn't scale, therefore the protocol calls for hierarchical trust hierarchies. In practice non-hierarchical but also non-fully-meshed relationships are used.</div>
+</div> supports meshes of many realms. The individual relationships between realms must be manually keyed, usually with keys derived from passwords. A full mesh wouldn't scale, therefore the protocol calls for hierarchical trust universes. In practice non-hierarchical but also non-fully-meshed relationships are used, and these generally require distribution of trust routing information to clients, services, and KDCs. With referrals it is possible to reduce the need for client-side trust routing information, but KDCs still need it, as do services (unless they accept KDC trust path policy and the KDC applies it via the TRANSITED-POLICY-CHECKED ticket flag).</div>
 
 <div class="standard"><a id='magicparlabel-69' />
 These manually-exchanged keys are very difficult to rollover safely, and when they are changed the result is often outages &ndash; controlled outages where foreseen, but outages nonetheless.</div>
@@ -381,71 +390,77 @@ These manually-exchanged keys are very difficult to rollover safely, and when th
 Manual cross-realm keying does not scale, and has very poor security properties. We seek to remediate this using public key cryptography, building on existing Kerberos specifications.</div>
 
 <div class="standard"><a id='magicparlabel-71' />
-Many years ago there was a proposal for exchanging cross-realm keys using a public key infrastructure (PKI) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-75' />
+Distribution of trust routing (traditionally known as &ldquo;capaths&rdquo;) and trust path validation (also &ldquo;capaths&rdquo;) information is difficult; there is no standard protocol for it. Maintenance of it is a thoroughly manual process.</div>
+
+<div class="standard"><a id='magicparlabel-72' />
+Many years ago there was a proposal for exchanging cross-realm keys using a public key infrastructure (PKI) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-76' />
 RFC5280</div>
 </div>; that proposal went by the name &ldquo;PKCROSS&rdquo;. We appropriate that long-dead proposal's name, but the protocol specified here is very different from the original proposal.</div>
-<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-76' />
-Conventions used in this document</h3>
+
 <div class="standard"><a id='magicparlabel-77' />
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-81' />
+PKCROSS can make Kerberos scale to large numbers of realms, will remove the need for manual keying of cross-realm TGS principals, will further reduce the need for maintenance and distribution of trust routing information, and will tend to reduce the complexity of trust path validation.</div>
+<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-78' />
+Conventions used in this document</h3>
+<div class="standard"><a id='magicparlabel-79' />
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-83' />
 RFC2119</div>
 </div>.</div>
-<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-82' />
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-84' />
 The PKCROSS Protocol</h2>
-<div class="standard"><a id='magicparlabel-83' />
-We provide two variants of the PKCROSS protocol: one that is client-driven, and another that is driven by a Ticket Granting Service (TGS) on behalf of its clients. The latter is based on the former, with the TGS acting as a client. We begin with the client-driven case. DNS-Based Authentication of Named Entities (DANE) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-87' />
+<div class="standard"><a id='magicparlabel-85' />
+We provide two variants of the PKCROSS protocol: one that is client-driven, and another that is driven by a Ticket Granting Service (TGS) on behalf of its clients. The latter is based on the former, with the TGS acting as a client. We begin with the client-driven case. DNS-Based Authentication of Named Entities (DANE) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-89' />
 RFC6698</div>
 </div> can and should be used for realm CA certificate validation.</div>
-<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-88' />
+<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-90' />
 Client-Driven PKCROSS</h3>
-<div class="standard"><a id='magicparlabel-89' />
+<div class="standard"><a id='magicparlabel-91' />
 A Kerberos client in with a ticket-granting ticket (TGT) for any one source realm (usually but not necessarily the client's own realm) wishing to acquire a TGT for a destination realm may use this protocol instead of the traditional cross-realm ticket-granting service (TGS) exchanges as follows:</div>
 
-<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-90' />
+<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-92' />
 Generate private key to a public key cryptosystem;</li>
-<li class="enumerate_item"><a id='magicparlabel-91' />
-Request a certificate from the kx509 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-95' />
+<li class="enumerate_item"><a id='magicparlabel-93' />
+Request a certificate from the kx509 <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-97' />
 RFC6717</div>
 </div> service run by the source realm;</li>
-<li class="enumerate_item"><a id='magicparlabel-96' />
-Request a TGT from the destination realm using PKINIT <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-100' />
+<li class="enumerate_item"><a id='magicparlabel-98' />
+Request a TGT from the destination realm using PKINIT <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-102' />
 RFC4556</div>
 </div> and the client certificate obtained in step #2.</li>
 </ol>
-<div class="standard"><a id='magicparlabel-101' />
+<div class="standard"><a id='magicparlabel-103' />
 If the destination realm issues the requested Ticket then it SHOULD include the client's certificate in an AD-CLIENT-CERTIFICATE authorization-data element, and it MUST do so if it does not validate the client's certificate to an acceptable trust anchor. The AD-CLIENT-CERTIFICATE authorization-data MUST be in a KDC-signed authorization-data container [XXX add reference to CAMMAC].</div>
 
-<div class="revisionremark"><a id='magicparlabel-102' />
+<div class="revisionremark"><a id='magicparlabel-104' />
 QUESTION: Should the PKINIT request in step #3 be a TGS-REQ with PKINIT pre-auth data?</div>
 
-<div class="revisionremark"><a id='magicparlabel-103' />
+<div class="revisionremark"><a id='magicparlabel-105' />
 QUESTION: Should the PKINIT request in step #3 be required to be used within a FAST tunnel?</div>
-<h3 class="subsection"><span class="subsection_label">2.2</span> <a id='magicparlabel-104' />
+<h3 class="subsection"><span class="subsection_label">2.2</span> <a id='magicparlabel-106' />
 TGS-Driven PKCROSS</h3>
-<div class="standard"><a id='magicparlabel-105' />
+<div class="standard"><a id='magicparlabel-107' />
 A TGS can bootstrap ephemeral cross-realm trust principals on behalf of its clients. This allows the cost of PKCROSS to be amortized over many clients, and it allows participation by clients that do not support client-driven PKCROSS (or whose PKCROSS requests are rejected by the target).</div>
 
-<div class="standard"><a id='magicparlabel-106' />
+<div class="standard"><a id='magicparlabel-108' />
 In this mode the TGS uses the client-driven PKCROSS protocol, modified as follows:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-107' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-109' />
 the TGS's client certificate MUST have an id-pkinit-san Subject Alternative Name (SAN) identifying the source TGS as krbtgt/SOURCE@SOURCE</li>
-<li class="itemize_item"><a id='magicparlabel-108' />
+<li class="itemize_item"><a id='magicparlabel-110' />
 the TGS's client certificate MUST have an Extended Key Usage (EKU) of id-pkcross-issuer (TBD)</li>
 </ul>
-<div class="standard"><a id='magicparlabel-109' />
+<div class="standard"><a id='magicparlabel-111' />
 The resulting TGT -which we shall term an &ldquo;issuer TGT&rdquo; (ITGT)- and its session key can then be used by the source TGS to create cross-realm TGTs for the source-to-target trust principal (&ldquo;krbtgt/TARGET@SOURCE&rdquo;).</div>
 
-<div class="standard"><a id='magicparlabel-110' />
-This ITGT will be used to mint tickets as described below.</div>
-<h4 class="subsubsection"><span class="subsubsection_label">2.2.1</span> <a id='magicparlabel-111' />
-Issuing cross-realm TGTs issued for PKCROSS-keyed cross-realm TGS principals</h4>
 <div class="standard"><a id='magicparlabel-112' />
+This ITGT will be used to mint tickets as described below.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.2.1</span> <a id='magicparlabel-113' />
+Issuing cross-realm TGTs issued for PKCROSS-keyed cross-realm TGS principals</h4>
+<div class="standard"><a id='magicparlabel-114' />
 Cross-realm TGTs issued by a source TGS using an ITGT will not be quite like normal Kerberos Tickets: their encrypted part contains an AP-REQ using the ITGT acquired by the source TGS, and this AP-REQ is &ldquo;encrypted&rdquo; with the null enctype, The AP-REQ's Authenitcator MUST contain an authorization-data element that carries a) the name of the client principal, b) the session key that the client should be using with the cross-realm TGTs issued.</div>
 
-<div class="standard"><a id='magicparlabel-113' />
+<div class="standard"><a id='magicparlabel-115' />
 </div>
-<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-117' />
+<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-119' />
 </div>
 <div class='float float-listings'><pre> AD-PKCROSS-TGT-INFO ::= SEQUENCE {
      cname [0] Principal,    -- the client's realm is the
@@ -454,235 +469,259 @@ Cross-realm TGTs issued by a source TGS using an ITGT will not be quite like nor
  }</pre></div>
 
 
-<div class="plain_layout"><a id='magicparlabel-126' />
-<div class='float-caption float-caption-figure'>Figure 1:<div class="plain_layout"><a id='magicparlabel-130' />
+<div class="plain_layout"><a id='magicparlabel-128' />
+<div class='float-caption float-caption-figure'>Figure 1:<div class="plain_layout"><a id='magicparlabel-132' />
 AD-PKCROSS-TGT-INFO</div>
 </div></div>
 
-<div class="plain_layout"><a id='magicparlabel-131' />
+<div class="plain_layout"><a id='magicparlabel-133' />
 </div>
 </div>
 
-<h4 class="subsubsection"><span class="subsubsection_label">2.2.2</span> <a id='magicparlabel-132' />
+<h4 class="subsubsection"><span class="subsubsection_label">2.2.2</span> <a id='magicparlabel-134' />
 Handling impatient clients</h4>
-<div class="standard"><a id='magicparlabel-133' />
+<div class="standard"><a id='magicparlabel-135' />
 Because the process of acquiring an ITGT might be slow, a TGS doing so on behalf of a client could use a mechanism for instructing the client to be patient. Existing clients would not handler a new error code by waiting, therefore there is not much that can be done to keep an impatient client from retrying at another KDC.</div>
 
-<div class="standard"><a id='magicparlabel-134' />
+<div class="standard"><a id='magicparlabel-136' />
 The existing KDC_ERR_SVC_UNAVAILABLE error code cannot be used as often this causes the client to immediately retry the request at another KDC. A new error code for indicating estimated time to completion of request would be handy, but out of scope for this document.</div>
 
-<div class="standard"><a id='magicparlabel-135' />
+<div class="standard"><a id='magicparlabel-137' />
 Note that there is a denial of service (DoS) attack by clients on willing source KDCs: the clients can ask the KDCs to acquire cross-realm ITGTs for many target realms. Ideally the quality of service for the Kerberos authentication service (AS) with PKINIT (and/or other slow pre-authentication mechanisms) should be separate from that of the Kerberos TGS co-located with it, and the PKCROSS-capable TGS as well, so as to be able to throttle low-priority requests when under load.</div>
-<h3 class="subsection"><span class="subsection_label">2.3</span> <a id='magicparlabel-136' />
+<h3 class="subsection"><span class="subsection_label">2.3</span> <a id='magicparlabel-138' />
 Stapled DANE</h3>
-<div class="revisionremark"><a id='magicparlabel-137' />
+<div class="revisionremark"><a id='magicparlabel-139' />
 TBD. We should use Google's serialization of DNS RRsets needed for DANE validation. We will need a label for the TLSA RRs for kx509 issuers.</div>
-<h3 class="subsection"><span class="subsection_label">2.4</span> <a id='magicparlabel-138' />
+<h3 class="subsection"><span class="subsection_label">2.4</span> <a id='magicparlabel-140' />
 Validation</h3>
-<div class="standard"><a id='magicparlabel-139' />
+<div class="standard"><a id='magicparlabel-141' />
 KDCs processing PKINIT requests crossing realms MUST apply either or both of:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-140' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-142' />
 PKIX certificate validation</li>
-<li class="itemize_item"><a id='magicparlabel-141' />
+<li class="itemize_item"><a id='magicparlabel-143' />
 DANE certificate validation</li>
 </ul>
-<div class="standard"><a id='magicparlabel-142' />
-KDCs MUST reject PKINIT requests from clients of foreign realms whose certificates cannot be validated, unless the client request the anonymous principal name in the target's realm.</div>
-<h3 class="subsection"><span class="subsection_label">2.5</span> <a id='magicparlabel-143' />
-Transit Path</h3>
 <div class="standard"><a id='magicparlabel-144' />
+KDCs MUST reject PKINIT requests from clients of foreign realms whose certificates cannot be validated, unless the client request the anonymous principal name in the target's realm.</div>
+<h3 class="subsection"><span class="subsection_label">2.5</span> <a id='magicparlabel-145' />
+Transit Path</h3>
+<div class="standard"><a id='magicparlabel-146' />
 The combined Kerberos/PKIX/DNSSEC transit path MUST be represented in any tickets issued using PKCROSS (see below). As usual, each realm's KDCs in the mix can set the transit policy checked flag if a client's transit path is acceptable per the realm's KDCs' local policy.</div>
 
-<div class="standard"><a id='magicparlabel-145' />
-Two validation mechanisms are available: all PKIX <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-149' />
+<div class="standard"><a id='magicparlabel-147' />
+Two validation mechanisms are available: all PKIX <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-151' />
 RFC5280</div>
-</div> validation methods, and DANE <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-153' />
+</div> validation methods, and DANE <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-155' />
 RFC6698</div>
-</div>. DANE validation records SHOULD be stapled onto the client certificates by the issuing kx509 CA; alternatively clients can staple DANE validation records onto their PKINIT requests using an authorization-data element, AD-PKINIT-CLIENT-DANE.</div>
+</div>. DANE validation records SHOULD be stapled onto the client certificates by the issuing kx509 CA; alternatively, clients can staple <a href="http://src.chromium.org/viewvc/chrome/trunk/src/net/base/dnssec_chain_verifier.cc?pathrev=167227">DANE validation records</a> onto their PKINIT requests using an authorization-data element, AD-PKINIT-CLIENT-DANE.</div>
 
-<div class="standard"><a id='magicparlabel-154' />
-Additionally, when PKIX certificate validation is used, the trust path should be encoded in an AD-INITIAL-VERIFIED-CAS authorization data element, per-PKINIT.</div>
-<h4 class="subsubsection"><span class="subsubsection_label">2.5.1</span> <a id='magicparlabel-155' />
-Transit path representation</h4>
 <div class="standard"><a id='magicparlabel-156' />
+Additionally, when PKIX certificate validation is used, the trust path should be encoded in an AD-INITIAL-VERIFIED-CAS authorization data element, per-PKINIT.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.5.1</span> <a id='magicparlabel-157' />
+Transit path representation</h4>
+<div class="standard"><a id='magicparlabel-158' />
 The notional transit path for a ticket issued by a target realm's KDCs includes:</div>
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-157' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-159' />
 the source realm (never expressed in the 'transited' field of Kerberos Tickets)</li>
-<li class="itemize_item"><a id='magicparlabel-158' />
+<li class="itemize_item"><a id='magicparlabel-160' />
 all realms in the ITGT's transited field (in the TGS-driven PKCROSS case)</li>
-<li class="itemize_item"><a id='magicparlabel-159' />
+<li class="itemize_item"><a id='magicparlabel-161' />
 all issuers in the validation path for the kx509-issued certificate, which are
 
-<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-160' />
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-162' />
 all issuers in the certificate's PKIX validation path when PKIX validation is used</li>
-<li class="itemize_item"><a id='magicparlabel-161' />
+<li class="itemize_item"><a id='magicparlabel-163' />
 all DNS zone domainnames transited from the source realm's domainname to the root zone</li>
 </ul>
-</li><li class="itemize_item"><a id='magicparlabel-162' />
+</li><li class="itemize_item"><a id='magicparlabel-164' />
 the target realm (also never expressed in the 'transited' field)</li>
 </ul>
-<div class="standard"><a id='magicparlabel-163' />
+<div class="standard"><a id='magicparlabel-165' />
 When using DANE for validation of the issuer's certificate the target SHOULD represent the transit path as hierarchical from the source realm's domain to the root domain, then direct from there to the target's realm.</div>
 
-<div class="standard"><a id='magicparlabel-164' />
+<div class="standard"><a id='magicparlabel-166' />
 The notional transit path for a given client principal MUST be encoded as usual, using the Kerberos X.500 and domain-style representations of PKIX issuer names and DNS domainnames as faithfully to the original as possible.</div>
 
-<div class="revisionremark"><a id='magicparlabel-165' />
+<div class="revisionremark"><a id='magicparlabel-167' />
 QUESTION: Do we need a 100% faithful representation of the transit path?</div>
-<h3 class="subsection"><span class="subsection_label">2.6</span> <a id='magicparlabel-166' />
+<h3 class="subsection"><span class="subsection_label">2.6</span> <a id='magicparlabel-168' />
 Exchange of Long-Term Cross-Realm Symmetric Keys</h3>
-<div class="standard"><a id='magicparlabel-167' />
+<div class="standard"><a id='magicparlabel-169' />
 A KDC can acquire a TGT using PKCROSS whose session key then becomes the long-lived, persistent symmetric key for a cross-realm principal from the source realm to the target realm (&ldquo;krbtgt/TARGET@SOURCE&rdquo;).</div>
 
-<div class="standard"><a id='magicparlabel-168' />
+<div class="standard"><a id='magicparlabel-170' />
 To do this the KDC MUST set the USE-SESSION-KEY-AS-REALM-KEY KDCOptions flag (TBD) in its request for an ITGT from the target realm. As usual, the target realm's KDC MUST validate the client principal's certificate. The target realm's KDC MUST NOT return a TGS-REP until the new principal is committed to its principal database, and MUST set the endtime of the ITGT to the time at which the source realm may begin using the new symmetrically-keyed principal.</div>
 
-<div class="standard"><a id='magicparlabel-169' />
+<div class="standard"><a id='magicparlabel-171' />
 The source realm's KDC MUST commit the new principal to its principal database and MUST NOT begin using the new principal's long-term keys until the new principal is available to all KDCs for the source realm and the endtime of the ITGT passes.</div>
 
-<div class="standard"><a id='magicparlabel-170' />
+<div class="standard"><a id='magicparlabel-172' />
 Target KDCs SHOULD require manual pre-approval of such new cross-realm principals. In small, isolated environments a KDC MAY be configured to pre-approve all such new principals.</div>
 
-<div class="standard"><a id='magicparlabel-171' />
-By default, source KDCs SHOULD NOT automatically request long-term keying of cross-realm principals.</div>
-<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-172' />
-Security Properties</h2>
 <div class="standard"><a id='magicparlabel-173' />
-The proposed PKCROSS protocol has several useful properties described below.</div>
-<h3 class="subsection"><span class="subsection_label">3.1</span> <a id='magicparlabel-174' />
-Automatic Cross-Realm Keying</h3>
+By default, source KDCs SHOULD NOT automatically request long-term keying of cross-realm principals.</div>
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-174' />
+Security Properties</h2>
 <div class="standard"><a id='magicparlabel-175' />
-No more manual keying of cross-realm principals via exchanging passwords in-person on a telephone call (or similar).</div>
-<h3 class="subsection"><span class="subsection_label">3.2</span> <a id='magicparlabel-176' />
-Scalability</h3>
+The proposed PKCROSS protocol has several useful properties described below.</div>
+<h3 class="subsection"><span class="subsection_label">3.1</span> <a id='magicparlabel-176' />
+Automatic Cross-Realm Keying</h3>
 <div class="standard"><a id='magicparlabel-177' />
+No more manual keying of cross-realm principals via exchanging passwords in-person on a telephone call (or similar).</div>
+<h3 class="subsection"><span class="subsection_label">3.2</span> <a id='magicparlabel-178' />
+Scalability</h3>
+<div class="standard"><a id='magicparlabel-179' />
 Kerberos with commonplace symmetrically-keyed hierarchical cross-real trusts can scale to a large universe of realms, but only if there are top-level realms that are willing to pair-wise trust and &ldquo;child&rdquo; realms. Such top-level realms do not exist in practice, leading to an O(N^2) scaling problem for most two-label realms.</div>
 
-<div class="standard"><a id='magicparlabel-178' />
-Leveraging a PKI, such as a PKIX PKI <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-182' />
+<div class="standard"><a id='magicparlabel-180' />
+Leveraging a PKI, such as a PKIX PKI <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-184' />
 RFC5280</div>
-</div> or a DNSSEC PKI <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-186' />
+</div> or a DNSSEC PKI <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-188' />
 RFC4033</div>
 </div> removes the need for either top-level realms (which are not likely to ever be operated as commercial or even non-profit entities) or O(N^2) pair-wise cross-realm symmetric keying.</div>
 
-<div class="standard"><a id='magicparlabel-187' />
-The cost of this is having to add PKI trust paths to Kerberos trust paths (though the resulting trust path length need not be much different than before).</div>
-<h3 class="subsection"><span class="subsection_label">3.3</span> <a id='magicparlabel-188' />
-Privacy Protection relative to home realm</h3>
 <div class="standard"><a id='magicparlabel-189' />
+The cost of this is having to add PKI trust paths to Kerberos trust paths (though the resulting trust path length need not be much different than before).</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.2.1</span> <a id='magicparlabel-190' />
+Simplified trust routing</h4>
+<div class="standard"><a id='magicparlabel-191' />
+For clients, relying on referrals (and TGS-driven PKCROSS) and/or client-driven PKCROSS will greatly reduce the need for client-side trust routing information.</div>
+
+<div class="standard"><a id='magicparlabel-192' />
+Even KDCs won't need trust routing information.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">3.2.2</span> <a id='magicparlabel-193' />
+Simplified trust path validation</h4>
+<div class="standard"><a id='magicparlabel-194' />
+For services that accept hierarchical trust paths, PKCROSS will greatly reduce the complexity of trust path / transit validation. Such services that also trust DANE/DNSSEC will need no trust path validation information for any clients using PKCROSS to reach the service. In many cases a very simple policy expressed in terms of whitelists of top-level domains (TLDs) or near top-level domains traversed, trust anchor sets, and trust of all zero-length transit paths, will suffice. </div>
+<h3 class="subsection"><span class="subsection_label">3.3</span> <a id='magicparlabel-195' />
+Privacy Protection relative to home realm</h3>
+<div class="standard"><a id='magicparlabel-196' />
 This protocol protects the privacy of client principals vis-a-vis their home realms, when the clients use the client-driven PKCROSS protocol.</div>
 
-<div class="standard"><a id='magicparlabel-190' />
+<div class="standard"><a id='magicparlabel-197' />
 This feature is generally and naturally available in PKI, and as this protocol is based on a kerberized certification authority, this protocol inherits this privacy feature from PKI.</div>
 
-<div class="standard"><a id='magicparlabel-191' />
-The realms visited by the client may, of course, inform the client's home realm, but in the event that they don't, the client does gain this small measure of privacy. Of course, the privacy-conscious client SHOULD attach an OCSP Response <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-195' />
+<div class="standard"><a id='magicparlabel-198' />
+The realms visited by the client may, of course, inform the client's home realm, but in the event that they don't, the client does gain this small measure of privacy. Of course, the privacy-conscious client SHOULD attach an OCSP Response <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-202' />
 RFC6960</div>
-</div> to its PKINIT request, per <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-199' />
+</div> to its PKINIT request, per <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-206' />
 RFC4557</div>
 </div>.</div>
-<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-200' />
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-207' />
 Application Programming Interface Considerations</h2>
-<div class="standard"><a id='magicparlabel-201' />
+<div class="standard"><a id='magicparlabel-208' />
 Improved scalability for Kerberos realm traversal implies larger Kerberos universes, and the larger a universe of trust the more important it is to have useful and expressive local policy for evaluating the trustworthiness of any given transit path. Because in most applications local policy should be a component external to the application, there is mostly no impact on APIs here. However, an implementation may wish to provide applications with interfaces for specifying policies, either named or by value.</div>
-<h3 class="subsection"><span class="subsection_label">4.1</span> <a id='magicparlabel-202' />
+<h3 class="subsection"><span class="subsection_label">4.1</span> <a id='magicparlabel-209' />
 GSS-API Considerations</h3>
-<div class="standard"><a id='magicparlabel-203' />
-The naming attributes <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-207' />
+<div class="standard"><a id='magicparlabel-210' />
+The naming attributes <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-214' />
 RFC6680</div>
-</div> defined in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-211' />
+</div> defined in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-218' />
 I-D.williams-kitten-generic-naming-attributes</div>
 </div> provide access to information about transit paths.</div>
 
-<div class="standard"><a id='magicparlabel-212' />
+<div class="standard"><a id='magicparlabel-219' />
 Note that information about how PKCROSS was used to establish symmetrically-keyed cross-realm principals is lost and will not appear in the transit path in tickets issued by KDCs reached via such cross-realm principals.</div>
-<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-213' />
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-220' />
 Security Considerations</h2>
-<div class="revisionremark"><a id='magicparlabel-214' />
+<div class="revisionremark"><a id='magicparlabel-221' />
 All the security considerations of Kerberos and PKI apply. Security considerations are discussed throughout this document.</div>
 
-<div class="standard"><a id='magicparlabel-215' />
+<div class="standard"><a id='magicparlabel-222' />
 Scaling up the universe of realms reachable via any trust path necessarily dilutes trust overall, but not for specific paths. On the other hand, by shortening transit path lengths trust can be improved, though some short transit paths will have been symmetrically keyed using this PKCROSS protocol and therefore will be longer than they appear to be. These are subjective notions of trust, of course.</div>
-<h3 class="subsection"><span class="subsection_label">5.1</span> <a id='magicparlabel-216' />
+<h3 class="subsection"><span class="subsection_label">5.1</span> <a id='magicparlabel-223' />
 Loss of Cross-Realm Principal Trust Establishment Information</h3>
-<div class="standard"><a id='magicparlabel-217' />
+<div class="standard"><a id='magicparlabel-224' />
 Once a cross-realm principal is symmetrically keyed the transit path used to automatically key that principal will no longer appear in subsequent cross-realm tickets issued by the target.</div>
 
-<div class="standard"><a id='magicparlabel-218' />
+<div class="standard"><a id='magicparlabel-225' />
 The Kerberos transit path encodes only realm names (including X.500-style names, thus PKIX certificate subject and issuer names), and lacks any public key information that might be useful for pinning. However, the certificate validation path for each realm in a transit path SHOULD be included in the transit path.</div>
-<h3 class="subsection"><span class="subsection_label">5.2</span> <a id='magicparlabel-219' />
+<h3 class="subsection"><span class="subsection_label">5.2</span> <a id='magicparlabel-226' />
 On the Need for a Common Transit Path Policy Language</h3>
-<div class="standard"><a id='magicparlabel-220' />
+<div class="standard"><a id='magicparlabel-227' />
 There are no standard ways to express authorization policies for trust transit paths for either Kerberos nor PKI. A standard language for this would be extremely useful. Such a language should allow for the expression of policies for both, clients and services. Such a language should allow for the expression of complex realm/domain/other naming, and should allow for HSTS-style pinning [add references -Nico]. Such a language should allow for multiple paths where desired, and should allow for more than path rejection: it should also allow for reducing the entitlements assigned to a peer/realm for authorization purposes.</div>
 
-<div class="standard"><a id='magicparlabel-221' />
+<div class="standard"><a id='magicparlabel-228' />
 The need for a standard transit path policy expression language is not new, and such a language is broadly and generally needed. Therefore such a language is outside this document's scope.</div>
-<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-222' />
+
+<div class="standard"><a id='magicparlabel-229' />
+PKCROSS can greatly simplify the process of validating a ticket's trust path, first by shortening the number of realms involved to two (in the typical case), maybe three, second by making the actual trust path (PKI or DANE) hierarchical, thus hopefully leaving much less policy to express in a transit path policy language: whitelists of domains and sub-domains, perhaps. But a common language would still be desirable.</div>
+<h3 class="subsection"><span class="subsection_label">5.3</span> <a id='magicparlabel-230' />
+On the Need for Trust Routing</h3>
+<div class="standard"><a id='magicparlabel-231' />
+A common language for trust routing is not necessary in a purely hierarchical world, as in DANE. But since it's likely that there will be some non-hierarchical, non-zero-length transit paths in many deployments for a long time to come, a common language for trust routing would be desirable as well. Routing protocols normally used for network addresses could be used for discovery and distribution of trust routing information as well. But note that there are subtle differences between trust routing and trust path validation, even though in traditional Kerberos deployments the same information is used for both, with the trust validation policy effectively being that the client must have taken the shortest, highest-priority path specified in &ldquo;capaths&rdquo; configutation.</div>
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-232' />
 IANA Considerations</h2>
-<div class="revisionremark"><a id='magicparlabel-223' />
+<div class="revisionremark"><a id='magicparlabel-233' />
 Allocate the new KDCOptions flag (USE-SESSION-KEY-AS-REALM-KEY) and authorization-data element (AD-CLIENT-CERTIFICATE), as well as the new EKU id-pkcross-issuer.</div>
-<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-224' />
+<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-234' />
+TODO</h2>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-235' />
+Provide a normative reference for DANE stapling.</li>
+</ul>
+<h2 class="section"><span class="section_label">8</span> <a id='magicparlabel-236' />
 Acknowledgements</h2>
-<div class="standard"><a id='magicparlabel-225' />
+<div class="standard"><a id='magicparlabel-237' />
 Although the author arrived at this &ldquo;kx509 + PKINIT == PKCROSS&rdquo; idea independently, it is not an original idea. Henry Hotz and Jeffrey Altman each conceived the same idea years earlier. It is a relatively obvious idea when taking into account efforts to bridge disparate security mechanisms and credentials infrastructures.</div>
-<h2 class="section"><span class="section_label">8</span> <a id='magicparlabel-226' />
+<h2 class="section"><span class="section_label">9</span> <a id='magicparlabel-238' />
 <a id="sec_References" />
 Normative References</h2>
-<div class="standard"><a id='magicparlabel-227' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-231' />
+<div class="standard"><a id='magicparlabel-239' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-243' />
 <a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-232' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-236' />
+<div class="standard"><a id='magicparlabel-244' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-248' />
 <a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-237' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-241' />
+<div class="standard"><a id='magicparlabel-249' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-253' />
 <a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4556.xml">rfc4556</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-242' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-246' />
+<div class="standard"><a id='magicparlabel-254' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-258' />
 <a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4557.xml">rfc4557</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-247' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-251' />
+<div class="standard"><a id='magicparlabel-259' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-263' />
 <a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml">rfc5280</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-252' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-256' />
+<div class="standard"><a id='magicparlabel-264' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-268' />
 <a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6680.xml">rfc6680</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-257' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-261' />
+<div class="standard"><a id='magicparlabel-269' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-273' />
 <a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6698.xml">rfc6698</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-262' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-266' />
+<div class="standard"><a id='magicparlabel-274' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-278' />
 <a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6717.xml">rfc6717</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-267' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-271' />
+<div class="standard"><a id='magicparlabel-279' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-283' />
 <a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml">I-D.williams-kitten-generic-naming-attributes</a></div>
 </div></div>
-<h2 class="section"><span class="section_label">9</span> <a id='magicparlabel-272' />
+<h2 class="section"><span class="section_label">10</span> <a id='magicparlabel-284' />
 Informative References</h2>
-<div class="standard"><a id='magicparlabel-273' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-277' />
+<div class="standard"><a id='magicparlabel-285' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-289' />
 <a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4033.xml">rfc4033</a></div>
 </div></div>
 
-<div class="standard"><a id='magicparlabel-278' />
-<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-282' />
+<div class="standard"><a id='magicparlabel-290' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-294' />
 <a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6960.xml">rfc6960</a></div>
 </div></div>
 </body>

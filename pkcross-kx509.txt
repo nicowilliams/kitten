@@ -3,13 +3,13 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Intended status: Standards Track                        October 26, 2014
-Expires: April 29, 2015
+Intended status: Standards Track                        October 27, 2014
+Expires: April 30, 2015
 
 
   Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using
         Kerberized Certification Authorities (kx509) and PKINIT
-                 draft-williams-kitten-krb5-pkcross-04
+                 draft-williams-kitten-krb5-pkcross-05
 
 Abstract
 
@@ -35,7 +35,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 29, 2015.
+   This Internet-Draft will expire on April 30, 2015.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Williams                 Expires April 29, 2015                 [Page 1]
+Williams                 Expires April 30, 2015                 [Page 1]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -79,19 +79,23 @@ Table of Contents
    3.      Security Properties  . . . . . . . . . . . . . . . . . . .  9
    3.1.    Automatic Cross-Realm Keying . . . . . . . . . . . . . . .  9
    3.2.    Scalability  . . . . . . . . . . . . . . . . . . . . . . .  9
-   3.3.    Privacy Protection relative to home realm  . . . . . . . .  9
-   4.      Application Programming Interface Considerations . . . . . 10
-   4.1.    GSS-API Considerations . . . . . . . . . . . . . . . . . . 10
-   5.      Security Considerations  . . . . . . . . . . . . . . . . . 11
+   3.2.1.  Simplified trust routing . . . . . . . . . . . . . . . . .  9
+   3.2.2.  Simplified trust path validation . . . . . . . . . . . . .  9
+   3.3.    Privacy Protection relative to home realm  . . . . . . . . 10
+   4.      Application Programming Interface Considerations . . . . . 11
+   4.1.    GSS-API Considerations . . . . . . . . . . . . . . . . . . 11
+   5.      Security Considerations  . . . . . . . . . . . . . . . . . 12
    5.1.    Loss of Cross-Realm Principal Trust Establishment
-           Information  . . . . . . . . . . . . . . . . . . . . . . . 11
-   5.2.    On the Need for a Common Transit Path Policy Language  . . 11
-   6.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 12
-   7.      Acknowledgements . . . . . . . . . . . . . . . . . . . . . 13
-   8.      References . . . . . . . . . . . . . . . . . . . . . . . . 14
-   8.1.    Normative References . . . . . . . . . . . . . . . . . . . 14
-   8.2.    Informative References . . . . . . . . . . . . . . . . . . 14
-           Author's Address . . . . . . . . . . . . . . . . . . . . . 16
+           Information  . . . . . . . . . . . . . . . . . . . . . . . 12
+   5.2.    On the Need for a Common Transit Path Policy Language  . . 12
+   5.3.    On the Need for Trust Routing  . . . . . . . . . . . . . . 13
+   6.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 14
+   7.      TODO . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+   8.      Acknowledgements . . . . . . . . . . . . . . . . . . . . . 16
+   9.      References . . . . . . . . . . . . . . . . . . . . . . . . 17
+   9.1.    Normative References . . . . . . . . . . . . . . . . . . . 17
+   9.2.    Informative References . . . . . . . . . . . . . . . . . . 17
+           Author's Address . . . . . . . . . . . . . . . . . . . . . 19
 
 
 
@@ -104,11 +108,7 @@ Table of Contents
 
 
 
-
-
-
-
-Williams                 Expires April 29, 2015                 [Page 2]
+Williams                 Expires April 30, 2015                 [Page 2]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -118,8 +118,14 @@ Internet-Draft                   PKCROSS                    October 2014
    Kerberos [RFC4120] supports meshes of many realms.  The individual
    relationships between realms must be manually keyed, usually with
    keys derived from passwords.  A full mesh wouldn't scale, therefore
-   the protocol calls for hierarchical trust hierarchies.  In practice
-   non-hierarchical but also non-fully-meshed relationships are used.
+   the protocol calls for hierarchical trust universes.  In practice
+   non-hierarchical but also non-fully-meshed relationships are used,
+   and these generally require distribution of trust routing information
+   to clients, services, and KDCs.  With referrals it is possible to
+   reduce the need for client-side trust routing information, but KDCs
+   still need it, as do services (unless they accept KDC trust path
+   policy and the KDC applies it via the TRANSITED-POLICY-CHECKED ticket
+   flag).
 
    These manually-exchanged keys are very difficult to rollover safely,
    and when they are changed the result is often outages -- controlled
@@ -129,11 +135,22 @@ Internet-Draft                   PKCROSS                    October 2014
    properties.  We seek to remediate this using public key cryptography,
    building on existing Kerberos specifications.
 
+   Distribution of trust routing (traditionally known as "capaths") and
+   trust path validation (also "capaths") information is difficult;
+   there is no standard protocol for it.  Maintenance of it is a
+   thoroughly manual process.
+
    Many years ago there was a proposal for exchanging cross-realm keys
    using a public key infrastructure (PKI) [RFC5280]; that proposal went
    by the name "PKCROSS".  We appropriate that long-dead proposal's
    name, but the protocol specified here is very different from the
    original proposal.
+
+   PKCROSS can make Kerberos scale to large numbers of realms, will
+   remove the need for manual keying of cross-realm TGS principals, will
+   further reduce the need for maintenance and distribution of trust
+   routing information, and will tend to reduce the complexity of trust
+   path validation.
 
 1.1.  Conventions used in this document
 
@@ -147,24 +164,7 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                 Expires April 29, 2015                 [Page 3]
+Williams                 Expires April 30, 2015                 [Page 3]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -220,7 +220,7 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-Williams                 Expires April 29, 2015                 [Page 4]
+Williams                 Expires April 30, 2015                 [Page 4]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -276,7 +276,7 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-Williams                 Expires April 29, 2015                 [Page 5]
+Williams                 Expires April 30, 2015                 [Page 5]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -318,9 +318,10 @@ Internet-Draft                   PKCROSS                    October 2014
    Two validation mechanisms are available: all PKIX [RFC5280]
    validation methods, and DANE [RFC6698].  DANE validation records
    SHOULD be stapled onto the client certificates by the issuing kx509
-   CA; alternatively clients can staple DANE validation records onto
-   their PKINIT requests using an authorization-data element, AD-PKINIT-
-   CLIENT-DANE.
+   CA; alternatively, clients can staple <http://src.chromium.org/
+   viewvc/chrome/trunk/src/net/base/
+   dnssec_chain_verifier.cc?pathrev=167227> onto their PKINIT requests
+   using an authorization-data element, AD-PKINIT-CLIENT-DANE.
 
    Additionally, when PKIX certificate validation is used, the trust
    path should be encoded in an AD-INITIAL-VERIFIED-CAS authorization
@@ -331,8 +332,7 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-
-Williams                 Expires April 29, 2015                 [Page 6]
+Williams                 Expires April 30, 2015                 [Page 6]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -388,7 +388,7 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-Williams                 Expires April 29, 2015                 [Page 7]
+Williams                 Expires April 30, 2015                 [Page 7]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -444,7 +444,7 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-Williams                 Expires April 29, 2015                 [Page 8]
+Williams                 Expires April 30, 2015                 [Page 8]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -476,6 +476,35 @@ Internet-Draft                   PKCROSS                    October 2014
    paths (though the resulting trust path length need not be much
    different than before).
 
+3.2.1.  Simplified trust routing
+
+   For clients, relying on referrals (and TGS-driven PKCROSS) and/or
+   client-driven PKCROSS will greatly reduce the need for client-side
+   trust routing information.
+
+   Even KDCs won't need trust routing information.
+
+3.2.2.  Simplified trust path validation
+
+   For services that accept hierarchical trust paths, PKCROSS will
+   greatly reduce the complexity of trust path / transit validation.
+   Such services that also trust DANE/DNSSEC will need no trust path
+   validation information for any clients using PKCROSS to reach the
+   service.  In many cases a very simple policy expressed in terms of
+   whitelists of top-level domains (TLDs) or near top-level domains
+   traversed, trust anchor sets, and trust of all zero-length transit
+   paths, will suffice.
+
+
+
+
+
+
+Williams                 Expires April 30, 2015                 [Page 9]
+
+Internet-Draft                   PKCROSS                    October 2014
+
+
 3.3.  Privacy Protection relative to home realm
 
    This protocol protects the privacy of client principals vis-a-vis
@@ -500,7 +529,34 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-Williams                 Expires April 29, 2015                 [Page 9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires April 30, 2015                [Page 10]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -556,7 +612,7 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-Williams                 Expires April 29, 2015                [Page 10]
+Williams                 Expires April 30, 2015                [Page 11]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -603,6 +659,36 @@ Internet-Draft                   PKCROSS                    October 2014
    not new, and such a language is broadly and generally needed.
    Therefore such a language is outside this document's scope.
 
+   PKCROSS can greatly simplify the process of validating a ticket's
+   trust path, first by shortening the number of realms involved to two
+   (in the typical case), maybe three, second by making the actual trust
+   path (PKI or DANE) hierarchical, thus hopefully leaving much less
+   policy to express in a transit path policy language: whitelists of
+   domains and sub-domains, perhaps.  But a common language would still
+
+
+
+Williams                 Expires April 30, 2015                [Page 12]
+
+Internet-Draft                   PKCROSS                    October 2014
+
+
+   be desirable.
+
+5.3.  On the Need for Trust Routing
+
+   A common language for trust routing is not necessary in a purely
+   hierarchical world, as in DANE.  But since it's likely that there
+   will be some non-hierarchical, non-zero-length transit paths in many
+   deployments for a long time to come, a common language for trust
+   routing would be desirable as well.  Routing protocols normally used
+   for network addresses could be used for discovery and distribution of
+   trust routing information as well.  But note that there are subtle
+   differences between trust routing and trust path validation, even
+   though in traditional Kerberos deployments the same information is
+   used for both, with the trust validation policy effectively being
+   that the client must have taken the shortest, highest-priority path
+   specified in "capaths" configutation.
 
 
 
@@ -612,7 +698,33 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-Williams                 Expires April 29, 2015                [Page 11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires April 30, 2015                [Page 13]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -668,12 +780,68 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-Williams                 Expires April 29, 2015                [Page 12]
+Williams                 Expires April 30, 2015                [Page 14]
 
 Internet-Draft                   PKCROSS                    October 2014
 
 
-7.  Acknowledgements
+7.  TODO
+
+   o  Provide a normative reference for DANE stapling.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                 Expires April 30, 2015                [Page 15]
+
+Internet-Draft                   PKCROSS                    October 2014
+
+
+8.  Acknowledgements
 
    Although the author arrived at this "kx509 + PKINIT == PKCROSS" idea
    independently, it is not an original idea.  Henry Hotz and Jeffrey
@@ -724,14 +892,14 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-Williams                 Expires April 29, 2015                [Page 13]
+Williams                 Expires April 30, 2015                [Page 16]
 
 Internet-Draft                   PKCROSS                    October 2014
 
 
-8.  References
+9.  References
 
-8.1.  Normative References
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -771,7 +939,7 @@ Internet-Draft                   PKCROSS                    October 2014
               API)", draft-williams-kitten-generic-naming-attributes-01
               (work in progress), August 2013.
 
-8.2.  Informative References
+9.2.  Informative References
 
    [RFC4033]  Arends, R., Austein, R., Larson, M., Massey, D., and S.
               Rose, "DNS Security Introduction and Requirements",
@@ -780,7 +948,7 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-Williams                 Expires April 29, 2015                [Page 14]
+Williams                 Expires April 30, 2015                [Page 17]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -836,7 +1004,7 @@ Internet-Draft                   PKCROSS                    October 2014
 
 
 
-Williams                 Expires April 29, 2015                [Page 15]
+Williams                 Expires April 30, 2015                [Page 18]
 
 Internet-Draft                   PKCROSS                    October 2014
 
@@ -892,5 +1060,5 @@ Author's Address
 
 
 
-Williams                 Expires April 29, 2015                [Page 16]
+Williams                 Expires April 30, 2015                [Page 19]
 

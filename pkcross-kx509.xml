@@ -20,7 +20,7 @@
 <!ENTITY rfc4033 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4033.xml">
 <!ENTITY rfc6960 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6960.xml">
 ]>
-<rfc docName="draft-williams-kitten-krb5-pkcross-04" ipr="trust200902" category="std">
+<rfc docName="draft-williams-kitten-krb5-pkcross-05" ipr="trust200902" category="std">
   <front>
     <title abbrev="PKCROSS">Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using Kerberized Certification Authorities (kx509) and PKINIT</title>
     <author initials="N." surname="Williams" fullname="Nicolas Williams">
@@ -40,24 +40,28 @@ This document specifies a protocol for obtaining cross-realm Kerberos tickets us
     </abstract>
   </front>
   <middle>
-    <section title="Introduction" anchor="d1e298">
+    <section title="Introduction" anchor="d1e327">
       <t>
-Kerberos <xref target="RFC4120"/> supports meshes of many realms. The individual relationships between realms must be manually keyed, usually with keys derived from passwords. A full mesh wouldn't scale, therefore the protocol calls for hierarchical trust hierarchies. In practice non-hierarchical but also non-fully-meshed relationships are used.</t>
+Kerberos <xref target="RFC4120"/> supports meshes of many realms. The individual relationships between realms must be manually keyed, usually with keys derived from passwords. A full mesh wouldn't scale, therefore the protocol calls for hierarchical trust universes. In practice non-hierarchical but also non-fully-meshed relationships are used, and these generally require distribution of trust routing information to clients, services, and KDCs. With referrals it is possible to reduce the need for client-side trust routing information, but KDCs still need it, as do services (unless they accept KDC trust path policy and the KDC applies it via the TRANSITED-POLICY-CHECKED ticket flag).</t>
       <t>
 These manually-exchanged keys are very difficult to rollover safely, and when they are changed the result is often outages -- controlled outages where foreseen, but outages nonetheless.</t>
       <t>
 Manual cross-realm keying does not scale, and has very poor security properties. We seek to remediate this using public key cryptography, building on existing Kerberos specifications.</t>
       <t>
+Distribution of trust routing (traditionally known as “capaths”) and trust path validation (also “capaths”) information is difficult; there is no standard protocol for it. Maintenance of it is a thoroughly manual process.</t>
+      <t>
 Many years ago there was a proposal for exchanging cross-realm keys using a public key infrastructure (PKI) <xref target="RFC5280"/>; that proposal went by the name “PKCROSS”. We appropriate that long-dead proposal's name, but the protocol specified here is very different from the original proposal.</t>
-      <section title="Conventions used in this document" anchor="d1e329">
+      <t>
+PKCROSS can make Kerberos scale to large numbers of realms, will remove the need for manual keying of cross-realm TGS principals, will further reduce the need for maintenance and distribution of trust routing information, and will tend to reduce the complexity of trust path validation.</t>
+      <section title="Conventions used in this document" anchor="d1e364">
         <t>
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
       </section>
     </section>
-    <section title="The PKCROSS Protocol" anchor="d1e344">
+    <section title="The PKCROSS Protocol" anchor="d1e379">
       <t>
 We provide two variants of the PKCROSS protocol: one that is client-driven, and another that is driven by a Ticket Granting Service (TGS) on behalf of its clients. The latter is based on the former, with the TGS acting as a client. We begin with the client-driven case. DNS-Based Authentication of Named Entities (DANE) <xref target="RFC6698"/> can and should be used for realm CA certificate validation.</t>
-      <section title="Client-Driven PKCROSS" anchor="d1e359">
+      <section title="Client-Driven PKCROSS" anchor="d1e394">
         <t>
 A Kerberos client in with a ticket-granting ticket (TGT) for any one source realm (usually but not necessarily the client's own realm) wishing to acquire a TGT for a destination realm may use this protocol instead of the traditional cross-realm ticket-granting service (TGS) exchanges as follows:</t>
         <t>
@@ -81,7 +85,7 @@ QUESTION: Should the PKINIT request in step #3 be a TGS-REQ with PKINIT pre-auth
 QUESTION: Should the PKINIT request in step #3 be required to be used within a FAST tunnel?</cref>
         </t>
       </section>
-      <section title="TGS-Driven PKCROSS" anchor="d1e400">
+      <section title="TGS-Driven PKCROSS" anchor="d1e435">
         <t>
 A TGS can bootstrap ephemeral cross-realm trust principals on behalf of its clients. This allows the cost of PKCROSS to be amortized over many clients, and it allows participation by clients that do not support client-driven PKCROSS (or whose PKCROSS requests are rejected by the target).</t>
         <t>
@@ -98,13 +102,13 @@ the TGS's client certificate MUST have an Extended Key Usage (EKU) of id-pkcross
 The resulting TGT -which we shall term an “issuer TGT” (ITGT)- and its session key can then be used by the source TGS to create cross-realm TGTs for the source-to-target trust principal (“krbtgt/TARGET@SOURCE”).</t>
         <t>
 This ITGT will be used to mint tickets as described below.</t>
-        <section title="Issuing cross-realm TGTs issued for PKCROSS-keyed cross-realm TGS principals" anchor="d1e425">
+        <section title="Issuing cross-realm TGTs issued for PKCROSS-keyed cross-realm TGS principals" anchor="d1e460">
           <t>
 Cross-realm TGTs issued by a source TGS using an ITGT will not be quite like normal Kerberos Tickets: their encrypted part contains an AP-REQ using the ITGT acquired by the source TGS, and this AP-REQ is “encrypted” with the null enctype, The AP-REQ's Authenitcator MUST contain an authorization-data element that carries a) the name of the client principal, b) the session key that the client should be using with the cross-realm TGTs issued.</t>
           <t>
 </t>
           <t>
-            <figure anchor="magicparlabel-131" title="AD-PKCROSS-TGT-INFO">
+            <figure anchor="magicparlabel-133" title="AD-PKCROSS-TGT-INFO">
               <artwork> AD-PKCROSS-TGT-INFO ::= SEQUENCE {
      cname [0] Principal,    -- the client's realm is the
                              -- crealm from the ITGT's EncTicketPart
@@ -113,7 +117,7 @@ Cross-realm TGTs issued by a source TGS using an ITGT will not be quite like nor
             </figure>
           </t>
         </section>
-        <section title="Handling impatient clients" anchor="d1e460">
+        <section title="Handling impatient clients" anchor="d1e496">
           <t>
 Because the process of acquiring an ITGT might be slow, a TGS doing so on behalf of a client could use a mechanism for instructing the client to be patient. Existing clients would not handler a new error code by waiting, therefore there is not much that can be done to keep an impatient client from retrying at another KDC.</t>
           <t>
@@ -122,13 +126,13 @@ The existing KDC_ERR_SVC_UNAVAILABLE error code cannot be used as often this cau
 Note that there is a denial of service (DoS) attack by clients on willing source KDCs: the clients can ask the KDCs to acquire cross-realm ITGTs for many target realms. Ideally the quality of service for the Kerberos authentication service (AS) with PKINIT (and/or other slow pre-authentication mechanisms) should be separate from that of the Kerberos TGS co-located with it, and the PKCROSS-capable TGS as well, so as to be able to throttle low-priority requests when under load.</t>
         </section>
       </section>
-      <section title="Stapled DANE" anchor="d1e476">
+      <section title="Stapled DANE" anchor="d1e511">
         <t>
           <cref>
 TBD. We should use Google's serialization of DNS RRsets needed for DANE validation. We will need a label for the TLSA RRs for kx509 issuers.</cref>
         </t>
       </section>
-      <section title="Validation" anchor="d1e485">
+      <section title="Validation" anchor="d1e520">
         <t>
 KDCs processing PKINIT requests crossing realms MUST apply either or both of:</t>
         <t>
@@ -142,14 +146,14 @@ DANE certificate validation</t>
         <t>
 KDCs MUST reject PKINIT requests from clients of foreign realms whose certificates cannot be validated, unless the client request the anonymous principal name in the target's realm.</t>
       </section>
-      <section title="Transit Path" anchor="d1e504">
+      <section title="Transit Path" anchor="d1e540">
         <t>
 The combined Kerberos/PKIX/DNSSEC transit path MUST be represented in any tickets issued using PKCROSS (see below). As usual, each realm's KDCs in the mix can set the transit policy checked flag if a client's transit path is acceptable per the realm's KDCs' local policy.</t>
         <t>
-Two validation mechanisms are available: all PKIX <xref target="RFC5280"/> validation methods, and DANE <xref target="RFC6698"/>. DANE validation records SHOULD be stapled onto the client certificates by the issuing kx509 CA; alternatively clients can staple DANE validation records onto their PKINIT requests using an authorization-data element, AD-PKINIT-CLIENT-DANE.</t>
+Two validation mechanisms are available: all PKIX <xref target="RFC5280"/> validation methods, and DANE <xref target="RFC6698"/>. DANE validation records SHOULD be stapled onto the client certificates by the issuing kx509 CA; alternatively, clients can staple <eref target="http://src.chromium.org/viewvc/chrome/trunk/src/net/base/dnssec_chain_verifier.cc?pathrev=167227"/> onto their PKINIT requests using an authorization-data element, AD-PKINIT-CLIENT-DANE.</t>
         <t>
 Additionally, when PKIX certificate validation is used, the trust path should be encoded in an AD-INITIAL-VERIFIED-CAS authorization data element, per-PKINIT.</t>
-        <section title="Transit path representation" anchor="d1e532">
+        <section title="Transit path representation" anchor="d1e570">
           <t>
 The notional transit path for a ticket issued by a target realm's KDCs includes:</t>
           <t>
@@ -179,7 +183,7 @@ QUESTION: Do we need a 100% faithful representation of the transit path?</cref>
           </t>
         </section>
       </section>
-      <section title="Exchange of Long-Term Cross-Realm Symmetric Keys" anchor="d1e571">
+      <section title="Exchange of Long-Term Cross-Realm Symmetric Keys" anchor="d1e609">
         <t>
 A KDC can acquire a TGT using PKCROSS whose session key then becomes the long-lived, persistent symmetric key for a cross-realm principal from the source realm to the target realm (“krbtgt/TARGET@SOURCE”).</t>
         <t>
@@ -192,22 +196,32 @@ Target KDCs SHOULD require manual pre-approval of such new cross-realm principal
 By default, source KDCs SHOULD NOT automatically request long-term keying of cross-realm principals.</t>
       </section>
     </section>
-    <section title="Security Properties" anchor="d1e593">
+    <section title="Security Properties" anchor="d1e631">
       <t>
 The proposed PKCROSS protocol has several useful properties described below.</t>
-      <section title="Automatic Cross-Realm Keying" anchor="d1e602">
+      <section title="Automatic Cross-Realm Keying" anchor="d1e640">
         <t>
 No more manual keying of cross-realm principals via exchanging passwords in-person on a telephone call (or similar).</t>
       </section>
-      <section title="Scalability" anchor="d1e611">
+      <section title="Scalability" anchor="d1e649">
         <t>
 Kerberos with commonplace symmetrically-keyed hierarchical cross-real trusts can scale to a large universe of realms, but only if there are top-level realms that are willing to pair-wise trust and “child” realms. Such top-level realms do not exist in practice, leading to an O(N^2) scaling problem for most two-label realms.</t>
         <t>
 Leveraging a PKI, such as a PKIX PKI <xref target="RFC5280"/> or a DNSSEC PKI <xref target="RFC4033"/> removes the need for either top-level realms (which are not likely to ever be operated as commercial or even non-profit entities) or O(N^2) pair-wise cross-realm symmetric keying.</t>
         <t>
 The cost of this is having to add PKI trust paths to Kerberos trust paths (though the resulting trust path length need not be much different than before).</t>
+        <section title="Simplified trust routing" anchor="d1e677">
+          <t>
+For clients, relying on referrals (and TGS-driven PKCROSS) and/or client-driven PKCROSS will greatly reduce the need for client-side trust routing information.</t>
+          <t>
+Even KDCs won't need trust routing information.</t>
+        </section>
+        <section title="Simplified trust path validation" anchor="d1e689">
+          <t>
+For services that accept hierarchical trust paths, PKCROSS will greatly reduce the complexity of trust path / transit validation. Such services that also trust DANE/DNSSEC will need no trust path validation information for any clients using PKCROSS to reach the service. In many cases a very simple policy expressed in terms of whitelists of top-level domains (TLDs) or near top-level domains traversed, trust anchor sets, and trust of all zero-length transit paths, will suffice. </t>
+        </section>
       </section>
-      <section title="Privacy Protection relative to home realm" anchor="d1e639">
+      <section title="Privacy Protection relative to home realm" anchor="d1e698">
         <t>
 This protocol protects the privacy of client principals vis-a-vis their home realms, when the clients use the client-driven PKCROSS protocol.</t>
         <t>
@@ -216,43 +230,57 @@ This feature is generally and naturally available in PKI, and as this protocol i
 The realms visited by the client may, of course, inform the client's home realm, but in the event that they don't, the client does gain this small measure of privacy. Of course, the privacy-conscious client SHOULD attach an OCSP Response <xref target="RFC6960"/> to its PKINIT request, per <xref target="RFC4557"/>.</t>
       </section>
     </section>
-    <section title="Application Programming Interface Considerations" anchor="d1e666">
+    <section title="Application Programming Interface Considerations" anchor="d1e726">
       <t>
 Improved scalability for Kerberos realm traversal implies larger Kerberos universes, and the larger a universe of trust the more important it is to have useful and expressive local policy for evaluating the trustworthiness of any given transit path. Because in most applications local policy should be a component external to the application, there is mostly no impact on APIs here. However, an implementation may wish to provide applications with interfaces for specifying policies, either named or by value.</t>
-      <section title="GSS-API Considerations" anchor="d1e675">
+      <section title="GSS-API Considerations" anchor="d1e735">
         <t>
 The naming attributes <xref target="RFC6680"/> defined in <xref target="I-D.williams-kitten-generic-naming-attributes"/> provide access to information about transit paths.</t>
         <t>
 Note that information about how PKCROSS was used to establish symmetrically-keyed cross-realm principals is lost and will not appear in the transit path in tickets issued by KDCs reached via such cross-realm principals.</t>
       </section>
     </section>
-    <section title="Security Considerations" anchor="d1e699">
+    <section title="Security Considerations" anchor="d1e759">
       <t>
         <cref>
 All the security considerations of Kerberos and PKI apply. Security considerations are discussed throughout this document.</cref>
       </t>
       <t>
 Scaling up the universe of realms reachable via any trust path necessarily dilutes trust overall, but not for specific paths. On the other hand, by shortening transit path lengths trust can be improved, though some short transit paths will have been symmetrically keyed using this PKCROSS protocol and therefore will be longer than they appear to be. These are subjective notions of trust, of course.</t>
-      <section title="Loss of Cross-Realm Principal Trust Establishment Information" anchor="d1e712">
+      <section title="Loss of Cross-Realm Principal Trust Establishment Information" anchor="d1e771">
         <t>
 Once a cross-realm principal is symmetrically keyed the transit path used to automatically key that principal will no longer appear in subsequent cross-realm tickets issued by the target.</t>
         <t>
 The Kerberos transit path encodes only realm names (including X.500-style names, thus PKIX certificate subject and issuer names), and lacks any public key information that might be useful for pinning. However, the certificate validation path for each realm in a transit path SHOULD be included in the transit path.</t>
       </section>
-      <section title="On the Need for a Common Transit Path Policy Language" anchor="d1e724">
+      <section title="On the Need for a Common Transit Path Policy Language" anchor="d1e784">
         <t>
 There are no standard ways to express authorization policies for trust transit paths for either Kerberos nor PKI. A standard language for this would be extremely useful. Such a language should allow for the expression of policies for both, clients and services. Such a language should allow for the expression of complex realm/domain/other naming, and should allow for HSTS-style pinning [add references -Nico]. Such a language should allow for multiple paths where desired, and should allow for more than path rejection: it should also allow for reducing the entitlements assigned to a peer/realm for authorization purposes.</t>
         <t>
 The need for a standard transit path policy expression language is not new, and such a language is broadly and generally needed. Therefore such a language is outside this document's scope.</t>
+        <t>
+PKCROSS can greatly simplify the process of validating a ticket's trust path, first by shortening the number of realms involved to two (in the typical case), maybe three, second by making the actual trust path (PKI or DANE) hierarchical, thus hopefully leaving much less policy to express in a transit path policy language: whitelists of domains and sub-domains, perhaps. But a common language would still be desirable.</t>
+      </section>
+      <section title="On the Need for Trust Routing" anchor="d1e799">
+        <t>
+A common language for trust routing is not necessary in a purely hierarchical world, as in DANE. But since it's likely that there will be some non-hierarchical, non-zero-length transit paths in many deployments for a long time to come, a common language for trust routing would be desirable as well. Routing protocols normally used for network addresses could be used for discovery and distribution of trust routing information as well. But note that there are subtle differences between trust routing and trust path validation, even though in traditional Kerberos deployments the same information is used for both, with the trust validation policy effectively being that the client must have taken the shortest, highest-priority path specified in “capaths” configutation.</t>
       </section>
     </section>
-    <section title="IANA Considerations" anchor="d1e736">
+    <section title="IANA Considerations" anchor="d1e808">
       <t>
         <cref>
 Allocate the new KDCOptions flag (USE-SESSION-KEY-AS-REALM-KEY) and authorization-data element (AD-CLIENT-CERTIFICATE), as well as the new EKU id-pkcross-issuer.</cref>
       </t>
     </section>
-    <section title="Acknowledgements" anchor="d1e745">
+    <section title="TODO" anchor="d1e817">
+      <t>
+        <list style="symbols">
+          <t>
+Provide a normative reference for DANE stapling.</t>
+        </list>
+      </t>
+    </section>
+    <section title="Acknowledgements" anchor="d1e827">
       <t>
 Although the author arrived at this “kx509 + PKINIT == PKCROSS” idea independently, it is not an original idea. Henry Hotz and Jeffrey Altman each conceived the same idea years earlier. It is a relatively obvious idea when taking into account efforts to bridge disparate security mechanisms and credentials infrastructures.</t>
     </section>
