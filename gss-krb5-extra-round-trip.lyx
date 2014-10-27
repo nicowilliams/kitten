@@ -274,8 +274,8 @@ End
 \begin_body
 
 \begin_layout Title
-Negotiation of Extra Round Trip for Kerberos V5 Generic Security Services
- Mechanism
+Negotiation of Extra Security Context Tokens for Kerberos V5 Generic Security
+ Services Mechanism
 \end_layout
 
 \begin_layout Standard
@@ -343,7 +343,7 @@ Internet-Draft
 status open
 
 \begin_layout Plain Layout
-RFC4121
+4121
 \end_layout
 
 \end_inset
@@ -475,10 +475,10 @@ elric@imrryr.org
 \begin_layout Abstract
 This Internet-Draft proposes an extension to the Kerberos V5 security mechanism
  for the Generic Security Services Application Programming Interface (GSS-API)
- for using an extra pair of security context tokens in order to recover
- from certain errors.
- Other benefits include: user2user authentication, authenticated errors
- (in some cases), and more.
+ for using extra security context tokens in order to recover from certain
+ errors.
+ Other benefits include: user-to-user authentication, authenticated errors,
+ replay cache avoidance, and others.
 \end_layout
 
 \begin_layout Standard
@@ -522,11 +522,11 @@ RFC4121
  For many application protocols the failure of the Kerberos AP protocol
  is fatal, requiring closing TCP connections and starting over; often there
  is no automatic recovery.
- This document proposes a negotiation of an additional round trip for automatic
- recovery from certain errors.
+ This document proposes a negotiation of additional security context tokens
+ for automatic recovery from certain errors.
  This is done in a backwards-compatible way, thus retaining the existing
  mechanism OID for the Kerberos V5 GSS mechanism.
- Additionally we add support for user2user authentication and authenticated
+ Additionally we add support for user-to-user authentication and authenticated
  errors, and provide a way to avoid the need for replay caching.
 \end_layout
 
@@ -592,7 +592,11 @@ a new PDU: KRB-ERROR2, with additional fields and support for authenticated
 \end_layout
 
 \begin_layout Standard
-To use this feature, initiators and acceptors MUST act as follows:
+No new interface is needed for GSS-API applications to use this feature.
+\end_layout
+
+\begin_layout Standard
+To use this feature, the Kerberos GSS mechanism MUST act as follows:
 \end_layout
 
 \begin_layout Itemize
@@ -601,25 +605,31 @@ To request this feature, initiators SHALL add the new ap-options flag to
 \end_layout
 
 \begin_layout Itemize
-Acceptors that wish to request an additional round trip SHOULD do so when
- initiators indicate support for it, and do so by returning a KRB-ERROR2.
+Acceptors that wish to request an additional security context token can
+ only do so when initiators indicate support for it, and MUST do so by returning
+ a KRB-ERROR2.
  The encrypted part of the KRB-ERROR2 SHALL be encrypted in one of the following
  keys: the sub-session key from the AP-REQ's Authenticator if it could be
- decrypted, the session key from the Ticket, if it could be decrypted, or
- the null enc-type and null key.
- The KRB-ERROR2 in this case SHALL have a the continue-needed e-flag set.
- The acceptor SHALL also return GSS_S_CONTINUE_NEEDED to the application.
+ decrypted, else the session key from the Ticket, if it could be decrypted,
+ else the null enc-type/key.
 \end_layout
 
 \begin_layout Itemize
-Initiators that request this feature and receive a KRB-ERROR2 SHALL attempt
+The KRB-ERROR2 in this case SHALL have a the continue-needed e-flag set
+ when the acceptor is willing to consume another security context token
+ from the initiator; the acceptor SHALL also return GSS_S_CONTINUE_NEEDED
+ to the application in this case.
+\end_layout
+
+\begin_layout Itemize
+Initiators that request this feature and receive a KRB-ERROR2 SHOULD attempt
  to recover.
 \end_layout
 
 \begin_layout Itemize
-Initiators that request this feature and receive a KRB-ERROR2 with the ke-contin
-ue-needed e-flag set MUST attempt to recover and MUST produce a token to
- send to the acceptor: either a KRB-ERROR2 if the initiator failed to recover,
+Initiators that request this feature and receive a KRB-ERROR2 with the continue-
+needed e-flag set SHOULD attempt to recover and MAY produce a token to send
+ to the acceptor: either a KRB-ERROR2 if the initiator failed to recover,
  or a new AP-REQ (with the traditional GSS-API pseudo-ASN.1 mechanism OID
  header).
 \end_layout
@@ -628,15 +638,38 @@ ue-needed e-flag set MUST attempt to recover and MUST produce a token to
 \begin_layout Itemize
 In the successful recovery case the initiator MUST quote the nonce from
  the KRB-ERROR2 using an AD-CHALLENGE-RESPONSE-NONCE (see below) authorization
- data element, and this MUST NOT be wrapped in an AD-IF-RELEVANT container.
+ data element.
 \end_layout
 
 \end_deeper
 \begin_layout Itemize
-Initiators that support this feature and successfully recover from a KRB-ERROR
- or KRB-ERROR2 SHALL return GSS_S_CONTINUE_NEEDED.
- Otherwise they MUST generate a KRB-ERROR to send to the acceptor and return
- an error to the application.
+When it consumes a KRB-ERROR2, GSS_Init_sec_context() can return an error
+ (GSS_S_FAILURE), or attempt recovery and output a new AP-REQ security context
+ token.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+When GSS_Init_sec_context() outputs a new AP-REQ security context token,
+ it SHALL return GSS_S_CONTINUE_NEEDED if the application requested mutual
+ authentication, else it SHALL return GSS_S_COMPLETE.
+\end_layout
+
+\begin_layout Itemize
+When GSS_Init_sec_context() returns an error and the acceptor is awaiting
+ a security context token, GSS_Init_sec_context() MAY generate a KRB-ERROR
+ to send to the acceptor.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Acceptors MUST reject additional AP-REQs which do not have a challenge response
+ nonce matching the one sent by the acceptor in the previous KRB-ERROR2.
+\end_layout
+
+\begin_layout Itemize
+Acceptors MUST reject initial security context tokens that contain a challenge
+ response nonce.
 \end_layout
 
 \begin_layout Subsection
@@ -649,29 +682,34 @@ The following Kerberos errors can be recovered from automatically using
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_TKT_EXPIRED: the initiator should get a new service ticket
+KRB_AP_ERR_TKT_EXPIRED: the initiator should get a new service ticket;
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_TKT_NYV: the initiator should get a new service ticket
+KRB_AP_ERR_TKT_NYV: the initiator should get a new service ticket;
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_REPEAT: the initiator should build a new AP-REQ
+KRB_AP_ERR_REPEAT: the initiator should build a new AP-REQ;
 \end_layout
 
 \begin_layout Itemize
 KRB_AP_ERR_SKEW: the initiator should build a new AP-REQ with time corrected
- for the offset between the initiator's and acceptor's clocks
+ for the offset between the initiator's and acceptor's clocks;
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_BADKEYVER: the initiator should get a new service ticket
+KRB_AP_ERR_BADKEYVER: the initiator should get a new service ticket;
 \end_layout
 
 \begin_layout Itemize
 KRB_AP_PATH_NOT_ACCEPTED: the initiator should get a new service ticket
- using a different transit path
+ using a different transit path;
+\end_layout
+
+\begin_layout Itemize
+KRB_AP_ERR_INAPP_CKSUM: the initiator should try again with a different
+ checksum type.
 \end_layout
 
 \begin_layout Standard
@@ -710,16 +748,8 @@ KRB_AP_ERR_BADADDR; the acceptor SHOULD include a list of one or more client
  must be final.
 \end_layout
 
-\begin_layout Standard
-It is also possible for an acceptor to request that the initiator re-authenticat
-e but to a different service principal, in which case the error code SHALL
- be KRB_AP_ERR_NOT_US, the KRB-ERROR2 encrypted part MUST be encrypted in
- the sub-session key from the Authenticator, and the sname and realm fields
- of the KRB-ERROR2 MUST be present.
-\end_layout
-
 \begin_layout Subsection
-Number of Round Trips
+Number of Security Context Tokens
 \end_layout
 
 \begin_layout Standard
@@ -733,7 +763,8 @@ The first AP-REQ may well result in an error; the second should not.
 
 \begin_layout Standard
 Initiators and acceptors MUST impose some limit on the maximum number of
- round trips.
+ security context tokens.
+ For the time being that limit is six.
 \end_layout
 
 \begin_layout Standard
@@ -762,18 +793,15 @@ reference "sub:Replay-Cache-Avoidance"
 \end_layout
 
 \begin_layout Subsection
-Use in Non-GSS Applications
+PROT_READY
 \end_layout
 
 \begin_layout Standard
-We only specify multiple round trips for the GSS mechanism and application
- case.
- We believe that some non-GSS Kerberos applications may also benefit from
- this extension.
- Non-GSS Kerberos applications typically assume that AP exchanges require
- no more than two PDUs, therefore it's not likely that this extension will
- ever be of use to non-GSS Kerberos applications, not before first extending
- Kerberos APIs.
+It is REQUIRED that each AP-REQ in a security context token exchange replace
+ the sub-session key to be used for PROT_READY per-message tokens.
+ This can conceivably cause failure-to-verify/unwrap errors for some application
+s (e.g., using datagram transports), but none that they shouldn't have been
+ prepared to handle.
 \end_layout
 
 \begin_layout Section
@@ -866,7 +894,7 @@ status open
 
 \begin_layout Plain Layout
 
-         -- reserved(0)  [XXX sounds like cargo cult!]
+         -- reserved(0)  [XXX cargo cult!]
 \end_layout
 
 \begin_layout Plain Layout
@@ -941,27 +969,12 @@ status open
 
 \begin_layout Plain Layout
 
-         -- continue-failed(2)
-\end_layout
-
-\begin_layout Plain Layout
-
-         -- use-other-sname(3)
-\end_layout
-
-\begin_layout Plain Layout
-
-         -- user2user(4)
-\end_layout
-
-\begin_layout Plain Layout
-
  
 \end_layout
 
 \begin_layout Plain Layout
 
- EncAPRepPart    ::= [APPLICATION <TBD>] SEQUENCE {
+ EncKRBErrorPart    ::= [APPLICATION <TBD>] SEQUENCE {
 \end_layout
 
 \begin_layout Plain Layout
@@ -1006,47 +1019,17 @@ status open
 
 \begin_layout Plain Layout
 
-         caddrs          [8] HostAddresses OPTIONAL,
+         tgt             [8] Ticket OPTIONAL, -- for user2user
 \end_layout
 
 \begin_layout Plain Layout
 
-         saddrs          [9] HostAddresses OPTIONAL,
+         ...
 \end_layout
 
 \begin_layout Plain Layout
 
-         tgt            [10] Ticket OPTIONAL, -- for user2user
-\end_layout
-
-\begin_layout Plain Layout
-
-         ticket         [11] Ticket OPTIONAL, -- fast-re-auth
-\end_layout
-
-\begin_layout Plain Layout
-
-         srealm         [12] Realm OPTIONAL,  -- service realm
-\end_layout
-
-\begin_layout Plain Layout
-
-         sname          [13] PrincipalName OPTIONAL,
-\end_layout
-
-\begin_layout Plain Layout
-
-         redir-srealm   [14] Realm OPTIONAL,
-\end_layout
-
-\begin_layout Plain Layout
-
-         redir-sname    [15] PrincipalName OPTIONAL,
-\end_layout
-
-\begin_layout Plain Layout
-
-}
+ }
 \end_layout
 
 \end_inset
@@ -1072,61 +1055,6 @@ ASN.1 module (with explicit tagging)
 \end_layout
 
 \begin_layout Section
-Other Features
-\end_layout
-
-\begin_layout Standard
-Two other features are supported:
-\end_layout
-
-\begin_layout Itemize
-acceptor name redirection;
-\end_layout
-
-\begin_layout Itemize
-acceptor-issued service ticket (for the same acceptor name) issuance.
-\end_layout
-
-\begin_layout Subsection
-Acceptor Name Redirection
-\end_layout
-
-\begin_layout Standard
-In some use cases, such as clusters, for example, an acceptor may wish to
- ask the initiator to use a different name (and ticket) for the acceptor.
- This is indicated by setting the redir-srealm and redir-sname fields of
- a continue-needed KRB-ERROR2.
- The KRB-ERROR2's enc-part MUST be encrypted in the initiator's sub-session
- key, and initiators MUST ignore the redir-srealm and redir-sname fields
- of any KRB-ERROR2 where the enc-part is encrypted in the null enc-type.
-\end_layout
-
-\begin_layout Standard
-Because the acceptor's name redirection is authenticated to the initiator,
- it is safe for the initiator to get a service ticket for the new name and
- re-try authentication with it.
-\end_layout
-
-\begin_layout Subsection
-Fast Re-Authentication Acceptor Ticket Issuance
-\end_layout
-
-\begin_layout Standard
-In view of future extensions where the Kerberos AP protocol may be extended
- to use public key agreement protocols -which will likely be slow-, we provide
- a field in the KRB-ERROR2 where the acceptor may include a Ticket for itself,
- minted by the acceptor using a secret key of its choosing.
- This service ticket may be used to speed up future otherwise-slow AP exchanges.
-\end_layout
-
-\begin_layout Standard
-[XXX Actually, this is kinda broken right now as the issuance of a fast
- re-auth ticket requires an extra round-trip, which we probably don't want!
- Instead we need either an extended AP-REP or to add a field to the KRB-ERROR2
- enc-part (or a TYPED-DATA) for embedding an AP-REP.]
-\end_layout
-
-\begin_layout Subsection
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:Replay-Cache-Avoidance"
@@ -1137,9 +1065,9 @@ Replay Cache Avoidance
 \end_layout
 
 \begin_layout Standard
-By using an additional round trip and a challenge/response nonce, this protocol
- is immune to replays of AP-REQ PDUs.
- Acceptor implementations MAY not enter Authenticators from extra round
+By using an additional AP-REQ and a challenge/response nonce, this protocol
+ is immune to replays of AP-REQ PDUs and does not need a replay cache.
+ Acceptor implementations MUST not insert Authenticators from extra round
  trips into a replay cache when there are no other old implementations on
  the same host (and with access to the same acceptor credentials) that ignore
  critical authorization data or which don't know to reject initial AP-REQs
@@ -1147,28 +1075,12 @@ By using an additional round trip and a challenge/response nonce, this protocol
 \end_layout
 
 \begin_layout Standard
-By the same token, acceptors that support this feature MUST reject initial
- security context tokens that contain a challenge response nonce.
+In the replay cache avoidance case where there's no actual error (e.g., time
+ skew) the acceptor's KRB-ERROR2 will have KDC_ERR_NONE as the error code,
+ with the continue-needed e-flag.
 \end_layout
 
-\begin_layout Standard
-Note that in the replay cache avoidance case, but where there's no actual
- error (e.g., time skew) the acceptor's KRB-ERROR2 will have KDC_ERR_NONE
- as the error code, with the continue-needed e-flag.
-\end_layout
-
-\begin_layout Standard
-Readers should note the problem described in 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:TODO"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Subsection
+\begin_layout Section
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:User-to-User-Authentication"
@@ -1196,30 +1108,27 @@ In the first case the initiator knows this because the KDC returns KDC_ERR_MUST_
 USE_USER2USER.
  The initiator cannot make a valid AP-REQ in this case, yet it must send
  an AP-REQ or fail to make even an initial security context token.
- For this case we propose that the initiator make an AP-REQ with invalid
- ticket (really, the enc-part of the Ticket will contain some OCTET STRING
- of length 1 or longer, but no longer than the minimum cipher-text length
- for the enc-type listed in the EncryptedData) and authenticator (an OCTET
- STRING of length 1 or longer, but no longer than the minimum cipher-text
- length for some enc-type supported by the initiator).
- The acceptor will fail to process the AP-REQ, of course, both because the
- Ticket and Authenticator embedded in it are not valid, and because the
- acceptor will likely not possess the key to decrypt a real Ticket.
- The acceptor SHOULD respond with a continue-needed KRB-ERROR2 (using the
- null enc-type for the enc-part) that includes a TGT for the acceptor.
+ For this case we propose that the initiator make an AP-REQ with a Ticket
+ with zero-length enc-part (and null enctype) and a zero-length authenticator
+ (and null enctype).
+ The acceptor will fail to process the AP-REQ, of course, and SHOULD respond
+ with a continue-needed KRB-ERROR2 (using the null enc-type for the enc-part)
+ that includes a TGT for the acceptor.
 \end_layout
 
 \begin_layout Standard
 In the second case the initiator does manage to get a real service ticket
  for the acceptor but the acceptor nonetheless wishes to use user2user authentic
 ation.
- In this case the acceptor responds with a KRB-ERROR2, using either the
- null enc-type for the enc-part, or the initiator's sub-session key, and
- includes a TGT for itself.
 \end_layout
 
 \begin_layout Standard
-In both cases the inlitiator then does a TGS request with a second ticket
+In both cases the acceptor responds with a KRB-ERROR2 with the KRB_AP_ERR_USER_T
+O_USER_REQUIRED error code and including a TGT for itself.
+\end_layout
+
+\begin_layout Standard
+In both cases the initiator then does a TGS request with a second ticket
  to get a new, user2user Ticket.
  Then the initiator makes a new AP-REQ using the new Ticket, and proceeds.
 \end_layout
@@ -1248,8 +1157,8 @@ I-D.swift-win2k-krb-user2user
  mechanism.
 \end_layout
 
-\begin_layout Standard
-[Question: how should we address this? We could say 
+\begin_layout RevisionRemark
+Question: how should we address this? We could say 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1258,10 +1167,6 @@ give priority to the user-to-user mechanism
 \end_inset
 
 , but in some cases that might require changes to the acceptor side.
- Should we just remove the use of user-to-user functionality? We could remove
- half of the user-to-user functionality, the half that is triggered by KDC_ERR_M
-UST_USE_USER2USER KDC errors.
- -Nico]
 \end_layout
 
 \begin_layout Section
@@ -1276,91 +1181,9 @@ All error PDUs in an AP exchange where the AP-REQ has the continue-needed-ok
 \begin_layout Standard
 Whenever an acceptor is able to decrypt the Ticket from an AP-REQ and yet
  wishes or has to output a KRB-ERROR2, then the enc-part of the KRB-ERROR2
- MUST be encrypted in either the initiator's sub-session key (from the AP-REQ)
- or the Ticket's session key (if the acceptor could not decrypt the Authenticato
-r), and the srealm and sname fields MUST be set to be the same as the realm
- and sname fields from the Ticket.
-\end_layout
-
-\begin_layout Standard
-Whenever an initiator receives a KRB-ERROR2 with enc-part encrypted in either
- the initiator's sub-session key or the Ticket's session key, then the initiator
- SHOULD check that the srealm and sname fields of the KRB-ERROR2 encrypted
- part match the ones used in the initiator's AP-REQ's Ticket (XXX what should
- the initiator do if these don't match?!).
-\end_layout
-
-\begin_layout Standard
-...
-\end_layout
-
-\begin_layout Section
-Application Compatibility Note
-\end_layout
-
-\begin_layout Standard
-Some GSS-API applications assume that no more than one round trip is required
- for security context token establishment.
- Most such applications will fail safe if GSS_Init_sec_context() or GSS_Accept_s
-ec_context() return GSS_S_CONTINUE_NEEDED when they expect GSS_S_COMPLETE
- -- such applications already should be able to handle errors in this case.
- Such applications will fail to interop when used with initiator and acceptor
- mechanism implementations that support these extensions if the acceptor
- mechanism decides to use extra round trips.
- Acceptor mechanism implementors might wish to provide a configuration option
- for disabling extra round trips.
-\end_layout
-
-\begin_layout Section
-Differences from 
-\begin_inset Quotes eld
-\end_inset
-
-DCE style
-\begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-[XXX Add text explaining what DCE style is as well as a reference.]
-\end_layout
-
-\begin_layout Standard
-There are four differences between this protocol extension and 
-\begin_inset Quotes eld
-\end_inset
-
-DCE style
-\begin_inset Quotes erd
-\end_inset
-
-, three of which are consequential:
-\end_layout
-
-\begin_layout Enumerate
-DCE style is selected by the initiator 
-\emph on
-application
-\emph default
- via a request flag.
-\end_layout
-
-\begin_layout Enumerate
-DCE style is, in practice, mandatory for the acceptor to implement, else
- interop fails.
- Because of difference #4 (see below), initiators could detect that the
- acceptor did not understand the DCE style flag and recover, but in practice
- they do not.
-\end_layout
-
-\begin_layout Enumerate
-This extension is a) transparent to applications, b) generic, allowing for
- arbitrary round trips for arbitrary purposes.
- Indeed, this extension supports a number of additional features beyond
- DCE style's replay cache avoidance: error recovery, user-to-user authentication
-, and others (see above).
+ MUST be encrypted in either the initiator's sub-session key (from the Authentic
+ator) or the Ticket's session key (if the acceptor could not decrypt the
+ Authenticator).
 \end_layout
 
 \begin_layout Section
@@ -1384,6 +1207,10 @@ The new KRB-ERROR2 PDU is cryptographically distinguished from the original
 \end_layout
 
 \begin_layout Standard
+Not every KRB-ERROR2 can be integrity protected.
+\end_layout
+
+\begin_layout Standard
 Because in the base Kerberos V5 GSS-API security mechanism all errors are
  unauthenticated, and because even with this specification some elements
  are unauthenticated, it is possible for an attacker to cause one peer to
@@ -1391,53 +1218,16 @@ Because in the base Kerberos V5 GSS-API security mechanism all errors are
  thinks it will continue.
  This can cause an acceptor to waste resources while waiting for additional
  security context tokens from the initiator.
- This is not really a new problem, however; acceptors should already have
- suitable timeouts on pre-authentication phases of application protocols.
+ This is not really a new problem, however: acceptor applications should
+ already have suitable timeouts on security context establishment.
 \end_layout
 
 \begin_layout Section
 IANA Considerations
 \end_layout
 
-\begin_layout Standard
-This document has no IANA considerations.
-\end_layout
-
-\begin_layout Section
-\begin_inset CommandInset label
-LatexCommand label
-name "sec:TODO"
-
-\end_inset
-
-TODO
-\end_layout
-
-\begin_layout Itemize
-Decide whether to keep any user-to-user functionality.
-\end_layout
-
-\begin_layout Itemize
-For the replay cache avoidance case we should only want an additional security
- context token from the initiator, but not an additional one from the acceptor.
- Because of PROT_READY the additional round trip (as opposed to half round
- trip) should not be a concern, but for some applications this will be onerous
- because they do not use the PROT_READY feature of the GSS-API.
- Therefore we should have a security context token that denotes success-but-one-
-token-is-needed.
- KRB-ERROR2 cannot be such a token, but neither can AP-REP -- AP-RE it has
- no elements by which we can indicate the need for an additional token.
- This means we should introduce an AP-REP2, or an extension to AP-REP that
- is only to be used when the initiator sets the continue-needed-ok ap-options
- flag.
-\end_layout
-
-\begin_layout Itemize
-Describe interaction with non-mutual authentication.
- Specifically, setting the continue-needed-ok flag strongly implies that
- mutual authentication is also desired as otherwise GSS_Init_sec_context()
- will have returned GSS_S_COMPLETE, and any security context tokens from
- the acceptor will implicitly have to be error tokens.
+\begin_layout RevisionRemark
+Various allocations are required...
 \end_layout
 
 \begin_layout Section
@@ -1458,7 +1248,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2119"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"
 
 \end_inset
 
@@ -1478,7 +1268,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2743"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2743.xml"
 
 \end_inset
 
@@ -1498,7 +1288,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2744"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2744.xml"
 
 \end_inset
 
@@ -1518,7 +1308,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4120"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4120.xml"
 
 \end_inset
 
@@ -1538,7 +1328,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4121"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4121.xml"
 
 \end_inset
 
@@ -1558,7 +1348,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "x680"
-target "http://xml.resource.org/public/rfc/bibxml2/reference.CCITT.X680.2002.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml2/reference.CCITT.X680.2002.xml"
 
 \end_inset
 
@@ -1578,7 +1368,7 @@ status open
 \begin_inset CommandInset href
 LatexCommand href
 name "x690"
-target "http://xml.resource.org/public/rfc/bibxml2/reference.CCITT.X690.2002.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml2/reference.CCITT.X690.2002.xml"
 
 \end_inset
 
@@ -1592,29 +1382,6 @@ target "http://xml.resource.org/public/rfc/bibxml2/reference.CCITT.X690.2002.xml
 
 \begin_layout Section
 Informative References
-\end_layout
-
-\begin_layout Standard
-\begin_inset Flex EmbeddedBibXML
-status open
-
-\begin_layout Plain Layout
-<reference anchor="I-D.williams-kitten-krb5-rcache-avoidance"> <front> <title>Rep
-lay Cache Avoidance for the Kerberos V5 Generic Security Services Mechanism</tit
-le> <author initials="N." surname="Williams" fullname="Nicolas Williams">
- <organization/> </author> <date month="February" day="13" year="2013"/>
- <abstract> <t>Abstract This Internet-Draft proposes an extension to the
- Kerberos V5 security mechanism for the Generic Security Services Application
- Programming Interface (GSS-API) for avoiding the need for a replay cache.</t>
- </abstract> </front> <seriesInfo name="Internet-Draft" value="draft-williams-ki
-tten-krb5-rcache-avoidance-01"/> <format type="TXT" target="http://www.ietf.org/in
-ternet-drafts/draft-williams-kitten-krb5-rcache-avoidance-01.txt"/> </reference>
- 
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard

@@ -3,23 +3,23 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: RFC4121 (if approved)                             R. Dowdeswell
+Updates: 4121 (if approved)                                R. Dowdeswell
 Intended status: Standards Track        Dowdeswell Security Architecture
-Expires: August 22, 2013                               February 18, 2013
+Expires: April 30, 2015                                 October 27, 2014
 
 
-    Negotiation of Extra Round Trip for Kerberos V5 Generic Security
-                           Services Mechanism
+  Negotiation of Extra Security Context Tokens for Kerberos V5 Generic
+                      Security Services Mechanism
                  draft-williams-kitten-krb5-extra-rt-02
 
 Abstract
 
    This Internet-Draft proposes an extension to the Kerberos V5 security
    mechanism for the Generic Security Services Application Programming
-   Interface (GSS-API) for using an extra pair of security context
-   tokens in order to recover from certain errors.  Other benefits
-   include: user2user authentication, authenticated errors (in some
-   cases), and more.
+   Interface (GSS-API) for using extra security context tokens in order
+   to recover from certain errors.  Other benefits include: user-to-user
+   authentication, authenticated errors, replay cache avoidance, and
+   others.
 
 Status of this Memo
 
@@ -36,11 +36,11 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 22, 2013.
+   This Internet-Draft will expire on April 30, 2015.
 
 Copyright Notice
 
-   Copyright (c) 2013 IETF Trust and the persons identified as the
+   Copyright (c) 2014 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -60,25 +60,19 @@ Table of Contents
    1.1.    Conventions used in this document
    2.      Negotiation
    2.1.    Error Recovery
-   2.2.    Number of Round Trips
-   2.3.    Use in Non-GSS Applications
+   2.2.    Number of Security Context Tokens
+   2.3.    PROT_READY
+   2.3.1.  Negotiation Issues for User-to-User Authentication
    3.      ASN.1 for New Protocol Elements
-   4.      Other Features
-   4.1.    Acceptor Name Redirection
-   4.2.    Fast Re-Authentication Acceptor Ticket Issuance
-   4.3.    Replay Cache Avoidance
-   4.4.    User-to-User Authentication
-   4.4.1.  Negotiation Issues for User-to-User Authentication
-   5.      Other Requirements, Recommendations, and
+   4.      Replay Cache Avoidance
+   5.      User-to-User Authentication
+   6.      Other Requirements, Recommendations, and
            Non-Requirements
-   6.      Application Compatibility Note
-   7.      Differences from "DCE style"
-   8.      Security Considerations
-   9.      IANA Considerations
-   10.     TODO
-   11.     References
-   11.1.   Normative References
-   11.2.   Informative References
+   7.      Security Considerations
+   8.      IANA Considerations
+   9.      References
+   9.1.    Normative References
+   9.2.    Informative References
            Authors' Addresses
 
 
@@ -92,12 +86,12 @@ Table of Contents
    application protocols the failure of the Kerberos AP protocol is
    fatal, requiring closing TCP connections and starting over; often
    there is no automatic recovery.  This document proposes a negotiation
-   of an additional round trip for automatic recovery from certain
-   errors.  This is done in a backwards-compatible way, thus retaining
-   the existing mechanism OID for the Kerberos V5 GSS mechanism.
-   Additionally we add support for user2user authentication and
-   authenticated errors, and provide a way to avoid the need for replay
-   caching.
+   of additional security context tokens for automatic recovery from
+   certain errors.  This is done in a backwards-compatible way, thus
+   retaining the existing mechanism OID for the Kerberos V5 GSS
+   mechanism.  Additionally we add support for user-to-user
+   authentication and authenticated errors, and provide a way to avoid
+   the need for replay caching.
 
 1.1.  Conventions used in this document
 
@@ -122,39 +116,59 @@ Table of Contents
    o  a new PDU: KRB-ERROR2, with additional fields and support for
       authenticated errors.
 
-   To use this feature, initiators and acceptors MUST act as follows:
+   No new interface is needed for GSS-API applications to use this
+   feature.
+
+   To use this feature, the Kerberos GSS mechanism MUST act as follows:
 
    o  To request this feature, initiators SHALL add the new ap-options
       flag to their AP-REQs.
 
-   o  Acceptors that wish to request an additional round trip SHOULD do
-      so when initiators indicate support for it, and do so by returning
-      a KRB-ERROR2.  The encrypted part of the KRB-ERROR2 SHALL be
-      encrypted in one of the following keys: the sub-session key from
-      the AP-REQ's Authenticator if it could be decrypted, the session
-      key from the Ticket, if it could be decrypted, or the null enc-
-      type and null key.  The KRB-ERROR2 in this case SHALL have a the
-      continue-needed e-flag set.  The acceptor SHALL also return
-      GSS_S_CONTINUE_NEEDED to the application.
+   o  Acceptors that wish to request an additional security context
+      token can only do so when initiators indicate support for it, and
+      MUST do so by returning a KRB-ERROR2.  The encrypted part of the
+      KRB-ERROR2 SHALL be encrypted in one of the following keys: the
+      sub-session key from the AP-REQ's Authenticator if it could be
+      decrypted, else the session key from the Ticket, if it could be
+      decrypted, else the null enc-type/key.
+
+   o  The KRB-ERROR2 in this case SHALL have a the continue-needed
+      e-flag set when the acceptor is willing to consume another
+      security context token from the initiator; the acceptor SHALL also
+      return GSS_S_CONTINUE_NEEDED to the application in this case.
 
    o  Initiators that request this feature and receive a KRB-ERROR2
-      SHALL attempt to recover.
+      SHOULD attempt to recover.
 
    o  Initiators that request this feature and receive a KRB-ERROR2 with
-      the ke-continue-needed e-flag set MUST attempt to recover and MUST
+      the continue-needed e-flag set SHOULD attempt to recover and MAY
       produce a token to send to the acceptor: either a KRB-ERROR2 if
       the initiator failed to recover, or a new AP-REQ (with the
       traditional GSS-API pseudo-ASN.1 mechanism OID header).
 
       *  In the successful recovery case the initiator MUST quote the
          nonce from the KRB-ERROR2 using an AD-CHALLENGE-RESPONSE-NONCE
-         (see below) authorization data element, and this MUST NOT be
-         wrapped in an AD-IF-RELEVANT container.
+         (see below) authorization data element.
 
-   o  Initiators that support this feature and successfully recover from
-      a KRB-ERROR or KRB-ERROR2 SHALL return GSS_S_CONTINUE_NEEDED.
-      Otherwise they MUST generate a KRB-ERROR to send to the acceptor
-      and return an error to the application.
+   o  When it consumes a KRB-ERROR2, GSS_Init_sec_context() can return
+      an error (GSS_S_FAILURE), or attempt recovery and output a new AP-
+      REQ security context token.
+
+      *  When GSS_Init_sec_context() outputs a new AP-REQ security
+         context token, it SHALL return GSS_S_CONTINUE_NEEDED if the
+         application requested mutual authentication, else it SHALL
+         return GSS_S_COMPLETE.
+
+      *  When GSS_Init_sec_context() returns an error and the acceptor
+         is awaiting a security context token, GSS_Init_sec_context()
+         MAY generate a KRB-ERROR to send to the acceptor.
+
+   o  Acceptors MUST reject additional AP-REQs which do not have a
+      challenge response nonce matching the one sent by the acceptor in
+      the previous KRB-ERROR2.
+
+   o  Acceptors MUST reject initial security context tokens that contain
+      a challenge response nonce.
 
 2.1.  Error Recovery
 
@@ -162,21 +176,24 @@ Table of Contents
    using this protocol:
 
    o  KRB_AP_ERR_TKT_EXPIRED: the initiator should get a new service
-      ticket
+      ticket;
 
-   o  KRB_AP_ERR_TKT_NYV: the initiator should get a new service ticket
+   o  KRB_AP_ERR_TKT_NYV: the initiator should get a new service ticket;
 
-   o  KRB_AP_ERR_REPEAT: the initiator should build a new AP-REQ
+   o  KRB_AP_ERR_REPEAT: the initiator should build a new AP-REQ;
 
    o  KRB_AP_ERR_SKEW: the initiator should build a new AP-REQ with time
       corrected for the offset between the initiator's and acceptor's
-      clocks
+      clocks;
 
    o  KRB_AP_ERR_BADKEYVER: the initiator should get a new service
-      ticket
+      ticket;
 
    o  KRB_AP_PATH_NOT_ACCEPTED: the initiator should get a new service
-      ticket using a different transit path
+      ticket using a different transit path;
+
+   o  KRB_AP_ERR_INAPP_CKSUM: the initiator should try again with a
+      different checksum type.
 
    Error codes that denote PDU corruption (and/or an active attack) can
    also be recovered from by attempting a new AP-REQ:
@@ -198,13 +215,7 @@ Table of Contents
       but if the acceptor does not then the continue-needed e-flag MUST
       NOT be included and the error must be final.
 
-   It is also possible for an acceptor to request that the initiator re-
-   authenticate but to a different service principal, in which case the
-   error code SHALL be KRB_AP_ERR_NOT_US, the KRB-ERROR2 encrypted part
-   MUST be encrypted in the sub-session key from the Authenticator, and
-   the sname and realm fields of the KRB-ERROR2 MUST be present.
-
-2.2.  Number of Round Trips
+2.2.  Number of Security Context Tokens
 
    The first AP-REQ may well result in an error; the second should not.
    Therefore acceptors SHOULD return a fatal error when a second error
@@ -214,25 +225,39 @@ Table of Contents
    (not user-to-user) or three (user-to-user).
 
    Initiators and acceptors MUST impose some limit on the maximum number
-   of round trips.
+   of security context tokens.  For the time being that limit is six.
 
    An initiator that rejects an additional round trip MUST respond with
    a KRB-ERROR2.
 
-   Note that in the user-to-user cases (see Section 4.4) it's possible
-   to have up to three round trips under normal conditions if, for
-   example, the acceptor wishes to avoid the use of replay caches (see
-   Section 4.3), or if the initiator's clock is too skewed, for example.
+   Note that in the user-to-user cases (see Section 5) it's possible to
+   have up to three round trips under normal conditions if, for example,
+   the acceptor wishes to avoid the use of replay caches (see
+   Section 4), or if the initiator's clock is too skewed, for example.
 
-2.3.  Use in Non-GSS Applications
+2.3.  PROT_READY
 
-   We only specify multiple round trips for the GSS mechanism and
-   application case.  We believe that some non-GSS Kerberos applications
-   may also benefit from this extension.  Non-GSS Kerberos applications
-   typically assume that AP exchanges require no more than two PDUs,
-   therefore it's not likely that this extension will ever be of use to
-   non-GSS Kerberos applications, not before first extending Kerberos
-   APIs.
+   It is REQUIRED that each AP-REQ in a security context token exchange
+   replace the sub-session key to be used for PROT_READY per-message
+   tokens.  This can conceivably cause failure-to-verify/unwrap errors
+   for some applications (e.g., using datagram transports), but none
+   that they shouldn't have been prepared to handle.
+
+2.3.1.  Negotiation Issues for User-to-User Authentication
+
+   Initiator applications that can negotiate security mechanisms and
+   which have available an existing user-to-user mechanism
+   [I-D.swift-win2k-krb-user2user] as well as the Kerberos V5 GSS
+   mechanism with the user-to-user extension defined here will have a
+   problem: they may end up negotiating the use of the Kerberos V5 GSS
+   mechanism and fail to establish a security context because the
+   acceptor does not support the features defined in this document, but
+   the application might have succeeded if it had selected the user-to-
+   user mechanism.
+
+   [[anchor1: Question: how should we address this?  We could say "give
+   priority to the user-to-user mechanism", but in some cases that might
+   require changes to the acceptor side.]]
 
 
 3.  ASN.1 for New Protocol Elements
@@ -253,7 +278,7 @@ Table of Contents
            -- ad-value is challenge nonce from KRB-ERROR2
 
     KrbErrorEncPartFlags ::= KerberosFlags
-            -- reserved(0)  [XXX sounds like cargo cult!]
+            -- reserved(0)  [XXX cargo cult!]
             -- use-initiator-subkey(1)
             -- use-ticket-session-key(2)
             -- use-null-enctype(3)
@@ -268,11 +293,8 @@ Table of Contents
     ErrorFlags ::= KerberosFlags
             -- reserved(0)  [XXX sounds like cargo cult!]
             -- continue-needed(1)
-            -- continue-failed(2)
-            -- use-other-sname(3)
-            -- user2user(4)
 
-    EncAPRepPart    ::= [APPLICATION <TBD>] SEQUENCE {
+    EncKRBErrorPart    ::= [APPLICATION <TBD>] SEQUENCE {
             challenge-nonce [0] OCTET STRING (16),
             stime           [1] KerberosTime,
             susec           [2] Microseconds,
@@ -281,78 +303,30 @@ Table of Contents
             e-text          [5] KerberosString OPTIONAL,
             e-data          [6] OCTET STRING OPTIONAL,
             e-typed-data    [7] TYPED-DATA OPTIONAL,
-            caddrs          [8] HostAddresses OPTIONAL,
-            saddrs          [9] HostAddresses OPTIONAL,
-            tgt            [10] Ticket OPTIONAL, -- for user2user
-            ticket         [11] Ticket OPTIONAL, -- fast-re-auth
-            srealm         [12] Realm OPTIONAL,  -- service realm
-            sname          [13] PrincipalName OPTIONAL,
-            redir-srealm   [14] Realm OPTIONAL,
-            redir-sname    [15] PrincipalName OPTIONAL,
-   }
+            tgt             [8] Ticket OPTIONAL, -- for user2user
+            ...
+    }
 
               Figure 1: ASN.1 module (with explicit tagging)
 
 
-4.  Other Features
+4.  Replay Cache Avoidance
 
-   Two other features are supported:
+   By using an additional AP-REQ and a challenge/response nonce, this
+   protocol is immune to replays of AP-REQ PDUs and does not need a
+   replay cache.  Acceptor implementations MUST not insert
+   Authenticators from extra round trips into a replay cache when there
+   are no other old implementations on the same host (and with access to
+   the same acceptor credentials) that ignore critical authorization
+   data or which don't know to reject initial AP-REQs that contain a
+   challenge response nonce.
 
-   o  acceptor name redirection;
+   In the replay cache avoidance case where there's no actual error
+   (e.g., time skew) the acceptor's KRB-ERROR2 will have KDC_ERR_NONE as
+   the error code, with the continue-needed e-flag.
 
-   o  acceptor-issued service ticket (for the same acceptor name)
-      issuance.
 
-4.1.  Acceptor Name Redirection
-
-   In some use cases, such as clusters, for example, an acceptor may
-   wish to ask the initiator to use a different name (and ticket) for
-   the acceptor.  This is indicated by setting the redir-srealm and
-   redir-sname fields of a continue-needed KRB-ERROR2.  The KRB-ERROR2's
-   enc-part MUST be encrypted in the initiator's sub-session key, and
-   initiators MUST ignore the redir-srealm and redir-sname fields of any
-   KRB-ERROR2 where the enc-part is encrypted in the null enc-type.
-
-   Because the acceptor's name redirection is authenticated to the
-   initiator, it is safe for the initiator to get a service ticket for
-   the new name and re-try authentication with it.
-
-4.2.  Fast Re-Authentication Acceptor Ticket Issuance
-
-   In view of future extensions where the Kerberos AP protocol may be
-   extended to use public key agreement protocols -which will likely be
-   slow-, we provide a field in the KRB-ERROR2 where the acceptor may
-   include a Ticket for itself, minted by the acceptor using a secret
-   key of its choosing.  This service ticket may be used to speed up
-   future otherwise-slow AP exchanges.
-
-   [XXX Actually, this is kinda broken right now as the issuance of a
-   fast re-auth ticket requires an extra round-trip, which we probably
-   don't want!  Instead we need either an extended AP-REP or to add a
-   field to the KRB-ERROR2 enc-part (or a TYPED-DATA) for embedding an
-   AP-REP.]
-
-4.3.  Replay Cache Avoidance
-
-   By using an additional round trip and a challenge/response nonce,
-   this protocol is immune to replays of AP-REQ PDUs.  Acceptor
-   implementations MAY not enter Authenticators from extra round trips
-   into a replay cache when there are no other old implementations on
-   the same host (and with access to the same acceptor credentials) that
-   ignore critical authorization data or which don't know to reject
-   initial AP-REQs that contain a challenge response nonce.
-
-   By the same token, acceptors that support this feature MUST reject
-   initial security context tokens that contain a challenge response
-   nonce.
-
-   Note that in the replay cache avoidance case, but where there's no
-   actual error (e.g., time skew) the acceptor's KRB-ERROR2 will have
-   KDC_ERR_NONE as the error code, with the continue-needed e-flag.
-
-   Readers should note the problem described in Section 10.
-
-4.4.  User-to-User Authentication
+5.  User-to-User Authentication
 
    There are two user2user authentication cases:
 
@@ -367,49 +341,26 @@ Table of Contents
    KDC_ERR_MUST_USE_USER2USER.  The initiator cannot make a valid AP-REQ
    in this case, yet it must send an AP-REQ or fail to make even an
    initial security context token.  For this case we propose that the
-   initiator make an AP-REQ with invalid ticket (really, the enc-part of
-   the Ticket will contain some OCTET STRING of length 1 or longer, but
-   no longer than the minimum cipher-text length for the enc-type listed
-   in the EncryptedData) and authenticator (an OCTET STRING of length 1
-   or longer, but no longer than the minimum cipher-text length for some
-   enc-type supported by the initiator).  The acceptor will fail to
-   process the AP-REQ, of course, both because the Ticket and
-   Authenticator embedded in it are not valid, and because the acceptor
-   will likely not possess the key to decrypt a real Ticket.  The
-   acceptor SHOULD respond with a continue-needed KRB-ERROR2 (using the
-   null enc-type for the enc-part) that includes a TGT for the acceptor.
+   initiator make an AP-REQ with a Ticket with zero-length enc-part (and
+   null enctype) and a zero-length authenticator (and null enctype).
+   The acceptor will fail to process the AP-REQ, of course, and SHOULD
+   respond with a continue-needed KRB-ERROR2 (using the null enc-type
+   for the enc-part) that includes a TGT for the acceptor.
 
    In the second case the initiator does manage to get a real service
    ticket for the acceptor but the acceptor nonetheless wishes to use
-   user2user authentication.  In this case the acceptor responds with a
-   KRB-ERROR2, using either the null enc-type for the enc-part, or the
-   initiator's sub-session key, and includes a TGT for itself.
+   user2user authentication.
 
-   In both cases the inlitiator then does a TGS request with a second
+   In both cases the acceptor responds with a KRB-ERROR2 with the
+   KRB_AP_ERR_USER_TO_USER_REQUIRED error code and including a TGT for
+   itself.
+
+   In both cases the initiator then does a TGS request with a second
    ticket to get a new, user2user Ticket.  Then the initiator makes a
    new AP-REQ using the new Ticket, and proceeds.
 
-4.4.1.  Negotiation Issues for User-to-User Authentication
 
-   Initiator applications that can negotiate security mechanisms and
-   which have available an existing user-to-user mechanism
-   [I-D.swift-win2k-krb-user2user] as well as the Kerberos V5 GSS
-   mechanism with the user-to-user extension defined here will have a
-   problem: they may end up negotiating the use of the Kerberos V5 GSS
-   mechanism and fail to establish a security context because the
-   acceptor does not support the features defined in this document, but
-   the application might have succeeded if it had selected the user-to-
-   user mechanism.
-
-   [Question: how should we address this?  We could say "give priority
-   to the user-to-user mechanism", but in some cases that might require
-   changes to the acceptor side.  Should we just remove the use of user-
-   to-user functionality?  We could remove half of the user-to-user
-   functionality, the half that is triggered by
-   KDC_ERR_MUST_USE_USER2USER KDC errors. -Nico]
-
-
-5.  Other Requirements, Recommendations, and Non-Requirements
+6.  Other Requirements, Recommendations, and Non-Requirements
 
    All error PDUs in an AP exchange where the AP-REQ has the continue-
    needed-ok ap-options flag MUST be KRB-ERROR2 PDUs.
@@ -417,59 +368,11 @@ Table of Contents
    Whenever an acceptor is able to decrypt the Ticket from an AP-REQ and
    yet wishes or has to output a KRB-ERROR2, then the enc-part of the
    KRB-ERROR2 MUST be encrypted in either the initiator's sub-session
-   key (from the AP-REQ) or the Ticket's session key (if the acceptor
-   could not decrypt the Authenticator), and the srealm and sname fields
-   MUST be set to be the same as the realm and sname fields from the
-   Ticket.
-
-   Whenever an initiator receives a KRB-ERROR2 with enc-part encrypted
-   in either the initiator's sub-session key or the Ticket's session
-   key, then the initiator SHOULD check that the srealm and sname fields
-   of the KRB-ERROR2 encrypted part match the ones used in the
-   initiator's AP-REQ's Ticket (XXX what should the initiator do if
-   these don't match?!).
-
-   ...
+   key (from the Authenticator) or the Ticket's session key (if the
+   acceptor could not decrypt the Authenticator).
 
 
-6.  Application Compatibility Note
-
-   Some GSS-API applications assume that no more than one round trip is
-   required for security context token establishment.  Most such
-   applications will fail safe if GSS_Init_sec_context() or
-   GSS_Accept_sec_context() return GSS_S_CONTINUE_NEEDED when they
-   expect GSS_S_COMPLETE -- such applications already should be able to
-   handle errors in this case.  Such applications will fail to interop
-   when used with initiator and acceptor mechanism implementations that
-   support these extensions if the acceptor mechanism decides to use
-   extra round trips.  Acceptor mechanism implementors might wish to
-   provide a configuration option for disabling extra round trips.
-
-
-7.  Differences from "DCE style"
-
-   [XXX Add text explaining what DCE style is as well as a reference.]
-
-   There are four differences between this protocol extension and "DCE
-   style", three of which are consequential:
-
-   1.  DCE style is selected by the initiator _application_ via a
-       request flag.
-
-   2.  DCE style is, in practice, mandatory for the acceptor to
-       implement, else interop fails.  Because of difference #4 (see
-       below), initiators could detect that the acceptor did not
-       understand the DCE style flag and recover, but in practice they
-       do not.
-
-   3.  This extension is a) transparent to applications, b) generic,
-       allowing for arbitrary round trips for arbitrary purposes.
-       Indeed, this extension supports a number of additional features
-       beyond DCE style's replay cache avoidance: error recovery, user-
-       to-user authentication, and others (see above).
-
-
-8.  Security Considerations
+7.  Security Considerations
 
    This document deals with security.
 
@@ -482,6 +385,8 @@ Table of Contents
    original mechanism's acceptor success security context token (AP-
    REQ).
 
+   Not every KRB-ERROR2 can be integrity protected.
+
    Because in the base Kerberos V5 GSS-API security mechanism all errors
    are unauthenticated, and because even with this specification some
    elements are unauthenticated, it is possible for an attacker to cause
@@ -489,44 +394,18 @@ Table of Contents
    while the other thinks it will continue.  This can cause an acceptor
    to waste resources while waiting for additional security context
    tokens from the initiator.  This is not really a new problem,
-   however; acceptors should already have suitable timeouts on pre-
-   authentication phases of application protocols.
+   however: acceptor applications should already have suitable timeouts
+   on security context establishment.
 
 
-9.  IANA Considerations
+8.  IANA Considerations
 
-   This document has no IANA considerations.
-
-
-10.  TODO
-
-   o  Decide whether to keep any user-to-user functionality.
-
-   o  For the replay cache avoidance case we should only want an
-      additional security context token from the initiator, but not an
-      additional one from the acceptor.  Because of PROT_READY the
-      additional round trip (as opposed to half round trip) should not
-      be a concern, but for some applications this will be onerous
-      because they do not use the PROT_READY feature of the GSS-API.
-      Therefore we should have a security context token that denotes
-      success-but-one-token-is-needed.  KRB-ERROR2 cannot be such a
-      token, but neither can AP-REP -- AP-RE it has no elements by which
-      we can indicate the need for an additional token.  This means we
-      should introduce an AP-REP2, or an extension to AP-REP that is
-      only to be used when the initiator sets the continue-needed-ok ap-
-      options flag.
-
-   o  Describe interaction with non-mutual authentication.
-      Specifically, setting the continue-needed-ok flag strongly implies
-      that mutual authentication is also desired as otherwise
-      GSS_Init_sec_context() will have returned GSS_S_COMPLETE, and any
-      security context tokens from the acceptor will implicitly have to
-      be error tokens.
+   [[anchor2: Various allocations are required...]]
 
 
-11.  References
+9.  References
 
-11.1.  Normative References
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -547,25 +426,19 @@ Table of Contents
               July 2005.
 
    [CCITT.X680.2002]
-              International International Telephone and Telegraph
-              Consultative Committee, "Abstract Syntax Notation One
-              (ASN.1): Specification of basic notation",
-              CCITT Recommendation X.680, July 2002.
+              International Telephone and Telegraph Consultative
+              Committee, "Abstract Syntax Notation One (ASN.1):
+              Specification of basic notation", CCITT Recommendation
+              X.680, July 2002.
 
    [CCITT.X690.2002]
-              International International Telephone and Telegraph
-              Consultative Committee, "ASN.1 encoding rules:
-              Specification of basic encoding Rules (BER), Canonical
-              encoding rules (CER) and Distinguished encoding rules
-              (DER)", CCITT Recommendation X.690, July 2002.
+              International Telephone and Telegraph Consultative
+              Committee, "ASN.1 encoding rules: Specification of basic
+              encoding Rules (BER), Canonical encoding rules (CER) and
+              Distinguished encoding rules (DER)", CCITT Recommendation
+              X.690, July 2002.
 
-11.2.  Informative References
-
-   [I-D.williams-kitten-krb5-rcache-avoidance]
-              Williams, N., "Replay Cache Avoidance for the Kerberos V5
-              Generic Security Services Mechanism",
-              draft-williams-kitten-krb5-rcache-avoidance-01 (work in
-              progress), February 2013.
+9.2.  Informative References
 
    [I-D.swift-win2k-krb-user2user]
               Swift, M., Brezak, J., and P. Moore, "User to User
