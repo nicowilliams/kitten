@@ -10,7 +10,7 @@ Expires: April 30, 2015                                 October 27, 2014
 
   Negotiation of Extra Security Context Tokens for Kerberos V5 Generic
                       Security Services Mechanism
-                 draft-williams-kitten-krb5-extra-rt-02
+                 draft-williams-kitten-krb5-extra-rt-03
 
 Abstract
 
@@ -69,21 +69,21 @@ Table of Contents
    2.      Negotiation  . . . . . . . . . . . . . . . . . . . . . . .  4
    2.1.    Error Recovery . . . . . . . . . . . . . . . . . . . . . .  5
    2.2.    Number of Security Context Tokens  . . . . . . . . . . . .  6
-   2.3.    PROT_READY . . . . . . . . . . . . . . . . . . . . . . . .  6
-   2.3.1.  Negotiation Issues for User-to-User Authentication . . . .  7
-   3.      ASN.1 for New Protocol Elements  . . . . . . . . . . . . .  8
-   4.      Replay Cache Avoidance . . . . . . . . . . . . . . . . . .  9
-   5.      User-to-User Authentication  . . . . . . . . . . . . . . . 10
+   2.2.1.  Security Token Sequences . . . . . . . . . . . . . . . . .  7
+   2.3.    PROT_READY . . . . . . . . . . . . . . . . . . . . . . . .  7
+   2.4.    Per-Message Token Sequence Numbers . . . . . . . . . . . .  7
+   2.4.1.  Negotiation Issues for User-to-User Authentication . . . .  7
+   3.      ASN.1 for New Protocol Elements  . . . . . . . . . . . . .  9
+   4.      Replay Cache Avoidance . . . . . . . . . . . . . . . . . . 10
+   5.      User-to-User Authentication  . . . . . . . . . . . . . . . 11
    6.      Other Requirements, Recommendations, and
-           Non-Requirements . . . . . . . . . . . . . . . . . . . . . 11
-   7.      Security Considerations  . . . . . . . . . . . . . . . . . 12
-   8.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 13
-   9.      References . . . . . . . . . . . . . . . . . . . . . . . . 14
-   9.1.    Normative References . . . . . . . . . . . . . . . . . . . 14
-   9.2.    Informative References . . . . . . . . . . . . . . . . . . 14
-           Authors' Addresses . . . . . . . . . . . . . . . . . . . . 15
-
-
+           Non-Requirements . . . . . . . . . . . . . . . . . . . . . 12
+   7.      Security Considerations  . . . . . . . . . . . . . . . . . 13
+   8.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 14
+   9.      References . . . . . . . . . . . . . . . . . . . . . . . . 15
+   9.1.    Normative References . . . . . . . . . . . . . . . . . . . 15
+   9.2.    Informative References . . . . . . . . . . . . . . . . . . 15
+           Authors' Addresses . . . . . . . . . . . . . . . . . . . . 16
 
 
 
@@ -116,19 +116,19 @@ Internet-Draft              Kerberos Extra AP               October 2014
 1.  Introduction
 
    The Kerberos V5 [RFC4120] AP protocol, and therefore the Kerberos V5
-   GSS mechanism [RFC4121] security context token exchange, is a one-
-   round trip protocol.  Occasionally there are errors that the protocol
-   could recover from by using an additional round trip, but until now
-   there was no way to execute such an additional round trip.  For many
-   application protocols the failure of the Kerberos AP protocol is
-   fatal, requiring closing TCP connections and starting over; often
-   there is no automatic recovery.  This document proposes a negotiation
-   of additional security context tokens for automatic recovery from
-   certain errors.  This is done in a backwards-compatible way, thus
-   retaining the existing mechanism OID for the Kerberos V5 GSS
-   mechanism.  Additionally we add support for user-to-user
-   authentication and authenticated errors, and provide a way to avoid
-   the need for replay caching.
+   GSS-API [RFC2743] mechanism [RFC4121] security context token
+   exchange, is a one-round trip protocol.  Occasionally there are
+   errors that the protocol could recover from by using an additional
+   round trip, but until now there was no way to execute such an
+   additional round trip.  For many application protocols the failure of
+   the Kerberos AP protocol is fatal, requiring closing TCP connections
+   and starting over; often there is no automatic recovery.  This
+   document proposes a negotiation of additional security context tokens
+   for automatic recovery from certain errors.  This is done in a
+   backwards-compatible way, thus retaining the existing mechanism OID
+   for the Kerberos V5 GSS mechanism.  Additionally we add support for
+   user-to-user authentication and authenticated errors, and provide a
+   way to avoid the need for replay caching.
 
 1.1.  Conventions used in this document
 
@@ -186,7 +186,10 @@ Internet-Draft              Kerberos Extra AP               October 2014
       authenticated errors.
 
    No new interface is needed for GSS-API applications to use this
-   feature.
+   feature.  In the following text "initiator" refers to the mechanism's
+   initiator functionality (invoked via GSS_Init_sec_context()), and
+   "acceptor" refers to the mechanism's acceptor functionality (invoked
+   via GSS_Accept_sec_context()).
 
    To use this feature, the Kerberos GSS mechanism MUST act as follows:
 
@@ -215,9 +218,6 @@ Internet-Draft              Kerberos Extra AP               October 2014
       the initiator failed to recover, or a new AP-REQ (with the
       traditional GSS-API pseudo-ASN.1 mechanism OID header).
 
-      *  In the successful recovery case the initiator MUST quote the
-         nonce from the KRB-ERROR2 using an AD-CHALLENGE-RESPONSE-NONCE
-
 
 
 Williams & Dowdeswell    Expires April 30, 2015                 [Page 4]
@@ -225,6 +225,8 @@ Williams & Dowdeswell    Expires April 30, 2015                 [Page 4]
 Internet-Draft              Kerberos Extra AP               October 2014
 
 
+      *  In the successful recovery case the initiator MUST quote the
+         nonce from the KRB-ERROR2 using an AD-CHALLENGE-RESPONSE-NONCE
          (see below) authorization data element.
 
    o  When it consumes a KRB-ERROR2, GSS_Init_sec_context() can return
@@ -233,8 +235,10 @@ Internet-Draft              Kerberos Extra AP               October 2014
 
       *  When GSS_Init_sec_context() outputs a new AP-REQ security
          context token, it SHALL return GSS_S_CONTINUE_NEEDED if the
-         application requested mutual authentication, else it SHALL
-         return GSS_S_COMPLETE.
+         application requested mutual authentication and the previous
+         acceptor security context token was an error (rather than a
+         request for one more AP-REQ for replay cache avoidance; see
+         Section 4), else it SHALL return GSS_S_COMPLETE.
 
       *  When GSS_Init_sec_context() returns an error and the acceptor
          is awaiting a security context token, GSS_Init_sec_context()
@@ -246,6 +250,13 @@ Internet-Draft              Kerberos Extra AP               October 2014
 
    o  Acceptors MUST reject initial security context tokens that contain
       a challenge response nonce.
+
+   o  When GSS_Accept_sec_context() returns an error and outputs an
+      error token, the token MUST be either a KRB-ERROR or a KRB-ERROR2,
+      with the latter having the continue-needed flag cleared.
+
+   [[anchor1: Perhaps we should use a checksum 0x8003 [RFC4121]
+   extension instead of authorization data in the authenticator.]]
 
 2.1.  Error Recovery
 
@@ -263,6 +274,13 @@ Internet-Draft              Kerberos Extra AP               October 2014
       corrected for the offset between the initiator's and acceptor's
       clocks;
 
+
+
+Williams & Dowdeswell    Expires April 30, 2015                 [Page 5]
+
+Internet-Draft              Kerberos Extra AP               October 2014
+
+
    o  KRB_AP_ERR_BADKEYVER: the initiator should get a new service
       ticket;
 
@@ -273,14 +291,6 @@ Internet-Draft              Kerberos Extra AP               October 2014
       different checksum type.
 
    Error codes that denote PDU corruption (and/or an active attack) can
-
-
-
-Williams & Dowdeswell    Expires April 30, 2015                 [Page 5]
-
-Internet-Draft              Kerberos Extra AP               October 2014
-
-
    also be recovered from by attempting a new AP-REQ:
 
    o  KRB_AP_ERR_BAD_INTEGRITY
@@ -320,16 +330,6 @@ Internet-Draft              Kerberos Extra AP               October 2014
    the acceptor wishes to avoid the use of replay caches (see
    Section 4), or if the initiator's clock is too skewed, for example.
 
-2.3.  PROT_READY
-
-   It is REQUIRED that each AP-REQ in a security context token exchange
-   replace the sub-session key to be used for PROT_READY per-message
-   tokens.  This can conceivably cause failure-to-verify/unwrap errors
-   for some applications (e.g., using datagram transports), but none
-   that they shouldn't have been prepared to handle.
-
-
-
 
 
 Williams & Dowdeswell    Expires April 30, 2015                 [Page 6]
@@ -337,19 +337,69 @@ Williams & Dowdeswell    Expires April 30, 2015                 [Page 6]
 Internet-Draft              Kerberos Extra AP               October 2014
 
 
-2.3.1.  Negotiation Issues for User-to-User Authentication
+2.2.1.  Security Token Sequences
+
+   The following successful security context token exchange sequences
+   are possible:
+
+   o  one token (per-RFC4121).
+
+   o  two tokens (per-RFC4121).
+
+   o  three tokens: the initiator wanted mutual authentication and the
+      acceptor wanted an extra AP-REQ for replay cache avoidance (see
+      Section 4).
+
+   o  four tokens: the initiator wanted mutual authentication and a
+      recoverable error occurred, leading to the second round trip.
+
+      *  This case provides replay cache avoidance without no fifth
+         token because the acceptor provides a challenge in its first
+         (KRB-ERROR2) token and the initiator completes the challenges
+         in its second token.
+
+   o  six tokens: the initiator wanted mutual authentication, the
+      acceptor wanted user-to-user authentication, and the initiator's
+      second AP-REQ elicited a recoverable error
+
+2.3.  PROT_READY
+
+   It is REQUIRED that each AP-REQ in a security context token exchange
+   assert an initiator sub-session key, possibly different from
+   preceding AP-REQs in the same exchange.  Each AP-REQ's initiator sub-
+   session key in a security context token exchange MUST replace the
+   sub-session key to be used for PROT_READY per-message tokens.  This
+   can conceivably cause failure-to-verify/unwrap errors for some
+   applications (e.g., using datagram transports), but none that they
+   shouldn't have been prepared to handle.
+
+2.4.  Per-Message Token Sequence Numbers
+
+   It is REQUIRED that each real AP-REQ in a single security token
+   exchange specify the same start sequence number as preceding AP-REQs
+   in the same security context token exchange.
+
+2.4.1.  Negotiation Issues for User-to-User Authentication
 
    Initiator applications that can negotiate security mechanisms and
    which have available an existing user-to-user mechanism
    [I-D.swift-win2k-krb-user2user] as well as the Kerberos V5 GSS
    mechanism with the user-to-user extension defined here will have a
+
+
+
+Williams & Dowdeswell    Expires April 30, 2015                 [Page 7]
+
+Internet-Draft              Kerberos Extra AP               October 2014
+
+
    problem: they may end up negotiating the use of the Kerberos V5 GSS
    mechanism and fail to establish a security context because the
    acceptor does not support the features defined in this document, but
    the application might have succeeded if it had selected the user-to-
    user mechanism.
 
-   [[anchor1: Question: how should we address this?  We could say "give
+   [[anchor2: Question: how should we address this?  We could say "give
    priority to the user-to-user mechanism", but in some cases that might
    require changes to the acceptor side.]]
 
@@ -388,7 +438,13 @@ Internet-Draft              Kerberos Extra AP               October 2014
 
 
 
-Williams & Dowdeswell    Expires April 30, 2015                 [Page 7]
+
+
+
+
+
+
+Williams & Dowdeswell    Expires April 30, 2015                 [Page 8]
 
 Internet-Draft              Kerberos Extra AP               October 2014
 
@@ -444,7 +500,7 @@ Internet-Draft              Kerberos Extra AP               October 2014
 
 
 
-Williams & Dowdeswell    Expires April 30, 2015                 [Page 8]
+Williams & Dowdeswell    Expires April 30, 2015                 [Page 9]
 
 Internet-Draft              Kerberos Extra AP               October 2014
 
@@ -500,7 +556,7 @@ Internet-Draft              Kerberos Extra AP               October 2014
 
 
 
-Williams & Dowdeswell    Expires April 30, 2015                 [Page 9]
+Williams & Dowdeswell    Expires April 30, 2015                [Page 10]
 
 Internet-Draft              Kerberos Extra AP               October 2014
 
@@ -556,7 +612,7 @@ Internet-Draft              Kerberos Extra AP               October 2014
 
 
 
-Williams & Dowdeswell    Expires April 30, 2015                [Page 10]
+Williams & Dowdeswell    Expires April 30, 2015                [Page 11]
 
 Internet-Draft              Kerberos Extra AP               October 2014
 
@@ -612,7 +668,7 @@ Internet-Draft              Kerberos Extra AP               October 2014
 
 
 
-Williams & Dowdeswell    Expires April 30, 2015                [Page 11]
+Williams & Dowdeswell    Expires April 30, 2015                [Page 12]
 
 Internet-Draft              Kerberos Extra AP               October 2014
 
@@ -642,70 +698,14 @@ Internet-Draft              Kerberos Extra AP               October 2014
    however: acceptor applications should already have suitable timeouts
    on security context establishment.
 
+   There is a binding of preceding security context tokens in each
+   additional AP-REQ, via the challenge-response nonce.  This binding is
+   weak, and does not detect all modifications of unauthenticated
+   plaintext in preceding security context tokens.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams & Dowdeswell    Expires April 30, 2015                [Page 12]
-
-Internet-Draft              Kerberos Extra AP               October 2014
-
-
-8.  IANA Considerations
-
-   [[anchor2: Various allocations are required...]]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   [[anchor3: We could use the GSS_EXTS_FINISHED extension from
+   draft-ietf-kitten-iakerb to implement a strong binding of all context
+   tokens.]]
 
 
 
@@ -729,6 +729,62 @@ Williams & Dowdeswell    Expires April 30, 2015                [Page 13]
 Internet-Draft              Kerberos Extra AP               October 2014
 
 
+8.  IANA Considerations
+
+   [[anchor4: Various allocations are required...]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams & Dowdeswell    Expires April 30, 2015                [Page 14]
+
+Internet-Draft              Kerberos Extra AP               October 2014
+
+
 9.  References
 
 9.1.  Normative References
@@ -738,9 +794,6 @@ Internet-Draft              Kerberos Extra AP               October 2014
 
    [RFC2743]  Linn, J., "Generic Security Service Application Program
               Interface Version 2, Update 1", RFC 2743, January 2000.
-
-   [RFC2744]  Wray, J., "Generic Security Service API Version 2 :
-              C-bindings", RFC 2744, January 2000.
 
    [RFC4120]  Neuman, C., Yu, T., Hartman, S., and K. Raeburn, "The
               Kerberos Network Authentication Service (V5)", RFC 4120,
@@ -780,7 +833,10 @@ Internet-Draft              Kerberos Extra AP               October 2014
 
 
 
-Williams & Dowdeswell    Expires April 30, 2015                [Page 14]
+
+
+
+Williams & Dowdeswell    Expires April 30, 2015                [Page 15]
 
 Internet-Draft              Kerberos Extra AP               October 2014
 
@@ -836,5 +892,5 @@ Authors' Addresses
 
 
 
-Williams & Dowdeswell    Expires April 30, 2015                [Page 15]
+Williams & Dowdeswell    Expires April 30, 2015                [Page 16]
 

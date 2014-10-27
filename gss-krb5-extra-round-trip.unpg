@@ -10,7 +10,7 @@ Expires: April 30, 2015                                 October 27, 2014
 
   Negotiation of Extra Security Context Tokens for Kerberos V5 Generic
                       Security Services Mechanism
-                 draft-williams-kitten-krb5-extra-rt-02
+                 draft-williams-kitten-krb5-extra-rt-03
 
 Abstract
 
@@ -61,8 +61,10 @@ Table of Contents
    2.      Negotiation
    2.1.    Error Recovery
    2.2.    Number of Security Context Tokens
+   2.2.1.  Security Token Sequences
    2.3.    PROT_READY
-   2.3.1.  Negotiation Issues for User-to-User Authentication
+   2.4.    Per-Message Token Sequence Numbers
+   2.4.1.  Negotiation Issues for User-to-User Authentication
    3.      ASN.1 for New Protocol Elements
    4.      Replay Cache Avoidance
    5.      User-to-User Authentication
@@ -79,19 +81,19 @@ Table of Contents
 1.  Introduction
 
    The Kerberos V5 [RFC4120] AP protocol, and therefore the Kerberos V5
-   GSS mechanism [RFC4121] security context token exchange, is a one-
-   round trip protocol.  Occasionally there are errors that the protocol
-   could recover from by using an additional round trip, but until now
-   there was no way to execute such an additional round trip.  For many
-   application protocols the failure of the Kerberos AP protocol is
-   fatal, requiring closing TCP connections and starting over; often
-   there is no automatic recovery.  This document proposes a negotiation
-   of additional security context tokens for automatic recovery from
-   certain errors.  This is done in a backwards-compatible way, thus
-   retaining the existing mechanism OID for the Kerberos V5 GSS
-   mechanism.  Additionally we add support for user-to-user
-   authentication and authenticated errors, and provide a way to avoid
-   the need for replay caching.
+   GSS-API [RFC2743] mechanism [RFC4121] security context token
+   exchange, is a one-round trip protocol.  Occasionally there are
+   errors that the protocol could recover from by using an additional
+   round trip, but until now there was no way to execute such an
+   additional round trip.  For many application protocols the failure of
+   the Kerberos AP protocol is fatal, requiring closing TCP connections
+   and starting over; often there is no automatic recovery.  This
+   document proposes a negotiation of additional security context tokens
+   for automatic recovery from certain errors.  This is done in a
+   backwards-compatible way, thus retaining the existing mechanism OID
+   for the Kerberos V5 GSS mechanism.  Additionally we add support for
+   user-to-user authentication and authenticated errors, and provide a
+   way to avoid the need for replay caching.
 
 1.1.  Conventions used in this document
 
@@ -117,7 +119,10 @@ Table of Contents
       authenticated errors.
 
    No new interface is needed for GSS-API applications to use this
-   feature.
+   feature.  In the following text "initiator" refers to the mechanism's
+   initiator functionality (invoked via GSS_Init_sec_context()), and
+   "acceptor" refers to the mechanism's acceptor functionality (invoked
+   via GSS_Accept_sec_context()).
 
    To use this feature, the Kerberos GSS mechanism MUST act as follows:
 
@@ -156,8 +161,10 @@ Table of Contents
 
       *  When GSS_Init_sec_context() outputs a new AP-REQ security
          context token, it SHALL return GSS_S_CONTINUE_NEEDED if the
-         application requested mutual authentication, else it SHALL
-         return GSS_S_COMPLETE.
+         application requested mutual authentication and the previous
+         acceptor security context token was an error (rather than a
+         request for one more AP-REQ for replay cache avoidance; see
+         Section 4), else it SHALL return GSS_S_COMPLETE.
 
       *  When GSS_Init_sec_context() returns an error and the acceptor
          is awaiting a security context token, GSS_Init_sec_context()
@@ -169,6 +176,13 @@ Table of Contents
 
    o  Acceptors MUST reject initial security context tokens that contain
       a challenge response nonce.
+
+   o  When GSS_Accept_sec_context() returns an error and outputs an
+      error token, the token MUST be either a KRB-ERROR or a KRB-ERROR2,
+      with the latter having the continue-needed flag cleared.
+
+   [[anchor1: Perhaps we should use a checksum 0x8003 [RFC4121]
+   extension instead of authorization data in the authenticator.]]
 
 2.1.  Error Recovery
 
@@ -235,15 +249,49 @@ Table of Contents
    the acceptor wishes to avoid the use of replay caches (see
    Section 4), or if the initiator's clock is too skewed, for example.
 
+2.2.1.  Security Token Sequences
+
+   The following successful security context token exchange sequences
+   are possible:
+
+   o  one token (per-RFC4121).
+
+   o  two tokens (per-RFC4121).
+
+   o  three tokens: the initiator wanted mutual authentication and the
+      acceptor wanted an extra AP-REQ for replay cache avoidance (see
+      Section 4).
+
+   o  four tokens: the initiator wanted mutual authentication and a
+      recoverable error occurred, leading to the second round trip.
+
+      *  This case provides replay cache avoidance without no fifth
+         token because the acceptor provides a challenge in its first
+         (KRB-ERROR2) token and the initiator completes the challenges
+         in its second token.
+
+   o  six tokens: the initiator wanted mutual authentication, the
+      acceptor wanted user-to-user authentication, and the initiator's
+      second AP-REQ elicited a recoverable error
+
 2.3.  PROT_READY
 
    It is REQUIRED that each AP-REQ in a security context token exchange
-   replace the sub-session key to be used for PROT_READY per-message
-   tokens.  This can conceivably cause failure-to-verify/unwrap errors
-   for some applications (e.g., using datagram transports), but none
-   that they shouldn't have been prepared to handle.
+   assert an initiator sub-session key, possibly different from
+   preceding AP-REQs in the same exchange.  Each AP-REQ's initiator sub-
+   session key in a security context token exchange MUST replace the
+   sub-session key to be used for PROT_READY per-message tokens.  This
+   can conceivably cause failure-to-verify/unwrap errors for some
+   applications (e.g., using datagram transports), but none that they
+   shouldn't have been prepared to handle.
 
-2.3.1.  Negotiation Issues for User-to-User Authentication
+2.4.  Per-Message Token Sequence Numbers
+
+   It is REQUIRED that each real AP-REQ in a single security token
+   exchange specify the same start sequence number as preceding AP-REQs
+   in the same security context token exchange.
+
+2.4.1.  Negotiation Issues for User-to-User Authentication
 
    Initiator applications that can negotiate security mechanisms and
    which have available an existing user-to-user mechanism
@@ -255,7 +303,7 @@ Table of Contents
    the application might have succeeded if it had selected the user-to-
    user mechanism.
 
-   [[anchor1: Question: how should we address this?  We could say "give
+   [[anchor2: Question: how should we address this?  We could say "give
    priority to the user-to-user mechanism", but in some cases that might
    require changes to the acceptor side.]]
 
@@ -397,10 +445,19 @@ Table of Contents
    however: acceptor applications should already have suitable timeouts
    on security context establishment.
 
+   There is a binding of preceding security context tokens in each
+   additional AP-REQ, via the challenge-response nonce.  This binding is
+   weak, and does not detect all modifications of unauthenticated
+   plaintext in preceding security context tokens.
+
+   [[anchor3: We could use the GSS_EXTS_FINISHED extension from
+   draft-ietf-kitten-iakerb to implement a strong binding of all context
+   tokens.]]
+
 
 8.  IANA Considerations
 
-   [[anchor2: Various allocations are required...]]
+   [[anchor4: Various allocations are required...]]
 
 
 9.  References
@@ -412,9 +469,6 @@ Table of Contents
 
    [RFC2743]  Linn, J., "Generic Security Service Application Program
               Interface Version 2, Update 1", RFC 2743, January 2000.
-
-   [RFC2744]  Wray, J., "Generic Security Service API Version 2 :
-              C-bindings", RFC 2744, January 2000.
 
    [RFC4120]  Neuman, C., Yu, T., Hartman, S., and K. Raeburn, "The
               Kerberos Network Authentication Service (V5)", RFC 4120,

@@ -283,7 +283,7 @@ Negotiation of Extra Security Context Tokens for Kerberos V5 Generic Security
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-krb5-extra-rt-02
+draft-williams-kitten-krb5-extra-rt-03
 \end_layout
 
 \end_inset
@@ -505,7 +505,17 @@ RFC4120
 
 \end_inset
 
- AP protocol, and therefore the Kerberos V5 GSS mechanism 
+ AP protocol, and therefore the Kerberos V5 GSS-API 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC2743
+\end_layout
+
+\end_inset
+
+ mechanism 
 \begin_inset Flex EntityXRef
 status open
 
@@ -593,6 +603,25 @@ a new PDU: KRB-ERROR2, with additional fields and support for authenticated
 
 \begin_layout Standard
 No new interface is needed for GSS-API applications to use this feature.
+ In the following text 
+\begin_inset Quotes eld
+\end_inset
+
+initiator
+\begin_inset Quotes erd
+\end_inset
+
+ refers to the mechanism's initiator functionality (invoked via GSS_Init_sec_con
+text()), and 
+\begin_inset Quotes eld
+\end_inset
+
+acceptor
+\begin_inset Quotes erd
+\end_inset
+
+ refers to the mechanism's acceptor functionality (invoked via GSS_Accept_sec_co
+ntext()).
 \end_layout
 
 \begin_layout Standard
@@ -652,7 +681,16 @@ When it consumes a KRB-ERROR2, GSS_Init_sec_context() can return an error
 \begin_layout Itemize
 When GSS_Init_sec_context() outputs a new AP-REQ security context token,
  it SHALL return GSS_S_CONTINUE_NEEDED if the application requested mutual
- authentication, else it SHALL return GSS_S_COMPLETE.
+ authentication and the previous acceptor security context token was an
+ error (rather than a request for one more AP-REQ for replay cache avoidance;
+ see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Replay-Cache-Avoidance"
+
+\end_inset
+
+), else it SHALL return GSS_S_COMPLETE.
 \end_layout
 
 \begin_layout Itemize
@@ -670,6 +708,17 @@ Acceptors MUST reject additional AP-REQs which do not have a challenge response
 \begin_layout Itemize
 Acceptors MUST reject initial security context tokens that contain a challenge
  response nonce.
+\end_layout
+
+\begin_layout Itemize
+When GSS_Accept_sec_context() returns an error and outputs an error token,
+ the token MUST be either a KRB-ERROR or a KRB-ERROR2, with the latter having
+ the continue-needed flag cleared.
+\end_layout
+
+\begin_layout RevisionRemark
+Perhaps we should use a checksum 0x8003 [RFC4121] extension instead of authoriza
+tion data in the authenticator.
 \end_layout
 
 \begin_layout Subsection
@@ -792,16 +841,77 @@ reference "sub:Replay-Cache-Avoidance"
 ), or if the initiator's clock is too skewed, for example.
 \end_layout
 
+\begin_layout Subsubsection
+Security Token Sequences
+\end_layout
+
+\begin_layout Standard
+The following successful security context token exchange sequences are possible:
+\end_layout
+
+\begin_layout Itemize
+one token (per-RFC4121).
+\end_layout
+
+\begin_layout Itemize
+two tokens (per-RFC4121).
+\end_layout
+
+\begin_layout Itemize
+three tokens: the initiator wanted mutual authentication and the acceptor
+ wanted an extra AP-REQ for replay cache avoidance (see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Replay-Cache-Avoidance"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+four tokens: the initiator wanted mutual authentication and a recoverable
+ error occurred, leading to the second round trip.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This case provides replay cache avoidance without no fifth token because
+ the acceptor provides a challenge in its first (KRB-ERROR2) token and the
+ initiator completes the challenges in its second token.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+six tokens: the initiator wanted mutual authentication, the acceptor wanted
+ user-to-user authentication, and the initiator's second AP-REQ elicited
+ a recoverable error
+\end_layout
+
 \begin_layout Subsection
 PROT_READY
 \end_layout
 
 \begin_layout Standard
-It is REQUIRED that each AP-REQ in a security context token exchange replace
- the sub-session key to be used for PROT_READY per-message tokens.
+It is REQUIRED that each AP-REQ in a security context token exchange assert
+ an initiator sub-session key, possibly different from preceding AP-REQs
+ in the same exchange.
+ Each AP-REQ's initiator sub-session key in a security context token exchange
+ MUST replace the sub-session key to be used for PROT_READY per-message
+ tokens.
  This can conceivably cause failure-to-verify/unwrap errors for some application
 s (e.g., using datagram transports), but none that they shouldn't have been
  prepared to handle.
+\end_layout
+
+\begin_layout Subsection
+Per-Message Token Sequence Numbers
+\end_layout
+
+\begin_layout Standard
+It is REQUIRED that each real AP-REQ in a single security token exchange
+ specify the same start sequence number as preceding AP-REQs in the same
+ security context token exchange.
 \end_layout
 
 \begin_layout Section
@@ -1080,6 +1190,76 @@ In the replay cache avoidance case where there's no actual error (e.g., time
  with the continue-needed e-flag.
 \end_layout
 
+\begin_layout Standard
+Note that many Kerberos implementations can avoid the use of a replay cache
+ altogether, but it's tricky to know when it's safe to do so.
+ For Kerberos it's safe to not use a replay cache for AP-REQs/Authenticators
+ when either:
+\end_layout
+
+\begin_layout Itemize
+the AP exchange doesn't require it and
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+no other acceptor/service application shares the same long-term service
+ keys for its service principal
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+or
+\end_layout
+
+\begin_layout Itemize
+the application protocol always has the initiator/client send the first
+ per-message token (or KRB-SAFE/PRIV PDU) and
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+no other acceptor/service application shares the same long-term service
+ keys for its service principal
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+It is difficult to establish the second part of the above conjunctions programma
+tically.
+ In practice this is best left as a local configuration matted on a per-service
+ name basis.
+\end_layout
+
+\begin_layout Standard
+For example, it's generally safe for NFSv4 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC3530
+\end_layout
+
+\end_inset
+
+ to not use a replay cache for the Kerberos GSS mechanism, but it is possible
+ for multiple Kerberos host-based service principals on the same host to
+ share the same keys, therefore in practice, the analysis for NFSv4 requires
+ more analysis.
+ The same is true for SSHv2 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4251
+\end_layout
+
+\end_inset
+
+ (SSHv2 implementations share the same service principal as other non-GSS
+ Kerberos applications that do sometimes need a replay cache).
+\end_layout
+
 \begin_layout Section
 \begin_inset CommandInset label
 LatexCommand label
@@ -1222,6 +1402,18 @@ Because in the base Kerberos V5 GSS-API security mechanism all errors are
  already have suitable timeouts on security context establishment.
 \end_layout
 
+\begin_layout Standard
+There is a binding of preceding security context tokens in each additional
+ AP-REQ, via the challenge-response nonce.
+ This binding is weak, and does not detect all modifications of unauthenticated
+ plaintext in preceding security context tokens.
+\end_layout
+
+\begin_layout RevisionRemark
+We could use the GSS_EXTS_FINISHED extension from draft-ietf-kitten-iakerb
+ to implement a strong binding of all context tokens.
+\end_layout
+
 \begin_layout Section
 IANA Considerations
 \end_layout
@@ -1269,26 +1461,6 @@ status open
 LatexCommand href
 name "rfc2743"
 target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2743.xml"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Flex BibXML
-status open
-
-\begin_layout Plain Layout
-\begin_inset CommandInset href
-LatexCommand href
-name "rfc2744"
-target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2744.xml"
 
 \end_inset
 
@@ -1382,6 +1554,46 @@ target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml2/reference.CCITT.X690.20
 
 \begin_layout Section
 Informative References
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc3530"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3530.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc4251"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

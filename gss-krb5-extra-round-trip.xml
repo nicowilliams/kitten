@@ -10,13 +10,12 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY rfc2119 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY rfc2743 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2743.xml">
-<!ENTITY rfc2744 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2744.xml">
 <!ENTITY rfc4120 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4120.xml">
 <!ENTITY rfc4121 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4121.xml">
 <!ENTITY x680 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml2/reference.CCITT.X680.2002.xml">
 <!ENTITY x690 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml2/reference.CCITT.X690.2002.xml">
 ]>
-<rfc docName="draft-williams-kitten-krb5-extra-rt-02" ipr="trust200902" category="std" updates="4121">
+<rfc docName="draft-williams-kitten-krb5-extra-rt-03" ipr="trust200902" category="std" updates="4121">
   <front>
     <title abbrev="Kerberos Extra AP">Negotiation of Extra Security Context Tokens for Kerberos V5 Generic Security Services Mechanism</title>
     <author initials="N." surname="Williams" fullname="Nicolas Williams">
@@ -42,15 +41,15 @@ This Internet-Draft proposes an extension to the Kerberos V5 security mechanism 
     </abstract>
   </front>
   <middle>
-    <section title="Introduction" anchor="d1e249">
+    <section title="Introduction" anchor="d1e264">
       <t>
-The Kerberos V5 <xref target="RFC4120"/> AP protocol, and therefore the Kerberos V5 GSS mechanism <xref target="RFC4121"/> security context token exchange, is a one-round trip protocol. Occasionally there are errors that the protocol could recover from by using an additional round trip, but until now there was no way to execute such an additional round trip. For many application protocols the failure of the Kerberos AP protocol is fatal, requiring closing TCP connections and starting over; often there is no automatic recovery. This document proposes a negotiation of additional security context tokens for automatic recovery from certain errors. This is done in a backwards-compatible way, thus retaining the existing mechanism OID for the Kerberos V5 GSS mechanism. Additionally we add support for user-to-user authentication and authenticated errors, and provide a way to avoid the need for replay caching.</t>
-      <section title="Conventions used in this document" anchor="d1e270">
+The Kerberos V5 <xref target="RFC4120"/> AP protocol, and therefore the Kerberos V5 GSS-API <xref target="RFC2743"/> mechanism <xref target="RFC4121"/> security context token exchange, is a one-round trip protocol. Occasionally there are errors that the protocol could recover from by using an additional round trip, but until now there was no way to execute such an additional round trip. For many application protocols the failure of the Kerberos AP protocol is fatal, requiring closing TCP connections and starting over; often there is no automatic recovery. This document proposes a negotiation of additional security context tokens for automatic recovery from certain errors. This is done in a backwards-compatible way, thus retaining the existing mechanism OID for the Kerberos V5 GSS mechanism. Additionally we add support for user-to-user authentication and authenticated errors, and provide a way to avoid the need for replay caching.</t>
+      <section title="Conventions used in this document" anchor="d1e291">
         <t>
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
       </section>
     </section>
-    <section title="Negotiation" anchor="d1e286">
+    <section title="Negotiation" anchor="d1e307">
       <t>
 We introduce the following new protocol elements. A partial ASN.1 <xref target="CCITT.X680.2002"/> module (for inclusion in the base Kerberos ASN.1 module) is given in  <xref target="sub_ASN_1_for_New"/>, and references to its contents are made below.</t>
       <t>
@@ -64,7 +63,7 @@ a new PDU: KRB-ERROR2, with additional fields and support for authenticated erro
         </list>
       </t>
       <t>
-No new interface is needed for GSS-API applications to use this feature.</t>
+No new interface is needed for GSS-API applications to use this feature. In the following text “initiator” refers to the mechanism's initiator functionality (invoked via GSS_Init_sec_context()), and “acceptor” refers to the mechanism's acceptor functionality (invoked via GSS_Accept_sec_context()).</t>
       <t>
 To use this feature, the Kerberos GSS mechanism MUST act as follows:</t>
       <t>
@@ -87,16 +86,22 @@ In the successful recovery case the initiator MUST quote the nonce from the KRB-
 When it consumes a KRB-ERROR2, GSS_Init_sec_context() can return an error (GSS_S_FAILURE), or attempt recovery and output a new AP-REQ security context token.
 
 <list style="symbols"><t>
-When GSS_Init_sec_context() outputs a new AP-REQ security context token, it SHALL return GSS_S_CONTINUE_NEEDED if the application requested mutual authentication, else it SHALL return GSS_S_COMPLETE.</t><t>
+When GSS_Init_sec_context() outputs a new AP-REQ security context token, it SHALL return GSS_S_CONTINUE_NEEDED if the application requested mutual authentication and the previous acceptor security context token was an error (rather than a request for one more AP-REQ for replay cache avoidance; see  <xref target="sub_Replay_Cache_Avoidance"/>), else it SHALL return GSS_S_COMPLETE.</t><t>
 When GSS_Init_sec_context() returns an error and the acceptor is awaiting a security context token, GSS_Init_sec_context() MAY generate a KRB-ERROR to send to the acceptor.</t></list>
 </t>
           <t>
 Acceptors MUST reject additional AP-REQs which do not have a challenge response nonce matching the one sent by the acceptor in the previous KRB-ERROR2.</t>
           <t>
 Acceptors MUST reject initial security context tokens that contain a challenge response nonce.</t>
+          <t>
+When GSS_Accept_sec_context() returns an error and outputs an error token, the token MUST be either a KRB-ERROR or a KRB-ERROR2, with the latter having the continue-needed flag cleared.</t>
         </list>
       </t>
-      <section title="Error Recovery" anchor="d1e358">
+      <t>
+        <cref>
+Perhaps we should use a checksum 0x8003 [RFC4121] extension instead of authorization data in the authenticator.</cref>
+      </t>
+      <section title="Error Recovery" anchor="d1e388">
         <t>
 The following Kerberos errors can be recovered from automatically using this protocol:</t>
         <t>
@@ -142,7 +147,7 @@ KRB_AP_ERR_BADADDR; the acceptor SHOULD include a list of one or more client net
           </list>
         </t>
       </section>
-      <section title="Number of Security Context Tokens" anchor="d1e416">
+      <section title="Number of Security Context Tokens" anchor="d1e446">
         <t>
 The first AP-REQ may well result in an error; the second should not. Therefore acceptors SHOULD return a fatal error when a second error results in one security context establishment attempt, except when the first error is that the initiator should use user-to-user authentication. This limits the maximum number of round trips to two (not user-to-user) or three (user-to-user).</t>
         <t>
@@ -151,11 +156,37 @@ Initiators and acceptors MUST impose some limit on the maximum number of securit
 An initiator that rejects an additional round trip MUST respond with a KRB-ERROR2.</t>
         <t>
 Note that in the user-to-user cases (see  <xref target="sub_User_to_User_Authentication"/>) it's possible to have up to three round trips under normal conditions if, for example, the acceptor wishes to avoid the use of replay caches (see  <xref target="sub_Replay_Cache_Avoidance"/>), or if the initiator's clock is too skewed, for example.</t>
+        <section title="Security Token Sequences" anchor="d1e470">
+          <t>
+The following successful security context token exchange sequences are possible:</t>
+          <t>
+            <list style="symbols">
+              <t>
+one token (per-RFC4121).</t>
+              <t>
+two tokens (per-RFC4121).</t>
+              <t>
+three tokens: the initiator wanted mutual authentication and the acceptor wanted an extra AP-REQ for replay cache avoidance (see  <xref target="sub_Replay_Cache_Avoidance"/>).</t>
+              <t>
+four tokens: the initiator wanted mutual authentication and a recoverable error occurred, leading to the second round trip.
+
+<list style="symbols"><t>
+This case provides replay cache avoidance without no fifth token because the acceptor provides a challenge in its first (KRB-ERROR2) token and the initiator completes the challenges in its second token.</t></list>
+</t>
+              <t>
+six tokens: the initiator wanted mutual authentication, the acceptor wanted user-to-user authentication, and the initiator's second AP-REQ elicited a recoverable error</t>
+            </list>
+          </t>
+        </section>
       </section>
-      <section title="PROT_READY" anchor="d1e440">
+      <section title="PROT_READY" anchor="d1e504">
         <t>
-It is REQUIRED that each AP-REQ in a security context token exchange replace the sub-session key to be used for PROT_READY per-message tokens. This can conceivably cause failure-to-verify/unwrap errors for some applications (e.g., using datagram transports), but none that they shouldn't have been prepared to handle.</t>
-        <section title="Negotiation Issues for User-to-User Authentication" anchor="d1e534">
+It is REQUIRED that each AP-REQ in a security context token exchange assert an initiator sub-session key, possibly different from preceding AP-REQs in the same exchange. Each AP-REQ's initiator sub-session key in a security context token exchange MUST replace the sub-session key to be used for PROT_READY per-message tokens. This can conceivably cause failure-to-verify/unwrap errors for some applications (e.g., using datagram transports), but none that they shouldn't have been prepared to handle.</t>
+      </section>
+      <section title="Per-Message Token Sequence Numbers" anchor="d1e513">
+        <t>
+It is REQUIRED that each real AP-REQ in a single security token exchange specify the same start sequence number as preceding AP-REQs in the same security context token exchange.</t>
+        <section title="Negotiation Issues for User-to-User Authentication" anchor="d1e606">
           <t>
 Initiator applications that can negotiate security mechanisms and which have available an existing user-to-user mechanism <xref target="I-D.swift-win2k-krb-user2user"/> as well as the Kerberos V5 GSS mechanism with the user-to-user extension defined here will have a problem: they may end up negotiating the use of the Kerberos V5 GSS mechanism and fail to establish a security context because the acceptor does not support the features defined in this document, but the application might have succeeded if it had selected the user-to-user mechanism.</t>
           <t>
@@ -171,7 +202,7 @@ A partial ASN.1 module appears below. This ASN.1 is to be used as if it were par
       <t>
 </t>
       <t>
-        <figure anchor="magicparlabel-198" title="ASN.1 module (with explicit tagging)">
+        <figure anchor="magicparlabel-214" title="ASN.1 module (with explicit tagging)">
           <artwork> APOptions       ::= KerberosFlags
          -- reserved(0),
          -- use-session-key(1),
@@ -239,13 +270,13 @@ In both cases the acceptor responds with a KRB-ERROR2 with the KRB_AP_ERR_USER_T
       <t>
 In both cases the initiator then does a TGS request with a second ticket to get a new, user2user Ticket. Then the initiator makes a new AP-REQ using the new Ticket, and proceeds.</t>
     </section>
-    <section title="Other Requirements, Recommendations, and Non-Requirements" anchor="d1e552">
+    <section title="Other Requirements, Recommendations, and Non-Requirements" anchor="d1e624">
       <t>
 All error PDUs in an AP exchange where the AP-REQ has the continue-needed-ok ap-options flag MUST be KRB-ERROR2 PDUs.</t>
       <t>
 Whenever an acceptor is able to decrypt the Ticket from an AP-REQ and yet wishes or has to output a KRB-ERROR2, then the enc-part of the KRB-ERROR2 MUST be encrypted in either the initiator's sub-session key (from the Authenticator) or the Ticket's session key (if the acceptor could not decrypt the Authenticator).</t>
     </section>
-    <section title="Security Considerations" anchor="d1e564">
+    <section title="Security Considerations" anchor="d1e637">
       <t>
 This document deals with security.</t>
       <t>
@@ -256,8 +287,14 @@ The new KRB-ERROR2 PDU is cryptographically distinguished from the original mech
 Not every KRB-ERROR2 can be integrity protected.</t>
       <t>
 Because in the base Kerberos V5 GSS-API security mechanism all errors are unauthenticated, and because even with this specification some elements are unauthenticated, it is possible for an attacker to cause one peer to think that the security context token exchange has failed while the other thinks it will continue. This can cause an acceptor to waste resources while waiting for additional security context tokens from the initiator. This is not really a new problem, however: acceptor applications should already have suitable timeouts on security context establishment.</t>
+      <t>
+There is a binding of preceding security context tokens in each additional AP-REQ, via the challenge-response nonce. This binding is weak, and does not detect all modifications of unauthenticated plaintext in preceding security context tokens.</t>
+      <t>
+        <cref>
+We could use the GSS_EXTS_FINISHED extension from draft-ietf-kitten-iakerb to implement a strong binding of all context tokens.</cref>
+      </t>
     </section>
-    <section title="IANA Considerations" anchor="d1e586">
+    <section title="IANA Considerations" anchor="d1e664">
       <t>
         <cref>
 Various allocations are required...</cref>
@@ -267,7 +304,6 @@ Various allocations are required...</cref>
   <back>
     <references title="Normative References">&rfc2119;
 &rfc2743;
-&rfc2744;
 &rfc4120;
 &rfc4121;
 &x680;
