@@ -283,7 +283,7 @@ Public Key-Based Kerberos Cross Realm Path Traversal Protocol Using Kerberized
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-krb5-pkcross-03
+draft-williams-kitten-krb5-pkcross-04
 \end_layout
 
 \end_inset
@@ -1068,125 +1068,37 @@ RFC4557
 .
 \end_layout
 
-\begin_layout Subsection
-Leap-of-Faith (LoF) / Trust-On-First-Use (TOFU)
-\end_layout
-
-\begin_layout Standard
-Clients need not validate the certificate trust path of destination realms.
- When they do not, the services used through those destination realms are
- as good as anonymous authentication.
- If the client saves the root or intermediate or end entity certificates
- of the destination realms that it cannot or does not validate, then the
- client can check that on future occasions the destination realm's certificate
- has not changed, and it may warn the user if it has.
- This quite similar to how clients using the secure shell (SSH) protocol
- 
-\begin_inset Flex EntityXRef
-status collapsed
-
-\begin_layout Plain Layout
-RFC4251
-\end_layout
-
-\end_inset
-
- handle server authentication, and is commonly known as 
-\begin_inset Quotes eld
-\end_inset
-
-leap-of-faith
-\begin_inset Quotes erd
-\end_inset
-
- (LoF) or trust-on-first-use (TOFU).
- The result is pseudonymous authentication.
-\end_layout
-
-\begin_layout Standard
-Destination services too may apply LoF/TOFU: by using the subjectPublicKey
- of the certificate in the ticket's AD-CLIENT-CERTIFICATE KDC-issued authorizati
-on-data as the client's name instead of validating the transit path of the
- client.
-\end_layout
-
-\begin_layout Subsubsection
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Requirements-for-LoF/TOFU"
-
-\end_inset
-
-Requirements and Recommendations for LoF/TOFU Authentication
-\end_layout
-
-\begin_layout Itemize
-Implementations MUST NOT use LoF/TOFU to authenticate a target service's
- realm without the approval of the user or without making it clear that
- the realm is not fully authenticated (perhaps by replacing the realm's
- name with a fingerprint of its public key / certificate).
-\end_layout
-
-\begin_layout Itemize
-Implementations MAY allow users and/or service administrators to establish
- user-friendly aliases for peer principal names that include public key
- fingerprint material.
-\end_layout
-
 \begin_layout Section
 Application Programming Interface Considerations
 \end_layout
 
 \begin_layout Standard
-For non-LoF/TOFU uses the main security consideration for applications is
- that improved scalability for Kerberos realm traversal implies larger Kerberos
+Improved scalability for Kerberos realm traversal implies larger Kerberos
  universes, and the larger a universe of trust the more important it is
  to have useful and expressive local policy for evaluating the trustworthiness
  of any given transit path.
  Because in most applications local policy should be a component external
- to the application, there is no impact on APIs here.
+ to the application, there is mostly no impact on APIs here.
  However, an implementation may wish to provide applications with interfaces
  for specifying policies, either named or by value.
 \end_layout
 
 \begin_layout Subsection
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:API-Considerations-for"
-
-\end_inset
-
-API Considerations for LoF/TOFU Authentication
+GSS-API Considerations
 \end_layout
 
 \begin_layout Standard
-For LoF/TOFU uses there is a critical requirement that APIs not permit accidenta
-l aliasing of principal names as a result of LoF/TOFU being used.
- The simplest way to do this is to use a fingerprint of the peer principal's
- public key as their principal, and/or a fingerprint of the peer principal's
- realm's public key as their realm.
-\end_layout
+The naming attributes 
+\begin_inset Flex EntityXRef
+status collapsed
 
-\begin_layout RevisionRemark
-For interoperability and compatibility we might want to specify what fingerprint
- algorithm to use, perhaps one of the SSHv2 fingerprint algorithms, such
- as in RFC4255, but those use weaker hashes...
+\begin_layout Plain Layout
+RFC6680
 \end_layout
-
-\begin_layout Subsection
-GSS-API Naming Considerations
-\end_layout
-
-\begin_layout Standard
-There are no GSS-API-specific considerations.
- The naming considerations described in 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:API-Considerations-for"
 
 \end_inset
 
- and the naming attributes defined in 
+ defined in 
 \begin_inset Flex EntityXRef
 status collapsed
 
@@ -1196,164 +1108,13 @@ I-D.williams-kitten-generic-naming-attributes
 
 \end_inset
 
- are sufficient.
- Note however that information about how PKCROSS was used to establish symmetric
-ally-keyed cross-realm principals is lost and will not appear in the transit
- path in tickets issued by KDCs reached via such cross-realm principals.
-\end_layout
-
-\begin_layout RevisionRemark
-Actually, we may need to specify some interfaces by which to indicate that
- the user wishes to alias a pseudonymous name.
- Perhaps we can do so by applying GSS_Set_name_attribute() to a peer MN
- obtained from GSS_Inquire_context()?
-\end_layout
-
-\begin_layout Subsection
-Representation of LoF/TOFU Principal and Realm Names
+ provide access to information about transit paths.
 \end_layout
 
 \begin_layout Standard
-If there is no acceptable or verifiable trust path for validating a peer's
- principal's and/or realm's certificate, then the local end-point MUST locally
- output the peer's principal (or realm) name as a fingerprint of one of:
-\end_layout
-
-\begin_layout Enumerate
-peer's EE certificate's subject public key;
-\end_layout
-
-\begin_layout Enumerate
-a subject Name or GeneralName from the peer's EE certificate and the peer's
- certificate issuer's subjectPublicKey.
-\end_layout
-
-\begin_layout Standard
-The choice of which of the above to fingerprint is a local choice.
- The default SHOULD be (1).
- (2) allows for key rollover.
-\end_layout
-
-\begin_layout Standard
-The fingerprints MUST be computed as follows:
-\end_layout
-
-\begin_layout Itemize
-First format a byte string as follows:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-for (1) take the subjectPublicKey's DER [add ref to x.690] encoding (this
- is a BIT STRING), with no additional tagging
-\end_layout
-
-\begin_layout Itemize
-for (2) take the DER encoding of the ASN.1 type 
-\begin_inset Quotes eld
-\end_inset
-
-nameAndIssuerFPInput ::= SEQUENCE { subjectName GeneralName, issuerPublicKey
- BIT STRING}
-\begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Then apply SHA-256 to the octet string from the first step, then take the
- most significant 192 bits of that hash and base64-encode using the 
-\begin_inset Quotes eld
-\end_inset
-
-URL- and filename-safe alphabet
-\begin_inset Quotes erd
-\end_inset
-
- 
-\begin_inset Flex EntityXRef
-status collapsed
-
-\begin_layout Plain Layout
-RFC4648
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Itemize
-Prefix 
-\begin_inset Quotes eld
-\end_inset
-
-:spk:
-\begin_inset Quotes erd
-\end_inset
-
- if using (1) or 
-\begin_inset Quotes eld
-\end_inset
-
-:nai:
-\begin_inset Quotes erd
-\end_inset
-
- if using (2).
- This is the fingerprint to use as either the principal name's single component,
- or as the principal's realm name.
- If the name is a realm name then the colons (':') in the prefix are to
- be removed so as to produce valid Kerberos realm names.
-\end_layout
-
-\begin_layout Standard
-For example, 
-\begin_inset Quotes eld
-\end_inset
-
-:spk:MjNhNjM0YTM4NDFiZDdhNjVkODQ5YTdi
-\begin_inset Quotes erd
-\end_inset
-
-@FOO.EXAMPLE or 
-\begin_inset Quotes eld
-\end_inset
-
-HTTP/someserver.foo.example@spkMmE1M2RiMjc1Nzk5ODFjNWQwYjk0OTAw
-\begin_inset Quotes erd
-\end_inset
-
-.
- Note that all such realm names have no period character ('.') in them and
- will too long to match top-level domainnames in use in the DNS, and no
- such principal names have a forward slash ('/') character in them.
- Note also that interpretation of such principal names as usernames on POSIX
- systems will either produce an empty string (due to implementation issues
- regarding the use of colons (':' as separators in POSIX user databases)
- or the full string, either way not likely ti collide with valid usernames.
-\end_layout
-
-\begin_layout Subsection
-GSS-API Name-Type for Pseudonymous Principals
-\end_layout
-
-\begin_layout Standard
-We add a new GSS-API name-type: GSS_C_NT_PSEUDONYMOUS.
- This represents principals whose names are pseudonymous.
-\end_layout
-
-\begin_layout Subsubsection
-Kerberos Name-Type for Pseudonymous Principals
-\end_layout
-
-\begin_layout Standard
-At this time pseudonymous principal names should not appear in Kerberos
- PDUs, thus no name-type need be assigned.
- If a pseudonymous name must be appear in a Kerberos PDU for any reason
- then the NT-UNKNOWN name-type should be used.
+Note that information about how PKCROSS was used to establish symmetrically-keye
+d cross-realm principals is lost and will not appear in the transit path
+ in tickets issued by KDCs reached via such cross-realm principals.
 \end_layout
 
 \begin_layout Section
@@ -1391,49 +1152,6 @@ The Kerberos transit path encodes only realm names (including X.500-style
  key information that might be useful for pinning.
  However, the certificate validation path for each realm in a transit path
  SHOULD be included in the transit path.
-\end_layout
-
-\begin_layout Subsection
-Security Considerations for LoF/TOFU
-\end_layout
-
-\begin_layout Standard
-LoF/TOFU has additional security considerations.
- To start there is the obvious susceptibility to peer impersonation / man-in-the
--middle (MITM) attacks on initial contact, which is mitigated by the attacker's
- need to always remain in the middle in order to avoid detection.
-\end_layout
-
-\begin_layout Standard
-LoF/TOFU require the ability to remember peers' pseudonymous identities
- -- their public keys (or certificates), otherwise one remains vulnerable
- to peer impersonation / MITM attacks at all times.
- This requires synchronization of peer pseudonym databases across multiple
- devices (where users have multiple devices), which may not always be possible
- or performed.
-\end_layout
-
-\begin_layout Standard
-It is critical that existing applications not be broken by the ability to
- use LoF/TOFU in new Kerberos implementations when those applications are
- re-linked with newer Kerberos implementations.
- To ensure this we require the use of public key fingerprints as principal
- and/or realm names; local mappings of learned pseudonym mappings onto semantica
-lly meaningful names are permitted where the user can validate the mapping.
- But keep in mind that most users never actually do much to verify peers'
- public keys in any application/protocol that provides LoF/TOFU [references
- for this would be nice -Nico].
-\end_layout
-
-\begin_layout Standard
-See 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:Requirements-for-LoF/TOFU"
-
-\end_inset
-
- for additional requirements for LoF/TOFU authentication.
 \end_layout
 
 \begin_layout Subsection
@@ -1579,13 +1297,13 @@ target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4557.xml"
 
 \begin_layout Standard
 \begin_inset Flex BibXML
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset href
 LatexCommand href
-name "rfc4648"
-target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4648.xml"
+name "rfc5280"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml"
 
 \end_inset
 
@@ -1604,8 +1322,8 @@ status open
 \begin_layout Plain Layout
 \begin_inset CommandInset href
 LatexCommand href
-name "rfc5280"
-target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml"
+name "rfc6680"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6680.xml"
 
 \end_inset
 
@@ -1690,26 +1408,6 @@ status open
 LatexCommand href
 name "rfc4033"
 target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4033.xml"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Flex BibXML
-status open
-
-\begin_layout Plain Layout
-\begin_inset CommandInset href
-LatexCommand href
-name "rfc4251"
-target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml"
 
 \end_inset
 
