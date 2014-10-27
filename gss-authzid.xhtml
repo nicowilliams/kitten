@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/TR/2001/REC-MathML2-20010221/dtd/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="GENERATOR" content="LyX 2.0.6" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>Impersonation Naming Attribute for the Generic Security Services Application Programming Interface (GSS-API)</title>
+
+<!-- Text Class Preamble -->
+<style type="text/css">
+div.toc {
+margin: 2em 0em;
+border-style: solid;
+border-width: 2px 0px;
+padding: 1em 0em;
+}
+div.tochead { font-size: x-large; font-weight: bold; }
+div.lyxtoc-0 {
+margin: 2em 0em 0em 0em;
+font-size: xx-large;
+font-weight: bold;
+}
+div.lyxtoc-1 {
+margin: 1em 0em 0em 0em;
+font-size: x-large;
+font-weight: bold;
+}
+div.lyxtoc-2 {
+margin: 0em 0em 0em 1em;
+font-size: large;
+font-weight: normal;
+}
+div.lyxtoc-3 { margin: 0em 0em 0em 0.5em; font-size: medium; }
+div.lyxtoc-4 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-5 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-6 { margin: 0em 0em 0em 0.5em; }
+a.tocentry {
+text-decoration: none;
+color: black;
+}
+a.tocentry:visited { color: black; }
+a.tocarrow {
+font-weight: bold;
+text-decoration: none;
+color: #909090;
+}
+a.tocarrow:visited { color: #C0C0C0; }
+</style>
+
+<!-- Preamble Snippets -->
+
+<!-- Layout-provided Styles -->
+<style type='text/css'>
+h1.title {
+font-size: x-large;
+margin-bottom: 1ex;
+text-align: center;
+
+}
+div.standard {
+text-align: left;
+
+}
+div.plain_layout {
+text-align: left;
+
+}
+div.author {
+font-size: large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: center;
+
+}
+div.abstract {
+font-size: small;
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+margin-right: 3ex;
+text-align: left;
+
+}
+div.abstract_label {
+font-weight: bold;
+font-size: large;
+text-align: center;
+
+}
+
+div.abstract {
+margin: 4ex;
+}
+div.abstract_item {
+font-size: small;
+padding-top: 1ex;
+}
+div.abstract_label {
+font-weight: bold;
+}
+h2.section {
+font-weight: bold;
+font-size: x-large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: left;
+
+}
+dl.description dt { font-weight: bold; }
+h3.subsection {
+font-weight: bold;
+font-size: large;
+margin-top: 0.9ex;
+margin-bottom: 0.5ex;
+text-align: left;
+
+}
+ol.enumerate {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+h4.subsubsection {
+font-weight: bold;
+font-size: medium;
+margin-top: 0.7ex;
+margin-bottom: 0.4ex;
+text-align: left;
+
+}
+ul.itemize {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+div.revisionremark {
+text-align: left;
+
+}
+div.flex_docname {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ipr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_intendedstatus {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_titleabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_ietfarea {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_xml_rfckeyword {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_updates {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_toc {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_symrefs {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi_tocindent {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_pi {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororg {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authororgabbrev {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_authoremailaddr {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_entityxref {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.float {
+border: 2px solid black;
+text-align: center;
+}
+div.listings {
+font-family: monospace;
+}
+div.float-caption {
+text-align: center;
+border: 2px solid black;
+padding: 1ex;
+margin: 1ex;
+}
+div.flex_bibxml {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+div.flex_embeddedbibxml {
+font-family: serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+font-size: medium;
+}
+</style>
+</head>
+<body>
+<h1 class="title"><a id='magicparlabel-1' />
+Impersonation Naming Attribute for the Generic Security Services Application Programming Interface (GSS-API)</h1>
+<div class="standard"><a id='magicparlabel-2' />
+<div class="flex_docname"><div class="plain_layout"><a id='magicparlabel-6' />
+draft-williams-kitten-impersonation-naming-attr-01</div>
+</div><div class="flex_ipr"><div class="plain_layout"><a id='magicparlabel-10' />
+trust200902</div>
+</div><div class="flex_intendedstatus"><div class="plain_layout"><a id='magicparlabel-14' />
+std</div>
+</div><div class="flex_titleabbrev"><div class="plain_layout"><a id='magicparlabel-18' />
+GSS Impersonation</div>
+</div><div class="flex_ietfarea"><div class="plain_layout"><a id='magicparlabel-22' />
+Security Area</div>
+</div><div class="flex_xml_rfckeyword"><div class="plain_layout"><a id='magicparlabel-26' />
+Internet-Draft</div>
+</div><div class="flex_updates"><div class="plain_layout"><a id='magicparlabel-30' />
+1964, 2743, 2744</div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-31' />
+<div class="flex_pi_toc"><div class="plain_layout"><a id='magicparlabel-35' />
+yes</div>
+</div><div class="flex_pi_symrefs"><div class="plain_layout"><a id='magicparlabel-39' />
+yes</div>
+</div><div class="flex_pi_tocindent"><div class="plain_layout"><a id='magicparlabel-43' />
+no</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-47' />
+comments="yes"</div>
+</div><div class="flex_pi"><div class="plain_layout"><a id='magicparlabel-51' />
+inline="yes"</div>
+</div></div>
+
+<div class="author"><div class="author_item"><a id='magicparlabel-52' />
+Nicolas Williams<div class="flex_authororg"><div class="plain_layout"><a id='magicparlabel-56' />
+Cryptonector, LLC</div>
+</div><div class="flex_authororgabbrev"><div class="plain_layout"><a id='magicparlabel-60' />
+Cryptonector</div>
+</div><div class="flex_authoremailaddr"><div class="plain_layout"><a id='magicparlabel-64' />
+nico@cryptonector.com</div>
+</div></div>
+</div>
+
+<div class="abstract"><div class="abstract_label">Abstract</div>
+<div class="abstract_item"><a id='magicparlabel-65' />
+This document describes a method for impersonation of one principal by another. Relying parties are expected to apply policy to decide which impersonation attempts they accept. Trusted third parties may provide assistance in evaluating policy. The proposed system fails safe: applications that do not support it see their peers as the impersonators, not the impersonated principals.</div>
+</div>
+<div class="standard"><a id='magicparlabel-66' />
+</div>
+<div class='toc'><div class='tochead part_'>Table of Contents</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-67' class='tocentry'>1 Introduction and Motivation</a> <a href='#magicparlabel-67' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-83' class='tocentry'>1.1 Comparison to S4U</a> <a href='#magicparlabel-83' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-112' class='tocentry'>1.1.1 Comparison to S4U2Proxy</a> <a href='#magicparlabel-112' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-118' class='tocentry'>1.2 Conventions used in this document</a> <a href='#magicparlabel-118' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-124' class='tocentry'>2 Generic Interfaces for Impersonation</a> <a href='#magicparlabel-124' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-137' class='tocentry'>2.1 Naming Attributes for Generic Impersonation</a> <a href='#magicparlabel-137' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-147' class='tocentry'>2.1.1 C Bindings</a> <a href='#magicparlabel-147' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-149' class='tocentry'>2.2 GSS_Acquire_cred_impersonate_name()</a> <a href='#magicparlabel-149' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-3'><a href='#magicparlabel-185' class='tocentry'>2.2.1 C Bindings of GSS_Acquire_cred_impersonate_name()</a> <a href='#magicparlabel-185' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-209' class='tocentry'>2.3 Apparent Credential Delegation</a> <a href='#magicparlabel-209' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-212' class='tocentry'>2.4 Intended Usage</a> <a href='#magicparlabel-212' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-215' class='tocentry'>2.5 Local Policy</a> <a href='#magicparlabel-215' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-218' class='tocentry'>2.6 Third-Party Impersonation Policy Assistance</a> <a href='#magicparlabel-218' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-230' class='tocentry'>3 Kerberos Bindings of Impersonation Attributes</a> <a href='#magicparlabel-230' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-242' class='tocentry'>3.1 Client Processing</a> <a href='#magicparlabel-242' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-245' class='tocentry'>3.2 TGS Processing (OPTIONAL)</a> <a href='#magicparlabel-245' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-250' class='tocentry'>3.3 Target Service Processing</a> <a href='#magicparlabel-250' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-254' class='tocentry'>4 Sample Code</a> <a href='#magicparlabel-254' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-316' class='tocentry'>5 Security Considerations</a> <a href='#magicparlabel-316' class='tocarrow'>&gt;</a>
+
+<div class='lyxtoc-2'><a href='#magicparlabel-320' class='tocentry'>5.1 Security Requirements and Recommendations</a> <a href='#magicparlabel-320' class='tocarrow'>&gt;</a></div>
+</div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-327' class='tocentry'>6 IANA Considerations</a> <a href='#magicparlabel-327' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-329' class='tocentry'>7 Normative References</a> <a href='#magicparlabel-329' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-370' class='tocentry'>8 Informative References</a> <a href='#magicparlabel-370' class='tocarrow'>&gt;</a></div>
+
+<div class='lyxtoc-1'><a href='#magicparlabel-382' class='tocentry'>I Acknowledgements</a> <a href='#magicparlabel-382' class='tocarrow'>&gt;</a></div>
+</div>
+
+<h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-67' />
+Introduction and Motivation</h2>
+<div class="standard"><a id='magicparlabel-68' />
+A very common application design involves services that must impersonate their clients to other services. There are two common designs for enabling this:</div>
+
+<dl class='description'><dt class="description_label">credential&nbsp;delegation</dt>
+<dd class="description_item"><a id='magicparlabel-69' />
+ where clients delegate credentials to the impersonators,</dd>
+<dt class="description_label">explicit&nbsp;impersonation</dt>
+<dd class="description_item"><a id='magicparlabel-70' />
+ where impersonators explicitly state that they are impersonating others.</dd>
+</dl>
+<div class="standard"><a id='magicparlabel-71' />
+There exist protocols where the explicit impersonation concept is difficult to retrofit. And there exist protocols where credential delegation is the commonly-deployed -and therefore expected- method for impersonation. Therefore explicit impersonation is not universally available.</div>
+
+<div class="standard"><a id='magicparlabel-72' />
+On the other hand, unconstrained credential delegation is dangerous (for obvious reasons). What to do?</div>
+
+<div class="standard"><a id='magicparlabel-73' />
+One answer has been <strong>constrained delegation</strong>. In this design the credential issuer creates a credential for impersonating the client, but in a constrained way (e.g., to only a small set of downstream services). But constrained credential delegation is difficult to manage: the constraints must be expressed by parties that aren't best-placed to know the desired policy.</div>
+
+<div class="standard"><a id='magicparlabel-74' />
+We propose a simple solution for Generic Security Services Application Programming Interface (GSS-API) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-78' />
+RFC2743</div>
+</div> applications: have the impersonator use their own credential (or one specifically for this purpose) and assert the name of the principal to be impersonated as a name attribute. This is very similar to the concept of &ldquo;authz-id&rdquo; in Simple Authentication and Security Layers (SASL) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-82' />
+RFC4422</div>
+</div>, but with some subtle differences as described below. We also propose the addition of a name attribute with the same semantics as the SASL authz-id.</div>
+<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-83' />
+Comparison to S4U</h3>
+<div class="standard"><a id='magicparlabel-84' />
+There is an extension for Kerberos <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-88' />
+RFC4120</div>
+</div> known as Services for User (S4U) <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-92' />
+S4U</div>
+</div> which provides for impersonation. S4FU is available to GSS-API applications via the Kerberos GSS-API mechanism <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-96' />
+RFC1964</div>
+</div><div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-100' />
+RFC4121</div>
+</div>, naturally.</div>
+
+<div class="standard"><a id='magicparlabel-101' />
+A complete treatment of S4U is out of scope for this document, however, a brief summary is as follows. S4U consists of two sub-protocols for impersonation:</div>
+
+<dl class='description'><dt class="description_label">S4U2Self</dt>
+<dd class="description_item"><a id='magicparlabel-102' />
+ Allows services to use their own credentials to obtain KDC-issued authorization-data for principals to be impersonated.</dd>
+<dt class="description_label">S4U2Proxy</dt>
+<dd class="description_item"><a id='magicparlabel-103' />
+ Allows services to use clients' service tickets as &ldquo;evidence&rdquo; tickets with which (and together with the impersonator's credentials) to obtain other tickets in the name of the client principals to be impersonated.</dd>
+</dl>
+<div class="standard"><a id='magicparlabel-104' />
+This document concerns itself only with functionality like that of S4U2Proxy.</div>
+
+<div class="standard"><a id='magicparlabel-105' />
+There are several differences between this proposal and S4U2Proxy:</div>
+
+<ol class="enumerate"><li class="enumerate_item"><a id='magicparlabel-106' />
+At no point does a KDC issue a ticket to an impersonator with the impersonated principal's name as the cname/crealm. This permits access to services in the impersonated principal's home realm.</li>
+<li class="enumerate_item"><a id='magicparlabel-107' />
+No &ldquo;evidence&rdquo; tickets are required or used.</li>
+<li class="enumerate_item"><a id='magicparlabel-108' />
+No KDC support is required, but may be provided.</li>
+<li class="enumerate_item"><a id='magicparlabel-109' />
+No KDC-side policy is required, but may be provided.</li>
+</ol>
+<div class="standard"><a id='magicparlabel-110' />
+(1) is the initial motivation for this work: S4U does not permit services not in the impersonated principal's realm to impersonate it to services in that same realm. This is because any service ticket issued for such access would appear to transit a trust path back to the impersonated principal's realm, thus triggering loop detection. A better fix for this might be to permit exactly one full cycle precisely so as to permit this and other similar use cases. However, the other differences and advantages over S4U2Proxy are compelling.</div>
+
+<div class="standard"><a id='magicparlabel-111' />
+This proposal <em>does not</em> intend to entirely replace S4U. In particular, in use cases where Kerberos tickets carry KDC-issued authorization-data, the services to which principals are successfully impersonated may need to use S4U2Self in order to obtain that authorization-data if they have no other method available by which to get it.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">1.1.1</span> <a id='magicparlabel-112' />
+Comparison to S4U2Proxy</h4>
+<div class="standard"><a id='magicparlabel-113' />
+Our method of impersonation has a number of advantages to S4U:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-114' />
+it is simpler (no need for evidence tickets and related cryptographic sub-protocols, no need for KDC-side policy, and even where KDCs apply additional policy, this method imposes no new requirements for additional cryptographic operations on either the impersonator's nor the KDC's part);</li>
+<li class="itemize_item"><a id='magicparlabel-115' />
+it adheres strictly to the Kerberos model whereby application-local policy has the last word and KDCs need not apply any policy;</li>
+<li class="itemize_item"><a id='magicparlabel-116' />
+it fails safe when used with peers that do not implement it (and therefore do not apply local policy to impersonation attempts);</li>
+<li class="itemize_item"><a id='magicparlabel-117' />
+it permits impersonation of principals whose names are not Kerberos principal names.</li>
+</ul>
+<h3 class="subsection"><span class="subsection_label">1.2</span> <a id='magicparlabel-118' />
+Conventions used in this document</h3>
+<div class="standard"><a id='magicparlabel-119' />
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-123' />
+RFC2119</div>
+</div>.</div>
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-124' />
+Generic Interfaces for Impersonation</h2>
+<div class="standard"><a id='magicparlabel-125' />
+We provide three interfaces for impersonation:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-126' />
+naming attributes <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-130' />
+RFC6680</div>
+</div> (see <a href="#sec_Generic_Impersonation_Attributes">2.1</a>);</li>
+<li class="itemize_item"><a id='magicparlabel-131' />
+a function, GSS_Acquire_cred_impersonate_name() and its C programming language bindings patterned after the GSS-APIv2u1 C bindings <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-135' />
+RFC2744</div>
+</div> (see <a href="#sub_GSS_Acquire_cred_impersonate_nam">2.2</a>);</li>
+<li class="itemize_item"><a id='magicparlabel-136' />
+apparent credential delegation, even when credential delegation has not taken place (see <a href="#sub_Apparent_Credential_Delegation">2.3</a>).</li>
+</ul>
+<h3 class="subsection"><span class="subsection_label">2.1</span> <a id='magicparlabel-137' />
+<a id="sec_Generic_Impersonation_Attributes" />
+Naming Attributes for Generic Impersonation</h3>
+<div class="standard"><a id='magicparlabel-138' />
+We define two generic GSS-API naming attributes <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-142' />
+RFC6680</div>
+</div> for impersonation:</div>
+
+<dl class='description'><dt class="description_label">GSS_C_ATTR_IMPERSONATED_PRINCIPAL</dt>
+<dd class="description_item"><a id='magicparlabel-143' />
+ This attribute notionally carries an exported name token representation of the name of the principal to be impersonated by the principal whose CREDENTIAL HANDLE's desired NAME has this attribute. This is subtly different from SASL's authz-id concept in that the latter carries an application-specific name form while this one carries a mechanism-specific name form (though not necessarily the same mechanism as is used to authenticate the impersonator!). When obtained with GSS_Get_name_attribute() the display_value of this attribute SHOULD be a display form of the impersonated name else it MUST be empty, whereas the non-display form MUST be an octet string suitable for use as an input to GSS_Import_name() with GSS_C_NT_EXPORTED_NAME or GSS_C_NT_COMPOSITE_EXPORT.</dd>
+<dt class="description_label">GSS_C_ATTR_AUTHZ_ID</dt>
+<dd class="description_item"><a id='magicparlabel-144' />
+ This attribute carries an application-specific name form corresponding to an identity that is to be impersonated (by the principal whose CREDENTIAL HANDLE's desired NAME has this attribute). This attribute's semantics are exactly like SASL's. Interpretation of this attribute's non-display value is application-specific; the display value of this attribute is empty.</dd>
+</dl>
+<div class="standard"><a id='magicparlabel-145' />
+Mechanisms MAY support credential delegation for credentials with these attributes set, however, if they do they MUST constrain the delegated credentials such that they may only be used to impersonate the same principal or assert the same authz-id as in the security context token exchange where the credential was delegated. Impersonator applications are encouraged to not delegate impersonation credentials; instead their peers should should use impersonation if necessary.</div>
+
+<div class="revisionremark"><a id='magicparlabel-146' />
+TBD: Should we specify a way to denote authz-id form, e.g., via a URN? Perhaps by convention the authz-id should generally be prefixed with a URN denoting its form, and perhaps there should be a URN for denoting &ldquo;private to the application using it&rdquo;. Of course, that would be an optional convention, and anyways, it's not necessary (SASL doesn't have it).</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.1.1</span> <a id='magicparlabel-147' />
+C Bindings</h4>
+<div class="revisionremark"><a id='magicparlabel-148' />
+TBD. Obviously the bindings consist of the same symbols as shown above; their values should be of type gss_buffer_desc, pointing to the URNs assigned herein (still TBD).</div>
+<h3 class="subsection"><span class="subsection_label">2.2</span> <a id='magicparlabel-149' />
+<a id="sub_GSS_Acquire_cred_impersonate_nam" />
+GSS_Acquire_cred_impersonate_name()</h3>
+<div class="standard"><a id='magicparlabel-150' />
+Inputs:</div>
+
+<dl class='description'><dt class="description_label">impersonator_cred_handle&nbsp;CREDENTIAL&nbsp;HANDLE</dt>
+<dd class="description_item"><a id='magicparlabel-151' />
+ A handle for the impersonator's credentials.</dd>
+<dt class="description_label">desired_name&nbsp;NAME</dt>
+<dd class="description_item"><a id='magicparlabel-152' />
+ The name of the principal to be impersonated.</dd>
+<dt class="description_label">time_req&nbsp;INTEGER</dt>
+<dd class="description_item"><a id='magicparlabel-153' />
+ Same as for GSS_Acquire_cred() <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-157' />
+RFC2743</div>
+</div>.</dd>
+<dt class="description_label">desired_mechs&nbsp;SET&nbsp;OF&nbsp;OBJECT&nbsp;IDENTIFIER</dt>
+<dd class="description_item"><a id='magicparlabel-158' />
+ Same as for GSS_Acquire_cred() <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-162' />
+RFC2743</div>
+</div>.</dd>
+<dt class="description_label">cred_usage&nbsp;INTEGER</dt>
+<dd class="description_item"><a id='magicparlabel-163' />
+ Same as for GSS_Acquire_cred() <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-167' />
+RFC2743</div>
+</div>.</dd>
+</dl>
+<div class="standard"><a id='magicparlabel-168' />
+Outputs:</div>
+
+<dl class='description'><dt class="description_label">major&nbsp;status&nbsp;INTEGER</dt>
+<dd class="description_item"><a id='magicparlabel-169' />
+</dd>
+<dt class="description_label">minor&nbsp;status&nbsp;INTEGER</dt>
+<dd class="description_item"><a id='magicparlabel-170' />
+</dd>
+<dt class="description_label">output_cred_handle&nbsp;CREDENTIAL&nbsp;HANDLE</dt>
+<dd class="description_item"><a id='magicparlabel-171' />
+ If returned, these are the credentials for impersonating the desired_name.</dd>
+<dt class="description_label">actual_mechs&nbsp;SET&nbsp;OF&nbsp;OBJECT&nbsp;IDENTIFIER</dt>
+<dd class="description_item"><a id='magicparlabel-172' />
+ Same as for GSS_Acquire_cred() <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-176' />
+RFC2743</div>
+</div>.</dd>
+<dt class="description_label">time_rec&nbsp;INTEGER</dt>
+<dd class="description_item"><a id='magicparlabel-177' />
+ Same as for GSS_Acquire_cred() <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-181' />
+RFC2743</div>
+</div>.</dd>
+</dl>
+<div class="standard"><a id='magicparlabel-182' />
+This function is just like GSS_Acquire_cred(), from the base GSS-APIv2u1 RFC2743 specification, but with the addition of an input for the impersonator's credentials.</div>
+
+<div class="standard"><a id='magicparlabel-183' />
+This function may be used with S4U2Self or it may be equivalent to acquiring credentials for the impersonator's NAME but with one or both of the name attributes described in <a href="#sec_Generic_Impersonation_Attributes">2.1</a>.</div>
+
+<div class="revisionremark"><a id='magicparlabel-184' />
+TBD: Describe any differences from GSS_Acquire_name() as to major status codes.</div>
+<h4 class="subsubsection"><span class="subsubsection_label">2.2.1</span> <a id='magicparlabel-185' />
+C Bindings of GSS_Acquire_cred_impersonate_name()</h4>
+<div class="standard"><a id='magicparlabel-186' />
+</div>
+<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-190' />
+</div>
+<div class='float float-listings'><pre> OM_uint32 gss_acquire_cred_impersonate_name(
+         OM_uint32 *minor_status,
+         const gss_cred_id_t impersonator_cred_handle,
+         const gss_name_t desired_name,
+         OM_uint32 time_req,
+         const gss_OID_set desired_mechs,
+         gss_cred_usage_t cred_usage,
+         gss_cred_id_t *output_cred_handle,
+         gss_OID_set *actual_mechs,
+         OM_uint32 *time_rec);</pre></div>
+
+
+<div class="plain_layout"><a id='magicparlabel-204' />
+<div class='float-caption float-caption-figure'>Figure 1:<div class="plain_layout"><a id='magicparlabel-208' />
+gss_acquire_cred_impersonate_name()</div>
+</div></div>
+</div>
+
+<h3 class="subsection"><span class="subsection_label">2.3</span> <a id='magicparlabel-209' />
+<a id="sub_Apparent_Credential_Delegation" />
+Apparent Credential Delegation</h3>
+<div class="standard"><a id='magicparlabel-210' />
+When an initiator uses impersonation but does not request and perform credential delegation, and the acceptor is so configured, the acceptor mechanism SHOULD pretend that the initiator delegated a credential to impersonate the same principal/authz-id as impersonated to the acceptor if the acceptor has credentials for a principal suitable for use as an impersonator.</div>
+
+<div class="standard"><a id='magicparlabel-211' />
+When an initiator uses impersonation and does request and successfully perform credential delegation, the issuer of the delegated credentials SHOULD constrain that credential to carry the same impersonation name attributes as the initiator's.</div>
+<h3 class="subsection"><span class="subsection_label">2.4</span> <a id='magicparlabel-212' />
+Intended Usage</h3>
+<div class="standard"><a id='magicparlabel-213' />
+Impersonator applications are expected to create a NAME object for their impersonator principal name, set one, the other, or even both of the impersonation attributes described in <a href="#sec_Generic_Impersonation_Attributes">2.1</a>, acquire a credential for this NAME as the desired_name, then use this credential handle with GSS_Init_sec_context() (or even GSS_Accept_sec_context()) to authenticate to other services (or initiators).</div>
+
+<div class="standard"><a id='magicparlabel-214' />
+Impersonator applications SHOULD take care to use an impersonator name that does not denote any access or privilege beyond impersonation [to peers that will trust it so].</div>
+<h3 class="subsection"><span class="subsection_label">2.5</span> <a id='magicparlabel-215' />
+Local Policy</h3>
+<div class="standard"><a id='magicparlabel-216' />
+Applications that are not aware of impersonation MUST observe a security context's peer's name as the impersonator name: impersonation fails safe.</div>
+
+<div class="standard"><a id='magicparlabel-217' />
+Applications that are impersonation-aware SHOULD obtain the name of the principal to be impersonated and if so, MUST apply local policy to determine if the impersonator principal is permitted to impersonate the requested principal to the application.</div>
+<h3 class="subsection"><span class="subsection_label">2.6</span> <a id='magicparlabel-218' />
+Third-Party Impersonation Policy Assistance</h3>
+<div class="standard"><a id='magicparlabel-219' />
+Trusted third parties (e.g., Kerberos KDCs) may reject impersonation using policy local to them. Trusted third parties may also bless impersonation attempts, but application local policy must still be applied (even if that policy is to accept a trusted third party's blessing).</div>
+
+<div class="standard"><a id='magicparlabel-220' />
+Trusted third party policy is conveyed to application via their use (or non-use) of the GSS_C_ATTR_GENERIC_UNCONSTRAINED or GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK name attribute prefixes together with the 'authenticated' output of GSS_Get_name_attributes() <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-224' />
+I-D.williams-kitten-generic-naming-attributes</div>
+</div>.</div>
+
+<div class="standard"><a id='magicparlabel-225' />
+See <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-229' />
+I-D.williams-kitten-generic-naming-attributes</div>
+</div> for more information on the semantics of the GSS_C_ATTR_GENERIC_UNCONSTRAINED and GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK name attribute prefixes.</div>
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-230' />
+Kerberos Bindings of Impersonation Attributes</h2>
+<div class="standard"><a id='magicparlabel-231' />
+For Kerberos <div class="flex_entityxref"><div class="plain_layout"><a id='magicparlabel-235' />
+RFC4120</div>
+</div> we use authorization-data, which may be carried in either Tickets or Authenticators, and may or may not be embedded in AD-KDC-ISSUED or similar (when embedded in a Ticket). KDC policy approval is expressed via embedding these authorization-data in AD-KDC-ISSUED or similar (in a Ticket). KDC policy application is requested by placing the authorization-data in a TGS-REQ's enc-authorization-data.</div>
+
+<div class="standard"><a id='magicparlabel-236' />
+KDC support for all these authorization-data elements is OPTIONAL.</div>
+
+<div class="standard"><a id='magicparlabel-237' />
+Use of these authorization-data elements entirely in the Authenticator is sufficient for most uses. Use in Tickets is only required for a) application of more general KDC-side policy (otherwise the KDC doesn't see who is being impersonated), b) for requesting FORWARDED impersonation Tickets (which, as described <a href="#sec_Generic_Impersonation_Attributes">2.1</a>, is OPTIONAL.</div>
+
+<div class="standard"><a id='magicparlabel-238' />
+The authorization-data element is:</div>
+
+<dl class='description'><dt class="description_label">AD-IMPERSONATE-GSS</dt>
+<dd class="description_item"><a id='magicparlabel-239' />
+ Indicates that the Ticket or Authenticator is intended to impersonate the given principal. The octet string value of this element is an exported GSS-API name token</dd>
+<dt class="description_label">AD-ASSERT-AUTHZID</dt>
+<dd class="description_item"><a id='magicparlabel-240' />
+ Indicates that the Ticket or Authenticator is intended to impersonate the given authzid (SASL semantics). The octet string value of this element is application-specific, therefore clients SHOULD NOT request this element be added to TGTs.</dd>
+</dl>
+<div class="standard"><a id='magicparlabel-241' />
+(Note that no ASN.1 syntax is needed to describe these authorization-data elements' values.)</div>
+<h3 class="subsection"><span class="subsection_label">3.1</span> <a id='magicparlabel-242' />
+Client Processing</h3>
+<div class="standard"><a id='magicparlabel-243' />
+Clients MAY embed AD-IMPERSONATE-GSS and/or AD-ASSERT-AUTHZID in an AD-IF-RELEVANT authorization-data element in TGS requests for new Tickets, except when requesting forwarded/forwardable Tickets, in which case the element MUST be made critical (by not including it in any authorization-data element that denotes non-criticality).</div>
+
+<div class="standard"><a id='magicparlabel-244' />
+Clients that do not need or do not want KDC blessing SHOULD only include these authorization-data elements in Authenticators. The client MAY include these elements in AD-IF-RELEVANT (on the theory that it's safe for the target service to observe the impersonator's name instead of the impersonated name), but the client SHOULD make these authorization-data elements critical to ensure that the target service rejects the AP-REQ if it does not understand them.</div>
+<h3 class="subsection"><span class="subsection_label">3.2</span> <a id='magicparlabel-245' />
+TGS Processing (OPTIONAL)</h3>
+<div class="standard"><a id='magicparlabel-246' />
+TGSes need not have any further support for these authorization-data elements than is required by RFC4120. However, a TGS may contribute its own local policy by including any AD-IMPERSONATE-GSS or AD-ASSERT-AUTHZID elements from a TGS-REQ's enc-authorization-data (or from a TGT's authorization-data) in AD-KDC-ISSUED (or similar) elements. A TGS MUST NOT include these attributes in AD-KDC-ISSUED (or similar) without having applied local policy and determined that the client principal is permitted to make the requested assertions to the requested target service principal.</div>
+
+<div class="standard"><a id='magicparlabel-247' />
+A TGS can only interpret AD-ASSERT-AUTHZID elements relative to the target service principal name. As there is no authzid concept for TGS principals, the TGS MUST NOT include AD-ASSERT-AUTHZID elements in any AD-KDC-ISSUED (or similar) elements when the sname of the Ticket to be issued is a TGS name. But a TGS may be able to interpret (and therefore apply local policy) authzids in other cases.</div>
+
+<div class="standard"><a id='magicparlabel-248' />
+TGS policy MUST NOT bless (i.e., include these elements in AD-KDC-ISSUED or similar) requests with multiple instances of either AD-IMPERSONATE-GSS or AD-ASSERT-AUTHZID.</div>
+
+<div class="standard"><a id='magicparlabel-249' />
+As usual, per-RFC4120, if these authorization-data elements appear in the enc-authorization-data field of the TGS-REQ and/or the TGT, then the TGS should copy them to the issued Ticket. But if the TGS has policy approving of the requested impersonation, then it SHOULD include the impersonation authorization-data elements in a critical AD-KDC-ISSUED (or similar) element.</div>
+<h3 class="subsection"><span class="subsection_label">3.3</span> <a id='magicparlabel-250' />
+Target Service Processing</h3>
+<div class="standard"><a id='magicparlabel-251' />
+Services must adhere to the authorization-data handling rules specified in RFC4120. Services that implement these authorization-data element MUST expose them to applications in some manner (e.g., as GSS-API naming attributes, as described in this document).</div>
+
+<div class="standard"><a id='magicparlabel-252' />
+Service implementations MAY apply local policy as to AD-IMPERSONATE-GSS on behalf of specific applications and, when local policy approves, may report the client's principal name as the impersonated principal name. However, it is preferred that applications apply local policy, not the Kerberos implementation.</div>
+
+<div class="standard"><a id='magicparlabel-253' />
+Services MUST reject AP-REQs with multiple distinct AD-IMPERSONATE-GSS or AD-ASSERT-AUTHZID elements.</div>
+<h2 class="section"><span class="section_label">4</span> <a id='magicparlabel-254' />
+Sample Code</h2>
+<div class="standard"><a id='magicparlabel-255' />
+</div>
+<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-259' />
+</div>
+<div class='float float-listings'><pre> &lt;TBD&gt;
+ /*
+  * Roughly this looks like:
+  *  - if the impseronator application is an acceptor
+  *    it calls gss_accept_sec_context() and gets a
+  *    delegated credential handle even when the initiator
+  *    didn't request delegation;
+  *  - else the impersonator calls
+  *    gss_acquire_cred_impersonate_name()
+  *    to acquire a credential for impersonating a given
+  *    principal;
+  *
+  * then the application calls gss_init_sec_context() with
+  * the impersonation credential as the initiator credential
+  * handle.
+  */
+  &lt;TBD&gt;</pre></div>
+
+
+<div class="plain_layout"><a id='magicparlabel-280' />
+<div class='float-caption float-caption-figure'>Figure 2:<div class="plain_layout"><a id='magicparlabel-284' />
+Impersonator-side code</div>
+</div></div>
+</div>
+
+
+<div class="standard"><a id='magicparlabel-285' />
+</div>
+<div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-289' />
+</div>
+<div class='float float-listings'><pre> &lt;TBD&gt;
+ /*
+  * An impersonation-aware acceptor application
+  * uses gss_get_name_attribute() to check whether
+  * its peers' NAMEs (values of gss_name_t type output by
+  * gss_accept_sec_context()) have either or both of the
+  * GSS_C_ATTR_IMPERSONATED_PRINCIPAL and/or
+  * GSS_C_ATTR_AUTHZ_ID name attributes -prefixed with
+  * GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK- set, and if so,
+  * then they check local policy.
+  *
+  * Third-party policy can be checked by checking the
+  * 'authenticated' boolean output of gss_get_name_attribute()
+  * or by not prefixing with either these attributes with either
+  * GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK nor
+  * GSS_C_ATTR_GENERIC_UNCONSTRAINED.
+  */</pre></div>
+
+
+<div class="plain_layout"><a id='magicparlabel-310' />
+<div class='float-caption float-caption-figure'>Figure 3:<div class="plain_layout"><a id='magicparlabel-314' />
+Acceptor-side code</div>
+</div></div>
+</div>
+
+
+<div class="revisionremark"><a id='magicparlabel-315' />
+Also add sample code using the authz-id attribute.</div>
+<h2 class="section"><span class="section_label">5</span> <a id='magicparlabel-316' />
+Security Considerations</h2>
+<div class="standard"><a id='magicparlabel-317' />
+This entire document deals with security. Specifically this document provides a method for denoting impersonation while failing safe when peers do not support this method. Failing safe means: peers observe the impersonator's name, not the impersonated name, and impersonator applications fail when their GSS-API implementation is not impersonation-aware.</div>
+
+<div class="standard"><a id='magicparlabel-318' />
+Local policy is to be used for deciding when impersonators may impersonate any one entity to another. Such policy must be local to the impersonators' peers. Third parties may apply policy as well in some cases, but local policy must always be able to reject impersonation. Policy MUST be applied by applications. Implementations MAY provide a method by which local policy may be indicated in an indirect manner (e.g., via &ldquo;environment variables&rdquo;) and evaluated by the GSS-API provider on behalf of the application; this is strictly to avoid having to modify existing GSS-API applications, but should not be encouraged beyond that purpose.</div>
+
+<div class="revisionremark"><a id='magicparlabel-319' />
+Should add text about when and why one might need or use impersonation.</div>
+<h3 class="subsection"><span class="subsection_label">5.1</span> <a id='magicparlabel-320' />
+Security Requirements and Recommendations</h3>
+<div class="standard"><a id='magicparlabel-321' />
+GSS_Set_name_attribute() is required to fail when used with attributes not understood by the mechanism. This ensures that impersonators applications that set these attributes do not accidentally fail to actually use them when impersonating principals. Some additional safe-guards MAY be applied:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-322' />
+impersonator applications SHOULD use a credential that denotes no other privileges;</li>
+<li class="itemize_item"><a id='magicparlabel-323' />
+credential issuers (e.g., Kerberos KDCs) MAY constrain the use of credentials for known impersonator principals to requesting credentials for impersonation.</li>
+</ul>
+<div class="standard"><a id='magicparlabel-324' />
+In particular, for Kerberos, KDCs SHOULD NOT issue Ticket Granting Tickets (TGTs) with the FORWARDED or FORWARDABLE flags set if the Ticket's client principal is a known impersonator and the AD-IMPERSONATE-GSS authorization-data element is not present in the client's Ticket and/or TGS-REQ as a critical authorization-data element; if AD-IMPERSONATE-GSS is present in the Ticket as a critical and KDC-issued element but not in the TGS-REQ then the KDC SHOULD copy the AD-IMPERSONATE-GSS to the Ticket to be issued.</div>
+
+<div class="standard"><a id='magicparlabel-325' />
+Kerberos initiators should (as opposed to SHOULD, but perhaps this should be a SHOULD) use impersonator names that begin with a zeroth component with this value: &ldquo;IMPERSONATE&rdquo;.</div>
+
+<div class="standard"><a id='magicparlabel-326' />
+Our approach fails safe: service applications that are not aware of impersonation will not think that they are talking to the principal that an impersonator wishes to impersonate, and impersonator applications should fail when their GSS-API mechanism implementations do not support this feature.</div>
+<h2 class="section"><span class="section_label">6</span> <a id='magicparlabel-327' />
+IANA Considerations</h2>
+<div class="revisionremark"><a id='magicparlabel-328' />
+Request addition of the new GSS name attributes and Kerberos authorization-data to the relevant registries.</div>
+<h2 class="section"><span class="section_label">7</span> <a id='magicparlabel-329' />
+<a id="sec_References" />
+Normative References</h2>
+<div class="standard"><a id='magicparlabel-330' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-334' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">rfc2119</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-335' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-339' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1964.xml">rfc1964</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-340' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-344' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2743.xml">rfc2743</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-345' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-349' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2744.xml">rfc2744</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-350' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-354' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4120.xml">rfc4120</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-355' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-359' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4121.xml">rfc4121</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-360' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-364' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6680.xml">rfc6680</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-365' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-369' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml">I-D.williams-kitten-generic-naming-attributes</a></div>
+</div></div>
+<h2 class="section"><span class="section_label">8</span> <a id='magicparlabel-370' />
+Informative References</h2>
+<div class="standard"><a id='magicparlabel-371' />
+<div class="flex_bibxml"><div class="plain_layout"><a id='magicparlabel-375' />
+<a href="http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4422.xml">rfc4422</a></div>
+</div></div>
+
+<div class="standard"><a id='magicparlabel-376' />
+<div class="flex_embeddedbibxml"><div class="plain_layout"><a id='magicparlabel-380' />
+&lt;reference anchor='S4U'&gt; &lt;front&gt; &lt;title&gt;[MS-SFU]: Kerberos Protocol Extensions: Service for User and Constrained Delegation Protocol&lt;/title&gt; &lt;author initials='U.' surname='Unspecified' fullname='Unspecified'&gt; &lt;organization abbrev='MSFT'&gt; Microsoft Corporation &lt;/organization&gt; &lt;/author&gt;</div>
+
+<div class="plain_layout"><a id='magicparlabel-381' />
+&lt;date month='August' year='2013' /&gt; &lt;/front&gt; &lt;format type='HTML' target='http://msdn.microsoft.com/en-us/library/cc246071.aspx' /&gt; &lt;/reference&gt; </div>
+</div></div>
+<h2 class="section"><span class="section_label">I</span> <a id='magicparlabel-382' />
+Acknowledgements</h2>
+<div class="standard"><a id='magicparlabel-383' />
+This document resulted from Viktor Dukhovni's notes on S4U2Proxy's shortcomings and discussions between him and the author as to how best to address this.</div>
+</body>
+</html>

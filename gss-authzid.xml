@@ -8,17 +8,17 @@
 <?rfc comments="yes"?>
 <?rfc inline="yes"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
-<!ENTITY rfc1964 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1964.xml">
-<!ENTITY rfc2743 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">
-<!ENTITY rfc2744 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">
-<!ENTITY rfc4120 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">
-<!ENTITY rfc4121 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">
-<!ENTITY rfc6680 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6680.xml">
-<!ENTITY I-D.williams-kitten-generic-naming-attributes PUBLIC "" "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml">
-<!ENTITY rfc4422 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4422.xml">
+<!ENTITY rfc2119 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc1964 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1964.xml">
+<!ENTITY rfc2743 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2743.xml">
+<!ENTITY rfc2744 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2744.xml">
+<!ENTITY rfc4120 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4120.xml">
+<!ENTITY rfc4121 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4121.xml">
+<!ENTITY rfc6680 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6680.xml">
+<!ENTITY I-D.williams-kitten-generic-naming-attributes PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml">
+<!ENTITY rfc4422 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4422.xml">
 ]>
-<rfc docName="draft-williams-kitten-impersonation-naming-attr-00" ipr="trust200902" category="std" updates="1964, 2743, 2744">
+<rfc docName="draft-williams-kitten-impersonation-naming-attr-01" ipr="trust200902" category="std" updates="1964, 2743, 2744">
   <front>
     <title abbrev="GSS Impersonation">Impersonation Naming Attribute for the Generic Security Services Application Programming Interface (GSS-API)</title>
     <author initials="N." surname="Williams" fullname="Nicolas Williams">
@@ -27,7 +27,7 @@
         <email>nico@cryptonector.com</email>
       </address>
     </author>
-    <date month="March" year="2014"/>
+    <date month="October" year="2014"/>
     <area>
 Security Area
 </area>

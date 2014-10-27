@@ -283,7 +283,7 @@ Impersonation Naming Attribute for the Generic Security Services Application
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-impersonation-naming-attr-00
+draft-williams-kitten-impersonation-naming-attr-01
 \end_layout
 
 \end_inset
@@ -1803,7 +1803,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2119"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"
 
 \end_inset
 
@@ -1823,7 +1823,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc1964"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1964.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1964.xml"
 
 \end_inset
 
@@ -1843,7 +1843,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2743"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2743.xml"
 
 \end_inset
 
@@ -1863,7 +1863,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2744"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2744.xml"
 
 \end_inset
 
@@ -1883,7 +1883,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4120"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4120.xml"
 
 \end_inset
 
@@ -1903,7 +1903,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4121"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4121.xml"
 
 \end_inset
 
@@ -1923,7 +1923,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc6680"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6680.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6680.xml"
 
 \end_inset
 
@@ -1943,7 +1943,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "I-D.williams-kitten-generic-naming-attributes"
-target "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.williams-kitten-generic-naming-attributes.xml"
 
 \end_inset
 
@@ -1967,7 +1967,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4422"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4422.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4422.xml"
 
 \end_inset
 
