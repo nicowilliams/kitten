@@ -10,7 +10,7 @@ Expires: May 25, 2015                                  November 21, 2014
 
   Negotiation of Extra Security Context Tokens for Kerberos V5 Generic
                       Security Services Mechanism
-                 draft-williams-kitten-krb5-extra-rt-04
+                 draft-williams-kitten-krb5-extra-rt-05
 
 Abstract
 
@@ -489,7 +489,7 @@ Table of Contents
    Encoding Rules (DER) [CCITT.X690.2002], and the environment is one of
    explicit tagging.
 
-    KerberosExtraContextTokens DEFINITIONS ::=
+    KerberosExtraContextTokens DEFINITIONS EXPLICIT TAGS ::=
     BEGIN
     EXPORTS ad-continue-challenge,
             AD-CONTINUE-CHALLENGE,
@@ -543,7 +543,7 @@ Table of Contents
 
     -- Application tag TBD
     EncKRBErrorPart    ::= [APPLICATION 56] SEQUENCE {
-            continue-challenge  [0]  AD-CHALLENGE-RESPONSE,
+            continue-challenge  [0]  AD-CONTINUE-CHALLENGE,
             stime               [1]  KerberosTime,
             susec               [2]  Microseconds,
             subkey              [3]  EncryptionKey OPTIONAL,

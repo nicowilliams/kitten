@@ -17,7 +17,7 @@
 <!ENTITY rfc3530 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3530.xml">
 <!ENTITY rfc4251 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml">
 ]>
-<rfc docName="draft-williams-kitten-krb5-extra-rt-04" ipr="trust200902" category="std" updates="4121">
+<rfc docName="draft-williams-kitten-krb5-extra-rt-05" ipr="trust200902" category="std" updates="4121">
   <front>
     <title abbrev="Kerberos Extra AP">Negotiation of Extra Security Context Tokens for Kerberos V5 Generic Security Services Mechanism</title>
     <author initials="N." surname="Williams" fullname="Nicolas Williams">
@@ -296,7 +296,7 @@ A partial ASN.1 module appears below. This ASN.1 is to be used as if it were par
 </t>
       <t>
         <figure anchor="magicparlabel-302" title="ASN.1 module (with explicit tagging)">
-          <artwork> KerberosExtraContextTokens DEFINITIONS ::=
+          <artwork> KerberosExtraContextTokens DEFINITIONS EXPLICIT TAGS ::=
  BEGIN
  EXPORTS ad-continue-challenge,
          AD-CONTINUE-CHALLENGE,
@@ -350,7 +350,7 @@ A partial ASN.1 module appears below. This ASN.1 is to be used as if it were par
  
  -- Application tag TBD
  EncKRBErrorPart    ::= [APPLICATION 56] SEQUENCE {
-         continue-challenge  [0]  AD-CHALLENGE-RESPONSE,
+         continue-challenge  [0]  AD-CONTINUE-CHALLENGE,
          stime               [1]  KerberosTime,
          susec               [2]  Microseconds,
          subkey              [3]  EncryptionKey OPTIONAL,
