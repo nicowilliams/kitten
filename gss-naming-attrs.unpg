@@ -3,15 +3,15 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: 1964, 2743, 2744                              February 20, 2014
+Updates: 1964, 2743, 2744                               October 27, 2014
 (if approved)
 Intended status: Standards Track
-Expires: August 24, 2014
+Expires: April 30, 2015
 
 
 Generic Naming Attributes for the Generic Security Services Application
                     Programming Interface (GSS-API)
-           draft-williams-kitten-generic-naming-attributes-01
+           draft-williams-kitten-generic-naming-attributes-02
 
 Abstract
 
@@ -39,7 +39,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 24, 2014.
+   This Internet-Draft will expire on April 30, 2015.
 
 Copyright Notice
 

@@ -3,15 +3,15 @@
 
 Network Working Group                                        N. Williams
 Internet-Draft                                              Cryptonector
-Updates: 1964, 2743, 2744                              February 20, 2014
+Updates: 1964, 2743, 2744                               October 27, 2014
 (if approved)
 Intended status: Standards Track
-Expires: August 24, 2014
+Expires: April 30, 2015
 
 
 Generic Naming Attributes for the Generic Security Services Application
                     Programming Interface (GSS-API)
-           draft-williams-kitten-generic-naming-attributes-01
+           draft-williams-kitten-generic-naming-attributes-02
 
 Abstract
 
@@ -39,7 +39,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 24, 2014.
+   This Internet-Draft will expire on April 30, 2015.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Williams                 Expires August 24, 2014                [Page 1]
+Williams                 Expires April 30, 2015                 [Page 1]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
    publication of this document.  Please review these documents
@@ -108,9 +108,9 @@ Table of Contents
 
 
 
-Williams                 Expires August 24, 2014                [Page 2]
+Williams                 Expires April 30, 2015                 [Page 2]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
 1.  Introduction and Motivation
@@ -164,9 +164,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014                [Page 3]
+Williams                 Expires April 30, 2015                 [Page 3]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
    2.  with naming constraint checking, providing an output indicator of
@@ -220,9 +220,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014                [Page 4]
+Williams                 Expires April 30, 2015                 [Page 4]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
 2.  Generic Attributes
@@ -276,9 +276,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014                [Page 5]
+Williams                 Expires April 30, 2015                 [Page 5]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
 2.1.2.  Trust Validation Path
@@ -332,9 +332,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014                [Page 6]
+Williams                 Expires April 30, 2015                 [Page 6]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
    attribute name is "urn:ietf:id:ietf-kitten-name-attrs-00-hostname".
@@ -388,9 +388,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014                [Page 7]
+Williams                 Expires April 30, 2015                 [Page 7]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
 2.2.2.  GSS_C_ATTR_GENERIC_UNCONSTRAINED_OK
@@ -444,9 +444,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014                [Page 8]
+Williams                 Expires April 30, 2015                 [Page 8]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
 3.  Local Name Attributes
@@ -500,9 +500,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014                [Page 9]
+Williams                 Expires April 30, 2015                 [Page 9]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
 4.  Suggested Mechanism-Specific Name Attributes (INFORMATIONAL)
@@ -556,9 +556,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014               [Page 10]
+Williams                 Expires April 30, 2015                [Page 10]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
    value sets; for the C bindings the gss_get_name_attribute() function
@@ -612,9 +612,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014               [Page 11]
+Williams                 Expires April 30, 2015                [Page 11]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
 5.  Generic Issuer Name Type
@@ -668,9 +668,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014               [Page 12]
+Williams                 Expires April 30, 2015                [Page 12]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
 6.  Security Considerations
@@ -724,9 +724,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014               [Page 13]
+Williams                 Expires April 30, 2015                [Page 13]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
 7.  IANA Considerations
@@ -780,9 +780,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014               [Page 14]
+Williams                 Expires April 30, 2015                [Page 14]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
 8.  References
@@ -836,9 +836,9 @@ Internet-Draft                 Simple GSS                  February 2014
 
 
 
-Williams                 Expires August 24, 2014               [Page 15]
+Williams                 Expires April 30, 2015                [Page 15]
 
-Internet-Draft                 Simple GSS                  February 2014
+Internet-Draft                 Simple GSS                   October 2014
 
 
 Author's Address
@@ -892,5 +892,5 @@ Author's Address
 
 
 
-Williams                 Expires August 24, 2014               [Page 16]
+Williams                 Expires April 30, 2015                [Page 16]
 

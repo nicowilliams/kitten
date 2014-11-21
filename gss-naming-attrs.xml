@@ -8,19 +8,19 @@
 <?rfc comments="yes"?>
 <?rfc inline="yes"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
-<!ENTITY rfc1035 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1035.xml">
-<!ENTITY rfc1123 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1123.xml">
-<!ENTITY rfc1964 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1964.xml">
-<!ENTITY rfc2743 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">
-<!ENTITY rfc4556 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4556.xml">
-<!ENTITY rfc5890 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
-<!ENTITY rfc6680 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6680.xml">
-<!ENTITY rfc4120 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">
-<!ENTITY rfc4121 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">
-<!ENTITY rfc5280 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5280.xml">
+<!ENTITY rfc2119 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc1035 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml">
+<!ENTITY rfc1123 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1123.xml">
+<!ENTITY rfc1964 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1964.xml">
+<!ENTITY rfc2743 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2743.xml">
+<!ENTITY rfc4556 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4556.xml">
+<!ENTITY rfc5890 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5890.xml">
+<!ENTITY rfc6680 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6680.xml">
+<!ENTITY rfc4120 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4120.xml">
+<!ENTITY rfc4121 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4121.xml">
+<!ENTITY rfc5280 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml">
 ]>
-<rfc docName="draft-williams-kitten-generic-naming-attributes-01" ipr="trust200902" category="std" updates="1964, 2743, 2744">
+<rfc docName="draft-williams-kitten-generic-naming-attributes-02" ipr="trust200902" category="std" updates="1964, 2743, 2744">
   <front>
     <title abbrev="Simple GSS">Generic Naming Attributes for the Generic Security Services Application Programming Interface (GSS-API)</title>
     <author initials="N." surname="Williams" fullname="Nicolas Williams">
@@ -29,7 +29,7 @@
         <email>nico@cryptonector.com</email>
       </address>
     </author>
-    <date month="February" year="2014"/>
+    <date month="October" year="2014"/>
     <area>
 Security Area
 </area>
