@@ -272,7 +272,7 @@ font-size: medium;
 Negotiation of Extra Security Context Tokens for Kerberos V5 Generic Security Services Mechanism</h1>
 <div class="standard"><a id='magicparlabel-2' />
 <div class="flex_docname"><div class="plain_layout"><a id='magicparlabel-6' />
-draft-williams-kitten-krb5-extra-rt-04</div>
+draft-williams-kitten-krb5-extra-rt-05</div>
 </div><div class="flex_ipr"><div class="plain_layout"><a id='magicparlabel-10' />
 trust200902</div>
 </div><div class="flex_intendedstatus"><div class="plain_layout"><a id='magicparlabel-14' />
@@ -668,7 +668,7 @@ CCITT.X690.2002</div>
 </div>
 <div class='float float-figure'><div class="plain_layout"><a id='magicparlabel-222' />
 </div>
-<div class='float float-listings'><pre> KerberosExtraContextTokens DEFINITIONS ::=
+<div class='float float-listings'><pre> KerberosExtraContextTokens DEFINITIONS EXPLICIT TAGS ::=
  BEGIN
  EXPORTS ad-continue-challenge,
          AD-CONTINUE-CHALLENGE,
@@ -722,7 +722,7 @@ CCITT.X690.2002</div>
  
  -- Application tag TBD
  EncKRBErrorPart    ::= [APPLICATION 56] SEQUENCE {
-         continue-challenge  [0]  AD-CHALLENGE-RESPONSE,
+         continue-challenge  [0]  AD-CONTINUE-CHALLENGE,
          stime               [1]  KerberosTime,
          susec               [2]  Microseconds,
          subkey              [3]  EncryptionKey OPTIONAL,
