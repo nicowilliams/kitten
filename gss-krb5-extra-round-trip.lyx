@@ -283,7 +283,7 @@ Negotiation of Extra Security Context Tokens for Kerberos V5 Generic Security
 status open
 
 \begin_layout Plain Layout
-draft-williams-kitten-krb5-extra-rt-04
+draft-williams-kitten-krb5-extra-rt-05
 \end_layout
 
 \end_inset
@@ -1588,7 +1588,7 @@ status open
 
 \begin_layout Plain Layout
 
-         continue-challenge  [0]  AD-CHALLENGE-RESPONSE,
+         continue-challenge  [0]  AD-CONTINUE-CHALLENGE,
 \end_layout
 
 \begin_layout Plain Layout
