@@ -184,9 +184,9 @@ Whenever both the initiator and the acceptor provide matching channel bindings t
         <t>
           <list style="symbols">
             <t>
-We add a new mechanism attribute, GSS_C_MA_CBINDING_CONFIRM, to indicate that the initiator can and always does learn whether the acceptor application supplied channel bindings. Mechanisms advertising this attribute MUST always indicate acceptor channel bound state to the initiator.</t>
+We add a new mechanism attribute, GSS_C_MA_CBINDING_CONFIRM, to indicate that the initiator can and always does learn whether the acceptor application supplied channel bindings (assuming mutual auth has been requested). Mechanisms advertising this attribute MUST always indicate acceptor channel bound state to the initiator.</t>
             <t>
-We add a new mechanism attribute, GSS_C_MA_CBINDING_MAY_CONFIRM, to indicate that the initiator may learn whether the acceptor application supplied channel bindings, but only when the acceptor implementation of the mechanism has been suitably updated. Mechanisms MUST advertise this attribute when the local initiator functionality for acceptor channel bound state indication exists but the acceptor may lack the same functionality (because, for example, the mechanism predates this specification).</t>
+We add a new mechanism attribute, GSS_C_MA_CBINDING_MAY_CONFIRM, to indicate that the initiator may learn whether the acceptor application supplied channel bindings (assuming mutual auth has been requested), but only when the acceptor implementation of the mechanism has been suitably updated. Mechanisms MUST advertise this attribute when the local initiator functionality for acceptor channel bound state indication exists but the acceptor may lack the same functionality (because, for example, the mechanism predates this specification).</t>
           </list>
         </t>
         <t>
@@ -194,7 +194,7 @@ OID assignments TBD.</t>
       </section>
       <section title="Request Flag for Acceptor Confirmation of Channel Binding" anchor="d1e605">
         <t>
-We add a new request flag for GSS_Init_sec_context(), req_cb_confirmation_flag, to be used by initiators that insist on acceptors providing channel bindings. This flag is only of use to mechanism-negotiation pseudo-mechanisms (e.g., SPNEGO <xref target="RFC4178"/>): if set the pseudo-mechanism MUST NOT negotiate any mechanisms that lack the GSS_C_MA_CBINDING_CONFIRM or GSS_C_MA_CBINDING_MAY_CONFIRM mechanism attributes, and SHOULD NOT negotiate mechanisms that lack the GSS_C_MA_CBINDING_CONFIRM mechanism attribute (except if allowed by local configuration).</t>
+We add a new request flag for GSS_Init_sec_context(), req_cb_confirmation_flag, to be used by initiators that insist on acceptors providing channel bindings. This flag is only of use to mechanism-negotiation pseudo-mechanisms (e.g., SPNEGO <xref target="RFC4178"/>): if set, the pseudo-mechanism MUST NOT negotiate any mechanisms that lack both the GSS_C_MA_CBINDING_CONFIRM and GSS_C_MA_CBINDING_MAY_CONFIRM mechanism attributes, and SHOULD NOT negotiate mechanisms that lack the GSS_C_MA_CBINDING_CONFIRM mechanism attribute (except if allowed by local configuration).</t>
         <section title="C-Bindings" anchor="d1e620">
           <t>
 Because GSS_C_CHANNEL_BOUND_FLAG is a return flag only, and this flag is a request flag only, and to save on precious flag bits, we use the same flag bit assignment for both flags:</t>
