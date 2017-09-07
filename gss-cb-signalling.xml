@@ -45,18 +45,14 @@ This Internet-Draft proposes the addition of a “channel bound” return flag f
     <section title="Introduction" anchor="d1e291">
       <t>
 The GSS-API <xref target="RFC2743"/> supports “channel binding” <xref target="RFC5056"/>, a technique for detection of man-in-the-middle (MITM) attacks in secure channels at lower network layers. This facility is meant to be all-or-nothing: either both the initiator and acceptor use it and it succeeds, or both must not use it. This has created a negotiation problem when retrofitting the use of channel binding into existing application protocols.</t>
+        <t>
+However, GSS-APIv2u1 <xref target="RFC2743"/> does not specify channel binding behavior when only one party provides provides none. In practice some mechanisms ignore channel bindings when the acceptor provides none, but not when the initiator provides none. [XXX add references to the relevant SSPI docs? -Nico] Note that it would be useless to allow security context establishment to succeed when the initiator does not provide channel bindings but the acceptor does, at least as long as there's no outward indication of whether channel binding was used! Since the GSS-APIv2u1 does not provide any such indication, this document corrects that flaw.</t>
       <t>
-Many implementations of the Kerberos V5 GSS-API mechanism <xref target="RFC4121"/> cause the acceptor to succeed when the initiator used channel binding but the acceptor application did not. This has helped deployment of channel binding in existing applications: first fix all the initiators, then fix all the acceptors. But even this technique is insufficient when there are many clients to fix, such that fixing them all will take a long time.</t>
+Allowing the connection to succeed when an initiator provides bindings but an acceptor does not has helped deployment of channel binding in existing applications: first fix all the initiators, then fix all the acceptors. But even this technique is insufficient when there are many clients to fix, such that fixing them all will take a long time. Additionally, it limits the usefulness of channel bindings, while allowing the acceptor to provide but not enforce would protect against man in the middle attacks (for channel binding aware initiators).</t>
       <t>
 This document proposes a new method for deployment of channel binding that allows the feature to be enabled on the acceptor side before fixing all initiators. If the GSS-API had always had a return flag by which to indicate channel binding state then we could have had a simpler method of deploying channel binding: applications check that return flag and act accordingly (e.g., fail when channel binding is required). We cannot safely introduce this behavior now without an indication of support by the application.</t>
       <t>
-It is worth noting that at least one implementor of GSS-API mechanisms (but not of the GSS-API itself) has similar semantics in its API to those proposed herein. [XXX add references to the relevant SSPI docs? -Nico]</t>
-      <t>
 Additionally, there may be applications where it is important for initiators to know that acceptors did use channel binding, and even to know whether a mechanism is capable of indicating as much. We add a request flag and two mechanism attributes for such applications.</t>
-      <section title="Error in RFC2743" anchor="d1e331">
-        <t>
-The GSS-APIv2u1 <xref target="RFC2743"/> seems to indicate that mechanisms must ignore channel bindings when one party provided none. In practice some mechanisms ignore channel bindings when the acceptor provides none, but not when the initiator provides none. Note that it would be useless to allow security context establishment to succeed when the initiator does not provide channel bindings but the acceptor does, at least as long as there's no outward indication of whether channel binding was used! And indeed, the GSS-APIv2u1 does not provide any such indication. We correct this flaw in this document.</t>
-      </section>
       <section title="Design and Future directions" anchor="d1e346">
         <t>
 The design for signalling application flag support and empty contexts is based on the Java Bindings of the GSS-API <xref target="RFC5653"/>. This document begins introduction of additional context inquiry and mutation functions, which eventually will also allow for simplified stepping to replace the GSS_Init/Accept_sec_context() loop.</t>
@@ -255,8 +251,7 @@ Two GSS-API mechanism attributes are to be added to the “SMI Security for Mech
 &rfc5056;
 &rfc5587;
 </references>
-    <references title="Informative References">&rfc4121;
-&rfc4178;
+    <references title="Informative References">&rfc4178;
 &rfc5653;
 </references>
   </back>
