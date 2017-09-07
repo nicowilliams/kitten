@@ -36,7 +36,7 @@ KITTEN
     <keyword>Internet-Draft</keyword>
     <abstract>
       <t>
-Channel binding is a technique that allows applications to use a secure channel at a lower layer without having to use authentication at that lower layer. The concept of channel binding comes from the Generic Security Services Application Programming Interface (GSS-API). It turns out that the semantics commonly implemented are different that those specified in the base GSS-API RFC (RFC2743), and that that specification has a serious bug. This document addresses both, the inconsistency as-implemented and the specification bug.</t>
+Channel binding is a technique that allows applications to use a secure channel at a lower layer without having to use authentication at that lower layer. The concept of channel binding comes from the Generic Security Services Application Programming Interface (GSS-API). It turns out that the semantics commonly implemented are different than those specified in the base GSS-API RFC (RFC2743), and that that specification has a serious bug. This document addresses both the inconsistency as-implemented and the specification bug.</t>
       <t>
 This Internet-Draft proposes the addition of a “channel bound” return flag for the GSS_Init_sec_context() and GSS_Accept_sec_context() functions. Two behaviors are specified: a default, safe behavior reflecting existing implementation deployments, and a behavior that is only safe when the application specifically tells the GSS-API that it (the application) supports the new behavior. Additional API elements related to this are also added, including a new security context establishment API.</t>
     </abstract>
@@ -166,9 +166,9 @@ GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
         <t>
-This function tells the mechanism (when one is eventually chosen and invoked) that the application requests the given req_flags and undestands the given ret_flags. Initiators can override the req_flags in their GSS_Init_sec_context() call, but if no flags are requested there then the req_flags set on the empty context will be used.</t>
+This function tells the mechanism (when one is eventually chosen and invoked) that the application requests the given req_flags and understands the given ret_flags. Initiators can override the req_flags in their GSS_Init_sec_context() call, but if no flags are requested there then the req_flags set on the empty context will be used.</t>
         <t>
-NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements -one per-flag- instead of a “FLAGS” type. This is unwieldy, therefore we introduce an abstract type named “FLAGS” to act as a set of all the request/return flags defined for the abstract GSS-API.</t>
+NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements--one per-flag--instead of a “FLAGS” type. This is unwieldy, therefore we introduce an abstract type named “FLAGS” to act as a set of all the request/return flags defined for the abstract GSS-API.</t>
         <section title="C-Bindings" anchor="d1e553">
           <t>
 </t>
@@ -234,13 +234,13 @@ The channel binding semantics of the base GSS-API are modified as follows:</t>
       <t>
         <list style="symbols">
           <t>
-Whenever both, the initiator and acceptor shall have provided input_channel_bindings to GSS_Init/Accept_sec_context() and the channel bindings do not match, then the mechanism MUST fail to establish a security context token. This is a restatement of an existing requirement in the base specification, restated for the reader's convenience.</t>
+Whenever both the initiator and acceptor have provided input_channel_bindings to GSS_Init/Accept_sec_context() and the channel bindings do not match, then the mechanism MUST fail to establish a security context token. (This is a restatement of an existing requirement in the base specification.)</t>
           <t>
-Whenever the acceptor application shall have a) provided channel bindings to GSS_Accept_sec_context(), and b) not indicated support for the ret_channel_bound_flag flag, then the mechanism MUST fail to establish a security context if the initiator did not provide channel bindings data. This requirement is critical for security purposes, to make applications predating this document secure, and this requirement reflects actual implementations as deployed.</t>
+Whenever the acceptor application has a) provided channel bindings to GSS_Accept_sec_context(), and b) not indicated support for the ret_channel_bound_flag flag, then the mechanism MUST fail to establish a security context if the initiator did not provide channel bindings data. This requirement is critical for security purposes, to make applications predating this document secure, and this requirement reflects actual implementations as deployed.</t>
           <t>
-Whenever the initiator application shall have a) provided channel bindings to GSS_Init_sec_context(), and b) not indicated support for the ret_channel_bound_flag flag, then the mechanism SHOULD NOT fail to establish a security context just because the acceptor failed to provide channel bindings data. This recommendation is for interoperability purposes, and reflects actual implementations that have been deployed. It is possible that not all security mechanism protocols can implement this requirement easily.</t>
+Whenever the initiator application has a) provided channel bindings to GSS_Init_sec_context(), and b) not indicated support for the ret_channel_bound_flag flag, then the mechanism SHOULD NOT fail to establish a security context just because the acceptor failed to provide channel bindings data. This recommendation is for interoperability purposes, and reflects actual implementations that have been deployed. It is possible that not all security mechanism protocols can implement this requirement easily.</t>
           <t>
-Whenever the application shall have a) provided channel bindings to GSS_Init_sec_context() or GSS_Accept_sec_context(), and b) indicated support for the ret_channel_bound_flag flag, then the mechanism MUST NOT fail to establish a security context just because the peer did not provide channel bindings data. The mechanism MUST output the ret_channel_bound_flag if both peers provided the same input_channel_bindings to GSS_Init_sec_context() and GSS_Accept_sec_context. The mechanism MUST NOT output the ret_channel_bound_flag if either (or both) peer did not provide input_channel_bindings to GSS_Init/Accept_sec_context(). This requirement restores the original base GSS-API specified behavior, with the addition of the ret_channel_bound_flag flag.</t>
+Whenever the application has a) provided channel bindings to GSS_Init_sec_context() or GSS_Accept_sec_context(), and b) indicated support for the ret_channel_bound_flag flag, then the mechanism MUST NOT fail to establish a security context just because the peer did not provide channel bindings data. The mechanism MUST output the ret_channel_bound_flag if both peers provided the same input_channel_bindings to GSS_Init_sec_context() and GSS_Accept_sec_context. The mechanism MUST NOT output the ret_channel_bound_flag if either (or both) peer did not provide input_channel_bindings to GSS_Init/Accept_sec_context(). This requirement restores the original base GSS-API specified behavior, with the addition of the ret_channel_bound_flag flag.</t>
         </list>
       </t>
     </section>
