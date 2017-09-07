@@ -26,6 +26,12 @@
         <email>nico@cryptonector.com</email>
       </address>
     </author>
+    <author initials="R." surname="Harwood" fullname="Robbie Harwood">
+      <organization abbrev="Red Hat">Red Hat, Inc.</organization>
+      <address>
+        <email>rharwood@redhat.com</email>
+      </address>
+    </author>
     <date month="March" year="2017"/>
     <area>
 Security Area
