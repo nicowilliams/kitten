@@ -154,7 +154,7 @@ GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
         <t>
-This function tells the mechanism (when one is eventually chosen and invoked) that the application requests the given req_flags and understands the given ret_flags_understood. Initiators can override the req_flags in their GSS_Init_sec_context() call, but if no flags are requested there then the req_flags set on the empty context will be used.</t>
+This function tells the mechanism (when one is eventually chosen and invoked) that the application requests the given req_flags and is prepared to check the flags in given ret_flags_understood. Mechanisms SHOULD NOT limit flags returned to those in ret_flags_understood, but MAY alter behavior accordingly. Initiators can override the req_flags in their GSS_Init_sec_context() call, but if no flags are requested there then the req_flags set on the empty context will be used.</t>
         <t>
 NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements--one per-flag--instead of a “FLAGS” type. This is unwieldy, therefore we introduce an abstract type named “FLAGS” to act as a set of all the request/return flags defined for the abstract GSS-API.</t>
         <section title="C-Bindings" anchor="d1e553">
