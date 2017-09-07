@@ -223,9 +223,16 @@ Because GSS_C_CHANNEL_BOUND_FLAG is a return flag only, and this flag is a reque
           </t>
         </section>
       </section>
-      <section title="GSS_Delete_sec_context() Behavior When Applied to Empty Security Contexts" anchor="d1e636">
+      <section title="Handling Empty Contexts in Other GSS-API Functions" anchor="d1e636">
         <t>
-GSS_Delete_sec_context() MUST NOT output a context deletion token when applied to empty security contexts.</t>
+          GSS_Init_sec_context() and GSS_Accept_sec_context() operate on empty security contexts as specified above (i.e., examining flags).
+        </t>
+        <t>
+          All other GSS-API functions MUST treat empty contexts as they would GSS_C_NO_CONTEXT as well. For most functions, this will result in returning GSS status code GSS_S_NO_CONTEXT.
+        </t>
+        <t>
+          GSS_Delete_sec_context() MUST NOT output a context deletion token when applied to empty security contexts.
+        </t>
       </section>
     </section>
     <section title="Modified Channel Binding Semantics" anchor="d1e645">
