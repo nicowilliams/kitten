@@ -80,7 +80,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
     </section>
     <section title="Channel Binding State Extension" anchor="d1e413">
       <t>
-We propose a new return flag for GSS_Init_sec_context() and GSS_Accept_sec_context(), as well as a pair of functions for a) creating “empty” security context handles, b) setting req_flags and indicating which ret_flags the application understands. We also add new mechanism attributes describing mechanism capabilities.</t>
+We propose a new return flag for GSS_Init_sec_context() and GSS_Accept_sec_context(), as well as a pair of functions for a) creating “empty” security context handles, b) requesting flags and indicating which flags the application understands. We also add new mechanism attributes describing mechanism capabilities.</t>
       <t>
 C bindings of these extensions are provided along the lines of <xref target="RFC2744"/> and <xref target="RFC5587"/>.</t>
       <t>
@@ -166,7 +166,7 @@ GSS_S_FAILURE indicates a general failure.</t>
           </list>
         </t>
         <t>
-This function tells the mechanism (when one is eventually chosen and invoked) that the application requests the given req_flags and understands the given ret_flags. Initiators can override the req_flags in their GSS_Init_sec_context() call, but if no flags are requested there then the req_flags set on the empty context will be used.</t>
+This function tells the mechanism (when one is eventually chosen and invoked) that the application requests the given req_flags and understands the given ret_flags_understood. Initiators can override the req_flags in their GSS_Init_sec_context() call, but if no flags are requested there then the req_flags set on the empty context will be used.</t>
         <t>
 NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements--one per-flag--instead of a “FLAGS” type. This is unwieldy, therefore we introduce an abstract type named “FLAGS” to act as a set of all the request/return flags defined for the abstract GSS-API.</t>
         <section title="C-Bindings" anchor="d1e553">
@@ -178,7 +178,7 @@ NOTE: The abstract GSS-API <xref target="RFC2743"/> uses individual elements--on
  gss_set_context_flags(OM_uint32 *minor_status,
                        gss_ctx_id_t context,
                        uint64_t req_flags,
-                       uint64_t ret_flags);</artwork>
+                       uint64_t ret_flags_understood);</artwork>
             </figure>
           </t>
         </section>
