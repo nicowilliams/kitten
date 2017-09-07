@@ -17,7 +17,7 @@
 <!ENTITY rfc4178 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4178.xml">
 <!ENTITY rfc5653 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5653.xml">
 ]>
-<rfc docName="draft-ietf-kitten-channel-bound-flag-00" ipr="trust200902" category="std" updates="2743, 2744">
+<rfc docName="draft-ietf-kitten-channel-bound-flag-01" ipr="trust200902" category="std" updates="2743, 2744">
   <front>
     <title abbrev="GSS Channel Bound Flag">Channel Binding Signalling for the Generic Security Services Application Programming Interface</title>
     <author initials="N." surname="Williams" fullname="Nicolas Williams">
@@ -26,7 +26,7 @@
         <email>nico@cryptonector.com</email>
       </address>
     </author>
-    <date month="July" year="2013"/>
+    <date month="March" year="2017"/>
     <area>
 Security Area
 </area>
