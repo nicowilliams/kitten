@@ -57,21 +57,9 @@ Additionally, there may be applications where it is important for initiators to 
         <t>
 The GSS-APIv2u1 <xref target="RFC2743"/> seems to indicate that mechanisms must ignore channel bindings when one party provided none. In practice some mechanisms ignore channel bindings when the acceptor provides none, but not when the initiator provides none. Note that it would be useless to allow security context establishment to succeed when the initiator does not provide channel bindings but the acceptor does, at least as long as there's no outward indication of whether channel binding was used! And indeed, the GSS-APIv2u1 does not provide any such indication. We correct this flaw in this document.</t>
       </section>
-      <section title="Design" anchor="d1e346">
+      <section title="Design and Future directions" anchor="d1e346">
         <t>
-After some discussion on the mailing list of various designs for signalling application support for the new flag we've settled on copying an aspect of the Java Bindings of the GSS-API <xref target="RFC5653"/>, specifically the notion of creating an “empty” SECURITY CONTEXT handle that can then be passed to GSS_Init_sec_context() and GSS_Accept_sec_context() where they normally expect a NULL handle. This empty security context handle can then be used to set options relating to security context token establishment.</t>
-        <t>
-In <xref target="I-D.williams-williams-kitten-ctx-simple-async"/> we explore and extend this design to produce a more usable GSS-API (as well as support for asynchronous operation).</t>
-      </section>
-      <section title="Alternative Design" anchor="d1e370">
-        <t>
-An earlier design was based on an existing, non-standard extension for carrying security context establishment options in CREDENTIAL HANDLEs. A notion of CREDENTIAL HANDLE options might still be useful for options that are really specific to credentials rather than security context tokens, but for the time being we have no use for such a thing.</t>
-      </section>
-      <section title="Future Directions" anchor="d1e379">
-        <t>
-We're likely to introduce additional mutator functions of empty contexts, with mutators corresponding to many of the existing input arguments of GSS_Init_sec_context() and GSS_Accept_sec_context(), as well as a few additional security context inquiry functions. We're also likely to then introduce new variants of GSS_Init_sec_context() and GSS_Accept_sec_context() with all of those input and output parameters removed that could be set or retrieved with the other new functions. The only inputs that the new GSS_Init/Accept_sec_context() must have are: a security context handle (never NULL), and an input context token, and the only outputs should be the status indicators and an output token. In fact, we may want to have just one new function called, perhaps, GSS_Step_sec_context(), with the role of initiator or acceptor set as a context option.</t>
-        <t>
-See <xref target="I-D.williams-williams-kitten-ctx-simple-async"/>.</t>
+The design for signalling application flag support and empty contexts is based on the Java Bindings of the GSS-API <xref target="RFC5653"/>. This document begins introduction of additional context inquiry and mutation functions, which eventually will also allow for simplified stepping to replace the GSS_Init/Accept_sec_context() loop.</t>
       </section>
       <section title="Conventions used in this document" anchor="d1e398">
         <t>
@@ -270,8 +258,6 @@ Two GSS-API mechanism attributes are to be added to the “SMI Security for Mech
     <references title="Informative References">&rfc4121;
 &rfc4178;
 &rfc5653;
-
-<reference anchor="I-D.williams-williams-kitten-ctx-simple-async"><front><title>Simplified and Asynchronous Security Context Interfaces for the Generic Security Services Application Programming Interface</title><author initials="N." surname="Williams" fullname="Nicolas Williams"><organization/></author><date month="February" day="13" year="2013"/><abstract><t>Abstract This Internet-Draft proposes extensions to the Generic Security Services Application Programming Interface (GSS-API) for replacing the exiting GSS_Init_sec_context() and GSS_Accept_sec_context() functions with simplified forms that also support asynchrony.</t></abstract></front><seriesInfo name="Internet-Draft" value="draft-williams-williams-kitten-ctx-simple-async-00"/><format type="TXT" target="http://www.ietf.org/internet-drafts/draft-williams-williams-kitten-ctx-simple-async-00.txt"/></reference>
 </references>
   </back>
 </rfc>
