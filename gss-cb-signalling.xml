@@ -8,14 +8,14 @@
 <?rfc comments="yes"?>
 <?rfc inline="yes"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY rfc2119 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
-<!ENTITY rfc2743 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml">
-<!ENTITY rfc2744 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml">
-<!ENTITY rfc5056 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5056.xml">
-<!ENTITY rfc5587 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5587.xml">
-<!ENTITY rfc4121 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml">
-<!ENTITY rfc4178 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4178.xml">
-<!ENTITY rfc5653 PUBLIC "" "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5653.xml">
+<!ENTITY rfc2119 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc2743 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2743.xml">
+<!ENTITY rfc2744 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2744.xml">
+<!ENTITY rfc5056 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5056.xml">
+<!ENTITY rfc5587 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5587.xml">
+<!ENTITY rfc4121 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4121.xml">
+<!ENTITY rfc4178 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4178.xml">
+<!ENTITY rfc5653 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5653.xml">
 ]>
 <rfc docName="draft-ietf-kitten-channel-bound-flag-00" ipr="trust200902" category="std" updates="2743, 2744">
   <front>
