@@ -15,6 +15,7 @@
 <!ENTITY x680 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml2/reference.CCITT.X680.2002.xml">
 <!ENTITY x690 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml2/reference.CCITT.X690.2002.xml">
 <!ENTITY rfc3530 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3530.xml">
+<!ENTITY rfc3961 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3961.xml">
 <!ENTITY rfc4251 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4251.xml">
 ]>
 <rfc docName="draft-williams-kitten-krb5-extra-rt-05" ipr="trust200902" category="std" updates="4121">
@@ -43,7 +44,7 @@ This Internet-Draft proposes an extension to the Kerberos V5 security mechanism 
     </abstract>
   </front>
   <middle>
-    <section title="Introduction" anchor="d1e300">
+    <section title="Introduction" anchor="d1e314">
       <t>
 The Kerberos V5 <xref target="RFC4120"/> AP protocol, and therefore the Kerberos V5 GSS-API <xref target="RFC2743"/> mechanism <xref target="RFC4121"/> security context token exchange, is a one-round trip protocol. Occasionally there are errors that the protocol could recover from by using an additional round trip, but until now there was no way to execute such an additional round trip. For many application protocols the failure of the Kerberos AP protocol is fatal, requiring closing TCP connections and starting over; often there is no automatic recovery.</t>
       <t>
@@ -68,12 +69,12 @@ symmetric authorization data flows</t>
       </t>
       <t>
 No new interfaces are needed for GSS-API applications to use the features added in this document.</t>
-      <section title="Conventions used in this document" anchor="d1e371">
+      <section title="Conventions used in this document" anchor="d1e385">
         <t>
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
       </section>
     </section>
-    <section title="New Protocol Elements" anchor="d1e386">
+    <section title="New Protocol Elements" anchor="d1e400">
       <t>
 We introduce the following new protocol elements. A partial ASN.1 <xref target="CCITT.X680.2002"/> module (for inclusion in the base Kerberos ASN.1 module) is given in  <xref target="sub_ASN_1_for_New"/>, and references to its contents are made below.</t>
       <t>
@@ -97,7 +98,7 @@ when no key available for encrypting the private part of a KRB-ERROR2, the null 
 These elements are used to construct security context token exchanges with potentially more than two context tokens.</t>
       <t>
 All context tokens are to be prefixed with the InitialContextToken pseudo-ASN.1/DER header from RFC2743, section 3.1, just as RFCs 1964 and 4121 require of the first two context tokens.</t>
-      <section title="Fields of KRB-ERROR2" anchor="d1e434">
+      <section title="Fields of KRB-ERROR2" anchor="d1e448">
         <t>
 The new KRB-ERROR2 PDU is defined in  <xref target="sub_ASN_1_for_New"/>. The fields of the KRB-ERROR2 encrypted part have the following purpose/semantics:</t>
         <t>
@@ -131,14 +132,14 @@ The new KRB-ERROR2 PDU is defined in  <xref target="sub_ASN_1_for_New"/>. The fi
           </list>
         </t>
       </section>
-      <section title="Distinction between KRB-ERROR2 and AP-REP2 PDUs" anchor="d1e521">
+      <section title="Distinction between KRB-ERROR2 and AP-REP2 PDUs" anchor="d1e535">
         <t>
 The ASN.1 does not distinguish between KRB-ERROR2 and AP-REP2 PDUs. A KRB-ERROR2 can serve either or both, the purpose of conveying error information, as well as the purpose of completing the acceptor's side of the context token exchange and providing key confirmation. We could have used three distinct PDUs instead of one.</t>
         <t>
 It is true that a KRB-ERROR2 that only serves the purpose of final key confirmation without continuation could have a different ASN.1 type for its encrypted part, and a different application tag, however, there seems to be little value in this. Distinguishing between errors with and without key confirmation is even less valuable. Therefore we do not distinguish these three possible PDUs.</t>
       </section>
     </section>
-    <section title="Negotiation and Use of Extra Context Tokens" anchor="d1e533">
+    <section title="Negotiation and Use of Extra Context Tokens" anchor="d1e547">
       <t>
 In the following text “initiator” refers to the mechanism's initiator functionality (invoked via GSS_Init_sec_context()), and “acceptor” refers to the mechanism's acceptor functionality (invoked via GSS_Accept_sec_context()).</t>
       <t>
@@ -176,7 +177,7 @@ When GSS_Accept_sec_context() returns an error and outputs an error token, the t
 All non-recoverable KRB-ERROR2 tokens SHALL use the token ID 03 00.</t>
       <t>
 Additional AP-REQs produced by the authenticator MUST have the mutual-required ap-options flag set when a) the application requested mutual authentication, and b) the acceptor's KRB-ERROR2 did not supply the required key confirmation. The acceptor MUST respond to the client's last AP-REQ with an AP-REP when the mutual-required ap-options flag is set or when the GSS_C_MUTUAL_FLAG is set in the “checksum 0x8003”, otherwise GSS_Accept_sec_context() MUST NOT produce a response token when it returns GSS_S_COMPLETE.</t>
-      <section title="Number of Security Context Tokens" anchor="d1e601">
+      <section title="Number of Security Context Tokens" anchor="d1e615">
         <t>
 The first AP-REQ may well result in an error; the second generally should not. Therefore acceptors SHOULD return a fatal error when a second error results in one security context establishment attempt, except when the first error is that the initiator should use user-to-user authentication. This limits the maximum number of round trips to two (not user-to-user) or three (user-to-user).</t>
         <t>
@@ -184,7 +185,7 @@ The mechanism SHOULD impose some limit on the maximum number of security context
         <t>
 Note that in the user-to-user cases (see  <xref target="sub_User_to_User_Authentication"/>) it's possible to have up to three round trips under normal conditions if, for example, the acceptor wishes to avoid the use of replay caches (see  <xref target="sub_Replay_Cache_Avoidance"/>), or if the initiator's clock is too skewed, for example.</t>
       </section>
-      <section title="Possible Context Token Sequences" anchor="d1e623">
+      <section title="Possible Context Token Sequences" anchor="d1e637">
         <t>
 The following successful security context token exchange sequences are possible:</t>
         <t>
@@ -245,11 +246,11 @@ Other context token sequences might be possible in the future.</t>
         <t>
 In the above sequences the AP-REP tokens can be AP-REP2 tokens as well.</t>
       </section>
-      <section title="Per-Message Token Sequence Numbers" anchor="d1e717">
+      <section title="Per-Message Token Sequence Numbers" anchor="d1e731">
         <t>
-It is REQUIRED that each real AP-REQ in a single security token exchange specify the same start sequence number as preceding AP-REQs in the same security context token exchange.</t>
+As in <xref target="RFC4121"/>, It is REQUIRED that each real AP-REQ in a single security token exchange specify the same start sequence number as preceding AP-REQs in the same security context token exchange. (AP-REQs in some user-to-user cases aren't “real”.)</t>
       </section>
-      <section title="Early PROT_READY State" anchor="d1e726">
+      <section title="Early PROT_READY State" anchor="sub_Early_PROT_READY_State">
         <t>
 The GSS-API allows security mechanisms to support the use of per-message tokens prior to full security context establishment. In this section we'll call this “early PROT_READY”. Early PROT_READY is optional for the GSS-API and for implementations of mechanisms that support it.</t>
         <t>
@@ -281,12 +282,54 @@ AP-REPs and key-confirmation KRB-ERROR2s are protected against replays to initia
 Initial security context tokens (and error-recovery AP-REQs) are protected against replay either by a replay cache on the acceptor side, or by the use of additional context tokens for challenge/response replay cache avoidance (see  <xref target="sub_Replay_Cache_Avoidance"/>).</t>
           </list>
         </t>
+        <t>
+Note that the acceptor must, as usual, check for missing per-message tokens, using sequence numbering to do so, and must indicate that per-message tokens are missing (when they are).</t>
+        <t>
+Note too that when a security context token exchange involves two key confirmation KRB-ERROR2 PDUs the acceptor can also be PROT_READY early. In this case the acceptor should use the acceptor sub-session key for its early PROT_READY tokens.</t>
+        <t>
+Note too that there is no interface by which applications can check whether a given per-message token was made before full security context establishment. All the application can do is observe that the security context eventually becomes fully established (or establishment fails), that per-message tokens arrive in order. Depending on the application protocol it may or may not be possible to determine exactly whether a per-message token was made before or after full security context establishment on the peer's side.</t>
+        <t>
+Early PROT_READY per-message token support is OPTIONAL for GSS_Wrap() and GSS_GetMIC(), but REQUIRED for GSS_Unwrap() and GSS_VerifyMIC().</t>
       </section>
-      <section title="Other Requirements, Recommendations, and Non-Requirements" anchor="d1e773">
+      <section title="Other Requirements, Recommendations, and Non-Requirements" anchor="d1e807">
         <t>
 All error PDUs in an AP exchange where the AP-REQ has the continue-needed-ok ap-options flag MUST be KRB-ERROR2 PDUs.</t>
         <t>
 Whenever an acceptor is able to decrypt the Ticket from an AP-REQ and yet wishes or has to output a KRB-ERROR2, then the enc-part of the KRB-ERROR2 MUST be encrypted in either the initiator's sub-session key (from the Authenticator) or the Ticket's session key (if the acceptor could not decrypt the Authenticator).</t>
+        <t>
+Acceptors MUST reject initial security context tokens that contain a challenge response in either their Authenticator or Ticket. This prevents cut-n-paste attacks where the attacker replays the middle of another security context token exchange.</t>
+      </section>
+      <section title="Security Analysis" anchor="d1e823">
+        <t>
+Attacks that are defeated:</t>
+        <t>
+          <list style="symbols">
+            <t>
+replays of initial security context tokens (via replay caches and/or additional context tokens; see  <xref target="sub_Replay_Cache_Avoidance"/>);</t>
+            <t>
+replays of additional security context tokens to acceptors (via the continue-challenge);</t>
+            <t>
+replays of AP-REP and key confirmation KRB-ERROR2 context tokens to initiators (via the use of the initiator's sub-session key for key confirmation, and because the initiator can check for such replays in exchanges with more than two acceptor-produced security context tokens);</t>
+            <t>
+replays of early PROT_READY per-message tokens (with deferred detection; see <xref target="sub_Early_PROT_READY_State"/>);</t>
+            <t>
+out of order delivery of security context tokens (impossible due to the synchronous nature of the GSS-API context token exchange);</t>
+            <t>
+modifications of Encrypted-Data payloads in security context tokens (this is provided by the Kerberos cryptographic framework <xref target="RFC3961"/>);</t>
+            <t>
+cut-n-paste attacks from one context token exchange to another (but see below about unauthenticated error tokens, and see  <xref target="sub_Replay_Cache_Avoidance"/>);</t>
+            <t>
+non-delivery of any early PROT_READY per-message tokens is detected through the use of sequence numbers as usual.</t>
+          </list>
+        </t>
+        <t>
+Attacks not detected/defeated:</t>
+        <t>
+          <list style="symbols">
+            <t>
+replacement of unauthenticated KRB-ERROR and KRB-ERROR2 PDUs, but successful continuation requires that the attacker show the initiator the acceptor's continue-challenge.</t>
+          </list>
+        </t>
       </section>
     </section>
     <section title="ASN.1 Module for New Protocol Elements" anchor="sub_ASN_1_for_New">
@@ -295,7 +338,7 @@ A partial ASN.1 module appears below. This ASN.1 is to be used as if it were par
       <t>
 </t>
       <t>
-        <figure anchor="magicparlabel-302" title="ASN.1 module (with explicit tagging)">
+        <figure anchor="magicparlabel-327" title="ASN.1 module (with explicit tagging)">
           <artwork> KerberosExtraContextTokens DEFINITIONS EXPLICIT TAGS ::=
  BEGIN
  EXPORTS ad-continue-challenge,
@@ -373,23 +416,25 @@ A partial ASN.1 module appears below. This ASN.1 is to be used as if it were par
     </section>
     <section title="Recoverable Errors and Error Recovery" anchor="sec_Recoverable_Errors_and">
       <t>
+Error recovery is REQUIRED to implement, as it is the primary purpose of this specification.</t>
+      <t>
 The following Kerberos errors can be recovered from automatically using this protocol:</t>
       <t>
         <list style="symbols">
           <t>
-KRB_AP_ERR_TKT_EXPIRED: the initiator should get a new service ticket;</t>
+KRB_AP_ERR_TKT_EXPIRED: the initiator SHOULD attempt to get a new service ticket;</t>
           <t>
-KRB_AP_ERR_TKT_NYV: the initiator should get a new service ticket;</t>
+KRB_AP_ERR_TKT_NYV: the initiator SHOULD attempt to get a new service ticket;</t>
           <t>
-KRB_AP_ERR_REPEAT: the initiator should build a new AP-REQ;</t>
+KRB_AP_ERR_REPEAT: the initiator SHOULD build a new AP-REQ;</t>
           <t>
 KRB_AP_ERR_SKEW: see  <xref target="sec_Acceptor_Clock_Skew"/>;</t>
           <t>
-KRB_AP_ERR_BADKEYVER: the initiator should get a new service ticket;</t>
+KRB_AP_ERR_BADKEYVER: the initiator MUST attempt to get a new service ticket;</t>
           <t>
-KRB_AP_PATH_NOT_ACCEPTED: the initiator should get a new service ticket using a different transit path;</t>
+KRB_AP_PATH_NOT_ACCEPTED: the initiator MAY attempt to get a new service ticket using a different transit path;</t>
           <t>
-KRB_AP_ERR_INAPP_CKSUM: the initiator should try again with a different checksum type.</t>
+KRB_AP_ERR_INAPP_CKSUM: the initiator MAY try again with a different checksum type.</t>
         </list>
       </t>
       <t>
@@ -409,16 +454,10 @@ KRB_AP_ERR_MODIFIED</t>
         </list>
       </t>
       <t>
-Other error codes that may be recovered from:</t>
-      <t>
-        <list style="symbols">
-          <t>
-KRB_AP_ERR_BADADDR: the acceptor SHOULD include a list of one or more client network addresses as reported by the operating system, but if the acceptor does not then the continue-needed e-flag MUST NOT be included and the error must be final.</t>
-        </list>
-      </t>
+Initiators MAY try again in the case of such errors.</t>
       <section title="Authenticated Errors" anchor="sub_Authenticated_Errors">
         <t>
-The following errors, at least, can be authenticated in AP exchanges:</t>
+The following errors, at least, can be authenticated in AP exchanges, and acceptors implementing this specification MUST authenticate these errors when the initiator indicates support for this feature.:</t>
         <t>
           <list style="symbols">
             <t>
@@ -433,10 +472,18 @@ KRB_AP_ERR_SKEW</t>
 KRB_AP_PATH_NOT_ACCEPTED</t>
             <t>
 KRB_AP_ERR_INAPP_CKSUM</t>
+          </list>
+        </t>
+        <t>
+The following error could be authenticated in a non-GSS-API context:</t>
+        <t>
+          <list style="symbols">
             <t>
 KRB_AP_ERR_BADADDR</t>
           </list>
         </t>
+        <t>
+In practice the Kerberos V GSS mechanism cannot produce KRB_AP_ERR_BADADDR, since the mechanism has no access to the initiator's apparent network address(es).</t>
       </section>
     </section>
     <section title="Replay Cache Avoidance" anchor="sub_Replay_Cache_Avoidance">
@@ -444,7 +491,7 @@ KRB_AP_ERR_BADADDR</t>
 By using an additional AP-REQ and a challenge/response nonce, this protocol is immune to replays of AP-REQ PDUs and does not need a replay cache. Acceptor implementations MUST not insert Authenticators from extra round trips into a replay cache when there are no other old implementations on the same host (and with access to the same acceptor credentials) that ignore critical authorization data or which don't know to reject initial AP-REQs that contain a challenge response nonce.</t>
       <t>
 In the replay cache avoidance case where there's no actual error (e.g., time skew) the acceptor's KRB-ERROR2 will have KDC_ERR_NONE as the error code, with the continue-needed e-flag.</t>
-      <section title="Replay Cache Avoidance without Extensions" anchor="d1e935">
+      <section title="Replay Cache Avoidance without Extensions" anchor="d1e1035">
         <t>
 Many Kerberos services can avoid the use of a replay cache altogether, but it's tricky to know when it's safe to do so. For Kerberos it's safe to not use a replay cache for AP-REQs/Authenticators when either:</t>
         <t>
@@ -473,6 +520,16 @@ no other acceptor/service application shares the same long-term service keys for
 It is difficult to establish the second part of the above conjunctions programmatically. In practice this is best left as a local configuration matted on a per-service name basis.</t>
         <t>
 For example, it's generally safe for NFSv4 <xref target="RFC3530"/> to not use a replay cache for the Kerberos GSS mechanism, but it is possible for multiple Kerberos host-based service principals on the same host to share the same keys, therefore in practice, the analysis for NFSv4 requires more analysis. The same is true for SSHv2 <xref target="RFC4251"/> (SSHv2 implementations share the same service principal as other non-GSS Kerberos applications that do sometimes need a replay cache).</t>
+        <t>
+Acceptor implementations SHOULD provide a way to configure the non-use of replay caches for specific (or all) services on a given host.</t>
+      </section>
+      <section title="Analysis" anchor="d1e1087">
+        <t>
+          <cref>
+There is no portable, programmatic way to check whether all applications and Kerberos implementations using a given service principal (or its long-term keys) are safe in the absence of a replay cache. This is because even if an application protocol is generally replay-safe (see above) AP-REQ tokens from its context token exchanges might be played by an active attacker against a different service with access to the same service principal or its long-term keys. If only all currently-deployed Kerberos implementations had implemented authorization data as critical (unless otherwise specified or wrapped), then it would be possible to prevent this cut-n-paste attack.</cref>
+        </t>
+        <t>
+In some common deployments replay-safety can be assumed; in others it cannot. Replay safety, and thus the ability to avoid the use of replay caches, is a matter for local configuration.</t>
       </section>
     </section>
     <section title="User-to-User Authentication" anchor="sub_User_to_User_Authentication">
@@ -494,14 +551,20 @@ In the second case the initiator does manage to get a real service ticket for th
 In both cases the acceptor responds with a KRB-ERROR2 with the KRB_AP_ERR_USER_TO_USER_REQUIRED error code and including a TGT for itself.</t>
       <t>
 In both cases the initiator then does a TGS request with a second ticket to get a new, user2user Ticket. Then the initiator makes a new AP-REQ using the new Ticket, and proceeds.</t>
+      <t>
+This extension renders it unnecessary to have a separate mechanism (e.g., <xref target="I-D.swift-win2k-krb-user2user"/>) for user-to-user authentication. But if an initiator that supports this extension attempts to initiate a security context using this mechanism with an acceptor that only supports user-to-user authentication via <xref target="I-D.swift-win2k-krb-user2user"/>, then the context will fail to establish. The acceptor, of course, won't have offered the Kerberos mechanism, therefore no interoperability problem arises.</t>
+      <t>
+This feature is RECOMMENDED to implement.</t>
     </section>
     <section title="Acceptor Clock Skew Correction" anchor="sec_Acceptor_Clock_Skew">
       <t>
 An initiator in possession of a (short-lived) valid service ticket for a given service principal... must have had little clock skew relative to the service principal's realm's KDC(s), or the initiator must have been able to correct its local clock skew. But the acceptor's clock might be skewed, yielding a KRB_AP_ERR_SKEW error with a challenge. The client could recover from this by requesting a new service ticket with this challenge as an authorization data element. The acceptor should be able to verify this in the subsequent AP-REQ, and then it should be able to detect that its clock is skewed and to estimate by how much.</t>
-    </section>
-    <section title="Security Considerations" anchor="d1e1025">
       <t>
-This document deals with security.</t>
+It's unclear how valuable this feature might be, therefore, for now, it is entirely OPTIONAL to implement.</t>
+    </section>
+    <section title="Security Considerations" anchor="d1e1162">
+      <t>
+This document deals with security. All the security considerations of Kerberos <xref target="RFC4120"/> <xref target="RFC4121"/> apply.</t>
       <t>
 The new KRB-ERROR2 PDU is cryptographically distinguished from the original mechanism's acceptor success security context token (AP-REQ).</t>
       <t>
@@ -509,15 +572,15 @@ Not every KRB-ERROR2 can be integrity protected. This is unavoidable.</t>
       <t>
 Because in the base Kerberos V5 GSS-API security mechanism all errors are unauthenticated, and because even with this specification some elements are unauthenticated, it is possible for an attacker to cause one peer to think that the security context token exchange has failed while the other thinks it will continue. This can cause an acceptor to waste resources while waiting for additional security context tokens from the initiator. This is not really a new problem, however: acceptor applications should already have suitable timeouts on security context establishment.</t>
       <t>
-There is a binding of preceding security context tokens in each additional AP-REQ, via the challenge-response nonce. This binding is weak, and does not detect all modifications of unauthenticated plaintext in preceding security context tokens.</t>
+There is a binding of preceding security context tokens in each additional AP-REQ, via the challenge-response nonce. This binding is relatively weak, and does not detect all modifications of unauthenticated plaintext in preceding security context tokens. There is not a lot of unauthenticated plaintext in these security context tokens, thankfully. Unauthenticated error tokens, in particular, are not bound.</t>
       <t>
         <cref>
-We could use the GSS_EXTS_FINISHED extension from draft-ietf-kitten-iakerb to implement a strong binding of all context tokens.</cref>
+We could use the GSS_EXTS_FINISHED extension from draft-ietf-kitten-iakerb to implement a strong binding of all preceding context tokens in a given exchange.</cref>
       </t>
       <t>
-Early prot_ready per-message tokens have security considerations that are beyond the scope of this document and which are not exhaustively described elsewhere yet. Use only with care.</t>
+Early prot_ready per-message tokens have security considerations that are beyond the scope of this document and which are not exhaustively described elsewhere yet, though no new security considerations are added here. Use early prot_ready per-message tokens with care, noting in particular that neither the state of authentication of the peer, nor the replay detection state of such tokens, is yet established when they are made and consumed. The status of early per-message tokens cannot be fully ascertained until full security context establishment.</t>
     </section>
-    <section title="IANA Considerations" anchor="d1e1053">
+    <section title="IANA Considerations" anchor="d1e1202">
       <t>
         <cref>
 Various allocations are required...</cref>
@@ -533,6 +596,7 @@ Various allocations are required...</cref>
 &x690;
 </references>
     <references title="Informative References">&rfc3530;
+&rfc3961;
 &rfc4251;
 
 <reference anchor="I-D.swift-win2k-krb-user2user"><front><title>User to User Kerberos Authentication using GSS-API</title><author initials="M." surname="Swift" fullname="Michael Swift"><organization/></author><author initials="J." surname="Brezak" fullname="John Brezak"><organization/></author><author initials="P." surname="Moore" fullname="Patrick Moore"><organization/></author><date month="February" day="21" year="2011"/><abstract><t>The security model of the web platform has evolved over time to meet the needs of new applications and to correct earlier mistakes. Although web security has evolved largely organically, the security model has converged towards a handful of key concepts. This document presents those concepts and provides advice to designers of new pieces of the web platform.</t></abstract></front><seriesInfo name="Internet-Draft" value="draft-swift-win2k-krb-user2user-03"/><format type="TXT" target="http://www.ietf.org/internet-drafts/draft-swift-win2k-krb-user2user-03.txt"/></reference>

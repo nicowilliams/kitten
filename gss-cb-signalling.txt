@@ -3,14 +3,14 @@
 
 KITTEN                                                       N. Williams
 Internet-Draft                                              Cryptonector
-Updates: 2743, 2744 (if approved)                           July 7, 2013
+Updates: 2743, 2744 (if approved)                      November 28, 2014
 Intended status: Standards Track
-Expires: January 8, 2014
+Expires: June 1, 2015
 
 
 Channel Binding Signalling for the Generic Security Services Application
                          Programming Interface
-                draft-ietf-kitten-channel-bound-flag-00
+                draft-ietf-kitten-channel-bound-flag-01
 
 Abstract
 
@@ -29,8 +29,8 @@ Abstract
    reflecting existing implementation deployments, and a behavior that
    is only safe when the application specifically tells the GSS-API that
    it (the application) supports the new behavior.  Additional API
-   elements related to this are also added, including a new security
-   context establishment API.
+   elements are also added, including a new security context
+   establishment API.
 
 Status of this Memo
 
@@ -47,19 +47,19 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 8, 2014.
+   This Internet-Draft will expire on June 1, 2015.
 
 
 
 
-Williams                 Expires January 8, 2014                [Page 1]
+Williams                  Expires June 1, 2015                  [Page 1]
 
-Internet-Draft           GSS Channel Bound Flag                July 2013
+Internet-Draft           GSS Channel Bound Flag            November 2014
 
 
 Copyright Notice
 
-   Copyright (c) 2013 IETF Trust and the persons identified as the
+   Copyright (c) 2014 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -75,42 +75,98 @@ Copyright Notice
 
 Table of Contents
 
-   1.      Introduction . . . . . . . . . . . . . . . . . . . . . . .  3
-   1.1.    Error in RFC2743 . . . . . . . . . . . . . . . . . . . . .  3
-   1.2.    Design . . . . . . . . . . . . . . . . . . . . . . . . . .  4
-   1.3.    Alternative Design . . . . . . . . . . . . . . . . . . . .  4
-   1.4.    Future Directions  . . . . . . . . . . . . . . . . . . . .  4
-   1.5.    Conventions used in this document  . . . . . . . . . . . .  4
-   2.      Channel Binding State Extension  . . . . . . . . . . . . .  5
-   2.1.    GSS_Create_sec_context() . . . . . . . . . . . . . . . . .  5
-   2.1.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  5
-   2.2.    GSS_Set_context_flags()  . . . . . . . . . . . . . . . . .  6
-   2.2.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  6
-   2.3.    Return Flag for Channel Binding State Signalling . . . . .  6
-   2.3.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  7
-   2.4.    New Mechanism Attributes . . . . . . . . . . . . . . . . .  7
-   2.5.    Request Flag for Acceptor Confirmation of Channel
-           Binding  . . . . . . . . . . . . . . . . . . . . . . . . .  7
-   2.5.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  7
-   2.6.    GSS_Delete_sec_context() Behavior When Applied to
-           Empty Security Contexts  . . . . . . . . . . . . . . . . .  8
-   3.      Modified Channel Binding Semantics . . . . . . . . . . . .  9
-   4.      Security Considerations  . . . . . . . . . . . . . . . . . 10
-   5.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 11
-   6.      References . . . . . . . . . . . . . . . . . . . . . . . . 12
-   6.1.    Normative References . . . . . . . . . . . . . . . . . . . 12
-   6.2.    Informative References . . . . . . . . . . . . . . . . . . 12
-           Author's Address . . . . . . . . . . . . . . . . . . . . . 13
+   1.      Introduction . . . . . . . . . . . . . . . . . . . . . . .  4
+   1.1.    Error in RFC2743 . . . . . . . . . . . . . . . . . . . . .  4
+   1.2.    Design . . . . . . . . . . . . . . . . . . . . . . . . . .  5
+   1.2.1.  Application Changes  . . . . . . . . . . . . . . . . . . .  5
+   1.3.    Alternative Design . . . . . . . . . . . . . . . . . . . .  5
+   1.4.    Future Directions  . . . . . . . . . . . . . . . . . . . .  6
+   1.5.    Conventions used in this document  . . . . . . . . . . . .  6
+   2.      Channel Binding State Extension  . . . . . . . . . . . . .  7
+   2.1.    GSS_Create_sec_context() . . . . . . . . . . . . . . . . .  7
+   2.1.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  8
+   2.2.    New Abstract Type: FLAGS . . . . . . . . . . . . . . . . .  8
+   2.3.    C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  8
+   2.4.    GSS_Set_context_flags()  . . . . . . . . . . . . . . . . .  8
+   2.4.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  9
+   2.5.    GSS_Get_context_flags()  . . . . . . . . . . . . . . . . .  9
+   2.5.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . .  9
+   2.6.    Flag for Channel Binding State Signalling  . . . . . . . .  9
+   2.6.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 10
+   2.7.    Request Flag for Acceptor Confirmation of Channel
+           Binding  . . . . . . . . . . . . . . . . . . . . . . . . . 10
+   2.7.1.  C-Bindings . . . . . . . . . . . . . . . . . . . . . . . . 10
+   2.8.    New Mechanism Attributes . . . . . . . . . . . . . . . . . 11
+   2.9.    GSS_Delete_sec_context() Behavior When Applied to
+           Empty Security Contexts  . . . . . . . . . . . . . . . . . 11
+   3.      Modified Channel Binding Semantics . . . . . . . . . . . . 12
+   4.      Kerberos Mechanism Binding . . . . . . . . . . . . . . . . 13
+   5.      Security Considerations  . . . . . . . . . . . . . . . . . 14
+   6.      IANA Considerations  . . . . . . . . . . . . . . . . . . . 15
+   7.      References . . . . . . . . . . . . . . . . . . . . . . . . 16
+   7.1.    Normative References . . . . . . . . . . . . . . . . . . . 16
 
 
 
-
-
-
-
-Williams                 Expires January 8, 2014                [Page 2]
+Williams                  Expires June 1, 2015                  [Page 2]
 
-Internet-Draft           GSS Channel Bound Flag                July 2013
+Internet-Draft           GSS Channel Bound Flag            November 2014
+
+
+   7.2.    Informative References . . . . . . . . . . . . . . . . . . 16
+           Author's Address . . . . . . . . . . . . . . . . . . . . . 17
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                  Expires June 1, 2015                  [Page 3]
+
+Internet-Draft           GSS Channel Bound Flag            November 2014
 
 
 1.  Introduction
@@ -164,30 +220,67 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
 
 
 
-Williams                 Expires January 8, 2014                [Page 3]
+Williams                  Expires June 1, 2015                  [Page 4]
 
-Internet-Draft           GSS Channel Bound Flag                July 2013
+Internet-Draft           GSS Channel Bound Flag            November 2014
 
 
 1.2.  Design
 
-   After some discussion on the mailing list of various designs for
-   signalling application support for the new flag we've settled on
-   copying an aspect of the Java Bindings of the GSS-API [RFC5653],
-   specifically the notion of creating an "empty" SECURITY CONTEXT
-   handle that can then be passed to GSS_Init_sec_context() and
-   GSS_Accept_sec_context() where they normally expect a NULL handle.
-   This empty security context handle can then be used to set options
-   relating to security context token establishment.
+   This document adapts for the GSS-API C bindings a useful aspect of
+   the Java Bindings of the GSS-API [RFC5653], specifically the notion
+   of creating an "empty" SECURITY CONTEXT handle that can then be
+   passed to GSS_Init_sec_context() and GSS_Accept_sec_context() where
+   they normally expect a NULL handle.  This empty security context
+   handle can then be used to set options relating to security context
+   token establishment.
 
    In [I-D.williams-williams-kitten-ctx-simple-async] we explore and
    extend this design to produce a more usable GSS-API (as well as
    support for asynchronous operation).
 
+1.2.1.  Application Changes
+
+   This design minimizes application changes.
+
+   For initiator applications that use channel binding, the main change
+   will be to request the new req_cb_confirmation_flag request flag and
+   check whether the new ret_channel_bound_flag return flag is available
+   when the security context becomes fully established.
+
+   For acceptor applications that use channel binding, the changes are
+   as follows:
+
+   1.  Call GSS_Create_sec_context() to create an empty security
+       context, and then
+
+   2.  call GSS_Set_context_flags() on the empty context, setting the
+       new req_cb_confirmation_flag request flag, before calling
+       GSS_Accept_sec_context().
+
+   3.  Finally, check whether the new ret_channel_bound_flag return flag
+       is available when the security context becomes fully established.
+
+   If an application requests but fails to get channel binding state
+   confirmation upon successful security context establishment, then it
+   must act as though channel binding had not been used.
+
+   Conversely, when an application requests channel binding state
+   confirmation and receives it at full security context establishment
+   time, then channel binding has succeeded.
+
 1.3.  Alternative Design
 
    An earlier design was based on an existing, non-standard extension
    for carrying security context establishment options in CREDENTIAL
+
+
+
+Williams                  Expires June 1, 2015                  [Page 5]
+
+Internet-Draft           GSS Channel Bound Flag            November 2014
+
+
    HANDLEs.  A notion of CREDENTIAL HANDLE options might still be useful
    for options that are really specific to credentials rather than
    security context tokens, but for the time being we have no use for
@@ -207,7 +300,10 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
    NULL), and an input context token, and the only outputs should be the
    status indicators and an output token.  In fact, we may want to have
    just one new function called, perhaps, GSS_Step_sec_context(), with
-   the role of initiator or acceptor set as a context option.
+   all the initiator and acceptor inputs and outputs other than context
+   tokens being set/retrieved via new accessor functions, and the role
+   of initiator or acceptor determined by whether a target principal is
+   set..
 
    See [I-D.williams-williams-kitten-ctx-simple-async].
 
@@ -220,9 +316,25 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
 
 
 
-Williams                 Expires January 8, 2014                [Page 4]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                  Expires June 1, 2015                  [Page 6]
 
-Internet-Draft           GSS Channel Bound Flag                July 2013
+Internet-Draft           GSS Channel Bound Flag            November 2014
 
 
 2.  Channel Binding State Extension
@@ -266,7 +378,20 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
 
    This function creates an "empty" security context handle that can be
    passed to GSS_Init_sec_context() or GSS_Accept_sec_context() where
-   they expect a NULL context.
+   they expect a NULL context.  A security context is said to be
+   "empty", as opposed to "partially established" and "fully
+   established" or "open", when the context has been created by this
+   function but not yet passed to either of GSS_Init_sec_context() or
+   GSS_Accept_sec_context().
+
+
+
+
+
+Williams                  Expires June 1, 2015                  [Page 7]
+
+Internet-Draft           GSS Channel Bound Flag            November 2014
+
 
 2.1.1.  C-Bindings
 
@@ -274,14 +399,28 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
                gss_create_sec_context(OM_uint32 *minor_status,
                                       gss_ctx_id_t *context);
 
+2.2.  New Abstract Type: FLAGS
 
+   The abstract GSS-API [RFC2743] uses individual elements -one per-
+   flag- instead of a "FLAGS" type.  This is unwieldy, therefore we
+   introduce an abstract type named "FLAGS" to act as a set of all the
+   request/return flags defined for the abstract GSS-API.
 
-Williams                 Expires January 8, 2014                [Page 5]
-
-Internet-Draft           GSS Channel Bound Flag                July 2013
+   The FLAGS type is a set of request/return flags.
 
+2.3.  C-Bindings
 
-2.2.  GSS_Set_context_flags()
+   The C-bindings type for the abstract type FLAGS will be 'uint64_t' (a
+   C99 type).  I.e., up to 64 flags are now supported.  More could be
+   added in the future with additional functions like
+   GSS_Set_context_flags().
+
+   Flags with numeric values larger than 31 should be named
+   GSS_C_..._FLAG1 to indicate the need to use GSS_Set_context_flags()
+   in order to use such flags.  Flags with numeric values larger than 63
+   are out of scope for this document.
+
+2.4.  GSS_Set_context_flags()
 
    Inputs:
 
@@ -289,9 +428,6 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
 
    req_flags FLAGS  Requested flags.  Applicable to acceptors and
       initiators.
-
-   ret_flags_understood FLAGS  The set of return flags understood by the
-      caller.
 
    Outputs:
 
@@ -305,55 +441,137 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
 
    o  GSS_S_FAILURE indicates a general failure.
 
+
+
+
+Williams                  Expires June 1, 2015                  [Page 8]
+
+Internet-Draft           GSS Channel Bound Flag            November 2014
+
+
    This function tells the mechanism (when one is eventually chosen and
    invoked) that the application requests the given req_flags and
-   undestands the given ret_flags.  Initiators can override the
-   req_flags in their GSS_Init_sec_context() call, but if no flags are
-   requested there then the req_flags set on the empty context will be
-   used.
+   understands any associated ret_flags.  Subsequent calls to
+   GSS_Init_sec_context() call MUST fail with GSS_S_FAILURE if any
+   request flags are provided to GSS_Init_sec_context().
 
-   NOTE: The abstract GSS-API [RFC2743] uses individual elements -one
-   per-flag- instead of a "FLAGS" type.  This is unwieldy, therefore we
-   introduce an abstract type named "FLAGS" to act as a set of all the
-   request/return flags defined for the abstract GSS-API.
-
-2.2.1.  C-Bindings
+2.4.1.  C-Bindings
 
                OM_uint32
                gss_set_context_flags(OM_uint32 *minor_status,
                                      gss_ctx_id_t context,
-                                     uint64_t req_flags,
-                                     uint64_t ret_flags);
+                                     uint64_t req_flags);
 
-2.3.  Return Flag for Channel Binding State Signalling
+2.5.  GSS_Get_context_flags()
+
+   Inputs:
+
+   context CONTEXT HANDLE
+
+   Outputs:
+
+   o  major_status INTEGER
+
+   o  minor_status INTEGER
+
+   o  ret_flags FLAGS The set of return flags available for the given
+      context.
+
+   Return major status codes:
+
+   o  GSS_S_COMPLETE indicates success.
+
+   o  GSS_S_FAILURE indicates a general failure.
+
+   This function outputs the actual return flags available on the given
+   security context.
+
+2.5.1.  C-Bindings
+
+               OM_uint32
+               gss_get_context_flags(OM_uint32 *minor_status,
+                                     gss_ctx_id_t context,
+                                     uint64_t *ret_flags);
+
+2.6.  Flag for Channel Binding State Signalling
 
    Whenever both the initiator and the acceptor provide matching channel
    bindings to GSS_Init_sec_context() and GSS_Accept_sec_context(),
 
 
 
-Williams                 Expires January 8, 2014                [Page 6]
+Williams                  Expires June 1, 2015                  [Page 9]
 
-Internet-Draft           GSS Channel Bound Flag                July 2013
+Internet-Draft           GSS Channel Bound Flag            November 2014
 
 
    respectively, then the mechanism SHALL indicate that the context is
    channel bound via an output flag, ret_channel_bound_flag, for the
-   established context.  Note that some mechanisms have no way for the
-   acceptor to signal CB success to the initiator, in which case
-   GSS_Init_sec_context() MUST NOT output the ret_channel_bound_flag.
+   established context.
 
-2.3.1.  C-Bindings
+   Note that some mechanisms have no way for the acceptor to signal CB
+   success to the initiator, in which case GSS_Init_sec_context() MUST
+   NOT output the ret_channel_bound_flag.  More generally, when a peer
+   cannot confirm channel binding state, the local security context MUST
+   NOT output this flag.
+
+2.6.1.  C-Bindings
 
             #define GSS_C_CHANNEL_BOUND_FLAG 2048 /* 0x00000800 */
 
-2.4.  New Mechanism Attributes
+2.7.  Request Flag for Acceptor Confirmation of Channel Binding
+
+   We add a new request flag for GSS_Init_sec_context(),
+   req_cb_confirmation_flag, to be used by initiators that insist on
+   acceptors providing channel binding confirmation.  Channel binding
+   confirmation means that the acceptor application did provide channel
+   bindings data and that this data matched the initiator application's
+   channel bindings data.  Initiator applications that use channel
+   binding MUST set this request flag.
+
+   If this flag is set but channel binding data is not provided, then
+   the peer also must have had no channel binding data, otherwise
+   context establishment MUST fail.
+
+   If this flag is set, mechanism-negotiation pseudo-mechanisms (e.g.,
+   SPNEGO [RFC4178]) the pseudo-mechanism MUST NOT negotiate any
+   mechanisms that lack the GSS_C_MA_CBINDING_CONFIRM or
+   GSS_C_MA_CBINDING_MAY_CONFIRM mechanism attributes (see Section 2.8),
+   and SHOULD NOT negotiate mechanisms that lack the
+   GSS_C_MA_CBINDING_CONFIRM mechanism attribute (except if allowed by
+   local configuration).
+
+2.7.1.  C-Bindings
+
+   Because ret_channel_bound_flag (GSS_C_CHANNEL_BOUND_FLAG) is a return
+   flag only, and req_cb_confirmation_flag is a request flag only, we
+   can assign both the same numeric value in the C bindings to conserve
+   precious flag bits:
+
+           #define GSS_C_CHANNEL_BOUND_FLAG 2048 /* 0x00000800 */
+           #define GSS_C_CB_CONFIRM_FLAG    2048 /* 0x00000800 */
+
+
+
+
+
+
+Williams                  Expires June 1, 2015                 [Page 10]
+
+Internet-Draft           GSS Channel Bound Flag            November 2014
+
+
+2.8.  New Mechanism Attributes
 
    o  We add a new mechanism attribute, GSS_C_MA_CBINDING_CONFIRM, to
       indicate that the initiator can and always does learn whether the
       acceptor application supplied channel bindings.  Mechanisms
       advertising this attribute MUST always indicate acceptor channel
-      bound state to the initiator.
+      bound state to the initiator when channel bindings are used by
+      both peers and the channel bindings match, else security context
+      establishment MUST fail (if one party provides channel bindings
+      data but the other doesn't, or if both do and the channel bindings
+      data don't match).
 
    o  We add a new mechanism attribute, GSS_C_MA_CBINDING_MAY_CONFIRM,
       to indicate that the initiator may learn whether the acceptor
@@ -361,43 +579,18 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
       implementation of the mechanism has been suitably updated.
       Mechanisms MUST advertise this attribute when the local initiator
       functionality for acceptor channel bound state indication exists
-      but the acceptor may lack the same functionality (because, for
-      example, the mechanism predates this specification).
+      and the acceptor could but might not support CB confirmation
+      (e.g., because, for example, the mechanism predates this
+      specification).
 
-   OID assignments TBD.
+   IANA: OID assignments TBD.
 
-2.5.  Request Flag for Acceptor Confirmation of Channel Binding
-
-   We add a new request flag for GSS_Init_sec_context(),
-   req_cb_confirmation_flag, to be used by initiators that insist on
-   acceptors providing channel bindings.  This flag is only of use to
-   mechanism-negotiation pseudo-mechanisms (e.g., SPNEGO [RFC4178]): if
-   set the pseudo-mechanism MUST NOT negotiate any mechanisms that lack
-   the GSS_C_MA_CBINDING_CONFIRM or GSS_C_MA_CBINDING_MAY_CONFIRM
-   mechanism attributes, and SHOULD NOT negotiate mechanisms that lack
-   the GSS_C_MA_CBINDING_CONFIRM mechanism attribute (except if allowed
-   by local configuration).
-
-2.5.1.  C-Bindings
-
-   Because GSS_C_CHANNEL_BOUND_FLAG is a return flag only, and this flag
-   is a request flag only, and to save on precious flag bits, we use the
-   same flag bit assignment for both flags:
-
-             #define GSS_C_CB_CONFIRM_FLAG 2048 /* 0x00000800 */
-
-
-
-Williams                 Expires January 8, 2014                [Page 7]
-
-Internet-Draft           GSS Channel Bound Flag                July 2013
-
-
-2.6.  GSS_Delete_sec_context() Behavior When Applied to Empty Security
+2.9.  GSS_Delete_sec_context() Behavior When Applied to Empty Security
       Contexts
 
-   GSS_Delete_sec_context() MUST NOT output a context deletion token
-   when applied to empty security contexts.
+   GSS_Delete_sec_context() MUST NOT output a context deletion token, or
+   MUST output an empty context deletion token, when applied to ean mpty
+   security context.
 
 
 
@@ -419,34 +612,9 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Williams                 Expires January 8, 2014                [Page 8]
+Williams                  Expires June 1, 2015                 [Page 11]
 
-Internet-Draft           GSS Channel Bound Flag                July 2013
+Internet-Draft           GSS Channel Bound Flag            November 2014
 
 
 3.  Modified Channel Binding Semantics
@@ -454,12 +622,12 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
    The channel binding semantics of the base GSS-API are modified as
    follows:
 
-   o  Whenever both, the initiator and acceptor shall have provided
-      input_channel_bindings to GSS_Init/Accept_sec_context() and the
-      channel bindings do not match, then the mechanism MUST fail to
-      establish a security context token.  This is a restatement of an
-      existing requirement in the base specification, restated for the
-      reader's convenience.
+   o  Whenever a) the initiator and b) the acceptor shall both have
+      provided channel_bindings input to GSS_Init/Accept_sec_context()
+      and the channel bindings do not match, then the mechanism MUST
+      fail to establish a security context token.  This is a restatement
+      of an existing requirement in the base specification, restated for
+      the reader's convenience.
 
    o  Whenever the acceptor application shall have a) provided channel
       bindings to GSS_Accept_sec_context(), and b) not indicated support
@@ -469,6 +637,20 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
       purposes, to make applications predating this document secure, and
       this requirement reflects actual implementations as deployed.
 
+      *  Conversely, whenever the application shall have a) provided
+         channel bindings to GSS_Init/Accept_sec_context(), and b)
+         indicated support for the ret_channel_bound_flag flag, then the
+         mechanism MUST NOT fail to establish a security context just
+         because the peer did not provide channel bindings data.  The
+         mechanism MUST output the ret_channel_bound_flag if both peers
+         provided the same input_channel_bindings to
+         GSS_Init_sec_context() and GSS_Accept_sec_context.  The
+         mechanism MUST NOT output the ret_channel_bound_flag if either
+         (or both) peer did not provide channel_bindings input to
+         GSS_Init/Accept_sec_context().  This requirement restores the
+         original base GSS-API specified behavior, with the addition of
+         the ret_channel_bound_flag flag.
+
    o  Whenever the initiator application shall have a) provided channel
       bindings to GSS_Init_sec_context(), and b) not indicated support
       for the ret_channel_bound_flag flag, then the mechanism SHOULD NOT
@@ -476,20 +658,7 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
       failed to provide channel bindings data.  This recommendation is
       for interoperability purposes, and reflects actual implementations
       that have been deployed.  It is possible that not all security
-      mechanism protocols can implement this requirement easily.
-
-   o  Whenever the application shall have a) provided channel bindings
-      to GSS_Init_sec_context() or GSS_Accept_sec_context(), and b)
-      indicated support for the ret_channel_bound_flag flag, then the
-      mechanism MUST NOT fail to establish a security context just
-      because the peer did not provide channel bindings data.  The
-      mechanism MUST output the ret_channel_bound_flag if both peers
-      provided the same input_channel_bindings to GSS_Init_sec_context()
-      and GSS_Accept_sec_context.  The mechanism MUST NOT output the
-      ret_channel_bound_flag if either (or both) peer did not provide
-      input_channel_bindings to GSS_Init/Accept_sec_context().  This
-      requirement restores the original base GSS-API specified behavior,
-      with the addition of the ret_channel_bound_flag flag.
+      mechanism protocols can implement this recommendation easily.
 
 
 
@@ -499,13 +668,68 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
 
 
 
-
-Williams                 Expires January 8, 2014                [Page 9]
+Williams                  Expires June 1, 2015                 [Page 12]
 
-Internet-Draft           GSS Channel Bound Flag                July 2013
+Internet-Draft           GSS Channel Bound Flag            November 2014
 
 
-4.  Security Considerations
+4.  Kerberos Mechanism Binding
+
+   The new request flag, GSS_C_CB_CONFIRM_FLAG, MUST be carried in the
+   AP-REQ's Authenticator's 0x8003 "checksum" data.
+
+   When this flag is present in the initiator's AP-REQ, and in order to
+   confirm channel binding state to the initiator when the initiator
+   requests it (with the the req_cb_confirmation_flag flag), the
+   acceptor MUST use key usage <TBD> (27?) for encrypting the AP-REP
+   encrypted part instead of key usage 12, and the acceptor MUST use the
+   initiator's sub-session key for encrypting the AP-REP enc-part.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                  Expires June 1, 2015                 [Page 13]
+
+Internet-Draft           GSS Channel Bound Flag            November 2014
+
+
+5.  Security Considerations
 
    This document deals with security.  There are no security
    considerations that should be documented separately in this section.
@@ -556,16 +780,16 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
 
 
 
-Williams                 Expires January 8, 2014               [Page 10]
+Williams                  Expires June 1, 2015                 [Page 14]
 
-Internet-Draft           GSS Channel Bound Flag                July 2013
+Internet-Draft           GSS Channel Bound Flag            November 2014
 
 
-5.  IANA Considerations
+6.  IANA Considerations
 
    Two GSS-API mechanism attributes are to be added to the "SMI Security
    for Mechanism gsscma Codes" registry established by RFC5587
-   [RFC5587].  See Section 2.4.
+   [RFC5587].  See Section 2.8.
 
 
 
@@ -612,14 +836,14 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
 
 
 
-Williams                 Expires January 8, 2014               [Page 11]
+Williams                  Expires June 1, 2015                 [Page 15]
 
-Internet-Draft           GSS Channel Bound Flag                July 2013
+Internet-Draft           GSS Channel Bound Flag            November 2014
 
 
-6.  References
+7.  References
 
-6.1.  Normative References
+7.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -636,7 +860,7 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
    [RFC5587]  Williams, N., "Extended Generic Security Service Mechanism
               Inquiry APIs", RFC 5587, July 2009.
 
-6.2.  Informative References
+7.2.  Informative References
 
    [RFC4121]  Zhu, L., Jaganathan, K., and S. Hartman, "The Kerberos
               Version 5 Generic Security Service Application Program
@@ -668,9 +892,9 @@ Internet-Draft           GSS Channel Bound Flag                July 2013
 
 
 
-Williams                 Expires January 8, 2014               [Page 12]
+Williams                  Expires June 1, 2015                 [Page 16]
 
-Internet-Draft           GSS Channel Bound Flag                July 2013
+Internet-Draft           GSS Channel Bound Flag            November 2014
 
 
 Author's Address
@@ -724,5 +948,5 @@ Author's Address
 
 
 
-Williams                 Expires January 8, 2014               [Page 13]
+Williams                  Expires June 1, 2015                 [Page 17]
 

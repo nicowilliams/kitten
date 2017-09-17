@@ -283,7 +283,7 @@ Channel Binding Signalling for the Generic Security Services Application
 status open
 
 \begin_layout Plain Layout
-draft-ietf-kitten-channel-bound-flag-00
+draft-ietf-kitten-channel-bound-flag-01
 \end_layout
 
 \end_inset
@@ -476,8 +476,8 @@ channel bound
  implementation deployments, and a behavior that is only safe when the applicati
 on specifically tells the GSS-API that it (the application) supports the
  new behavior.
- Additional API elements related to this are also added, including a new
- security context establishment API.
+ Additional API elements are also added, including a new security context
+ establishment API.
 \end_layout
 
 \begin_layout Standard
@@ -607,9 +607,8 @@ Design
 \end_layout
 
 \begin_layout Standard
-After some discussion on the mailing list of various designs for signalling
- application support for the new flag we've settled on copying an aspect
- of the Java Bindings of the GSS-API 
+This document adapts for the GSS-API C bindings a useful aspect of the Java
+ Bindings of the GSS-API 
 \begin_inset Flex EntityXRef
 status collapsed
 
@@ -648,6 +647,51 @@ I-D.williams-williams-kitten-ctx-simple-async
  well as support for asynchronous operation).
 \end_layout
 
+\begin_layout Subsubsection
+Application Changes
+\end_layout
+
+\begin_layout Standard
+This design minimizes application changes.
+\end_layout
+
+\begin_layout Standard
+For initiator applications that use channel binding, the main change will
+ be to request the new req_cb_confirmation_flag request flag and check whether
+ the new ret_channel_bound_flag return flag is available when the security
+ context becomes fully established.
+\end_layout
+
+\begin_layout Standard
+For acceptor applications that use channel binding, the changes are as follows:
+\end_layout
+
+\begin_layout Enumerate
+Call GSS_Create_sec_context() to create an empty security context, and then
+\end_layout
+
+\begin_layout Enumerate
+call GSS_Set_context_flags() on the empty context, setting the new req_cb_confir
+mation_flag request flag, before calling GSS_Accept_sec_context().
+\end_layout
+
+\begin_layout Enumerate
+Finally, check whether the new ret_channel_bound_flag return flag is available
+ when the security context becomes fully established.
+\end_layout
+
+\begin_layout Standard
+If an application requests but fails to get channel binding state confirmation
+ upon successful security context establishment, then it must act as though
+ channel binding had not been used.
+\end_layout
+
+\begin_layout Standard
+Conversely, when an application requests channel binding state confirmation
+ and receives it at full security context establishment time, then channel
+ binding has succeeded.
+\end_layout
+
 \begin_layout Subsection
 Alternative Design
 \end_layout
@@ -676,7 +720,10 @@ l security context inquiry functions.
  a security context handle (never NULL), and an input context token, and
  the only outputs should be the status indicators and an output token.
  In fact, we may want to have just one new function called, perhaps, GSS_Step_se
-c_context(), with the role of initiator or acceptor set as a context option.
+c_context(), with all the initiator and acceptor inputs and outputs other
+ than context tokens being set/retrieved via new accessor functions, and
+ the role of initiator or acceptor determined by whether a target principal
+ is set..
 \end_layout
 
 \begin_layout Standard
@@ -825,6 +872,40 @@ empty
 
  security context handle that can be passed to GSS_Init_sec_context() or
  GSS_Accept_sec_context() where they expect a NULL context.
+ A security context is said to be 
+\begin_inset Quotes eld
+\end_inset
+
+empty
+\begin_inset Quotes erd
+\end_inset
+
+, as opposed to 
+\begin_inset Quotes eld
+\end_inset
+
+partially established
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+fully established
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+open
+\begin_inset Quotes erd
+\end_inset
+
+, when the context has been created by this function but not yet passed
+ to either of GSS_Init_sec_context() or GSS_Accept_sec_context().
 \end_layout
 
 \begin_layout Subsubsection
@@ -857,77 +938,11 @@ status open
 \end_layout
 
 \begin_layout Subsection
-GSS_Set_context_flags()
+New Abstract Type: FLAGS
 \end_layout
 
 \begin_layout Standard
-Inputs:
-\end_layout
-
-\begin_layout Description
-context
-\begin_inset space ~
-\end_inset
-
-CONTEXT
-\begin_inset space ~
-\end_inset
-
-HANDLE 
-\end_layout
-
-\begin_layout Description
-req_flags
-\begin_inset space ~
-\end_inset
-
-FLAGS Requested flags.
- Applicable to acceptors and initiators.
-\end_layout
-
-\begin_layout Description
-ret_flags_understood
-\begin_inset space ~
-\end_inset
-
-FLAGS The set of return flags understood by the caller.
-\end_layout
-
-\begin_layout Standard
-Outputs:
-\end_layout
-
-\begin_layout Itemize
-major_status INTEGER
-\end_layout
-
-\begin_layout Itemize
-minor_status INTEGER
-\end_layout
-
-\begin_layout Standard
-Return major status codes:
-\end_layout
-
-\begin_layout Itemize
-GSS_S_COMPLETE indicates success.
-\end_layout
-
-\begin_layout Itemize
-GSS_S_FAILURE indicates a general failure.
-\end_layout
-
-\begin_layout Standard
-This function tells the mechanism (when one is eventually chosen and invoked)
- that the application requests the given req_flags and undestands the given
- ret_flags.
- Initiators can override the req_flags in their GSS_Init_sec_context() call,
- but if no flags are requested there then the req_flags set on the empty
- context will be used.
-\end_layout
-
-\begin_layout Standard
-NOTE: The abstract GSS-API 
+The abstract GSS-API 
 \begin_inset Flex EntityXRef
 status collapsed
 
@@ -958,6 +973,89 @@ FLAGS
  GSS-API.
 \end_layout
 
+\begin_layout Standard
+The FLAGS type is a set of request/return flags.
+\end_layout
+
+\begin_layout Subsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+The C-bindings type for the abstract type FLAGS will be 'uint64_t' (a C99
+ type).
+ I.e., up to 64 flags are now supported.
+ More could be added in the future with additional functions like GSS_Set_contex
+t_flags().
+\end_layout
+
+\begin_layout Standard
+Flags with numeric values larger than 31 should be named GSS_C_..._FLAG1 to
+ indicate the need to use GSS_Set_context_flags() in order to use such flags.
+ Flags with numeric values larger than 63 are out of scope for this document.
+\end_layout
+
+\begin_layout Subsection
+GSS_Set_context_flags()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Description
+context
+\begin_inset space ~
+\end_inset
+
+CONTEXT
+\begin_inset space ~
+\end_inset
+
+HANDLE 
+\end_layout
+
+\begin_layout Description
+req_flags
+\begin_inset space ~
+\end_inset
+
+FLAGS Requested flags.
+ Applicable to acceptors and initiators.
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Standard
+This function tells the mechanism (when one is eventually chosen and invoked)
+ that the application requests the given req_flags and understands any associate
+d ret_flags.
+ Subsequent calls to GSS_Init_sec_context() call MUST fail with GSS_S_FAILURE
+ if any request flags are provided to GSS_Init_sec_context().
+\end_layout
+
 \begin_layout Subsubsection
 C-Bindings
 \end_layout
@@ -984,12 +1082,7 @@ status open
 
 \begin_layout Plain Layout
 
-                       uint64_t req_flags,
-\end_layout
-
-\begin_layout Plain Layout
-
-                       uint64_t ret_flags);
+                       uint64_t req_flags);
 \end_layout
 
 \end_inset
@@ -998,7 +1091,94 @@ status open
 \end_layout
 
 \begin_layout Subsection
-Return Flag for Channel Binding State Signalling 
+GSS_Get_context_flags()
+\end_layout
+
+\begin_layout Standard
+Inputs:
+\end_layout
+
+\begin_layout Description
+context
+\begin_inset space ~
+\end_inset
+
+CONTEXT
+\begin_inset space ~
+\end_inset
+
+HANDLE 
+\end_layout
+
+\begin_layout Standard
+Outputs:
+\end_layout
+
+\begin_layout Itemize
+major_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+minor_status INTEGER
+\end_layout
+
+\begin_layout Itemize
+ret_flags FLAGS The set of return flags available for the given context.
+\end_layout
+
+\begin_layout Standard
+Return major status codes:
+\end_layout
+
+\begin_layout Itemize
+GSS_S_COMPLETE indicates success.
+\end_layout
+
+\begin_layout Itemize
+GSS_S_FAILURE indicates a general failure.
+\end_layout
+
+\begin_layout Standard
+This function outputs the actual return flags available on the given security
+ context.
+\end_layout
+
+\begin_layout Subsubsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ OM_uint32
+\end_layout
+
+\begin_layout Plain Layout
+
+ gss_get_context_flags(OM_uint32 *minor_status,
+\end_layout
+
+\begin_layout Plain Layout
+
+                       gss_ctx_id_t context,
+\end_layout
+
+\begin_layout Plain Layout
+
+                       uint64_t *ret_flags);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Flag for Channel Binding State Signalling
 \end_layout
 
 \begin_layout Standard
@@ -1006,9 +1186,14 @@ Whenever both the initiator and the acceptor provide matching channel bindings
  to GSS_Init_sec_context() and GSS_Accept_sec_context(), respectively, then
  the mechanism SHALL indicate that the context is channel bound via an output
  flag, ret_channel_bound_flag, for the established context.
- Note that some mechanisms have no way for the acceptor to signal CB success
+\end_layout
+
+\begin_layout Standard
+Note that some mechanisms have no way for the acceptor to signal CB success
  to the initiator, in which case GSS_Init_sec_context() MUST NOT output
  the ret_channel_bound_flag.
+ More generally, when a peer cannot confirm channel binding state, the local
+ security context MUST NOT output this flag.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1031,6 +1216,82 @@ status open
 \end_layout
 
 \begin_layout Subsection
+Request Flag for Acceptor Confirmation of Channel Binding
+\end_layout
+
+\begin_layout Standard
+We add a new request flag for GSS_Init_sec_context(), req_cb_confirmation_flag,
+ to be used by initiators that insist on acceptors providing channel binding
+ confirmation.
+ Channel binding confirmation means that the acceptor application did provide
+ channel bindings data and that this data matched the initiator application's
+ channel bindings data.
+ Initiator applications that use channel binding MUST set this request flag.
+\end_layout
+
+\begin_layout Standard
+If this flag is set but channel binding data is not provided, then the peer
+ also must have had no channel binding data, otherwise context establishment
+ MUST fail.
+\end_layout
+
+\begin_layout Standard
+If this flag is set, mechanism-negotiation pseudo-mechanisms (e.g., SPNEGO
+ 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4178
+\end_layout
+
+\end_inset
+
+) the pseudo-mechanism MUST NOT negotiate any mechanisms that lack the GSS_C_MA_
+CBINDING_CONFIRM or GSS_C_MA_CBINDING_MAY_CONFIRM mechanism attributes (see
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:New-Mechanism-Attributes"
+
+\end_inset
+
+), and SHOULD NOT negotiate mechanisms that lack the GSS_C_MA_CBINDING_CONFIRM
+ mechanism attribute (except if allowed by local configuration).
+\end_layout
+
+\begin_layout Subsubsection
+C-Bindings
+\end_layout
+
+\begin_layout Standard
+Because ret_channel_bound_flag (GSS_C_CHANNEL_BOUND_FLAG) is a return flag
+ only, and req_cb_confirmation_flag is a request flag only, we can assign
+ both the same numeric value in the C bindings to conserve precious flag
+ bits:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ #define GSS_C_CHANNEL_BOUND_FLAG 2048 /* 0x00000800 */
+\end_layout
+
+\begin_layout Plain Layout
+
+ #define GSS_C_CB_CONFIRM_FLAG    2048 /* 0x00000800 */
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:New-Mechanism-Attributes"
@@ -1045,7 +1306,10 @@ We add a new mechanism attribute, GSS_C_MA_CBINDING_CONFIRM, to indicate
  that the initiator can and always does learn whether the acceptor application
  supplied channel bindings.
  Mechanisms advertising this attribute MUST always indicate acceptor channel
- bound state to the initiator.
+ bound state to the initiator when channel bindings are used by both peers
+ and the channel bindings match, else security context establishment MUST
+ fail (if one party provides channel bindings data but the other doesn't,
+ or if both do and the channel bindings data don't match).
 \end_layout
 
 \begin_layout Itemize
@@ -1054,62 +1318,13 @@ We add a new mechanism attribute, GSS_C_MA_CBINDING_MAY_CONFIRM, to indicate
  channel bindings, but only when the acceptor implementation of the mechanism
  has been suitably updated.
  Mechanisms MUST advertise this attribute when the local initiator functionality
- for acceptor channel bound state indication exists but the acceptor may
- lack the same functionality (because, for example, the mechanism predates
- this specification).
+ for acceptor channel bound state indication exists and the acceptor could
+ but might not support CB confirmation (e.g., because, for example, the mechanism
+ predates this specification).
 \end_layout
 
 \begin_layout Standard
-OID assignments TBD.
-\end_layout
-
-\begin_layout Subsection
-Request Flag for Acceptor Confirmation of Channel Binding
-\end_layout
-
-\begin_layout Standard
-We add a new request flag for GSS_Init_sec_context(), req_cb_confirmation_flag,
- to be used by initiators that insist on acceptors providing channel bindings.
- This flag is only of use to mechanism-negotiation pseudo-mechanisms (e.g.,
- SPNEGO 
-\begin_inset Flex EntityXRef
-status collapsed
-
-\begin_layout Plain Layout
-RFC4178
-\end_layout
-
-\end_inset
-
-): if set the pseudo-mechanism MUST NOT negotiate any mechanisms that lack
- the GSS_C_MA_CBINDING_CONFIRM or GSS_C_MA_CBINDING_MAY_CONFIRM mechanism
- attributes, and SHOULD NOT negotiate mechanisms that lack the GSS_C_MA_CBINDING
-_CONFIRM mechanism attribute (except if allowed by local configuration).
-\end_layout
-
-\begin_layout Subsubsection
-C-Bindings
-\end_layout
-
-\begin_layout Standard
-Because GSS_C_CHANNEL_BOUND_FLAG is a return flag only, and this flag is
- a request flag only, and to save on precious flag bits, we use the same
- flag bit assignment for both flags:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
- #define GSS_C_CB_CONFIRM_FLAG 2048 /* 0x00000800 */
-\end_layout
-
-\end_inset
-
-
+IANA: OID assignments TBD.
 \end_layout
 
 \begin_layout Subsection
@@ -1117,8 +1332,9 @@ GSS_Delete_sec_context() Behavior When Applied to Empty Security Contexts
 \end_layout
 
 \begin_layout Standard
-GSS_Delete_sec_context() MUST NOT output a context deletion token when applied
- to empty security contexts.
+GSS_Delete_sec_context() MUST NOT output a context deletion token, or MUST
+ output an empty context deletion token, when applied to ean mpty security
+ context.
 \end_layout
 
 \begin_layout Section
@@ -1130,9 +1346,10 @@ The channel binding semantics of the base GSS-API are modified as follows:
 \end_layout
 
 \begin_layout Itemize
-Whenever both, the initiator and acceptor shall have provided input_channel_bind
-ings to GSS_Init/Accept_sec_context() and the channel bindings do not match,
- then the mechanism MUST fail to establish a security context token.
+Whenever a) the initiator and b) the acceptor shall both have provided channel_b
+indings input to GSS_Init/Accept_sec_context() and the channel bindings
+ do not match, then the mechanism MUST fail to establish a security context
+ token.
  This is a restatement of an existing requirement in the base specification,
  restated for the reader's convenience.
 \end_layout
@@ -1147,6 +1364,23 @@ ound_flag flag, then the mechanism MUST fail to establish a security context
 tions as deployed.
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+Conversely, whenever the application shall have a) provided channel bindings
+ to GSS_Init/Accept_sec_context(), and b) indicated support for the ret_channel_
+bound_flag flag, then the mechanism MUST NOT fail to establish a security
+ context just because the peer did not provide channel bindings data.
+ The mechanism MUST output the ret_channel_bound_flag if both peers provided
+ the same input_channel_bindings to GSS_Init_sec_context() and GSS_Accept_sec_co
+ntext.
+ The mechanism MUST NOT output the ret_channel_bound_flag if either (or
+ both) peer did not provide channel_bindings input to GSS_Init/Accept_sec_contex
+t().
+ This requirement restores the original base GSS-API specified behavior,
+ with the addition of the ret_channel_bound_flag flag.
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 Whenever the initiator application shall have a) provided channel bindings
  to GSS_Init_sec_context(), and b) not indicated support for the ret_channel_bou
@@ -1155,23 +1389,33 @@ nd_flag flag, then the mechanism SHOULD NOT fail to establish a security
  This recommendation is for interoperability purposes, and reflects actual
  implementations that have been deployed.
  It is possible that not all security mechanism protocols can implement
- this requirement easily.
+ this recommendation easily.
 \end_layout
 
-\begin_layout Itemize
-Whenever the application shall have a) provided channel bindings to GSS_Init_sec
-_context() or GSS_Accept_sec_context(), and b) indicated support for the
- ret_channel_bound_flag flag, then the mechanism MUST NOT fail to establish
- a security context just because the peer did not provide channel bindings
+\begin_layout Section
+Kerberos Mechanism Binding
+\end_layout
+
+\begin_layout Standard
+The new request flag, GSS_C_CB_CONFIRM_FLAG, MUST be carried in the AP-REQ's
+ Authenticator's 0x8003 
+\begin_inset Quotes eld
+\end_inset
+
+checksum
+\begin_inset Quotes erd
+\end_inset
+
  data.
- The mechanism MUST output the ret_channel_bound_flag if both peers provided
- the same input_channel_bindings to GSS_Init_sec_context() and GSS_Accept_sec_co
-ntext.
- The mechanism MUST NOT output the ret_channel_bound_flag if either (or
- both) peer did not provide input_channel_bindings to GSS_Init/Accept_sec_contex
-t().
- This requirement restores the original base GSS-API specified behavior,
- with the addition of the ret_channel_bound_flag flag.
+\end_layout
+
+\begin_layout Standard
+When this flag is present in the initiator's AP-REQ, and in order to confirm
+ channel binding state to the initiator when the initiator requests it (with
+ the the req_cb_confirmation_flag flag), the acceptor MUST use key usage
+ <TBD> (27?) for encrypting the AP-REP encrypted part instead of key usage
+ 12, and the acceptor MUST use the initiator's sub-session key for encrypting
+ the AP-REP enc-part.
 \end_layout
 
 \begin_layout Section
@@ -1259,7 +1503,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2119"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"
 
 \end_inset
 
@@ -1279,7 +1523,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2743"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2743.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2743.xml"
 
 \end_inset
 
@@ -1299,7 +1543,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc2744"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2744.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2744.xml"
 
 \end_inset
 
@@ -1319,7 +1563,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc5056"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5056.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5056.xml"
 
 \end_inset
 
@@ -1339,7 +1583,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc5587"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5587.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5587.xml"
 
 \end_inset
 
@@ -1387,7 +1631,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4121"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4121.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4121.xml"
 
 \end_inset
 
@@ -1407,7 +1651,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc4178"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4178.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4178.xml"
 
 \end_inset
 
@@ -1427,7 +1671,7 @@ status collapsed
 \begin_inset CommandInset href
 LatexCommand href
 name "rfc5653"
-target "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5653.xml"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5653.xml"
 
 \end_inset
 

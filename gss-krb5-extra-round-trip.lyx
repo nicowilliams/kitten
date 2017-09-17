@@ -1164,12 +1164,37 @@ Per-Message Token Sequence Numbers
 \end_layout
 
 \begin_layout Standard
-It is REQUIRED that each real AP-REQ in a single security token exchange
+As in 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4121
+\end_layout
+
+\end_inset
+
+, It is REQUIRED that each real AP-REQ in a single security token exchange
  specify the same start sequence number as preceding AP-REQs in the same
  security context token exchange.
+ (AP-REQs in some user-to-user cases aren't 
+\begin_inset Quotes eld
+\end_inset
+
+real
+\begin_inset Quotes erd
+\end_inset
+
+.)
 \end_layout
 
 \begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Early-PROT_READY-State"
+
+\end_inset
+
 Early PROT_READY State
 \end_layout
 
@@ -1262,6 +1287,35 @@ reference "sub:Replay-Cache-Avoidance"
 ).
 \end_layout
 
+\begin_layout Standard
+Note that the acceptor must, as usual, check for missing per-message tokens,
+ using sequence numbering to do so, and must indicate that per-message tokens
+ are missing (when they are).
+\end_layout
+
+\begin_layout Standard
+Note too that when a security context token exchange involves two key confirmati
+on KRB-ERROR2 PDUs the acceptor can also be PROT_READY early.
+ In this case the acceptor should use the acceptor sub-session key for its
+ early PROT_READY tokens.
+\end_layout
+
+\begin_layout Standard
+Note too that there is no interface by which applications can check whether
+ a given per-message token was made before full security context establishment.
+ All the application can do is observe that the security context eventually
+ becomes fully established (or establishment fails), that per-message tokens
+ arrive in order.
+ Depending on the application protocol it may or may not be possible to
+ determine exactly whether a per-message token was made before or after
+ full security context establishment on the peer's side.
+\end_layout
+
+\begin_layout Standard
+Early PROT_READY per-message token support is OPTIONAL for GSS_Wrap() and
+ GSS_GetMIC(), but REQUIRED for GSS_Unwrap() and GSS_VerifyMIC().
+\end_layout
+
 \begin_layout Subsection
 Other Requirements, Recommendations, and Non-Requirements
 \end_layout
@@ -1277,6 +1331,104 @@ Whenever an acceptor is able to decrypt the Ticket from an AP-REQ and yet
  MUST be encrypted in either the initiator's sub-session key (from the Authentic
 ator) or the Ticket's session key (if the acceptor could not decrypt the
  Authenticator).
+\end_layout
+
+\begin_layout Standard
+Acceptors MUST reject initial security context tokens that contain a challenge
+ response in either their Authenticator or Ticket.
+ This prevents cut-n-paste attacks where the attacker replays the middle
+ of another security context token exchange.
+\end_layout
+
+\begin_layout Subsection
+Security Analysis
+\end_layout
+
+\begin_layout Standard
+Attacks that are defeated:
+\end_layout
+
+\begin_layout Itemize
+replays of initial security context tokens (via replay caches and/or additional
+ context tokens; see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Replay-Cache-Avoidance"
+
+\end_inset
+
+);
+\end_layout
+
+\begin_layout Itemize
+replays of additional security context tokens to acceptors (via the continue-cha
+llenge);
+\end_layout
+
+\begin_layout Itemize
+replays of AP-REP and key confirmation KRB-ERROR2 context tokens to initiators
+ (via the use of the initiator's sub-session key for key confirmation, and
+ because the initiator can check for such replays in exchanges with more
+ than two acceptor-produced security context tokens);
+\end_layout
+
+\begin_layout Itemize
+replays of early PROT_READY per-message tokens (with deferred detection;
+ see
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Early-PROT_READY-State"
+
+\end_inset
+
+);
+\end_layout
+
+\begin_layout Itemize
+out of order delivery of security context tokens (impossible due to the
+ synchronous nature of the GSS-API context token exchange);
+\end_layout
+
+\begin_layout Itemize
+modifications of Encrypted-Data payloads in security context tokens (this
+ is provided by the Kerberos cryptographic framework 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC3961
+\end_layout
+
+\end_inset
+
+);
+\end_layout
+
+\begin_layout Itemize
+cut-n-paste attacks from one context token exchange to another (but see
+ below about unauthenticated error tokens, and see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Replay-Cache-Avoidance"
+
+\end_inset
+
+);
+\end_layout
+
+\begin_layout Itemize
+non-delivery of any early PROT_READY per-message tokens is detected through
+ the use of sequence numbers as usual.
+\end_layout
+
+\begin_layout Standard
+Attacks not detected/defeated:
+\end_layout
+
+\begin_layout Itemize
+replacement of unauthenticated KRB-ERROR and KRB-ERROR2 PDUs, but successful
+ continuation requires that the attacker show the initiator the acceptor's
+ continue-challenge.
 \end_layout
 
 \begin_layout Section
@@ -1709,20 +1861,26 @@ Recoverable Errors and Error Recovery
 \end_layout
 
 \begin_layout Standard
+Error recovery is REQUIRED to implement, as it is the primary purpose of
+ this specification.
+\end_layout
+
+\begin_layout Standard
 The following Kerberos errors can be recovered from automatically using
  this protocol:
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_TKT_EXPIRED: the initiator should get a new service ticket;
+KRB_AP_ERR_TKT_EXPIRED: the initiator SHOULD attempt to get a new service
+ ticket;
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_TKT_NYV: the initiator should get a new service ticket;
+KRB_AP_ERR_TKT_NYV: the initiator SHOULD attempt to get a new service ticket;
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_REPEAT: the initiator should build a new AP-REQ;
+KRB_AP_ERR_REPEAT: the initiator SHOULD build a new AP-REQ;
 \end_layout
 
 \begin_layout Itemize
@@ -1737,17 +1895,17 @@ reference "sec:Acceptor-Clock-Skew"
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_BADKEYVER: the initiator should get a new service ticket;
+KRB_AP_ERR_BADKEYVER: the initiator MUST attempt to get a new service ticket;
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_PATH_NOT_ACCEPTED: the initiator should get a new service ticket
- using a different transit path;
+KRB_AP_PATH_NOT_ACCEPTED: the initiator MAY attempt to get a new service
+ ticket using a different transit path;
 \end_layout
 
 \begin_layout Itemize
-KRB_AP_ERR_INAPP_CKSUM: the initiator should try again with a different
- checksum type.
+KRB_AP_ERR_INAPP_CKSUM: the initiator MAY try again with a different checksum
+ type.
 \end_layout
 
 \begin_layout Standard
@@ -1777,14 +1935,7 @@ KRB_AP_ERR_MODIFIED
 \end_layout
 
 \begin_layout Standard
-Other error codes that may be recovered from:
-\end_layout
-
-\begin_layout Itemize
-KRB_AP_ERR_BADADDR: the acceptor SHOULD include a list of one or more client
- network addresses as reported by the operating system, but if the acceptor
- does not then the continue-needed e-flag MUST NOT be included and the error
- must be final.
+Initiators MAY try again in the case of such errors.
 \end_layout
 
 \begin_layout Subsection
@@ -1798,7 +1949,9 @@ Authenticated Errors
 \end_layout
 
 \begin_layout Standard
-The following errors, at least, can be authenticated in AP exchanges:
+The following errors, at least, can be authenticated in AP exchanges, and
+ acceptors implementing this specification MUST authenticate these errors
+ when the initiator indicates support for this feature.:
 \end_layout
 
 \begin_layout Itemize
@@ -1825,8 +1978,18 @@ KRB_AP_PATH_NOT_ACCEPTED
 KRB_AP_ERR_INAPP_CKSUM
 \end_layout
 
+\begin_layout Standard
+The following error could be authenticated in a non-GSS-API context:
+\end_layout
+
 \begin_layout Itemize
 KRB_AP_ERR_BADADDR
+\end_layout
+
+\begin_layout Standard
+In practice the Kerberos V GSS mechanism cannot produce KRB_AP_ERR_BADADDR,
+ since the mechanism has no access to the initiator's apparent network address(e
+s).
 \end_layout
 
 \begin_layout Section
@@ -1930,6 +2093,34 @@ RFC4251
  Kerberos applications that do sometimes need a replay cache).
 \end_layout
 
+\begin_layout Standard
+Acceptor implementations SHOULD provide a way to configure the non-use of
+ replay caches for specific (or all) services on a given host.
+\end_layout
+
+\begin_layout Subsection
+Analysis
+\end_layout
+
+\begin_layout RevisionRemark
+There is no portable, programmatic way to check whether all applications
+ and Kerberos implementations using a given service principal (or its long-term
+ keys) are safe in the absence of a replay cache.
+ This is because even if an application protocol is generally replay-safe
+ (see above) AP-REQ tokens from its context token exchanges might be played
+ by an active attacker against a different service with access to the same
+ service principal or its long-term keys.
+ If only all currently-deployed Kerberos implementations had implemented
+ authorization data as critical (unless otherwise specified or wrapped),
+ then it would be possible to prevent this cut-n-paste attack.
+\end_layout
+
+\begin_layout Standard
+In some common deployments replay-safety can be assumed; in others it cannot.
+ Replay safety, and thus the ability to avoid the use of replay caches,
+ is a matter for local configuration.
+\end_layout
+
 \begin_layout Section
 \begin_inset CommandInset label
 LatexCommand label
@@ -1982,6 +2173,40 @@ In both cases the initiator then does a TGS request with a second ticket
  Then the initiator makes a new AP-REQ using the new Ticket, and proceeds.
 \end_layout
 
+\begin_layout Standard
+This extension renders it unnecessary to have a separate mechanism (e.g.,
+ 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+I-D.swift-win2k-krb-user2user
+\end_layout
+
+\end_inset
+
+) for user-to-user authentication.
+ But if an initiator that supports this extension attempts to initiate a
+ security context using this mechanism with an acceptor that only supports
+ user-to-user authentication via 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+I-D.swift-win2k-krb-user2user
+\end_layout
+
+\end_inset
+
+, then the context will fail to establish.
+ The acceptor, of course, won't have offered the Kerberos mechanism, therefore
+ no interoperability problem arises.
+\end_layout
+
+\begin_layout Standard
+This feature is RECOMMENDED to implement.
+\end_layout
+
 \begin_layout Section
 \begin_inset CommandInset label
 LatexCommand label
@@ -2007,12 +2232,38 @@ An initiator in possession of a (short-lived) valid service ticket for a
  by how much.
 \end_layout
 
+\begin_layout Standard
+It's unclear how valuable this feature might be, therefore, for now, it
+ is entirely OPTIONAL to implement.
+\end_layout
+
 \begin_layout Section
 Security Considerations
 \end_layout
 
 \begin_layout Standard
 This document deals with security.
+ All the security considerations of Kerberos 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4120
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex EntityXRef
+status collapsed
+
+\begin_layout Plain Layout
+RFC4121
+\end_layout
+
+\end_inset
+
+ apply.
 \end_layout
 
 \begin_layout Standard
@@ -2040,20 +2291,28 @@ Because in the base Kerberos V5 GSS-API security mechanism all errors are
 \begin_layout Standard
 There is a binding of preceding security context tokens in each additional
  AP-REQ, via the challenge-response nonce.
- This binding is weak, and does not detect all modifications of unauthenticated
- plaintext in preceding security context tokens.
+ This binding is relatively weak, and does not detect all modifications
+ of unauthenticated plaintext in preceding security context tokens.
+ There is not a lot of unauthenticated plaintext in these security context
+ tokens, thankfully.
+ Unauthenticated error tokens, in particular, are not bound.
 \end_layout
 
 \begin_layout RevisionRemark
 We could use the GSS_EXTS_FINISHED extension from draft-ietf-kitten-iakerb
- to implement a strong binding of all context tokens.
+ to implement a strong binding of all preceding context tokens in a given
+ exchange.
 \end_layout
 
 \begin_layout Standard
 Early prot_ready per-message tokens have security considerations that are
  beyond the scope of this document and which are not exhaustively described
- elsewhere yet.
- Use only with care.
+ elsewhere yet, though no new security considerations are added here.
+ Use early prot_ready per-message tokens with care, noting in particular
+ that neither the state of authentication of the peer, nor the replay detection
+ state of such tokens, is yet established when they are made and consumed.
+ The status of early per-message tokens cannot be fully ascertained until
+ full security context establishment.
 \end_layout
 
 \begin_layout Section
@@ -2207,6 +2466,26 @@ status open
 LatexCommand href
 name "rfc3530"
 target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3530.xml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex BibXML
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "rfc3961"
+target "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3961.xml"
 
 \end_inset
 
