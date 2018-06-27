@@ -17,22 +17,22 @@
 <!ENTITY rfc4178 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4178.xml">
 <!ENTITY rfc5653 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5653.xml">
 ]>
-<rfc docName="draft-ietf-kitten-channel-bound-flag-01" ipr="trust200902" category="std" updates="2743, 2744">
+<rfc docName="draft-ietf-kitten-channel-bound-flag-03" ipr="trust200902" category="std" updates="2743, 2744">
   <front>
     <title abbrev="GSS Channel Bound Flag">Channel Binding Signalling for the Generic Security Services Application Programming Interface</title>
-    <author initials="N." surname="Williams" fullname="Nicolas Williams">
-      <organization abbrev="Cryptonector">Cryptonector, LLC</organization>
-      <address>
-        <email>nico@cryptonector.com</email>
-      </address>
-    </author>
     <author initials="R." surname="Harwood" fullname="Robbie Harwood">
       <organization abbrev="Red Hat">Red Hat, Inc.</organization>
       <address>
         <email>rharwood@redhat.com</email>
       </address>
     </author>
-    <date month="March" year="2017"/>
+    <author initials="N." surname="Williams" fullname="Nicolas Williams">
+      <organization abbrev="Cryptonector">Cryptonector, LLC</organization>
+      <address>
+        <email>nico@cryptonector.com</email>
+      </address>
+    </author>
+    <date month="June" year="2018"/>
     <area>
 Security Area
 </area>
@@ -73,10 +73,10 @@ negotiation problem when retrofitting the use of channel binding into
 existing application protocols.</t>
         <t>
 However, GSS-APIv2u1 <xref target="RFC2743"/> does not specify channel
-binding behavior when only one party provides provides none. In practice
-some mechanisms ignore channel bindings when the acceptor provides none,
-but not when the initiator provides none. [XXX add references to the
-relevant SSPI docs? -Nico] Note that it would be useless to allow
+binding behavior when only one party provides provides none.  In
+practice, some mechanisms (such as Kerberos <xref target="RFC4121"/>)
+ignore channel bindings when the acceptor provides none, but not when
+the initiator provides none.  Note that it would be useless to allow
 security context establishment to succeed when the initiator does not
 provide channel bindings but the acceptor does, at least as long as
 there's no outward indication of whether channel binding was used! Since
@@ -104,7 +104,7 @@ the application.</t>
 Additionally, there may be applications where it is important for
 initiators to know that acceptors did use channel binding, and even to
 know whether a mechanism is capable of indicating as much. We add a
-request flag and two mechanism attributes for such applications.</t>
+request flag and a mechanism attribute for such applications.</t>
       <section title="Design and Future directions" anchor="d1e346">
         <t>
 The design for signalling application flag support and empty contexts is
@@ -126,8 +126,8 @@ document are to be interpreted as described in <xref
 We propose a new return flag for GSS_Init_sec_context() and
 GSS_Accept_sec_context(), as well as a pair of functions for a) creating
 “empty” security context handles, b) requesting flags and indicating
-which flags the application understands. We also add new mechanism
-attributes describing mechanism capabilities.</t>
+which flags the application understands. We also add a new mechanism
+attribute for supporting channel binding confirmation.</t>
       <t>
 C bindings of these extensions are provided along the lines of <xref
   target="RFC2744"/> and <xref target="RFC5587"/>.</t>
@@ -172,7 +172,7 @@ GSS_S_FAILURE indicates a general failure.</t>
         <t>
 This function creates an “empty” security context handle that can be
 passed to GSS_Init_sec_context() or GSS_Accept_sec_context() where they
-expect a NULL context.</t>
+expect GSS_C_NO_CONTEXT.</t>
         <section title="C-Bindings" anchor="d1e483">
           <t>
 </t>
@@ -266,7 +266,7 @@ GSS_Init_sec_context() MUST NOT output the ret_channel_bound_flag.</t>
           </t>
         </section>
       </section>
-      <section title="New Mechanism Attributes" anchor="sub_New_Mechanism_Attributes">
+      <section title="New Mechanism Attribute" anchor="sub_New_Mechanism_Attribute">
         <t>
           <list style="symbols">
             <t>
@@ -275,15 +275,6 @@ that the initiator can and always does learn whether the acceptor
 application supplied channel bindings (assuming mutual auth has been
 requested). Mechanisms advertising this attribute MUST always indicate
 acceptor channel bound state to the initiator.</t>
-            <t>
-We add a new mechanism attribute, GSS_C_MA_CBINDING_MAY_CONFIRM, to
-indicate that the initiator may learn whether the acceptor application
-supplied channel bindings (assuming mutual auth has been requested), but
-only when the acceptor implementation of the mechanism has been suitably
-updated. Mechanisms MUST advertise this attribute when the local
-initiator functionality for acceptor channel bound state indication
-exists but the acceptor may lack the same functionality (because, for
-example, the mechanism predates this specification).</t>
           </list>
         </t>
         <t>
@@ -296,10 +287,9 @@ req_cb_confirmation_flag, to be used by initiators that insist on
 acceptors providing channel bindings. This flag is only of use to
 mechanism-negotiation pseudo-mechanisms (e.g., SPNEGO <xref
   target="RFC4178"/>): if set, the pseudo-mechanism MUST NOT negotiate
-any mechanisms that lack both the GSS_C_MA_CBINDING_CONFIRM and
-GSS_C_MA_CBINDING_MAY_CONFIRM mechanism attributes, and SHOULD NOT
-negotiate mechanisms that lack the GSS_C_MA_CBINDING_CONFIRM mechanism
-attribute (except if allowed by local configuration).</t>
+any mechanism which lacks the GSS_C_MA_CBINDINGS attribute and SHOULD
+prefer to negotiate mechanisms which have the GSS_C_MA_CBINDING_CONFIRM
+attribute.</t>
         <section title="C-Bindings" anchor="d1e620">
           <t>
 Because GSS_C_CHANNEL_BOUND_FLAG is a return flag only, and this flag is
@@ -356,20 +346,20 @@ Whenever the initiator application has a) provided channel bindings to
 GSS_Init_sec_context(), and b) not indicated support for the
 ret_channel_bound_flag flag, then the mechanism MUST NOT fail to
 establish a security context just because the acceptor failed to provide
-channel bindings data. This requirement is for interoperability
-purposes, and reflects actual implementations that have been
-deployed.</t>
+channel bindings data unless the channel bindings are used for key
+derivation. This requirement is for interoperability purposes, and
+reflects actual implementations that have been deployed.</t>
           <t>
 Whenever the application has a) provided channel bindings to
 GSS_Init_sec_context() or GSS_Accept_sec_context(), and b) indicated
 support for the ret_channel_bound_flag flag, then the mechanism MUST NOT
 fail to establish a security context just because the peer did not
-provide channel bindings data. The mechanism MUST output the
-ret_channel_bound_flag if both peers provided the same
-input_channel_bindings to GSS_Init_sec_context() and
-GSS_Accept_sec_context. The mechanism MUST NOT output the
-ret_channel_bound_flag if either (or both) peer did not provide
-input_channel_bindings to GSS_Init/Accept_sec_context(). This
+provide channel bindings data unless the channel bindings are used for
+key derivation. The mechanism MUST output the ret_channel_bound_flag if
+both peers provided the same input_channel_bindings to
+GSS_Init_sec_context() and GSS_Accept_sec_context. The mechanism MUST
+NOT output the ret_channel_bound_flag if either (or both) peer did not
+provide input_channel_bindings to GSS_Init/Accept_sec_context(). This
 requirement restores the original base GSS-API specified behavior, with
 the addition of the ret_channel_bound_flag flag.</t>
         </list>
@@ -387,16 +377,17 @@ specification) for improved negotiation of use of channel binding <xref
     </section>
     <section title="IANA Considerations" anchor="d1e688">
       <t>
-Two GSS-API mechanism attributes are to be added to the “SMI Security
-for Mechanism gsscma Codes” registry established by RFC5587 <xref
+The GSS-API mechanism attribute is to be added to the “SMI Security for
+Mechanism gsscma Codes” registry established by RFC5587 <xref
   target="RFC5587"/>. See  <xref
-  target="sub_New_Mechanism_Attributes"/>.</t>
+  target="sub_New_Mechanism_Attribute"/>.</t>
     </section>
   </middle>
   <back>
     <references title="Normative References">&rfc2119;
 &rfc2743;
 &rfc2744;
+&rfc4121;
 &rfc5056;
 &rfc5587;
 </references>
