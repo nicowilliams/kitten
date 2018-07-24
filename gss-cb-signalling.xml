@@ -387,11 +387,11 @@ Mechanism gsscma Codes” registry established by RFC5587 <xref
     <references title="Normative References">&rfc2119;
 &rfc2743;
 &rfc2744;
-&rfc4121;
 &rfc5056;
 &rfc5587;
 </references>
     <references title="Informative References">&rfc4178;
+&rfc4121;
 &rfc5653;
 </references>
   </back>
