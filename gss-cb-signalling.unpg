@@ -1,16 +1,16 @@
 
 
 
-KITTEN                                                       N. Williams
-Internet-Draft                                              Cryptonector
-Updates: 2743, 2744 (if approved)                             R. Harwood
-Intended status: Standards Track                                 Red Hat
-Expires: September 2, 2017                                    March 2017
+KITTEN                                                        R. Harwood
+Internet-Draft                                                   Red Hat
+Updates: 2743, 2744 (if approved)                            N. Williams
+Intended status: Standards Track                            Cryptonector
+Expires: December 3, 2018                                      June 2018
 
 
 Channel Binding Signalling for the Generic Security Services Application
                          Programming Interface
-                draft-ietf-kitten-channel-bound-flag-01
+                draft-ietf-kitten-channel-bound-flag-03
 
 Abstract
 
@@ -47,11 +47,11 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 2, 2017.
+   This Internet-Draft will expire on December 3, 2018.
 
 Copyright Notice
 
-   Copyright (c) 2017 IETF Trust and the persons identified as the
+   Copyright (c) 2018 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -77,7 +77,7 @@ Table of Contents
    2.2.1.  C-Bindings
    2.3.    Return Flag for Channel Binding State Signalling
    2.3.1.  C-Bindings
-   2.4.    New Mechanism Attributes
+   2.4.    New Mechanism Attribute
    2.5.    Request Flag for Acceptor Confirmation of Channel
            Binding
    2.5.1.  C-Bindings
@@ -102,15 +102,15 @@ Table of Contents
    application protocols.
 
    However, GSS-APIv2u1 [RFC2743] does not specify channel binding
-   behavior when only one party provides provides none.  In practice
-   some mechanisms ignore channel bindings when the acceptor provides
-   none, but not when the initiator provides none.  [XXX add references
-   to the relevant SSPI docs? -Nico] Note that it would be useless to
-   allow security context establishment to succeed when the initiator
-   does not provide channel bindings but the acceptor does, at least as
-   long as there's no outward indication of whether channel binding was
-   used!  Since the GSS-APIv2u1 does not provide any such indication,
-   this document corrects that flaw.
+   behavior when only one party provides provides none.  In practice,
+   some mechanisms (such as Kerberos [RFC4121]) ignore channel bindings
+   when the acceptor provides none, but not when the initiator provides
+   none.  Note that it would be useless to allow security context
+   establishment to succeed when the initiator does not provide channel
+   bindings but the acceptor does, at least as long as there's no
+   outward indication of whether channel binding was used!  Since the
+   GSS-APIv2u1 does not provide any such indication, this document
+   corrects that flaw.
 
    Allowing the connection to succeed when an initiator provides
    bindings but an acceptor does not has helped deployment of channel
@@ -134,7 +134,7 @@ Table of Contents
    Additionally, there may be applications where it is important for
    initiators to know that acceptors did use channel binding, and even
    to know whether a mechanism is capable of indicating as much.  We add
-   a request flag and two mechanism attributes for such applications.
+   a request flag and a mechanism attribute for such applications.
 
 1.1.  Design and Future directions
 
@@ -156,8 +156,8 @@ Table of Contents
    We propose a new return flag for GSS_Init_sec_context() and
    GSS_Accept_sec_context(), as well as a pair of functions for a)
    creating "empty" security context handles, b) requesting flags and
-   indicating which flags the application understands.  We also add new
-   mechanism attributes describing mechanism capabilities.
+   indicating which flags the application understands.  We also add a
+   new mechanism attribute for supporting channel binding confirmation.
 
    C bindings of these extensions are provided along the lines of
    [RFC2744] and [RFC5587].
@@ -192,7 +192,7 @@ Table of Contents
 
    This function creates an "empty" security context handle that can be
    passed to GSS_Init_sec_context() or GSS_Accept_sec_context() where
-   they expect a NULL context.
+   they expect GSS_C_NO_CONTEXT.
 
 2.1.1.  C-Bindings
 
@@ -261,7 +261,7 @@ Table of Contents
 
             #define GSS_C_CHANNEL_BOUND_FLAG 2048 /* 0x00000800 */
 
-2.4.  New Mechanism Attributes
+2.4.  New Mechanism Attribute
 
    o  We add a new mechanism attribute, GSS_C_MA_CBINDING_CONFIRM, to
       indicate that the initiator can and always does learn whether the
@@ -269,16 +269,6 @@ Table of Contents
       auth has been requested).  Mechanisms advertising this attribute
       MUST always indicate acceptor channel bound state to the
       initiator.
-
-   o  We add a new mechanism attribute, GSS_C_MA_CBINDING_MAY_CONFIRM,
-      to indicate that the initiator may learn whether the acceptor
-      application supplied channel bindings (assuming mutual auth has
-      been requested), but only when the acceptor implementation of the
-      mechanism has been suitably updated.  Mechanisms MUST advertise
-      this attribute when the local initiator functionality for acceptor
-      channel bound state indication exists but the acceptor may lack
-      the same functionality (because, for example, the mechanism
-      predates this specification).
 
    OID assignments TBD.
 
@@ -288,11 +278,9 @@ Table of Contents
    req_cb_confirmation_flag, to be used by initiators that insist on
    acceptors providing channel bindings.  This flag is only of use to
    mechanism-negotiation pseudo-mechanisms (e.g., SPNEGO [RFC4178]): if
-   set, the pseudo-mechanism MUST NOT negotiate any mechanisms that lack
-   both the GSS_C_MA_CBINDING_CONFIRM and GSS_C_MA_CBINDING_MAY_CONFIRM
-   mechanism attributes, and SHOULD NOT negotiate mechanisms that lack
-   the GSS_C_MA_CBINDING_CONFIRM mechanism attribute (except if allowed
-   by local configuration).
+   set, the pseudo-mechanism MUST NOT negotiate any mechanism which
+   lacks the GSS_C_MA_CBINDINGS attribute and SHOULD prefer to negotiate
+   mechanisms which have the GSS_C_MA_CBINDING_CONFIRM attribute.
 
 2.5.1.  C-Bindings
 
@@ -338,7 +326,8 @@ Table of Contents
       bindings to GSS_Init_sec_context(), and b) not indicated support
       for the ret_channel_bound_flag flag, then the mechanism MUST NOT
       fail to establish a security context just because the acceptor
-      failed to provide channel bindings data.  This requirement is for
+      failed to provide channel bindings data unless the channel
+      bindings are used for key derivation.  This requirement is for
       interoperability purposes, and reflects actual implementations
       that have been deployed.
 
@@ -346,10 +335,11 @@ Table of Contents
       GSS_Init_sec_context() or GSS_Accept_sec_context(), and b)
       indicated support for the ret_channel_bound_flag flag, then the
       mechanism MUST NOT fail to establish a security context just
-      because the peer did not provide channel bindings data.  The
-      mechanism MUST output the ret_channel_bound_flag if both peers
-      provided the same input_channel_bindings to GSS_Init_sec_context()
-      and GSS_Accept_sec_context.  The mechanism MUST NOT output the
+      because the peer did not provide channel bindings data unless the
+      channel bindings are used for key derivation.  The mechanism MUST
+      output the ret_channel_bound_flag if both peers provided the same
+      input_channel_bindings to GSS_Init_sec_context() and
+      GSS_Accept_sec_context.  The mechanism MUST NOT output the
       ret_channel_bound_flag if either (or both) peer did not provide
       input_channel_bindings to GSS_Init/Accept_sec_context().  This
       requirement restores the original base GSS-API specified behavior,
@@ -369,7 +359,7 @@ Table of Contents
 
 5.  IANA Considerations
 
-   Two GSS-API mechanism attributes are to be added to the "SMI Security
+   The GSS-API mechanism attribute is to be added to the "SMI Security
    for Mechanism gsscma Codes" registry established by RFC5587
    [RFC5587].  See Section 2.4.
 
@@ -408,6 +398,12 @@ Table of Contents
               RFC 4178, DOI 10.17487/RFC4178, October 2005,
               <https://www.rfc-editor.org/info/rfc4178>.
 
+   [RFC4121]  Zhu, L., Jaganathan, K., and S. Hartman, "The Kerberos
+              Version 5 Generic Security Service Application Program
+              Interface (GSS-API) Mechanism: Version 2", RFC 4121,
+              DOI 10.17487/RFC4121, July 2005,
+              <https://www.rfc-editor.org/info/rfc4121>.
+
    [RFC5653]  Upadhyay, M. and S. Malkani, "Generic Security Service API
               Version 2: Java Bindings Update", RFC 5653, DOI 10.17487/
               RFC5653, August 2009,
@@ -416,14 +412,14 @@ Table of Contents
 
 Authors' Addresses
 
-   Nicolas Williams
-   Cryptonector, LLC
-
-   Email: nico@cryptonector.com
-
-
    Robbie Harwood
    Red Hat, Inc.
 
    Email: rharwood@redhat.com
+
+
+   Nicolas Williams
+   Cryptonector, LLC
+
+   Email: nico@cryptonector.com
 
