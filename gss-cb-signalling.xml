@@ -14,7 +14,6 @@
 <!ENTITY rfc5056 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5056.xml">
 <!ENTITY rfc5587 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5587.xml">
 <!ENTITY rfc4121 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4121.xml">
-<!ENTITY rfc4178 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4178.xml">
 <!ENTITY rfc5653 PUBLIC "" "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5653.xml">
 ]>
 <rfc docName="draft-ietf-kitten-channel-bound-flag-03" ipr="trust200902" category="std" updates="2743, 2744">
@@ -284,12 +283,10 @@ OID assignments TBD.</t>
         <t>
 We add a new request flag for GSS_Init_sec_context(),
 req_cb_confirmation_flag, to be used by initiators that insist on
-acceptors providing channel bindings. This flag is only of use to
-mechanism-negotiation pseudo-mechanisms (e.g., SPNEGO <xref
-  target="RFC4178"/>): if set, the pseudo-mechanism MUST NOT negotiate
-any mechanism which lacks the GSS_C_MA_CBINDINGS attribute and SHOULD
-prefer to negotiate mechanisms which have the GSS_C_MA_CBINDING_CONFIRM
-attribute.</t>
+acceptors providing channel bindings.  If set, the mechanism MUST prefer
+establishment of contexts which provide channel binding confirmation.  It
+SHOULD NOT fail to negotiate just because it cannot provide the
+GSS_C_MA_CBINDING_CONFIRM attribute.</t>
         <section title="C-Bindings" anchor="d1e620">
           <t>
 Because GSS_C_CHANNEL_BOUND_FLAG is a return flag only, and this flag is
@@ -390,8 +387,7 @@ Mechanism gsscma Codes” registry established by RFC5587 <xref
 &rfc5056;
 &rfc5587;
 </references>
-    <references title="Informative References">&rfc4178;
-&rfc4121;
+    <references title="Informative References">&rfc4121;
 &rfc5653;
 </references>
   </back>
