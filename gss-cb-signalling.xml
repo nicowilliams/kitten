@@ -341,24 +341,24 @@ implementations as deployed.</t>
           <t>
 Whenever the initiator application has a) provided channel bindings to
 GSS_Init_sec_context(), and b) not indicated support for the
-ret_channel_bound_flag flag, then the mechanism MUST NOT fail to
+ret_channel_bound_flag flag, then the mechanism SHOULD NOT fail to
 establish a security context just because the acceptor failed to provide
-channel bindings data unless the channel bindings are used for key
-derivation. This requirement is for interoperability purposes, and
-reflects actual implementations that have been deployed.</t>
+channel bindings data.  This strong sugestion is for interoperability
+purposes, and reflects actual implementations that have been
+deployed.</t>
           <t>
 Whenever the application has a) provided channel bindings to
 GSS_Init_sec_context() or GSS_Accept_sec_context(), and b) indicated
-support for the ret_channel_bound_flag flag, then the mechanism MUST NOT
-fail to establish a security context just because the peer did not
-provide channel bindings data unless the channel bindings are used for
-key derivation. The mechanism MUST output the ret_channel_bound_flag if
-both peers provided the same input_channel_bindings to
-GSS_Init_sec_context() and GSS_Accept_sec_context. The mechanism MUST
-NOT output the ret_channel_bound_flag if either (or both) peer did not
-provide input_channel_bindings to GSS_Init/Accept_sec_context(). This
-requirement restores the original base GSS-API specified behavior, with
-the addition of the ret_channel_bound_flag flag.</t>
+support for the ret_channel_bound_flag flag, then the mechanism SHOULD
+NOT fail to establish a security context just because the peer did not
+provide channel bindings data.  The mechanism MUST output the
+ret_channel_bound_flag if both peers provided the same
+input_channel_bindings to GSS_Init_sec_context() and
+GSS_Accept_sec_context(). The mechanism MUST NOT output the
+ret_channel_bound_flag if either (or both) peer did not provide
+input_channel_bindings to GSS_Init/Accept_sec_context(). This requirement
+restores the original base GSS-API specified behavior, with the addition
+of the ret_channel_bound_flag flag.</t>
         </list>
       </t>
     </section>
